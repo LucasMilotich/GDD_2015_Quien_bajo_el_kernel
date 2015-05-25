@@ -40,6 +40,9 @@ local.properties
 *.suo
 *.user
 *.sln.docstates
+*.cache
+*.exe
+*.pdb
 
 # Build results
 
@@ -214,3 +217,10 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+src/PagoElectronico/PagoElectronico/obj/Release/PagoElectronico.pdb
+*.exe
+src/PagoElectronico/PagoElectronico/obj/Release/PagoElectronico.csproj.GenerateResource.Cache
+*.txt
+src/PagoElectronico/PagoElectronico/bin/Release/PagoElectronico.exe
+*.pdb
+*.suo
