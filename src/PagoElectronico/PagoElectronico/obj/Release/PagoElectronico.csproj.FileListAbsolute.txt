@@ -7,3 +7,8 @@ C:\Users\Franco\Downloads\TP Utn Pago Electronico 1.1 - 1C 2015\Aplicacion Deskt
 C:\Users\Franco\Downloads\TP Utn Pago Electronico 1.1 - 1C 2015\Aplicacion Desktop\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.pdb
 C:\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.exe
 C:\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.pdb
+C:\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\ResolveAssemblyReference.cache
+C:\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.ABM_Cliente.Form1.resources
+C:\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.ABM_Cuenta.Form1.resources
+C:\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.Properties.Resources.resources
+C:\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.csproj.GenerateResource.Cache
