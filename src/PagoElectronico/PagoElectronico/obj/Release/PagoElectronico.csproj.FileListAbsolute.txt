@@ -12,3 +12,9 @@ C:\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release
 C:\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.ABM_Cuenta.Form1.resources
 C:\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.Properties.Resources.resources
 C:\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.csproj.GenerateResource.Cache
+C:\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\bin\Release\PagoElectronico.exe.config
+C:\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\bin\Release\PagoElectronico.exe
+C:\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\bin\Release\PagoElectronico.pdb
+C:\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\bin\Release\DAL.dll
+C:\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\bin\Release\DAL.pdb
+C:\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.ABM_de_Usuario.Alta.resources

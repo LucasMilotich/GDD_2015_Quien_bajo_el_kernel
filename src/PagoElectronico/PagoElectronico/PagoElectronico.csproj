@@ -111,16 +111,14 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-<<<<<<< HEAD
     <EmbeddedResource Include="ABM Cliente\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ABM Cuenta\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
-=======
+    </EmbeddedResource>
     <EmbeddedResource Include="ABM de Usuario\Alta.resx">
       <DependentUpon>Alta.cs</DependentUpon>
->>>>>>> origin/master
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
