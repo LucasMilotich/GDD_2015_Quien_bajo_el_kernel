@@ -45,11 +45,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="UsuarioService.cs" />
+    <Compile Include="RolService.cs" />
+    <Compile Include="Interfaces\IRolService.cs" />
+    <Compile Include="Interfaces\IUsuarioService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Interfaces\" />
+    <ProjectReference Include="..\PagoElectronico.Entities\PagoElectronico.Entities.csproj">
+      <Project>{8162C21C-804D-4495-A9EB-8984F98104D9}</Project>
+      <Name>PagoElectronico.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PagoElectronico.Repositories\PagoElectronico.Repositories.csproj">
+      <Project>{669711AB-EFB2-4C0B-BCF6-E9AEBF4EFA07}</Project>
+      <Name>PagoElectronico.Repositories</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

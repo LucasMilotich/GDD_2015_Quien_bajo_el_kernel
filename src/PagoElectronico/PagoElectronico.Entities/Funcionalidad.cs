@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace DAL.Entities
+namespace PagoElectronico.Entities
 {
-    public class Rol
+    public class Funcionalidad
     {
         public int Id { get; set; }
 
         public string Nombre { get; set; }
-
-        public bool Estado { get; set; }
     }
 }

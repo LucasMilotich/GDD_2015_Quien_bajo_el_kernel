@@ -1,6 +1,6 @@
 ﻿namespace PagoElectronico.ABM_de_Usuario
 {
-    partial class Alta
+    partial class AltaEdicion
     {
         /// <summary>
         /// Required designer variable.
@@ -87,9 +87,9 @@
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(82, 53);
+            this.textBox2.Location = new System.Drawing.Point(123, 53);
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(100, 20);
+            this.textBox2.Size = new System.Drawing.Size(152, 20);
             this.textBox2.TabIndex = 4;
             // 
             // label3
@@ -121,9 +121,9 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(82, 22);
+            this.textBox1.Location = new System.Drawing.Point(123, 22);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 20);
+            this.textBox1.Size = new System.Drawing.Size(152, 20);
             this.textBox1.TabIndex = 0;
             // 
             // groupBox2
@@ -162,7 +162,7 @@
             this.btnGuardar.Text = "Guardar";
             this.btnGuardar.UseVisualStyleBackColor = true;
             // 
-            // Alta
+            // AltaEdicion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -171,8 +171,9 @@
             this.Controls.Add(this.btnLimpiar);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
-            this.Name = "Alta";
+            this.Name = "AltaEdicion";
             this.Text = "Alta de Usuarios";
+            this.Load += new System.EventHandler(this.AltaEdicion_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
