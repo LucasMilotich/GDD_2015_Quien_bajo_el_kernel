@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PagoElectronico.Services
 {
-    public class Class1
+    public class RolService
     {
     }
 }
