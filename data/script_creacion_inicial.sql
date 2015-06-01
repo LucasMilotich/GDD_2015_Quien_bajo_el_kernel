@@ -457,8 +457,8 @@ insert into QUIEN_BAJO_EL_KERNEL.TARJETA (tarjeta_numero, fecha_emision,fecha_ve
 					 
 GO
 insert into QUIEN_BAJO_EL_KERNEL.DEPOSITO (deposito_codigo,fecha, importe, cuenta_numero, tarjeta_numero)
-				 (select (deposito_codigo,deposito_fecha, deposito_importe, 
-							  cuenta_numero, tarjeta_numero)
+				 (select deposito_codigo,deposito_fecha, deposito_importe, 
+							  cuenta_numero, tarjeta_numero
 					  from gd_esquema.Maestra
 					  where deposito_codigo is not null)
 
@@ -521,7 +521,7 @@ SELECT @CANT_TRANSF = COUNT(*) FROM QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA
 update QUIEN_BAJO_EL_KERNEL.CUENTA SET id_transaccion = NULL 
 update QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA SET id_transaccion = NULL 
 delete from QUIEN_BAJO_EL_KERNEL.TRANSACCIONES
-DBCC CHECKIDENT ('QUIEN_BAJO_EL_KERNEL.TRANSACCIONES', RESEED,0)
+DBCC CHECKIDENT ('QUIEN_BAJO_EL_KERNEL.TRANSACCIONES', RESEED,1)
 
 
 SET @i = 1
