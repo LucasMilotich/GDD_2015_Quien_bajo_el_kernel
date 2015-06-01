@@ -87,7 +87,6 @@ GO
 CREATE TABLE QUIEN_BAJO_EL_KERNEL.TRANSACCIONES ( 
 	id_transaccion numeric(18) identity(1,1)  NOT NULL,
 	operacion_tipo numeric(10) NOT NULL,
-	operacion_codigo numeric(18) NOT NULL,
 	fecha datetime NULL
 )
 GO
