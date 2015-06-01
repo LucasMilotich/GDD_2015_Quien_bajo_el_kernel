@@ -231,3 +231,9 @@ src/PagoElectronico/PagoElectronico/bin/Release/PagoElectronico.exe
 *.txt
 src/PagoElectronico/PagoElectronico/obj/Release/PagoElectronico.csproj.GenerateResource.Cache
 *.exe
+*.suo
+*.exe
+*.txt
+*.exe
+src/PagoElectronico/PagoElectronico/obj/Release/PagoElectronico.pdb
+*.Cache
