@@ -1,3 +1,5 @@
+
+
 CREATE TABLE QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA ( 
 	numero_item numeric(18) NOT NULL,
 	descripcion varchar(255) NULL,
