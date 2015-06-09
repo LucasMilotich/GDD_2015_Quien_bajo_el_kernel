@@ -29,19 +29,19 @@
         private void InitializeComponent()
         {
             this.groupBoxConsulta = new System.Windows.Forms.GroupBox();
+            this.rbPaisesCantMovimientos = new System.Windows.Forms.RadioButton();
+            this.rbTotalFacturado = new System.Windows.Forms.RadioButton();
+            this.rbClientesCantTransacciones = new System.Windows.Forms.RadioButton();
+            this.rbClientesCantComisiones = new System.Windows.Forms.RadioButton();
+            this.rbClientesCuentasInhabilitadas = new System.Windows.Forms.RadioButton();
             this.btnLimpiar = new System.Windows.Forms.Button();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.comboTrimestres = new System.Windows.Forms.ComboBox();
             this.lblTrimestre = new System.Windows.Forms.Label();
             this.btnBuscar = new System.Windows.Forms.Button();
             this.txtCuenta = new System.Windows.Forms.TextBox();
             this.lblAnio = new System.Windows.Forms.Label();
             this.groupBoxListado = new System.Windows.Forms.GroupBox();
             this.dataGridViewListado = new System.Windows.Forms.DataGridView();
-            this.rbClientesCuentasInhabilitadas = new System.Windows.Forms.RadioButton();
-            this.rbClientesCantComisiones = new System.Windows.Forms.RadioButton();
-            this.rbClientesCantTransacciones = new System.Windows.Forms.RadioButton();
-            this.rbTotalFacturado = new System.Windows.Forms.RadioButton();
-            this.rbPaisesCantMovimientos = new System.Windows.Forms.RadioButton();
             this.groupBoxConsulta.SuspendLayout();
             this.groupBoxListado.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewListado)).BeginInit();
@@ -55,7 +55,7 @@
             this.groupBoxConsulta.Controls.Add(this.rbClientesCantComisiones);
             this.groupBoxConsulta.Controls.Add(this.rbClientesCuentasInhabilitadas);
             this.groupBoxConsulta.Controls.Add(this.btnLimpiar);
-            this.groupBoxConsulta.Controls.Add(this.comboBox1);
+            this.groupBoxConsulta.Controls.Add(this.comboTrimestres);
             this.groupBoxConsulta.Controls.Add(this.lblTrimestre);
             this.groupBoxConsulta.Controls.Add(this.btnBuscar);
             this.groupBoxConsulta.Controls.Add(this.txtCuenta);
@@ -67,6 +67,63 @@
             this.groupBoxConsulta.TabStop = false;
             this.groupBoxConsulta.Text = "Consulta";
             // 
+            // rbPaisesCantMovimientos
+            // 
+            this.rbPaisesCantMovimientos.AutoSize = true;
+            this.rbPaisesCantMovimientos.Location = new System.Drawing.Point(6, 125);
+            this.rbPaisesCantMovimientos.Name = "rbPaisesCantMovimientos";
+            this.rbPaisesCantMovimientos.Size = new System.Drawing.Size(366, 17);
+            this.rbPaisesCantMovimientos.TabIndex = 18;
+            this.rbPaisesCantMovimientos.TabStop = true;
+            this.rbPaisesCantMovimientos.Text = "Paises con mayor cantidad de movimientos tanto ingresos como egresos";
+            this.rbPaisesCantMovimientos.UseVisualStyleBackColor = true;
+            // 
+            // rbTotalFacturado
+            // 
+            this.rbTotalFacturado.AutoSize = true;
+            this.rbTotalFacturado.Location = new System.Drawing.Point(6, 148);
+            this.rbTotalFacturado.Name = "rbTotalFacturado";
+            this.rbTotalFacturado.Size = new System.Drawing.Size(259, 17);
+            this.rbTotalFacturado.TabIndex = 17;
+            this.rbTotalFacturado.TabStop = true;
+            this.rbTotalFacturado.Text = "Total facturado para los distintos tipos de cuentas";
+            this.rbTotalFacturado.UseVisualStyleBackColor = true;
+            // 
+            // rbClientesCantTransacciones
+            // 
+            this.rbClientesCantTransacciones.AutoSize = true;
+            this.rbClientesCantTransacciones.Location = new System.Drawing.Point(6, 102);
+            this.rbClientesCantTransacciones.Name = "rbClientesCantTransacciones";
+            this.rbClientesCantTransacciones.Size = new System.Drawing.Size(397, 17);
+            this.rbClientesCantTransacciones.TabIndex = 16;
+            this.rbClientesCantTransacciones.TabStop = true;
+            this.rbClientesCantTransacciones.Text = "Clientes con mayor cantidad de transacciones realizadas entre cuentas propias";
+            this.rbClientesCantTransacciones.UseVisualStyleBackColor = true;
+            // 
+            // rbClientesCantComisiones
+            // 
+            this.rbClientesCantComisiones.AutoSize = true;
+            this.rbClientesCantComisiones.Location = new System.Drawing.Point(6, 82);
+            this.rbClientesCantComisiones.Name = "rbClientesCantComisiones";
+            this.rbClientesCantComisiones.Size = new System.Drawing.Size(385, 17);
+            this.rbClientesCantComisiones.TabIndex = 15;
+            this.rbClientesCantComisiones.TabStop = true;
+            this.rbClientesCantComisiones.Text = "Clientes con mayor cantidad de comisiones facturadas en todas sus cuentas";
+            this.rbClientesCantComisiones.UseVisualStyleBackColor = true;
+            // 
+            // rbClientesCuentasInhabilitadas
+            // 
+            this.rbClientesCuentasInhabilitadas.AutoSize = true;
+            this.rbClientesCuentasInhabilitadas.Checked = true;
+            this.rbClientesCuentasInhabilitadas.Location = new System.Drawing.Point(6, 61);
+            this.rbClientesCuentasInhabilitadas.Name = "rbClientesCuentasInhabilitadas";
+            this.rbClientesCuentasInhabilitadas.Size = new System.Drawing.Size(473, 17);
+            this.rbClientesCuentasInhabilitadas.TabIndex = 14;
+            this.rbClientesCuentasInhabilitadas.TabStop = true;
+            this.rbClientesCuentasInhabilitadas.Text = "Clientes que alguna de sus cuentas fueron inhabilitadas por no pagar los costos d" +
+                "e transaccion";
+            this.rbClientesCuentasInhabilitadas.UseVisualStyleBackColor = true;
+            // 
             // btnLimpiar
             // 
             this.btnLimpiar.Location = new System.Drawing.Point(407, 20);
@@ -75,14 +132,16 @@
             this.btnLimpiar.TabIndex = 13;
             this.btnLimpiar.Text = "Limpiar";
             this.btnLimpiar.UseVisualStyleBackColor = true;
+            this.btnLimpiar.Click += new System.EventHandler(this.btnLimpiar_Click);
             // 
-            // comboBox1
+            // comboTrimestres
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(240, 20);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(91, 21);
-            this.comboBox1.TabIndex = 11;
+            this.comboTrimestres.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboTrimestres.FormattingEnabled = true;
+            this.comboTrimestres.Location = new System.Drawing.Point(240, 20);
+            this.comboTrimestres.Name = "comboTrimestres";
+            this.comboTrimestres.Size = new System.Drawing.Size(91, 21);
+            this.comboTrimestres.TabIndex = 11;
             // 
             // lblTrimestre
             // 
@@ -137,62 +196,6 @@
             this.dataGridViewListado.Size = new System.Drawing.Size(509, 271);
             this.dataGridViewListado.TabIndex = 3;
             // 
-            // rbClientesCuentasInhabilitadas
-            // 
-            this.rbClientesCuentasInhabilitadas.AutoSize = true;
-            this.rbClientesCuentasInhabilitadas.Location = new System.Drawing.Point(6, 61);
-            this.rbClientesCuentasInhabilitadas.Name = "rbClientesCuentasInhabilitadas";
-            this.rbClientesCuentasInhabilitadas.Size = new System.Drawing.Size(473, 17);
-            this.rbClientesCuentasInhabilitadas.TabIndex = 14;
-            this.rbClientesCuentasInhabilitadas.TabStop = true;
-            this.rbClientesCuentasInhabilitadas.Text = "Clientes que alguna de sus cuentas fueron inhabilitadas por no pagar los costos d" +
-                "e transaccion";
-            this.rbClientesCuentasInhabilitadas.UseVisualStyleBackColor = true;
-            // 
-            // rbClientesCantComisiones
-            // 
-            this.rbClientesCantComisiones.AutoSize = true;
-            this.rbClientesCantComisiones.Location = new System.Drawing.Point(6, 82);
-            this.rbClientesCantComisiones.Name = "rbClientesCantComisiones";
-            this.rbClientesCantComisiones.Size = new System.Drawing.Size(385, 17);
-            this.rbClientesCantComisiones.TabIndex = 15;
-            this.rbClientesCantComisiones.TabStop = true;
-            this.rbClientesCantComisiones.Text = "Clientes con mayor cantidad de comisiones facturadas en todas sus cuentas";
-            this.rbClientesCantComisiones.UseVisualStyleBackColor = true;
-            // 
-            // rbClientesCantTransacciones
-            // 
-            this.rbClientesCantTransacciones.AutoSize = true;
-            this.rbClientesCantTransacciones.Location = new System.Drawing.Point(6, 102);
-            this.rbClientesCantTransacciones.Name = "rbClientesCantTransacciones";
-            this.rbClientesCantTransacciones.Size = new System.Drawing.Size(397, 17);
-            this.rbClientesCantTransacciones.TabIndex = 16;
-            this.rbClientesCantTransacciones.TabStop = true;
-            this.rbClientesCantTransacciones.Text = "Clientes con mayor cantidad de transacciones realizadas entre cuentas propias";
-            this.rbClientesCantTransacciones.UseVisualStyleBackColor = true;
-            // 
-            // rbTotalFacturado
-            // 
-            this.rbTotalFacturado.AutoSize = true;
-            this.rbTotalFacturado.Location = new System.Drawing.Point(6, 148);
-            this.rbTotalFacturado.Name = "rbTotalFacturado";
-            this.rbTotalFacturado.Size = new System.Drawing.Size(259, 17);
-            this.rbTotalFacturado.TabIndex = 17;
-            this.rbTotalFacturado.TabStop = true;
-            this.rbTotalFacturado.Text = "Total facturado para los distintos tipos de cuentas";
-            this.rbTotalFacturado.UseVisualStyleBackColor = true;
-            // 
-            // rbPaisesCantMovimientos
-            // 
-            this.rbPaisesCantMovimientos.AutoSize = true;
-            this.rbPaisesCantMovimientos.Location = new System.Drawing.Point(6, 125);
-            this.rbPaisesCantMovimientos.Name = "rbPaisesCantMovimientos";
-            this.rbPaisesCantMovimientos.Size = new System.Drawing.Size(366, 17);
-            this.rbPaisesCantMovimientos.TabIndex = 18;
-            this.rbPaisesCantMovimientos.TabStop = true;
-            this.rbPaisesCantMovimientos.Text = "Paises con mayor cantidad de movimientos tanto ingresos como egresos";
-            this.rbPaisesCantMovimientos.UseVisualStyleBackColor = true;
-            // 
             // ListadoEstadistico
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -218,7 +221,7 @@
         private System.Windows.Forms.Label lblAnio;
         private System.Windows.Forms.GroupBox groupBoxListado;
         private System.Windows.Forms.DataGridView dataGridViewListado;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox comboTrimestres;
         private System.Windows.Forms.Label lblTrimestre;
         private System.Windows.Forms.Button btnLimpiar;
         private System.Windows.Forms.RadioButton rbPaisesCantMovimientos;

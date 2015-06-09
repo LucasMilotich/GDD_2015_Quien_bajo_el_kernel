@@ -1,6 +1,6 @@
 ﻿namespace PagoElectronico.Transferencias
 {
-    partial class Transferencias
+    partial class TransferenciasCuentas
     {
         /// <summary>
         /// Required designer variable.
@@ -29,14 +29,14 @@
         private void InitializeComponent()
         {
             this.groupBoxTransferencia = new System.Windows.Forms.GroupBox();
-            this.btnLimpiar = new System.Windows.Forms.Button();
-            this.btnTransferir = new System.Windows.Forms.Button();
+            this.comboCuentaOrigen = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.lblImporte = new System.Windows.Forms.Label();
+            this.txtImporte = new System.Windows.Forms.TextBox();
             this.txtCuentaDestino = new System.Windows.Forms.TextBox();
             this.lblCuentaOrigen = new System.Windows.Forms.Label();
-            this.txtImporte = new System.Windows.Forms.TextBox();
-            this.lblImporte = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.comboCuentaOrigen = new System.Windows.Forms.ComboBox();
+            this.btnLimpiar = new System.Windows.Forms.Button();
+            this.btnTransferir = new System.Windows.Forms.Button();
             this.groupBoxTransferencia.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -55,23 +55,40 @@
             this.groupBoxTransferencia.TabStop = false;
             this.groupBoxTransferencia.Text = "Transferencia";
             // 
-            // btnLimpiar
+            // comboCuentaOrigen
             // 
-            this.btnLimpiar.Location = new System.Drawing.Point(354, 153);
-            this.btnLimpiar.Name = "btnLimpiar";
-            this.btnLimpiar.Size = new System.Drawing.Size(124, 44);
-            this.btnLimpiar.TabIndex = 10;
-            this.btnLimpiar.Text = "Limpiar";
-            this.btnLimpiar.UseVisualStyleBackColor = true;
+            this.comboCuentaOrigen.Cursor = System.Windows.Forms.Cursors.Default;
+            this.comboCuentaOrigen.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboCuentaOrigen.FormattingEnabled = true;
+            this.comboCuentaOrigen.Location = new System.Drawing.Point(87, 19);
+            this.comboCuentaOrigen.Name = "comboCuentaOrigen";
+            this.comboCuentaOrigen.Size = new System.Drawing.Size(121, 21);
+            this.comboCuentaOrigen.TabIndex = 14;
             // 
-            // btnTransferir
+            // label1
             // 
-            this.btnTransferir.Location = new System.Drawing.Point(21, 153);
-            this.btnTransferir.Name = "btnTransferir";
-            this.btnTransferir.Size = new System.Drawing.Size(117, 44);
-            this.btnTransferir.TabIndex = 7;
-            this.btnTransferir.Text = "Transferir";
-            this.btnTransferir.UseVisualStyleBackColor = true;
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 53);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(80, 13);
+            this.label1.TabIndex = 13;
+            this.label1.Text = "Cuenta Destino";
+            // 
+            // lblImporte
+            // 
+            this.lblImporte.AutoSize = true;
+            this.lblImporte.Location = new System.Drawing.Point(6, 79);
+            this.lblImporte.Name = "lblImporte";
+            this.lblImporte.Size = new System.Drawing.Size(42, 13);
+            this.lblImporte.TabIndex = 12;
+            this.lblImporte.Text = "Importe";
+            // 
+            // txtImporte
+            // 
+            this.txtImporte.Location = new System.Drawing.Point(87, 76);
+            this.txtImporte.Name = "txtImporte";
+            this.txtImporte.Size = new System.Drawing.Size(120, 20);
+            this.txtImporte.TabIndex = 11;
             // 
             // txtCuentaDestino
             // 
@@ -89,40 +106,27 @@
             this.lblCuentaOrigen.TabIndex = 2;
             this.lblCuentaOrigen.Text = "Cuenta Origen";
             // 
-            // txtImporte
+            // btnLimpiar
             // 
-            this.txtImporte.Location = new System.Drawing.Point(87, 76);
-            this.txtImporte.Name = "txtImporte";
-            this.txtImporte.Size = new System.Drawing.Size(120, 20);
-            this.txtImporte.TabIndex = 11;
+            this.btnLimpiar.Location = new System.Drawing.Point(354, 153);
+            this.btnLimpiar.Name = "btnLimpiar";
+            this.btnLimpiar.Size = new System.Drawing.Size(124, 44);
+            this.btnLimpiar.TabIndex = 10;
+            this.btnLimpiar.Text = "Limpiar";
+            this.btnLimpiar.UseVisualStyleBackColor = true;
+            this.btnLimpiar.Click += new System.EventHandler(this.btnLimpiar_Click);
             // 
-            // lblImporte
+            // btnTransferir
             // 
-            this.lblImporte.AutoSize = true;
-            this.lblImporte.Location = new System.Drawing.Point(6, 79);
-            this.lblImporte.Name = "lblImporte";
-            this.lblImporte.Size = new System.Drawing.Size(42, 13);
-            this.lblImporte.TabIndex = 12;
-            this.lblImporte.Text = "Importe";
+            this.btnTransferir.Location = new System.Drawing.Point(21, 153);
+            this.btnTransferir.Name = "btnTransferir";
+            this.btnTransferir.Size = new System.Drawing.Size(117, 44);
+            this.btnTransferir.TabIndex = 7;
+            this.btnTransferir.Text = "Transferir";
+            this.btnTransferir.UseVisualStyleBackColor = true;
+            this.btnTransferir.Click += new System.EventHandler(this.btnTransferir_Click);
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 53);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(80, 13);
-            this.label1.TabIndex = 13;
-            this.label1.Text = "Cuenta Destino";
-            // 
-            // comboCuentaOrigen
-            // 
-            this.comboCuentaOrigen.FormattingEnabled = true;
-            this.comboCuentaOrigen.Location = new System.Drawing.Point(87, 19);
-            this.comboCuentaOrigen.Name = "comboCuentaOrigen";
-            this.comboCuentaOrigen.Size = new System.Drawing.Size(121, 21);
-            this.comboCuentaOrigen.TabIndex = 14;
-            // 
-            // Transferencias
+            // TransferenciasCuentas
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -130,7 +134,7 @@
             this.Controls.Add(this.groupBoxTransferencia);
             this.Controls.Add(this.btnTransferir);
             this.Controls.Add(this.btnLimpiar);
-            this.Name = "Transferencias";
+            this.Name = "TransferenciasCuentas";
             this.Text = "Transferencias entre cuentas";
             this.groupBoxTransferencia.ResumeLayout(false);
             this.groupBoxTransferencia.PerformLayout();

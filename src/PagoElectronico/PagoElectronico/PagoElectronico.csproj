@@ -33,7 +33,11 @@
   <ItemGroup>
     <Reference Include="DevComponents.DotNetBar2, Version=8.5.0.2, Culture=neutral, PublicKeyToken=7eb7c3a35b91de04, processorArchitecture=MSIL" />
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web.Extensions">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Xml.Linq">
@@ -74,11 +78,11 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Common\Validaciones.cs" />
-    <Compile Include="Consulta Saldos\Form1.cs">
+    <Compile Include="Consulta Saldos\ConsultaSaldos.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Consulta Saldos\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Consulta Saldos\ConsultaSaldos.Designer.cs">
+      <DependentUpon>ConsultaSaldos.cs</DependentUpon>
     </Compile>
     <Compile Include="Depositos\Form1.cs">
       <SubType>Form</SubType>
@@ -98,11 +102,11 @@
     <Compile Include="Home.Designer.cs">
       <DependentUpon>Home.cs</DependentUpon>
     </Compile>
-    <Compile Include="Listados\Form1.cs">
+    <Compile Include="Listados\ListadoEstadistico.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Listados\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Listados\ListadoEstadistico.Designer.cs">
+      <DependentUpon>ListadoEstadistico.cs</DependentUpon>
     </Compile>
     <Compile Include="Login\Login.cs">
       <SubType>Form</SubType>
@@ -121,11 +125,14 @@
     <EmbeddedResource Include="ABM de Usuario\AltaEdicion.resx">
       <DependentUpon>AltaEdicion.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Consulta Saldos\Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="Consulta Saldos\ConsultaSaldos.resx">
+      <DependentUpon>ConsultaSaldos.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Home.resx">
       <DependentUpon>Home.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Listados\ListadoEstadistico.resx">
+      <DependentUpon>ListadoEstadistico.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Login\Login.resx">
       <DependentUpon>Login.cs</DependentUpon>
@@ -134,6 +141,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transferencias\TransferenciasCuentas.resx">
+      <DependentUpon>TransferenciasCuentas.cs</DependentUpon>
     </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -156,17 +166,21 @@
     <Compile Include="Retiros\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Transferencias\Form1.cs">
+    <Compile Include="Transferencias\TransferenciasCuentas.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Transferencias\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Transferencias\TransferenciasCuentas.Designer.cs">
+      <DependentUpon>TransferenciasCuentas.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PagoElectronico.Entities\PagoElectronico.Entities.csproj">
       <Project>{8162C21C-804D-4495-A9EB-8984F98104D9}</Project>
       <Name>PagoElectronico.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PagoElectronico.Repositories\PagoElectronico.Repositories.csproj">
+      <Project>{669711AB-EFB2-4C0B-BCF6-E9AEBF4EFA07}</Project>
+      <Name>PagoElectronico.Repositories</Name>
     </ProjectReference>
     <ProjectReference Include="..\PagoElectronico.Services\PagoElectronico.Services.csproj">
       <Project>{DC3C6463-CFBB-4E6E-BC61-407FEA86780E}</Project>

@@ -9,17 +9,22 @@ namespace PagoElectronico.Common
 {
     public class Validaciones
     {
-        public bool validarCampoVacio (TextBox unTextBox)
+        public static bool validarCampoVacio(TextBox textBox)
         {
-		    if (!string.IsNullOrEmpty(unTextBox.Text))
+            if (string.IsNullOrEmpty(textBox.Text))
 	        {
-	            unTextBox.BackColor = System.Drawing.Color.LightCoral;
+                textBox.BackColor = System.Drawing.Color.LightCoral;
                 return false;
-	        }
-            return true;
+            }
+            else
+            {
+                textBox.BackColor = System.Drawing.Color.White;
+                return true;   
+            }
+           
         }
 
-        public bool validarCampoString(TextBox textBox)
+        public static bool validarCampoString(TextBox textBox)
         {
             Regex expRegular = new Regex("^[a-zA-Z]*$");
             if (!expRegular.IsMatch(textBox.Text))
@@ -27,10 +32,14 @@ namespace PagoElectronico.Common
                 textBox.BackColor = System.Drawing.Color.LightCoral;
                 return false;
             }
-            return true;
+            else
+            {
+                textBox.BackColor = System.Drawing.Color.White;
+                return true;
+            }           
         }
-        
-        public bool validarCampoNumericoEntero(TextBox textBox)
+
+        public static bool validarCampoNumericoEntero(TextBox textBox)
         {
             Regex expRegular = new Regex("^[0-9]*$");
             if (!expRegular.IsMatch(textBox.Text))
@@ -38,10 +47,14 @@ namespace PagoElectronico.Common
                 textBox.BackColor=System.Drawing.Color.LightCoral;
                 return false;
             }
-            return true;
+            else
+            {
+                textBox.BackColor = System.Drawing.Color.White;
+                return true;     
+            }            
         }
 
-        public bool validarCampoNumericoDouble(TextBox textBox)
+        public static bool validarCampoNumericoDouble(TextBox textBox)
         {
             Double num;
             if (!Double.TryParse(textBox.Text, out num))
@@ -49,10 +62,14 @@ namespace PagoElectronico.Common
                 textBox.BackColor = System.Drawing.Color.LightCoral;
                 return false;
             }
-            return true;            
+            else
+            {
+                textBox.BackColor = System.Drawing.Color.White;
+                return true;   
+            }                     
         }
-        
-        public bool validarCampoMail(TextBox textBox)
+
+        public static bool validarCampoMail(TextBox textBox)
         {
             Regex expRegular = new Regex(@"^(?("")("".+?(?<!\\)""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" +
             @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-\w]*[0-9a-z]*\.)+[a-z0-9][\-a-z0-9]{0,22}[a-z0-9]))$");
@@ -61,7 +78,11 @@ namespace PagoElectronico.Common
                 textBox.BackColor=System.Drawing.Color.LightCoral;
                 return false;
             }
-            return true;
+            else
+            {
+                textBox.BackColor = System.Drawing.Color.White;
+                return true;
+            }            
         }
 
     }

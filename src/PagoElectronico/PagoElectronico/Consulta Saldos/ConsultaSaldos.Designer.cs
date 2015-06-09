@@ -89,6 +89,7 @@
             this.btnLimpiar.TabIndex = 10;
             this.btnLimpiar.Text = "Limpiar";
             this.btnLimpiar.UseVisualStyleBackColor = true;
+            this.btnLimpiar.Click += new System.EventHandler(this.btnLimpiar_Click);
             // 
             // lblSaldo2
             // 
@@ -129,7 +130,6 @@
             this.rbTransferencias.Name = "rbTransferencias";
             this.rbTransferencias.Size = new System.Drawing.Size(143, 17);
             this.rbTransferencias.TabIndex = 6;
-            this.rbTransferencias.TabStop = true;
             this.rbTransferencias.Text = "Ultimas 10 transferencias";
             this.rbTransferencias.UseVisualStyleBackColor = true;
             // 
@@ -140,13 +140,13 @@
             this.rbRetiros.Name = "rbRetiros";
             this.rbRetiros.Size = new System.Drawing.Size(99, 17);
             this.rbRetiros.TabIndex = 5;
-            this.rbRetiros.TabStop = true;
             this.rbRetiros.Text = "Ultimos 5 retiros";
             this.rbRetiros.UseVisualStyleBackColor = true;
             // 
             // rbDepositos
             // 
             this.rbDepositos.AutoSize = true;
+            this.rbDepositos.Checked = true;
             this.rbDepositos.Location = new System.Drawing.Point(9, 61);
             this.rbDepositos.Name = "rbDepositos";
             this.rbDepositos.Size = new System.Drawing.Size(116, 17);

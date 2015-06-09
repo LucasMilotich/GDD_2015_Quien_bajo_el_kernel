@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual C# Express 2008
+# Visual Studio 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PagoElectronico", "PagoElectronico\PagoElectronico.csproj", "{1A425235-25E0-4A09-B3C4-84F19D9A2184}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PagoElectronico.Entities", "PagoElectronico.Entities\PagoElectronico.Entities.csproj", "{8162C21C-804D-4495-A9EB-8984F98104D9}"
