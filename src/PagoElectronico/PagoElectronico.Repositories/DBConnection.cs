@@ -76,10 +76,9 @@ namespace PagoElectronico.Repositories
             }
         }
 
-        public static SqlDataReader EjecutarComandoSelect(SqlCommand command)
+        public static DataTable EjecutarComandoSelect(SqlCommand command)
         {
             SqlDataReader reader = null;
-
             try
             {
                 command.Connection.Open();
@@ -89,13 +88,14 @@ namespace PagoElectronico.Repositories
             {
                 throw exception;
             }
-            finally
-            {
-                reader.Close();
-                CloseCommand(command);
-            }
+            
+            DataTable dt = new DataTable();
+            dt.Load(reader);
 
-            return reader;
+            reader.Close();
+            CloseCommand(command);
+
+            return dt;
         }
 
         public static DataTable EjecutarStoredProcedureSelect(SqlCommand command)
