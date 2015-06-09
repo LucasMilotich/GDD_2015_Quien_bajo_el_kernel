@@ -7,13 +7,18 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace PagoElectronico.Consulta_Saldos
+namespace PagoElectronico.Listados
 {
-    public partial class Form1 : Form
+    public partial class ListadoEstadistico : Form
     {
-        public Form1()
+        public ListadoEstadistico()
         {
             InitializeComponent();
+        }
+
+        private void btnBuscar_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -7,13 +7,18 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace PagoElectronico.Transferencias
+namespace PagoElectronico.Consulta_Saldos
 {
-    public partial class Form1 : Form
+    public partial class ConsultaSaldos : Form
     {
-        public Form1()
+        public ConsultaSaldos()
         {
             InitializeComponent();
+        }
+
+        private void btnBuscar_Click(object sender, EventArgs e)
+        {
+            
         }
     }
 }

@@ -7,11 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace PagoElectronico.Listados
+namespace PagoElectronico.Transferencias
 {
-    public partial class Form1 : Form
+    public partial class Transferencias : Form
     {
-        public Form1()
+        public Transferencias()
         {
             InitializeComponent();
         }
