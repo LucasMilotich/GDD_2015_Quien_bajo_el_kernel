@@ -21,12 +21,24 @@ namespace PagoElectronico.Consulta_Saldos
 
         private void btnBuscar_Click(object sender, EventArgs e)
         {
-            if (Validaciones.validarCampoString(txtCuenta) && Validaciones.validarCampoVacio(txtCuenta))
+            if (Validaciones.validarCampoAlfaNumerico(txtCuenta) && Validaciones.validarCampoVacio(txtCuenta))
             {
                 SqlCommand command = DBConnection.CreateCommand();
-                command.CommandText = " select top 10 * from [GD1C2015].[QUIEN_BAJO_EL_KERNEL].[CUENTA] ";
+                if (rbDepositos.Checked)
+                {
+                        command.CommandText = "select top 5* from [GD1C2015].[QUIEN_BAJO_EL_KERNEL].DEPOSITO  where cuenta_numero=" + txtCuenta.Text.ToString() + "  order by fecha desc ";        
+                }
+                if (rbRetiros.Checked)
+                {
+                    command.CommandText = "select top 5 * from [GD1C2015].[QUIEN_BAJO_EL_KERNEL].RETIRO  where cuenta= " + txtCuenta.Text.ToString() + " order by fecha desc";
+                }
+                if (rbTransferencias.Checked)
+                {
+                    command.CommandText = "  select *  from [GD1C2015].[QUIEN_BAJO_EL_KERNEL].TRANSFERENCIA  where origen=" + txtCuenta.Text.ToString() + " or destino=" + txtCuenta.Text.ToString() + "  order by fecha desc  ";
+                }             
+              
                 DataGridViewListado.DataSource = DBConnection.EjecutarComandoSelect(command);
-            }            
+            }
         }
 
         private void btnLimpiar_Click(object sender, EventArgs e)
