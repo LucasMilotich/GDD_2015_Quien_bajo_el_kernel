@@ -34,10 +34,20 @@ namespace PagoElectronico.Transferencias
 
         private void btnTransferir_Click(object sender, EventArgs e)
         {
-            Validaciones.validarCampoNumericoDouble(txtImporte);
-          //  Validaciones.validarCampoVacio(txtImporte);
+            //  Validaciones.validarCampoNumericoDouble(txtImporte);
+            //  Validaciones.validarCampoVacio(txtImporte);
+
+            //**Las cuentas cerradas o pendientes de activacion no pueden recibir dinero
+            //**Está permitido que las trasferencias puedan ser entre cuentas de distinto países.
+            //**Las operaciones realizadas son con fecha del día y debe generarse un número de operación independiente de los depósitos y retiros.
+            //
+            //**Una característica importante de las transferencias es que las mismas tienen un costo fijo
+            //que se cobra a la cuenta origen, dicho costo fijo dependerá del tipo de cuenta, pero si cuenta
+            //origen y destino son del mismo usuario, estas transferencias no tienen costo.
+                
+
         }
 
-      
+
     }
 }
