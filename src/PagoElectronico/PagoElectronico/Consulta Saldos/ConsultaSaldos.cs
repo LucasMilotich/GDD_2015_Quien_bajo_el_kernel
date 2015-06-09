@@ -26,7 +26,7 @@ namespace PagoElectronico.Consulta_Saldos
                 SqlCommand command = DBConnection.CreateCommand();
                 if (rbDepositos.Checked)
                 {
-                        command.CommandText = "select top 5* from [GD1C2015].[QUIEN_BAJO_EL_KERNEL].DEPOSITO  where cuenta_numero=" + txtCuenta.Text.ToString() + "  order by fecha desc ";        
+                    command.CommandText = "select top 5* from [GD1C2015].[QUIEN_BAJO_EL_KERNEL].DEPOSITO  where cuenta_numero=" + txtCuenta.Text.ToString() + "  order by fecha desc ";
                 }
                 if (rbRetiros.Checked)
                 {
@@ -35,8 +35,8 @@ namespace PagoElectronico.Consulta_Saldos
                 if (rbTransferencias.Checked)
                 {
                     command.CommandText = "  select *  from [GD1C2015].[QUIEN_BAJO_EL_KERNEL].TRANSFERENCIA  where origen=" + txtCuenta.Text.ToString() + " or destino=" + txtCuenta.Text.ToString() + "  order by fecha desc  ";
-                }             
-              
+                }
+
                 DataGridViewListado.DataSource = DBConnection.EjecutarComandoSelect(command);
             }
         }
