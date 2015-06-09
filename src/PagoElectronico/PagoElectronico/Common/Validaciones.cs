@@ -69,6 +69,21 @@ namespace PagoElectronico.Common
             }                     
         }
 
+        public static bool validarCampoAlfaNumerico(TextBox textBox)
+        {
+            Regex expRegular = new Regex("^[a-zA-Z0-9]*$");
+            if (!expRegular.IsMatch(textBox.Text))
+            {
+                textBox.BackColor = System.Drawing.Color.LightCoral;
+                return false;
+            }
+            else
+            {
+                textBox.BackColor = System.Drawing.Color.White;
+                return true;
+            }
+        }
+
         public static bool validarCampoMail(TextBox textBox)
         {
             Regex expRegular = new Regex(@"^(?("")("".+?(?<!\\)""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" +
