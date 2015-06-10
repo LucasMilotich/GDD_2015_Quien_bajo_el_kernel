@@ -1,14 +1,9 @@
-
-
-
+-----	 ****************************** CREATE SCHEMA ****************************** -----
 
 CREATE SCHEMA QUIEN_BAJO_EL_KERNEL AUTHORIZATION dbo
 GO
 
-
-
-
-
+-----	 ****************************** CREATE TABLES ****************************** -----
 
 CREATE TABLE QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA ( 
 	numero_item numeric(18) NOT NULL,
@@ -192,10 +187,12 @@ CREATE TABLE QUIEN_BAJO_EL_KERNEL.CUENTA (
 	cliente_numero_doc numeric(10) NULL,
 	moneda_tipo numeric(1) NULL,
 	tipo_cuenta numeric(1) NULL,
-	id_transaccion numeric(18) NULL
+	id_transaccion numeric(18) NULL,
+	saldo numeric(18,2) NULL
 )
 GO
 
+-----	 ****************************** PRIMARY KEYS ****************************** -----
 
 ALTER TABLE QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA ADD CONSTRAINT PK_ITEM_FACTURA 
 	PRIMARY KEY CLUSTERED (numero_item)
@@ -285,7 +282,7 @@ ALTER TABLE QUIEN_BAJO_EL_KERNEL.CUENTA ADD CONSTRAINT PK_CUENTA
 	PRIMARY KEY CLUSTERED (numero)
 GO
 
-
+-----	 ****************************** FOREIGN KEYS ****************************** -----
 
 ALTER TABLE QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA ADD CONSTRAINT FK_ITEM_FACTURA_FACTURA 
 	FOREIGN KEY (factura_numero) REFERENCES QUIEN_BAJO_EL_KERNEL.FACTURA (numero)
@@ -395,9 +392,88 @@ ALTER TABLE QUIEN_BAJO_EL_KERNEL.CUENTA ADD CONSTRAINT FK_CUENTA_TRANSACCIONES
 	FOREIGN KEY (id_transaccion) REFERENCES QUIEN_BAJO_EL_KERNEL.TRANSACCIONES (id_transaccion)
 GO
 
+-----	 ****************************** TRIGGERS ****************************** -----
 
+CREATE TRIGGER QUIEN_BAJO_EL_KERNEL.DepositoActualizarSaldo ON QUIEN_BAJO_EL_KERNEL.DEPOSITO AFTER INSERT
+AS
+BEGIN 
+DECLARE @montoImporte NUMERIC(18,2), @cuentaNumero  NUMERIC(18)
+  
+DECLARE unCursor CURSOR FOR  
+SELECT importe, cuenta_numero 
+FROM inserted
 
----------------------------------------------------------------------------------------
+OPEN unCursor   
+FETCH NEXT FROM unCursor INTO  @montoImporte, @cuentaNumero 
+
+WHILE @@FETCH_STATUS = 0   
+BEGIN   
+  update QUIEN_BAJO_EL_KERNEL.CUENTA
+  SET Saldo=Saldo+@montoImporte 
+  where numero=@cuentaNumero
+FETCH NEXT FROM unCursor INTO @montoImporte, @cuentaNumero   
+END   
+
+CLOSE unCursor   
+DEALLOCATE unCursor  
+END
+GO
+
+CREATE TRIGGER QUIEN_BAJO_EL_KERNEL.RetiroActualizarSaldo ON QUIEN_BAJO_EL_KERNEL.RETIRO AFTER INSERT
+AS
+BEGIN 
+DECLARE @montoImporte NUMERIC(18,2), @cuentaNumero  NUMERIC(18)
+  
+DECLARE unCursor CURSOR FOR  
+SELECT importe, cuenta 
+FROM inserted
+
+OPEN unCursor   
+FETCH NEXT FROM unCursor INTO  @montoImporte, @cuentaNumero 
+
+WHILE @@FETCH_STATUS = 0   
+BEGIN   
+  update QUIEN_BAJO_EL_KERNEL.CUENTA
+  SET Saldo=Saldo-@montoImporte 
+  where numero=@cuentaNumero
+FETCH NEXT FROM unCursor INTO @montoImporte, @cuentaNumero   
+END   
+
+CLOSE unCursor   
+DEALLOCATE unCursor  
+END
+GO
+
+CREATE TRIGGER QUIEN_BAJO_EL_KERNEL.TransferenciaActualizarSaldo ON QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA AFTER INSERT
+AS
+BEGIN 
+DECLARE @montoImporte NUMERIC(18,2), @cuentaNumeroOrigen  NUMERIC(18),@cuentaNumeroDestino  NUMERIC(18)
+  
+DECLARE unCursor CURSOR FOR  
+SELECT importe, origen,destino 
+FROM inserted
+
+OPEN unCursor   
+FETCH NEXT FROM unCursor INTO  @montoImporte, @cuentaNumeroOrigen, @cuentaNumeroDestino
+
+WHILE @@FETCH_STATUS = 0   
+BEGIN   
+  update QUIEN_BAJO_EL_KERNEL.CUENTA
+  SET Saldo=Saldo-@montoImporte 
+  where numero=@cuentaNumeroOrigen
+  
+  update QUIEN_BAJO_EL_KERNEL.CUENTA
+  SET Saldo=Saldo+@montoImporte 
+  where numero=@cuentaNumeroDestino
+FETCH NEXT FROM unCursor INTO @montoImporte, @cuentaNumeroOrigen, @cuentaNumeroDestino  
+END   
+
+CLOSE unCursor   
+DEALLOCATE unCursor  
+END
+GO
+
+-----	 ****************************** INSERTS ****************************** -----
 
 insert into QUIEN_BAJO_EL_KERNEL.tipo_transaccion (codigo,descripcion)
 											values	  (1,'Transferencia')
@@ -440,10 +516,10 @@ insert into QUIEN_BAJO_EL_KERNEL.CLIENTE (tipo_documento,numero_documento,
 				   
 GO
 insert into QUIEN_BAJO_EL_KERNEL.CUENTA (numero,fecha_creacion,pais_codigo,fecha_cierre,
-				   cliente_tipo_doc,cliente_numero_doc)
+				   cliente_tipo_doc,cliente_numero_doc,saldo)
 			 (select distinct cuenta_numero,cuenta_fecha_creacion,
 									cuenta_pais_codigo,cuenta_fecha_cierre,cli_tipo_doc_cod,
-									cli_nro_doc
+									cli_nro_doc,'0'
 					from gd_esquema.Maestra
 					)
 GO
@@ -496,9 +572,7 @@ insert into QUIEN_BAJO_EL_KERNEL.RETIRO (fecha,codigo,importe,cuenta,cheque)
 GO
 
 
-
-
--------------------------------------------------------------------------
+-----	 ****************************** PROCEDURES ****************************** -----
 
 CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.completar_transacciones
 AS
@@ -560,6 +634,10 @@ WHERE id_transaccion is null
 
 END
 GO
--------------------------------------------------------------------
+
+-----	 ****************************** EXEC PROCS ****************************** -----
+
 exec QUIEN_BAJO_EL_KERNEL.completar_transacciones
 GO
+
+
