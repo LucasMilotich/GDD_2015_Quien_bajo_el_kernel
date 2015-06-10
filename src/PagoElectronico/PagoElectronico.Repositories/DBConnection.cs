@@ -76,6 +76,42 @@ namespace PagoElectronico.Repositories
             }
         }
 
+        public static double ExecuteScalarDouble(SqlCommand command)
+        {
+            try
+            {
+                command.Connection.Open();
+                return (double)command.ExecuteScalar();
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+            finally
+            {
+                command.Connection.Close();
+                command.Connection.Dispose();
+            }
+        }
+
+        public static string ExecuteScalarString(SqlCommand command)
+        {
+            try
+            {
+                command.Connection.Open();
+                return command.ExecuteScalar().ToString();
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+            finally
+            {
+                command.Connection.Close();
+                command.Connection.Dispose();
+            }
+        }
+
         public static DataTable EjecutarComandoSelect(SqlCommand command)
         {
             SqlDataReader reader = null;
@@ -91,7 +127,6 @@ namespace PagoElectronico.Repositories
             
             DataTable dt = new DataTable();
             dt.Load(reader);
-
             reader.Close();
             CloseCommand(command);
 

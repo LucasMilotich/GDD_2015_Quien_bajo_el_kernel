@@ -32,8 +32,8 @@
             this.DataGridViewListado = new System.Windows.Forms.DataGridView();
             this.groupBoxConsulta = new System.Windows.Forms.GroupBox();
             this.btnLimpiar = new System.Windows.Forms.Button();
-            this.lblSaldo2 = new System.Windows.Forms.Label();
-            this.lblSaldo1 = new System.Windows.Forms.Label();
+            this.lblSaldo = new System.Windows.Forms.Label();
+            this.lblSaldoReadOnly = new System.Windows.Forms.Label();
             this.btnBuscar = new System.Windows.Forms.Button();
             this.rbTransferencias = new System.Windows.Forms.RadioButton();
             this.rbRetiros = new System.Windows.Forms.RadioButton();
@@ -50,7 +50,7 @@
             this.groupBoxListado.Controls.Add(this.DataGridViewListado);
             this.groupBoxListado.Location = new System.Drawing.Point(15, 136);
             this.groupBoxListado.Name = "groupBoxListado";
-            this.groupBoxListado.Size = new System.Drawing.Size(521, 284);
+            this.groupBoxListado.Size = new System.Drawing.Size(643, 284);
             this.groupBoxListado.TabIndex = 2;
             this.groupBoxListado.TabStop = false;
             this.groupBoxListado.Text = "Listado";
@@ -60,14 +60,14 @@
             this.DataGridViewListado.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DataGridViewListado.Location = new System.Drawing.Point(6, 19);
             this.DataGridViewListado.Name = "DataGridViewListado";
-            this.DataGridViewListado.Size = new System.Drawing.Size(509, 259);
+            this.DataGridViewListado.Size = new System.Drawing.Size(631, 259);
             this.DataGridViewListado.TabIndex = 3;
             // 
             // groupBoxConsulta
             // 
             this.groupBoxConsulta.Controls.Add(this.btnLimpiar);
-            this.groupBoxConsulta.Controls.Add(this.lblSaldo2);
-            this.groupBoxConsulta.Controls.Add(this.lblSaldo1);
+            this.groupBoxConsulta.Controls.Add(this.lblSaldo);
+            this.groupBoxConsulta.Controls.Add(this.lblSaldoReadOnly);
             this.groupBoxConsulta.Controls.Add(this.btnBuscar);
             this.groupBoxConsulta.Controls.Add(this.rbTransferencias);
             this.groupBoxConsulta.Controls.Add(this.rbRetiros);
@@ -76,7 +76,7 @@
             this.groupBoxConsulta.Controls.Add(this.lblCuenta);
             this.groupBoxConsulta.Location = new System.Drawing.Point(15, 12);
             this.groupBoxConsulta.Name = "groupBoxConsulta";
-            this.groupBoxConsulta.Size = new System.Drawing.Size(515, 97);
+            this.groupBoxConsulta.Size = new System.Drawing.Size(643, 97);
             this.groupBoxConsulta.TabIndex = 3;
             this.groupBoxConsulta.TabStop = false;
             this.groupBoxConsulta.Text = "Consulta";
@@ -91,27 +91,27 @@
             this.btnLimpiar.UseVisualStyleBackColor = true;
             this.btnLimpiar.Click += new System.EventHandler(this.btnLimpiar_Click);
             // 
-            // lblSaldo2
+            // lblSaldo
             // 
-            this.lblSaldo2.AutoSize = true;
-            this.lblSaldo2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSaldo2.ForeColor = System.Drawing.Color.Maroon;
-            this.lblSaldo2.Location = new System.Drawing.Point(441, 20);
-            this.lblSaldo2.Name = "lblSaldo2";
-            this.lblSaldo2.Size = new System.Drawing.Size(64, 18);
-            this.lblSaldo2.TabIndex = 9;
-            this.lblSaldo2.Text = "elSaldo";
-            this.lblSaldo2.Visible = false;
+            this.lblSaldo.AutoSize = true;
+            this.lblSaldo.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSaldo.ForeColor = System.Drawing.Color.Maroon;
+            this.lblSaldo.Location = new System.Drawing.Point(523, 20);
+            this.lblSaldo.Name = "lblSaldo";
+            this.lblSaldo.Size = new System.Drawing.Size(64, 18);
+            this.lblSaldo.TabIndex = 9;
+            this.lblSaldo.Text = "elSaldo";
+            this.lblSaldo.Visible = false;
             // 
-            // lblSaldo1
+            // lblSaldoReadOnly
             // 
-            this.lblSaldo1.AutoSize = true;
-            this.lblSaldo1.Location = new System.Drawing.Point(401, 24);
-            this.lblSaldo1.Name = "lblSaldo1";
-            this.lblSaldo1.Size = new System.Drawing.Size(34, 13);
-            this.lblSaldo1.TabIndex = 8;
-            this.lblSaldo1.Text = "Saldo";
-            this.lblSaldo1.Visible = false;
+            this.lblSaldoReadOnly.AutoSize = true;
+            this.lblSaldoReadOnly.Location = new System.Drawing.Point(487, 24);
+            this.lblSaldoReadOnly.Name = "lblSaldoReadOnly";
+            this.lblSaldoReadOnly.Size = new System.Drawing.Size(34, 13);
+            this.lblSaldoReadOnly.TabIndex = 8;
+            this.lblSaldoReadOnly.Text = "Saldo";
+            this.lblSaldoReadOnly.Visible = false;
             // 
             // btnBuscar
             // 
@@ -175,7 +175,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(548, 432);
+            this.ClientSize = new System.Drawing.Size(670, 432);
             this.Controls.Add(this.groupBoxConsulta);
             this.Controls.Add(this.groupBoxListado);
             this.Name = "ConsultaSaldos";
@@ -193,8 +193,8 @@
         private System.Windows.Forms.GroupBox groupBoxListado;
         private System.Windows.Forms.DataGridView DataGridViewListado;
         private System.Windows.Forms.GroupBox groupBoxConsulta;
-        private System.Windows.Forms.Label lblSaldo2;
-        private System.Windows.Forms.Label lblSaldo1;
+        private System.Windows.Forms.Label lblSaldo;
+        private System.Windows.Forms.Label lblSaldoReadOnly;
         private System.Windows.Forms.Button btnBuscar;
         private System.Windows.Forms.RadioButton rbTransferencias;
         private System.Windows.Forms.RadioButton rbRetiros;
