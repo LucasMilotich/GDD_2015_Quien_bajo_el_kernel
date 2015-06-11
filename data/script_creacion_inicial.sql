@@ -399,6 +399,9 @@ AS
 BEGIN 
 DECLARE @montoImporte NUMERIC(18,2), @cuentaNumero  NUMERIC(18)
   
+IF((select COUNT(*) from inserted)>1)
+BEGIN
+
 DECLARE unCursor CURSOR FOR  
 SELECT importe, cuenta_numero 
 FROM inserted
@@ -415,7 +418,19 @@ FETCH NEXT FROM unCursor INTO @montoImporte, @cuentaNumero
 END   
 
 CLOSE unCursor   
-DEALLOCATE unCursor  
+DEALLOCATE unCursor 
+
+END
+ELSE
+BEGIN
+
+SELECT @montoImporte=importe, @cuentaNumero=cuenta_numero 
+FROM inserted
+update QUIEN_BAJO_EL_KERNEL.CUENTA
+  SET Saldo=Saldo+@montoImporte 
+  where numero=@cuentaNumero
+END
+ 
 END
 GO
 
@@ -424,6 +439,10 @@ AS
 BEGIN 
 DECLARE @montoImporte NUMERIC(18,2), @cuentaNumero  NUMERIC(18)
   
+IF((select COUNT(*) from inserted)>1)
+BEGIN
+
+
 DECLARE unCursor CURSOR FOR  
 SELECT importe, cuenta 
 FROM inserted
@@ -441,6 +460,21 @@ END
 
 CLOSE unCursor   
 DEALLOCATE unCursor  
+
+
+END
+ELSE
+BEGIN
+
+SELECT @montoImporte=importe, @cuentaNumero=cuenta 
+FROM inserted
+  update QUIEN_BAJO_EL_KERNEL.CUENTA
+  SET Saldo=Saldo-@montoImporte 
+  where numero=@cuentaNumero
+
+END
+
+
 END
 GO
 
@@ -449,6 +483,12 @@ AS
 BEGIN 
 DECLARE @montoImporte NUMERIC(18,2), @cuentaNumeroOrigen  NUMERIC(18),@cuentaNumeroDestino  NUMERIC(18)
   
+  
+IF((select COUNT(*) from inserted)>1)
+BEGIN
+
+
+ 
 DECLARE unCursor CURSOR FOR  
 SELECT importe, origen,destino 
 FROM inserted
@@ -469,7 +509,24 @@ FETCH NEXT FROM unCursor INTO @montoImporte, @cuentaNumeroOrigen, @cuentaNumeroD
 END   
 
 CLOSE unCursor   
-DEALLOCATE unCursor  
+DEALLOCATE unCursor
+
+END
+ELSE
+BEGIN
+SELECT @montoImporte=importe, @cuentaNumeroOrigen=origen, @cuentaNumeroDestino=destino 
+FROM inserted
+
+update QUIEN_BAJO_EL_KERNEL.CUENTA
+  SET Saldo=Saldo-@montoImporte 
+  where numero=@cuentaNumeroOrigen
+  
+  update QUIEN_BAJO_EL_KERNEL.CUENTA
+  SET Saldo=Saldo+@montoImporte 
+  where numero=@cuentaNumeroDestino
+
+END
+   
 END
 GO
 

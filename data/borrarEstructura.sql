@@ -79,9 +79,12 @@ DROP TABLE QUIEN_BAJO_EL_KERNEL.CUENTA;
 
 
 DROP PROCEDURE QUIEN_BAJO_EL_KERNEL.completar_transacciones;
-DROP TRIGGER QUIEN_BAJO_EL_KERNEL.DepositoActualizarSaldo;
-DROP TRIGGER QUIEN_BAJO_EL_KERNEL.RetiroActualizarSaldo;
-DROP TRIGGER QUIEN_BAJO_EL_KERNEL.TransferenciaActualizarSaldo;
+
+-- Por cascada se dropean los triggers al dropear las tablas, es al pedo esto
+
+--DROP TRIGGER QUIEN_BAJO_EL_KERNEL.DepositoActualizarSaldo;
+--DROP TRIGGER QUIEN_BAJO_EL_KERNEL.RetiroActualizarSaldo;
+--DROP TRIGGER QUIEN_BAJO_EL_KERNEL.TransferenciaActualizarSaldo;
 
 
 DROP SCHEMA QUIEN_BAJO_EL_KERNEL;
