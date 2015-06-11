@@ -17,7 +17,7 @@ GO
 CREATE TABLE QUIEN_BAJO_EL_KERNEL.FACTURA ( 
 	numero numeric(18) NOT NULL,
 	fecha datetime NULL,
-	cliente_numero numeric(10) NULL,
+	cliente_numero_doc numeric(10) NULL,
 	cliente_tipo_doc numeric(18) NULL
 )
 GO
