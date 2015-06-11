@@ -8,11 +8,7 @@ namespace PagoElectronico.Services.Interfaces
 {
     public class IRolService
     {
-        Rol Get(int idRol);
-
-        int Save(Rol rol);
-
-        void Delete(Rol rol);
+       
 
     }
 }
