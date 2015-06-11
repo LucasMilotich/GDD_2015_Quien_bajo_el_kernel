@@ -394,139 +394,149 @@ GO
 
 -----	 ****************************** TRIGGERS ****************************** -----
 
-CREATE TRIGGER QUIEN_BAJO_EL_KERNEL.DepositoActualizarSaldo ON QUIEN_BAJO_EL_KERNEL.DEPOSITO AFTER INSERT
+CREATE TRIGGER QUIEN_BAJO_EL_KERNEL.DepositoActualizarSaldo
+ON QUIEN_BAJO_EL_KERNEL.DEPOSITO
+AFTER INSERT
 AS
-BEGIN 
-DECLARE @montoImporte NUMERIC(18,2), @cuentaNumero  NUMERIC(18)
-  
-IF((select COUNT(*) from inserted)>1)
 BEGIN
+  DECLARE @montoImporte numeric(18, 2),
+          @cuentaNumero numeric(18)
 
-DECLARE unCursor CURSOR FOR  
-SELECT importe, cuenta_numero 
-FROM inserted
+  IF ((SELECT
+      COUNT(*)
+    FROM inserted)
+    > 1)
+  BEGIN
+    DECLARE unCursor CURSOR FOR
+    SELECT
+      importe,
+      cuenta_numero
+    FROM inserted
 
-OPEN unCursor   
-FETCH NEXT FROM unCursor INTO  @montoImporte, @cuentaNumero 
-
-WHILE @@FETCH_STATUS = 0   
-BEGIN   
-  update QUIEN_BAJO_EL_KERNEL.CUENTA
-  SET Saldo=Saldo+@montoImporte 
-  where numero=@cuentaNumero
-FETCH NEXT FROM unCursor INTO @montoImporte, @cuentaNumero   
-END   
-
-CLOSE unCursor   
-DEALLOCATE unCursor 
-
-END
-ELSE
-BEGIN
-
-SELECT @montoImporte=importe, @cuentaNumero=cuenta_numero 
-FROM inserted
-update QUIEN_BAJO_EL_KERNEL.CUENTA
-  SET Saldo=Saldo+@montoImporte 
-  where numero=@cuentaNumero
-END
- 
+    OPEN unCursor
+    FETCH NEXT FROM unCursor INTO @montoImporte, @cuentaNumero
+    WHILE @@FETCH_STATUS = 0
+    BEGIN
+      UPDATE QUIEN_BAJO_EL_KERNEL.CUENTA
+      SET Saldo = Saldo + @montoImporte
+      WHERE numero = @cuentaNumero
+      FETCH NEXT FROM unCursor INTO @montoImporte, @cuentaNumero
+    END
+    CLOSE unCursor
+    DEALLOCATE unCursor
+  END
+  ELSE
+  BEGIN
+    SELECT
+      @montoImporte = importe,
+      @cuentaNumero = cuenta_numero
+    FROM inserted
+    UPDATE QUIEN_BAJO_EL_KERNEL.CUENTA
+    SET Saldo = Saldo + @montoImporte
+    WHERE numero = @cuentaNumero
+  END
 END
 GO
 
-CREATE TRIGGER QUIEN_BAJO_EL_KERNEL.RetiroActualizarSaldo ON QUIEN_BAJO_EL_KERNEL.RETIRO AFTER INSERT
+CREATE TRIGGER QUIEN_BAJO_EL_KERNEL.RetiroActualizarSaldo
+ON QUIEN_BAJO_EL_KERNEL.RETIRO
+AFTER INSERT
 AS
-BEGIN 
-DECLARE @montoImporte NUMERIC(18,2), @cuentaNumero  NUMERIC(18)
-  
-IF((select COUNT(*) from inserted)>1)
 BEGIN
+  DECLARE @montoImporte numeric(18, 2),
+          @cuentaNumero numeric(18)
+  IF ((SELECT
+      COUNT(*)
+    FROM inserted)
+    > 1)
+  BEGIN
 
+    DECLARE unCursor CURSOR FOR
+    SELECT
+      importe,
+      cuenta
+    FROM inserted
 
-DECLARE unCursor CURSOR FOR  
-SELECT importe, cuenta 
-FROM inserted
+    OPEN unCursor
+    FETCH NEXT FROM unCursor INTO @montoImporte, @cuentaNumero
+    WHILE @@FETCH_STATUS = 0
+    BEGIN
+      UPDATE QUIEN_BAJO_EL_KERNEL.CUENTA
+      SET Saldo = Saldo - @montoImporte
+      WHERE numero = @cuentaNumero
+      FETCH NEXT FROM unCursor INTO @montoImporte, @cuentaNumero
+    END
 
-OPEN unCursor   
-FETCH NEXT FROM unCursor INTO  @montoImporte, @cuentaNumero 
+    CLOSE unCursor
+    DEALLOCATE unCursor
 
-WHILE @@FETCH_STATUS = 0   
-BEGIN   
-  update QUIEN_BAJO_EL_KERNEL.CUENTA
-  SET Saldo=Saldo-@montoImporte 
-  where numero=@cuentaNumero
-FETCH NEXT FROM unCursor INTO @montoImporte, @cuentaNumero   
-END   
-
-CLOSE unCursor   
-DEALLOCATE unCursor  
-
-
-END
-ELSE
-BEGIN
-
-SELECT @montoImporte=importe, @cuentaNumero=cuenta 
-FROM inserted
-  update QUIEN_BAJO_EL_KERNEL.CUENTA
-  SET Saldo=Saldo-@montoImporte 
-  where numero=@cuentaNumero
-
-END
-
-
+  END
+  ELSE
+  BEGIN
+    SELECT
+      @montoImporte = importe,
+      @cuentaNumero = cuenta
+    FROM inserted
+    UPDATE QUIEN_BAJO_EL_KERNEL.CUENTA
+    SET Saldo = Saldo - @montoImporte
+    WHERE numero = @cuentaNumero
+  END
 END
 GO
 
-CREATE TRIGGER QUIEN_BAJO_EL_KERNEL.TransferenciaActualizarSaldo ON QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA AFTER INSERT
+CREATE TRIGGER QUIEN_BAJO_EL_KERNEL.TransferenciaActualizarSaldo
+ON QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA
+AFTER INSERT
 AS
-BEGIN 
-DECLARE @montoImporte NUMERIC(18,2), @cuentaNumeroOrigen  NUMERIC(18),@cuentaNumeroDestino  NUMERIC(18)
-  
-  
-IF((select COUNT(*) from inserted)>1)
 BEGIN
+  DECLARE @montoImporte numeric(18, 2),
+          @cuentaNumeroOrigen numeric(18),
+          @cuentaNumeroDestino numeric(18)
+  IF ((SELECT
+      COUNT(*)
+    FROM inserted)
+    > 1)
+  BEGIN
+    DECLARE unCursor CURSOR FOR
+    SELECT
+      importe,
+      origen,
+      destino
+    FROM inserted
 
+    OPEN unCursor
+    FETCH NEXT FROM unCursor INTO @montoImporte, @cuentaNumeroOrigen, @cuentaNumeroDestino
+    WHILE @@FETCH_STATUS = 0
+    BEGIN
+      UPDATE QUIEN_BAJO_EL_KERNEL.CUENTA
+      SET Saldo = Saldo - @montoImporte
+      WHERE numero = @cuentaNumeroOrigen
 
- 
-DECLARE unCursor CURSOR FOR  
-SELECT importe, origen,destino 
-FROM inserted
+      UPDATE QUIEN_BAJO_EL_KERNEL.CUENTA
+      SET Saldo = Saldo + @montoImporte
+      WHERE numero = @cuentaNumeroDestino
+      FETCH NEXT FROM unCursor INTO @montoImporte, @cuentaNumeroOrigen, @cuentaNumeroDestino
+    END
 
-OPEN unCursor   
-FETCH NEXT FROM unCursor INTO  @montoImporte, @cuentaNumeroOrigen, @cuentaNumeroDestino
+    CLOSE unCursor
+    DEALLOCATE unCursor
+  END
+  ELSE
+  BEGIN
+    SELECT
+      @montoImporte = importe,
+      @cuentaNumeroOrigen = origen,
+      @cuentaNumeroDestino = destino
+    FROM inserted
 
-WHILE @@FETCH_STATUS = 0   
-BEGIN   
-  update QUIEN_BAJO_EL_KERNEL.CUENTA
-  SET Saldo=Saldo-@montoImporte 
-  where numero=@cuentaNumeroOrigen
-  
-  update QUIEN_BAJO_EL_KERNEL.CUENTA
-  SET Saldo=Saldo+@montoImporte 
-  where numero=@cuentaNumeroDestino
-FETCH NEXT FROM unCursor INTO @montoImporte, @cuentaNumeroOrigen, @cuentaNumeroDestino  
-END   
+    UPDATE QUIEN_BAJO_EL_KERNEL.CUENTA
+    SET Saldo = Saldo - @montoImporte
+    WHERE numero = @cuentaNumeroOrigen
 
-CLOSE unCursor   
-DEALLOCATE unCursor
-
-END
-ELSE
-BEGIN
-SELECT @montoImporte=importe, @cuentaNumeroOrigen=origen, @cuentaNumeroDestino=destino 
-FROM inserted
-
-update QUIEN_BAJO_EL_KERNEL.CUENTA
-  SET Saldo=Saldo-@montoImporte 
-  where numero=@cuentaNumeroOrigen
-  
-  update QUIEN_BAJO_EL_KERNEL.CUENTA
-  SET Saldo=Saldo+@montoImporte 
-  where numero=@cuentaNumeroDestino
-
-END
-   
+    UPDATE QUIEN_BAJO_EL_KERNEL.CUENTA
+    SET Saldo = Saldo + @montoImporte
+    WHERE numero = @cuentaNumeroDestino
+  END
 END
 GO
 
@@ -635,58 +645,66 @@ CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.completar_transacciones
 AS
 BEGIN
 
-DECLARE @CANT_CUENTAS NUMERIC(18,0)
-DECLARE @CANT_CUENTAS_MODIF NUMERIC(18,0)
-DECLARE @CANT_TRANSF NUMERIC(18,0)
-DECLARE @i NUMERIC(18,0)
-DECLARE @cuenta NUMERIC(18,0)
-DECLARE @transf NUMERIC(18,0)
+  DECLARE @CANT_CUENTAS numeric(18, 0)
+  DECLARE @CANT_CUENTAS_MODIF numeric(18, 0)
+  DECLARE @CANT_TRANSF numeric(18, 0)
+  DECLARE @i numeric(18, 0)
+  DECLARE @cuenta numeric(18, 0)
+  DECLARE @transf numeric(18, 0)
 
 
-SELECT @CANT_CUENTAS =  COUNT(*) FROM QUIEN_BAJO_EL_KERNEL.CUENTA
-SELECT @CANT_CUENTAS_MODIF = COUNT(*) FROM QUIEN_BAJO_EL_KERNEL.CUENTA_MODIFICACION
-SELECT @CANT_TRANSF = COUNT(*) FROM QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA
+  SELECT
+    @CANT_CUENTAS = COUNT(*)
+  FROM QUIEN_BAJO_EL_KERNEL.CUENTA
+  SELECT
+    @CANT_CUENTAS_MODIF = COUNT(*)
+  FROM QUIEN_BAJO_EL_KERNEL.CUENTA_MODIFICACION
+  SELECT
+    @CANT_TRANSF = COUNT(*)
+  FROM QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA
 
--- LIMPIO
+  -- LIMPIO
 
-update QUIEN_BAJO_EL_KERNEL.CUENTA SET id_transaccion = NULL 
-update QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA SET id_transaccion = NULL 
-delete from QUIEN_BAJO_EL_KERNEL.TRANSACCIONES
-DBCC CHECKIDENT ('QUIEN_BAJO_EL_KERNEL.TRANSACCIONES', RESEED,1)
-
-
-SET @i = 1
-
-WHILE @i <= @CANT_CUENTAS
-BEGIN
-	
-	INSERT INTO QUIEN_BAJO_EL_KERNEL.TRANSACCIONES (operacion_tipo) 
-		   VALUES (2)
-	SET @i = @i + 1 
-
-END
-
-SET @i = 0
-UPDATE QUIEN_BAJO_EL_KERNEL.CUENTA 
-SET @i= id_transaccion = @i + 1
-WHERE id_transaccion is null
+  UPDATE QUIEN_BAJO_EL_KERNEL.CUENTA
+  SET id_transaccion = NULL
+  UPDATE QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA
+  SET id_transaccion = NULL
+  DELETE FROM QUIEN_BAJO_EL_KERNEL.TRANSACCIONES
+  DBCC CHECKIDENT ('QUIEN_BAJO_EL_KERNEL.TRANSACCIONES', RESEED, 1)
 
 
-SET @i = 1
+  SET @i = 1
 
-WHILE @i <= @CANT_TRANSF
-BEGIN
-	
-	INSERT INTO QUIEN_BAJO_EL_KERNEL.TRANSACCIONES (operacion_tipo) 
-		   VALUES (1)
-	
-	SET @i = @i + 1 
+  WHILE @i <= @CANT_CUENTAS
+  BEGIN
 
-END
-SET @i = @CANT_CUENTAS
-UPDATE QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA 
-SET @i = id_transaccion = @i + 1
-WHERE id_transaccion is null
+    INSERT INTO QUIEN_BAJO_EL_KERNEL.TRANSACCIONES (operacion_tipo)
+      VALUES (2)
+    SET @i = @i + 1
+
+  END
+
+  SET @i = 0
+  UPDATE QUIEN_BAJO_EL_KERNEL.CUENTA
+  SET @i = id_transaccion = @i + 1
+  WHERE id_transaccion IS NULL
+
+
+  SET @i = 1
+
+  WHILE @i <= @CANT_TRANSF
+  BEGIN
+
+    INSERT INTO QUIEN_BAJO_EL_KERNEL.TRANSACCIONES (operacion_tipo)
+      VALUES (1)
+
+    SET @i = @i + 1
+
+  END
+  SET @i = @CANT_CUENTAS
+  UPDATE QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA
+  SET @i = id_transaccion = @i + 1
+  WHERE id_transaccion IS NULL
 
 
 END
