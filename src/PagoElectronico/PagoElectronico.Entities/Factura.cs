@@ -5,17 +5,15 @@ using System.Text;
 
 namespace PagoElectronico.Entities
 {
-    class Retiro
+    class Factura
     {
-        public long codigo { get; set; }
+        public long numero { get; set; }
 
         public DateTime fecha { get; set; }
 
-        public double importe { get; set; }
+        public long clienteNumeroDoc { get; set; }
 
-        public long cuenta { get; set; }
-
-        public long cheque { get; set; }
+        public long clienteTipoDoc { get; set; }
 
     }
 }

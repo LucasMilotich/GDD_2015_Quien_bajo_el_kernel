@@ -45,11 +45,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Banco.cs" />
+    <Compile Include="Cheque.cs" />
+    <Compile Include="Cliente.cs" />
     <Compile Include="Cuenta.cs" />
     <Compile Include="Deposito.cs" />
+    <Compile Include="Factura.cs" />
     <Compile Include="Funcionalidad.cs" />
+    <Compile Include="Pais.cs" />
     <Compile Include="Retiro.cs" />
     <Compile Include="Rol.cs" />
+    <Compile Include="TipoMoneda.cs" />
     <Compile Include="Transferencia.cs" />
     <Compile Include="Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

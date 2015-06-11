@@ -63,7 +63,7 @@ CREATE TABLE QUIEN_BAJO_EL_KERNEL.TIPO_CUENTA (
 	codigo numeric(1) NOT NULL,
 	descripcion varchar(255) NULL,
 	duracion numeric(10) NULL,
-	costo numeric(10) NULL
+	costo numeric(18,2) NULL
 )
 GO
 
