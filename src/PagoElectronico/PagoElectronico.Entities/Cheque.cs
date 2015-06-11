@@ -5,19 +5,19 @@ using System.Text;
 
 namespace PagoElectronico.Entities
 {
-    class Deposito
+    class Cheque
     {
-        public long depositoCodigo { get; set; }
+        public long numero { get; set; }
 
         public DateTime fecha { get; set; }
 
         public double importe { get; set; }
 
-        public long cuentaNumero { get; set; }
+        public long codigoBanco { get; set; }
 
         public int monedaTipo { get; set; }
 
-        public string tarjetaNumero  { get; set; }
+        public string nombreDestinatario { get; set; }
 
     }
 }
