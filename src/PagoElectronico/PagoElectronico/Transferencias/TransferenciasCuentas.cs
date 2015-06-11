@@ -7,15 +7,22 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using PagoElectronico.Common;
+using System.Data.SqlClient;
+using PagoElectronico.Repositories;
+using PagoElectronico.Entities;
+using PagoElectronico.Services;
 
 namespace PagoElectronico.Transferencias
 {
     public partial class TransferenciasCuentas : Form
     {
+        TransferenciaService transferenciaService = new TransferenciaService();
+
         public TransferenciasCuentas()
         {
             InitializeComponent();
-            cargarComboBox();
+            cargarComboCuentas();
+            cargarComboTipoMoneda();
         }
 
         private void btnLimpiar_Click(object sender, EventArgs e)
@@ -27,9 +34,17 @@ namespace PagoElectronico.Transferencias
             comboCuentaOrigen.SelectedIndex = 0;
         }
 
-        private void cargarComboBox()
+        private void cargarComboCuentas()
         {
+            //TODO: select from cuentas where usuario..
             comboCuentaOrigen.Items.Add("");
+
+        }
+
+        private void cargarComboTipoMoneda()
+        {
+            comboTipoMoneda.Items.Add("$");
+            comboTipoMoneda.Items.Add("U$S");
         }
 
         private void btnTransferir_Click(object sender, EventArgs e)
@@ -44,9 +59,26 @@ namespace PagoElectronico.Transferencias
             //**Una característica importante de las transferencias es que las mismas tienen un costo fijo
             //que se cobra a la cuenta origen, dicho costo fijo dependerá del tipo de cuenta, pero si cuenta
             //origen y destino son del mismo usuario, estas transferencias no tienen costo.
-                
+
+            Transferencia transferencia = new Transferencia();
+            //transferencia.origen = Convert.ToInt64(comboCuentaOrigen.Text);
+            transferencia.origen = 50;
+            transferencia.destino = Convert.ToInt64(txtCuentaDestino.Text);
+            transferencia.fecha = DateTime.Now;
+            transferencia.importe = Convert.ToInt64(txtImporte.Text);
+            transferencia.costo = 0;
+            transferencia.monedaTipo = 3;
+            transferencia.idTransaccion = 1;
+            
+            transferenciaService.Save(transferencia);
+
+            MessageBox.Show("Transferencia realizada exitosamente. Saldo actual: unNro", "Atencion !", MessageBoxButtons.OK, MessageBoxIcon.Information);
+           
+
 
         }
+
+ 
 
 
     }

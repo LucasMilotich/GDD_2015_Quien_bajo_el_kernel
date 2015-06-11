@@ -45,8 +45,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cuenta.cs" />
+    <Compile Include="Deposito.cs" />
     <Compile Include="Funcionalidad.cs" />
+    <Compile Include="Retiro.cs" />
     <Compile Include="Rol.cs" />
+    <Compile Include="Transferencia.cs" />
     <Compile Include="Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
