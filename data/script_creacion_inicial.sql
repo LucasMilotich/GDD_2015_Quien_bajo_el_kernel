@@ -638,6 +638,11 @@ insert into QUIEN_BAJO_EL_KERNEL.RETIRO (fecha,codigo,importe,cuenta,cheque)
 
 GO
 
+insert into QUIEN_BAJO_EL_KERNEL.TIPO_MONEDA (codigo,descripcion) values (1,'$')
+GO
+
+insert into QUIEN_BAJO_EL_KERNEL.TIPO_MONEDA (codigo,descripcion) values (2,'U$S')
+GO
 
 -----	 ****************************** PROCEDURES ****************************** -----
 
