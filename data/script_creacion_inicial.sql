@@ -638,11 +638,13 @@ insert into QUIEN_BAJO_EL_KERNEL.RETIRO (fecha,codigo,importe,cuenta,cheque)
 
 GO
 
-insert into QUIEN_BAJO_EL_KERNEL.TIPO_MONEDA (codigo,descripcion) values (1,'$')
+insert into QUIEN_BAJO_EL_KERNEL.TIPO_MONEDA (codigo,descripcion) values (1,'U$S')
 GO
 
-insert into QUIEN_BAJO_EL_KERNEL.TIPO_MONEDA (codigo,descripcion) values (2,'U$S')
-GO
+--insert into QUIEN_BAJO_EL_KERNEL.TIPO_MONEDA (codigo,descripcion) values (2,'$') 
+
+
+
 
 -----	 ****************************** PROCEDURES ****************************** -----
 
@@ -721,3 +723,37 @@ exec QUIEN_BAJO_EL_KERNEL.completar_transacciones
 GO
 
 
+CREATE TRIGGER QUIEN_BAJO_EL_KERNEL.TransferenciaInsertarIdTransaccion
+ON QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA
+INSTEAD OF INSERT
+AS
+BEGIN
+  DECLARE @codigo numeric(18, 0),
+          @origen numeric(18, 0),
+          @destino numeric(18, 0),
+          @fecha datetime,
+          @importe numeric(18, 2),
+          @costo numeric(18, 2),
+          @moneda_tipo numeric(1, 0),
+          @id_transaccion numeric(18, 0)
+
+  INSERT INTO QUIEN_BAJO_EL_KERNEL.TRANSACCIONES (operacion_tipo, fecha)
+    VALUES (1, GETDATE())
+
+  SET @id_transaccion = (SELECT
+    SCOPE_IDENTITY())
+
+  SELECT
+    @codigo = codigo,
+    @origen = origen,
+    @destino = destino,
+    @fecha = fecha,
+    @importe = importe,
+    @costo = costo,
+    @moneda_tipo = moneda_tipo
+  FROM inserted
+
+  INSERT INTO QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA (origen, destino, fecha, importe, costo, moneda_tipo, id_transaccion)
+    VALUES (@origen, @destino, @fecha, @importe, @costo, @moneda_tipo, @id_transaccion)
+END
+GO
