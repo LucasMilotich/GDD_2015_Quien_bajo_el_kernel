@@ -25,7 +25,6 @@ namespace PagoElectronico.Transferencias
         //Para probar hasta q este el login: 10002 and cliente_numero_doc=45622098
         long tipoDocCliente = 10002, nroDocCliente = 45622098;
 
-
         public TransferenciasCuentas()
         {
             InitializeComponent();
@@ -46,73 +45,19 @@ namespace PagoElectronico.Transferencias
 
         private void btnTransferir_Click(object sender, EventArgs e)
         {
-            if (Validaciones.validarCampoVacio(txtImporte) & Validaciones.validarCampoVacio(txtCuentaDestino) & Validaciones.validarCampoNumericoDouble(txtImporte) & Validaciones.validarCampoNumericoDouble(txtCuentaDestino))
-            {
-                //**Las cuentas cerradas o pendientes de activacion no pueden recibir dinero
-                //Falta implementar esto
-                int estadoDeCuenta = 0;//int estadoDeCuenta = cuentaService.getEstado(Convert.ToInt64(txtCuentaDestino.Text.ToString()));
-                if (estadoDeCuenta == 1)
-                {
-                    //falta implementar!!
-                }
-                else
-                {
-                    try
-                    {
-                        Transferencia transferencia = new Transferencia();
-                        transferencia.origen = Convert.ToInt64(comboCuentaOrigen.Text);
-                        transferencia.destino = Convert.ToInt64(txtCuentaDestino.Text);
-                        transferencia.fecha = DateTime.Now;
-                        transferencia.importe = Convert.ToInt64(txtImporte.Text);
-                        transferencia.costo = calcularCosto();
-                        transferencia.monedaTipo = listaTiposMoneda.Find(x => string.Equals(x.descripcion, comboTipoMoneda.Text.ToString())).codigo; //esta mal esto en realidad uan cuenta ya tiene su tipo de moneda prefijada
-                        transferencia.idTransaccion = 1; //esto lo soluciona un trigger
-
-                        transferenciaService.Save(transferencia);
-                        MessageBox.Show("Transferencia realizada exitosamente. Saldo actual: unNro", "Atencion !", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("No se pudo realizar la transferencia. ERROR: " + ex.Message.ToString(), "Atencion !", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-
-                }
-            }
+            realizarTransferencia();
+            actualizarSaldoActual();
         }
 
         private void txtImporte_TextChanged(object sender, EventArgs e)
         {
-            double saldoActual, saldoPosterior, costo, importe;
-
-            if (txtImporte.Text.Length == 0)
-            {
-                ocultarComponentes();
-            }
-            else
-            {
-                mostrarComponentes();
-
-                saldoActual = Convert.ToDouble(lblSaldoActual.Text);
-                importe = Convert.ToDouble(txtImporte.Text);
-                costo = calcularCosto();
-                lblCosto.Text = costo.ToString();
-
-                //esto esta incompleto, no solo pueden ser iguales, sino otra cuenta del mismo cliente tmb daria 0
-                if (String.Equals(comboCuentaOrigen.Text.ToString(), txtCuentaDestino.Text.ToString()))
-                {
-                    lblSaldoPosterior.Text = lblSaldoActual.Text;
-                }
-                else
-                {
-                    saldoPosterior = saldoActual - importe - costo;
-                    lblSaldoPosterior.Text = saldoPosterior.ToString();
-                }
-            }
+            recalcularSaldoPosterior();
         }
 
         private void comboCuentaOrigen_SelectedIndexChanged(object sender, EventArgs e)
         {
-            lblSaldoActual.Text = cuentaService.getSaldo(Convert.ToInt64(comboCuentaOrigen.Text.ToString())).ToString();
+            actualizarSaldoActual();
+            recalcularSaldoPosterior();
         }
 
 
@@ -160,13 +105,91 @@ namespace PagoElectronico.Transferencias
 
         private double calcularCosto()
         {
-            //esto esta incompleto, no solo pueden ser iguales, sino otra cuenta del mismo cliente tmb daria 0
-            if (String.Equals(comboCuentaOrigen.Text.ToString(), txtCuentaDestino.Text.ToString()))
+            if (listaCuentas.Contains(Convert.ToInt64(txtCuentaDestino.Text.ToString())))
             {
                 return 0;
             }
             return 2;
             //como calculo esto?????
+        }
+
+        private void recalcularSaldoPosterior()
+        {
+            try
+            {
+                double saldoActual, saldoPosterior, costo, importe;
+
+                if (txtImporte.Text.Length == 0)
+                {
+                    ocultarComponentes();
+                }
+                else
+                {
+                    mostrarComponentes();
+
+                    saldoActual = Convert.ToDouble(lblSaldoActual.Text);
+                    importe = Convert.ToDouble(txtImporte.Text);
+                    costo = calcularCosto();
+                    lblCosto.Text = costo.ToString();
+
+                    if (String.Equals(comboCuentaOrigen.Text.ToString(), txtCuentaDestino.Text.ToString()))
+                    {
+                        lblSaldoPosterior.Text = lblSaldoActual.Text;
+                    }
+                    else
+                    {
+                        saldoPosterior = saldoActual - importe - costo;
+                        lblSaldoPosterior.Text = saldoPosterior.ToString();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        private void actualizarSaldoActual()
+        {
+            lblSaldoActual.Text = cuentaService.getSaldo(Convert.ToInt64(comboCuentaOrigen.Text.ToString())).ToString();
+        }
+
+        private void realizarTransferencia()
+        {
+            if (Validaciones.validarCampoVacio(txtImporte) & Validaciones.validarCampoVacio(txtCuentaDestino) & Validaciones.validarCampoNumericoDouble(txtImporte) & Validaciones.validarCampoNumericoDouble(txtCuentaDestino))
+            {
+                //**Las cuentas cerradas o pendientes de activacion no pueden recibir dinero
+                //Falta implementar esto
+                int estadoDeCuenta = 0;//int estadoDeCuenta = cuentaService.getEstado(Convert.ToInt64(txtCuentaDestino.Text.ToString()));
+                if (estadoDeCuenta == 1)
+                {
+                    //falta implementar!!
+                }
+                else
+                {
+                    try
+                    {
+                        Transferencia transferencia = new Transferencia();
+                        transferencia.origen = Convert.ToInt64(comboCuentaOrigen.Text);
+                        transferencia.destino = Convert.ToInt64(txtCuentaDestino.Text);
+                        transferencia.fecha = DateTime.Now;
+                        transferencia.importe = Convert.ToInt64(txtImporte.Text);
+                        transferencia.costo = calcularCosto();
+                        transferencia.monedaTipo = listaTiposMoneda.Find(x => string.Equals(x.descripcion, comboTipoMoneda.Text.ToString())).codigo; //esta mal esto en realidad uan cuenta ya tiene su tipo de moneda prefijada
+
+                        transferenciaService.Save(transferencia);
+                        MessageBox.Show("Transferencia realizada exitosamente. Saldo actual:" + lblSaldoPosterior.Text.ToString(), "Atencion !", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("No se pudo realizar la transferencia. ERROR: " + ex.Message.ToString(), "Atencion !", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+        }
+
+        private void txtCuentaDestino_TextChanged(object sender, EventArgs e)
+        {
+            recalcularSaldoPosterior();
         }
 
     }

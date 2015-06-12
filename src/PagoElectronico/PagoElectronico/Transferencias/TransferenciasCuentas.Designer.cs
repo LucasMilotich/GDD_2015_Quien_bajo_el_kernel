@@ -197,6 +197,7 @@
             this.txtCuentaDestino.Name = "txtCuentaDestino";
             this.txtCuentaDestino.Size = new System.Drawing.Size(120, 20);
             this.txtCuentaDestino.TabIndex = 3;
+            this.txtCuentaDestino.TextChanged += new System.EventHandler(this.txtCuentaDestino_TextChanged);
             // 
             // lblCuentaOrigen
             // 
