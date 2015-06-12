@@ -12,6 +12,7 @@ using PagoElectronico.Repositories;
 using PagoElectronico.Entities;
 using PagoElectronico.Services;
 
+
 namespace PagoElectronico.Transferencias
 {
     public partial class TransferenciasCuentas : Form
@@ -32,24 +33,26 @@ namespace PagoElectronico.Transferencias
             cargarComboTipoMoneda();
         }
 
+
+        /*************    Metodos de componentes       *************/
         private void btnLimpiar_Click(object sender, EventArgs e)
         {
-            txtCuentaDestino.BackColor = System.Drawing.Color.White;
-            txtImporte.BackColor = System.Drawing.Color.White;
-            txtCuentaDestino.Text = String.Empty;
-            txtImporte.Text = String.Empty;
-            comboCuentaOrigen.SelectedIndex = 0;
-            comboTipoMoneda.SelectedIndex = 0;
-            ocultarComponentes();
+            limpiarDatos();
         }
 
         private void btnTransferir_Click(object sender, EventArgs e)
         {
             realizarTransferencia();
             actualizarSaldoActual();
+
         }
 
         private void txtImporte_TextChanged(object sender, EventArgs e)
+        {
+            recalcularSaldoPosterior();
+        }
+
+        private void txtCuentaDestino_TextChanged(object sender, EventArgs e)
         {
             recalcularSaldoPosterior();
         }
@@ -60,6 +63,94 @@ namespace PagoElectronico.Transferencias
             recalcularSaldoPosterior();
         }
 
+
+        /*************    Metodos privados       *************/
+        private void realizarTransferencia()
+        {
+            double saldoActual = Convert.ToDouble(lblSaldoActual.Text.ToString());
+            double importe = Convert.ToDouble(txtImporte.Text.ToString());
+            double saldoPosterior = Convert.ToDouble(lblSaldoPosterior.Text.ToString());
+            double costo = calcularCosto();
+            long origen = Convert.ToInt64(comboCuentaOrigen.Text);
+            long destino = Convert.ToInt64(txtCuentaDestino.Text);
+
+            if (Validaciones.validarCampoVacio(txtImporte) & Validaciones.validarCampoVacio(txtCuentaDestino) & Validaciones.validarCampoNumericoDouble(txtImporte) & Validaciones.validarCampoNumericoDouble(txtCuentaDestino))
+            {
+                try
+                {
+                    validarEstadoCuenta(destino);
+                    validarSaldoDisponible(saldoPosterior);
+
+                    Transferencia transferencia = new Transferencia();
+                    transferencia.origen = origen;
+                    transferencia.destino = destino;
+                    transferencia.fecha = DateTime.Now;
+                    transferencia.importe = importe;
+                    transferencia.costo = calcularCosto();
+                    transferencia.monedaTipo = cuentaService.getMonedaTipo(origen);
+
+                    transferenciaService.Save(transferencia);
+                    MessageBox.Show("Transferencia realizada exitosamente. Saldo actual: " + lblSaldoPosterior.Text.ToString(), "Atencion !", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    limpiarDatos();
+                }
+                catch (OperationCanceledException ex)
+                {
+                    MessageBox.Show(ex.Message.ToString(), "No se pudo realizar la transferencia. !", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("La cuenta destino no existe", "No se pudo realizar la transferencia. !", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private double calcularCosto()
+        {
+            if (listaCuentas.Contains(Convert.ToInt64(txtCuentaDestino.Text.ToString())))
+            {
+                return 0;
+            }
+            return 2;
+            //como calculo esto?????
+        }
+
+        private void recalcularSaldoPosterior()
+        {
+            try
+            {
+                double saldoActual, saldoPosterior, costo, importe;
+
+                if (txtImporte.Text.Length == 0 || txtCuentaDestino.Text.Length==0)
+                {
+                    ocultarComponentes();
+                }
+                else
+                {
+                    mostrarComponentes();
+
+                    saldoActual = Convert.ToDouble(lblSaldoActual.Text);
+                    importe = Convert.ToDouble(txtImporte.Text);
+                    costo = calcularCosto();
+                    lblCosto.Text = costo.ToString();
+
+                    if (String.Equals(comboCuentaOrigen.Text.ToString(), txtCuentaDestino.Text.ToString()))
+                    {
+                        lblSaldoPosterior.Text = lblSaldoActual.Text;
+                    }
+                    else
+                    {
+                        saldoPosterior = saldoActual - importe - costo;
+                        lblSaldoPosterior.Text = saldoPosterior.ToString();
+                    }
+                }
+            }
+            catch (Exception)  {}
+        }
+
+        private void actualizarSaldoActual()
+        {
+            lblSaldoActual.Text = cuentaService.getSaldo(Convert.ToInt64(comboCuentaOrigen.Text.ToString())).ToString();
+        }
 
         private void cargarComboCuentas()
         {
@@ -103,93 +194,34 @@ namespace PagoElectronico.Transferencias
             lblCosto.Visible = true;
         }
 
-        private double calcularCosto()
+        private void limpiarDatos()
         {
-            if (listaCuentas.Contains(Convert.ToInt64(txtCuentaDestino.Text.ToString())))
-            {
-                return 0;
-            }
-            return 2;
-            //como calculo esto?????
+            txtCuentaDestino.BackColor = System.Drawing.Color.White;
+            txtImporte.BackColor = System.Drawing.Color.White;
+            txtCuentaDestino.Text = String.Empty;
+            txtImporte.Text = String.Empty;
+            comboCuentaOrigen.SelectedIndex = 0;
+            comboTipoMoneda.SelectedIndex = 0;
+            ocultarComponentes();
         }
 
-        private void recalcularSaldoPosterior()
+
+        /*************    Validadores privados       *************/
+        private void validarEstadoCuenta(long cuentaDestino)
         {
-            try
+            int estadoDeCuenta = cuentaService.getEstado(cuentaDestino);
+            if (estadoDeCuenta == 1 || estadoDeCuenta == 2)
             {
-                double saldoActual, saldoPosterior, costo, importe;
-
-                if (txtImporte.Text.Length == 0)
-                {
-                    ocultarComponentes();
-                }
-                else
-                {
-                    mostrarComponentes();
-
-                    saldoActual = Convert.ToDouble(lblSaldoActual.Text);
-                    importe = Convert.ToDouble(txtImporte.Text);
-                    costo = calcularCosto();
-                    lblCosto.Text = costo.ToString();
-
-                    if (String.Equals(comboCuentaOrigen.Text.ToString(), txtCuentaDestino.Text.ToString()))
-                    {
-                        lblSaldoPosterior.Text = lblSaldoActual.Text;
-                    }
-                    else
-                    {
-                        saldoPosterior = saldoActual - importe - costo;
-                        lblSaldoPosterior.Text = saldoPosterior.ToString();
-                    }
-                }
-            }
-            catch (Exception)
-            {
+                throw new OperationCanceledException("La cuenta destino se encuentra en cerrada o pendiente de activacion");
             }
         }
 
-        private void actualizarSaldoActual()
+        private void validarSaldoDisponible(double saldoPosterior)
         {
-            lblSaldoActual.Text = cuentaService.getSaldo(Convert.ToInt64(comboCuentaOrigen.Text.ToString())).ToString();
-        }
-
-        private void realizarTransferencia()
-        {
-            if (Validaciones.validarCampoVacio(txtImporte) & Validaciones.validarCampoVacio(txtCuentaDestino) & Validaciones.validarCampoNumericoDouble(txtImporte) & Validaciones.validarCampoNumericoDouble(txtCuentaDestino))
+            if (saldoPosterior < 0)
             {
-                //**Las cuentas cerradas o pendientes de activacion no pueden recibir dinero
-                //Falta implementar esto
-                int estadoDeCuenta = 0;//int estadoDeCuenta = cuentaService.getEstado(Convert.ToInt64(txtCuentaDestino.Text.ToString()));
-                if (estadoDeCuenta == 1)
-                {
-                    //falta implementar!!
-                }
-                else
-                {
-                    try
-                    {
-                        Transferencia transferencia = new Transferencia();
-                        transferencia.origen = Convert.ToInt64(comboCuentaOrigen.Text);
-                        transferencia.destino = Convert.ToInt64(txtCuentaDestino.Text);
-                        transferencia.fecha = DateTime.Now;
-                        transferencia.importe = Convert.ToInt64(txtImporte.Text);
-                        transferencia.costo = calcularCosto();
-                        transferencia.monedaTipo = listaTiposMoneda.Find(x => string.Equals(x.descripcion, comboTipoMoneda.Text.ToString())).codigo; //esta mal esto en realidad uan cuenta ya tiene su tipo de moneda prefijada
-
-                        transferenciaService.Save(transferencia);
-                        MessageBox.Show("Transferencia realizada exitosamente. Saldo actual:" + lblSaldoPosterior.Text.ToString(), "Atencion !", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("No se pudo realizar la transferencia. ERROR: " + ex.Message.ToString(), "Atencion !", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                }
+                throw new OperationCanceledException("El saldo actual no es suficiente");
             }
-        }
-
-        private void txtCuentaDestino_TextChanged(object sender, EventArgs e)
-        {
-            recalcularSaldoPosterior();
         }
 
     }

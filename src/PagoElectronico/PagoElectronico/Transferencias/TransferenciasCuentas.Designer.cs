@@ -78,9 +78,9 @@
             this.lblCosto.ForeColor = System.Drawing.Color.Black;
             this.lblCosto.Location = new System.Drawing.Point(389, 49);
             this.lblCosto.Name = "lblCosto";
-            this.lblCosto.Size = new System.Drawing.Size(64, 18);
+            this.lblCosto.Size = new System.Drawing.Size(67, 18);
             this.lblCosto.TabIndex = 22;
-            this.lblCosto.Text = "elSaldo";
+            this.lblCosto.Text = "elCosto";
             this.lblCosto.Visible = false;
             // 
             // lblCostoRO
@@ -139,11 +139,12 @@
             // 
             this.comboTipoMoneda.Cursor = System.Windows.Forms.Cursors.Default;
             this.comboTipoMoneda.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboTipoMoneda.Enabled = false;
             this.comboTipoMoneda.FormattingEnabled = true;
             this.comboTipoMoneda.Location = new System.Drawing.Point(86, 106);
             this.comboTipoMoneda.Name = "comboTipoMoneda";
             this.comboTipoMoneda.Size = new System.Drawing.Size(121, 21);
-            this.comboTipoMoneda.TabIndex = 16;
+            this.comboTipoMoneda.TabIndex = 4;
             // 
             // lblTipoMoneda
             // 
@@ -162,7 +163,7 @@
             this.comboCuentaOrigen.Location = new System.Drawing.Point(87, 19);
             this.comboCuentaOrigen.Name = "comboCuentaOrigen";
             this.comboCuentaOrigen.Size = new System.Drawing.Size(121, 21);
-            this.comboCuentaOrigen.TabIndex = 14;
+            this.comboCuentaOrigen.TabIndex = 1;
             this.comboCuentaOrigen.SelectedIndexChanged += new System.EventHandler(this.comboCuentaOrigen_SelectedIndexChanged);
             // 
             // label1
@@ -188,7 +189,7 @@
             this.txtImporte.Location = new System.Drawing.Point(87, 76);
             this.txtImporte.Name = "txtImporte";
             this.txtImporte.Size = new System.Drawing.Size(120, 20);
-            this.txtImporte.TabIndex = 11;
+            this.txtImporte.TabIndex = 3;
             this.txtImporte.TextChanged += new System.EventHandler(this.txtImporte_TextChanged);
             // 
             // txtCuentaDestino
@@ -196,7 +197,7 @@
             this.txtCuentaDestino.Location = new System.Drawing.Point(87, 46);
             this.txtCuentaDestino.Name = "txtCuentaDestino";
             this.txtCuentaDestino.Size = new System.Drawing.Size(120, 20);
-            this.txtCuentaDestino.TabIndex = 3;
+            this.txtCuentaDestino.TabIndex = 2;
             this.txtCuentaDestino.TextChanged += new System.EventHandler(this.txtCuentaDestino_TextChanged);
             // 
             // lblCuentaOrigen
@@ -213,7 +214,7 @@
             this.btnLimpiar.Location = new System.Drawing.Point(354, 178);
             this.btnLimpiar.Name = "btnLimpiar";
             this.btnLimpiar.Size = new System.Drawing.Size(124, 44);
-            this.btnLimpiar.TabIndex = 10;
+            this.btnLimpiar.TabIndex = 6;
             this.btnLimpiar.Text = "Limpiar";
             this.btnLimpiar.UseVisualStyleBackColor = true;
             this.btnLimpiar.Click += new System.EventHandler(this.btnLimpiar_Click);
@@ -223,7 +224,7 @@
             this.btnTransferir.Location = new System.Drawing.Point(21, 178);
             this.btnTransferir.Name = "btnTransferir";
             this.btnTransferir.Size = new System.Drawing.Size(117, 44);
-            this.btnTransferir.TabIndex = 7;
+            this.btnTransferir.TabIndex = 5;
             this.btnTransferir.Text = "Transferir";
             this.btnTransferir.UseVisualStyleBackColor = true;
             this.btnTransferir.Click += new System.EventHandler(this.btnTransferir_Click);

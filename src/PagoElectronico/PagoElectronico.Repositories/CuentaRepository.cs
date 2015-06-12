@@ -65,6 +65,11 @@ namespace PagoElectronico.Repositories
 
         }
 
-
+        public int getMonedaTipo(long numeroCuenta)
+        {
+            SqlCommand command = DBConnection.CreateCommand();
+            command.CommandText = "select moneda_tipo from [QUIEN_BAJO_EL_KERNEL].[CUENTA] where numero=" + numeroCuenta.ToString();
+            return DBConnection.ExecuteScalar(command);
+        }
     }
 }

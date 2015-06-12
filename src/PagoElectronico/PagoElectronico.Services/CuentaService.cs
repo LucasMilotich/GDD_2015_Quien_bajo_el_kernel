@@ -25,6 +25,11 @@ namespace PagoElectronico.Services
             CuentaRepository repository = new CuentaRepository();
             return repository.getEstado(numeroCuenta);
         }
+        public int getMonedaTipo(long numeroCuenta)
+        {
+            CuentaRepository repository = new CuentaRepository();
+            return repository.getMonedaTipo(numeroCuenta);
+        }
 
     }
 }

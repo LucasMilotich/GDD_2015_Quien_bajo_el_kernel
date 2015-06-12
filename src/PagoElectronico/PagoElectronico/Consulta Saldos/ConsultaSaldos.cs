@@ -11,6 +11,7 @@ using PagoElectronico.Repositories;
 using System.Data.SqlClient;
 using PagoElectronico.Services;
 
+
 namespace PagoElectronico.Consulta_Saldos
 {
     public partial class ConsultaSaldos : Form
@@ -24,12 +25,22 @@ namespace PagoElectronico.Consulta_Saldos
             ocultarComponentes();
         }
 
+
+        /*************    Metodos de componentes       *************/
         private void btnBuscar_Click(object sender, EventArgs e)
         {
             if (Validaciones.validarCampoNumericoEntero(txtCuenta) && Validaciones.validarCampoVacio(txtCuenta))
             {
-                llenarGrilla();
-                obtenerSaldo();
+                try
+                {
+                    obtenerSaldo();
+                    llenarGrilla();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message.ToString(), "Atencion !", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
             }
 
         }
@@ -41,6 +52,8 @@ namespace PagoElectronico.Consulta_Saldos
             ocultarComponentes();
         }
 
+
+        /*************    Metodos privados       *************/
         private void llenarGrilla()
         {
             SqlCommand command = DBConnection.CreateCommand();
@@ -61,19 +74,15 @@ namespace PagoElectronico.Consulta_Saldos
         }
 
         private void obtenerSaldo()
-        {
-            try
-            {
-                long cuenta;
-                cuenta = Convert.ToInt64(txtCuenta.Text.ToString());
+        {           
+                long cuenta = Convert.ToInt64(txtCuenta.Text.ToString());
                 lblSaldo.Text = cuentaService.getSaldo(cuenta).ToString();
-                mostrarComponentes();
-            }
-            catch (Exception )
-            {
-                MessageBox.Show("No se encontro la cuenta buscada", "Atencion !", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-
+                if (String.Equals("0",lblSaldo.Text.ToString()))
+                {
+                    throw new Exception("No se encontro la cuenta buscada");
+                }
+                mostrarComponentes();             
+       
         }
 
         private void mostrarComponentes()
