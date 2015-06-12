@@ -6,7 +6,7 @@ GO
 -----	 ****************************** CREATE TABLES ****************************** -----
 
 CREATE TABLE QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA ( 
-	numero_item numeric(18) NOT NULL,
+	numero_item numeric(18)  NOT NULL,
 	descripcion varchar(255) NULL,
 	importe numeric(18,2) NULL,
 	factura_numero numeric(18) NULL,
@@ -15,7 +15,7 @@ CREATE TABLE QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA (
 GO
 
 CREATE TABLE QUIEN_BAJO_EL_KERNEL.FACTURA ( 
-	numero numeric(18) NOT NULL,
+	numero numeric(18)  NOT NULL,
 	fecha datetime NULL,
 	cliente_numero_doc numeric(10) NULL,
 	cliente_tipo_doc numeric(18) NULL
@@ -42,9 +42,9 @@ CREATE TABLE QUIEN_BAJO_EL_KERNEL.USUARIO_ROL (
 GO
 
 CREATE TABLE QUIEN_BAJO_EL_KERNEL.ROL ( 
-	id numeric(10) NOT NULL,
+	id numeric(10) identity(1,1) NOT NULL,
 	nombre varchar(255) NULL,
-	activo numeric(1) NULL
+	activo bit NULL
 )
 GO
 
@@ -112,7 +112,7 @@ CREATE TABLE QUIEN_BAJO_EL_KERNEL.BANCO (
 GO
 
 CREATE TABLE QUIEN_BAJO_EL_KERNEL.CHEQUE ( 
-	numero numeric(18) NOT NULL,
+	numero numeric(18)  NOT NULL,
 	fecha datetime NULL,
 	importe numeric(18,2) NULL,
 	codigo_banco numeric(18) NULL,
@@ -122,7 +122,7 @@ CREATE TABLE QUIEN_BAJO_EL_KERNEL.CHEQUE (
 GO
 
 CREATE TABLE QUIEN_BAJO_EL_KERNEL.RETIRO ( 
-	codigo numeric(18) NOT NULL,
+	codigo numeric(18)  NOT NULL,
 	fecha datetime NULL,
 	importe numeric(18,2) NULL,
 	cuenta numeric(18) NULL,
@@ -131,7 +131,7 @@ CREATE TABLE QUIEN_BAJO_EL_KERNEL.RETIRO (
 GO
 
 CREATE TABLE QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA ( 
-	codigo numeric(18) identity(1,1)  NOT NULL,
+	codigo numeric(18) identity(1,1) NOT NULL,
 	origen numeric(18) NULL,
 	destino numeric(18) NULL,
 	fecha datetime NULL,
@@ -152,7 +152,7 @@ CREATE TABLE QUIEN_BAJO_EL_KERNEL.TARJETA (
 GO
 
 CREATE TABLE QUIEN_BAJO_EL_KERNEL.DEPOSITO ( 
-	deposito_codigo numeric(18) NOT NULL,
+	deposito_codigo numeric(18)  NOT NULL,
 	fecha datetime NULL,
 	importe numeric(18,2) NULL,
 	cuenta_numero numeric(18) NULL,
@@ -178,7 +178,7 @@ CREATE TABLE QUIEN_BAJO_EL_KERNEL.CLIENTE (
 GO
 
 CREATE TABLE QUIEN_BAJO_EL_KERNEL.CUENTA ( 
-	numero numeric(18) NOT NULL,
+	numero numeric(18)  NOT NULL,
 	fecha_creacion datetime NOT NULL,
 	estado_codigo numeric(1) NULL,
 	pais_codigo numeric(18) NULL,
@@ -192,7 +192,17 @@ CREATE TABLE QUIEN_BAJO_EL_KERNEL.CUENTA (
 )
 GO
 
+CREATE TABLE QUIEN_BAJO_EL_KERNEL.FUNCIONALIDAD (
+	id_funcionalidad numeric(10) NOT NULL,
+	descripcion varchar(255) NULL
+
+)
+GO
 -----	 ****************************** PRIMARY KEYS ****************************** -----
+
+ALTER TABLE QUIEN_BAJO_EL_KERNEL.FUNCIONALIDAD ADD CONSTRAINT PK_FUNCIONALIDAD 
+	PRIMARY KEY CLUSTERED (id_funcionalidad)
+GO
 
 ALTER TABLE QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA ADD CONSTRAINT PK_ITEM_FACTURA 
 	PRIMARY KEY CLUSTERED (numero_item)
@@ -283,6 +293,11 @@ ALTER TABLE QUIEN_BAJO_EL_KERNEL.CUENTA ADD CONSTRAINT PK_CUENTA
 GO
 
 -----	 ****************************** FOREIGN KEYS ****************************** -----
+
+
+ALTER TABLE QUIEN_BAJO_EL_KERNEL.FUNCIONALIDAD_ROL ADD CONSTRAINT FK_FUNCIONALIDADROL_FUNCIONALIDAD 
+	FOREIGN KEY (id_funcionalidad) REFERENCES QUIEN_BAJO_EL_KERNEL.FUNCIONALIDAD (id_funcionalidad)
+GO
 
 ALTER TABLE QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA ADD CONSTRAINT FK_ITEM_FACTURA_FACTURA 
 	FOREIGN KEY (factura_numero) REFERENCES QUIEN_BAJO_EL_KERNEL.FACTURA (numero)
@@ -715,4 +730,4 @@ GO
 exec QUIEN_BAJO_EL_KERNEL.completar_transacciones
 GO
 
-
+-----	 ****************************** Modificar identities ****************************** -----

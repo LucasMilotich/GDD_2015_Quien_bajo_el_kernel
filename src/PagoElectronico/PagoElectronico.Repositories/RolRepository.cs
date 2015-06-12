@@ -9,10 +9,13 @@ using System.Transactions;
 
 namespace PagoElectronico.Repositories
 {
-    class RolRepository : BaseRepository<Rol>
+    public class RolRepository : BaseRepository<Rol>
     {
-        public override IEnumerable<Rol> GetAll() { return this.GetAll(); }
-        public override Rol Get(int id) {return  new Rol();}
+
+
+
+        public override IEnumerable<Rol> GetAll() { return null; }
+        public override Rol Get(int id) { return new Rol(); }
         public override void Delete(Rol rol) { }
         public override void Update(Rol rol) { }
 
@@ -21,7 +24,7 @@ namespace PagoElectronico.Repositories
             int id;
             using (var transaction = new TransactionScope())
             {
-                SqlCommand command = DBConnection.CreateStoredProcedure("QUIEN_BAJO_EL_KERNEL.ROL_INSERTAR");
+                SqlCommand command = DBConnection.CreateStoredProcedure("INSERT_ROL");
                 this.bindAtributos(rol, command);
                 id = DBConnection.ExecuteScalar(command);
                 transaction.Complete();

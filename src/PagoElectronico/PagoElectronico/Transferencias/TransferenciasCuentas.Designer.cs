@@ -29,6 +29,12 @@
         private void InitializeComponent()
         {
             this.groupBoxTransferencia = new System.Windows.Forms.GroupBox();
+            this.lblSaldoPosterior = new System.Windows.Forms.Label();
+            this.lblSaldoActual = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.lblSaldoReadOnly = new System.Windows.Forms.Label();
+            this.comboTipoMoneda = new System.Windows.Forms.ComboBox();
+            this.lblTipoMoneda = new System.Windows.Forms.Label();
             this.comboCuentaOrigen = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.lblImporte = new System.Windows.Forms.Label();
@@ -37,12 +43,6 @@
             this.lblCuentaOrigen = new System.Windows.Forms.Label();
             this.btnLimpiar = new System.Windows.Forms.Button();
             this.btnTransferir = new System.Windows.Forms.Button();
-            this.lblTipoMoneda = new System.Windows.Forms.Label();
-            this.comboTipoMoneda = new System.Windows.Forms.ComboBox();
-            this.lblSaldoActual = new System.Windows.Forms.Label();
-            this.lblSaldoReadOnly = new System.Windows.Forms.Label();
-            this.lblSaldoPosterior = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             this.groupBoxTransferencia.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -66,6 +66,69 @@
             this.groupBoxTransferencia.TabIndex = 4;
             this.groupBoxTransferencia.TabStop = false;
             this.groupBoxTransferencia.Text = "Transferencia";
+            // 
+            // lblSaldoPosterior
+            // 
+            this.lblSaldoPosterior.AutoSize = true;
+            this.lblSaldoPosterior.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSaldoPosterior.ForeColor = System.Drawing.Color.Maroon;
+            this.lblSaldoPosterior.Location = new System.Drawing.Point(389, 48);
+            this.lblSaldoPosterior.Name = "lblSaldoPosterior";
+            this.lblSaldoPosterior.Size = new System.Drawing.Size(64, 18);
+            this.lblSaldoPosterior.TabIndex = 20;
+            this.lblSaldoPosterior.Text = "elSaldo";
+            this.lblSaldoPosterior.Visible = false;
+            // 
+            // lblSaldoActual
+            // 
+            this.lblSaldoActual.AutoSize = true;
+            this.lblSaldoActual.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSaldoActual.ForeColor = System.Drawing.Color.Black;
+            this.lblSaldoActual.Location = new System.Drawing.Point(389, 23);
+            this.lblSaldoActual.Name = "lblSaldoActual";
+            this.lblSaldoActual.Size = new System.Drawing.Size(64, 18);
+            this.lblSaldoActual.TabIndex = 18;
+            this.lblSaldoActual.Text = "elSaldo";
+            this.lblSaldoActual.Visible = false;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(306, 53);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(77, 13);
+            this.label3.TabIndex = 19;
+            this.label3.Text = "Saldo posterior";
+            this.label3.Visible = false;
+            // 
+            // lblSaldoReadOnly
+            // 
+            this.lblSaldoReadOnly.AutoSize = true;
+            this.lblSaldoReadOnly.Location = new System.Drawing.Point(306, 27);
+            this.lblSaldoReadOnly.Name = "lblSaldoReadOnly";
+            this.lblSaldoReadOnly.Size = new System.Drawing.Size(66, 13);
+            this.lblSaldoReadOnly.TabIndex = 17;
+            this.lblSaldoReadOnly.Text = "Saldo actual";
+            this.lblSaldoReadOnly.Visible = false;
+            // 
+            // comboTipoMoneda
+            // 
+            this.comboTipoMoneda.Cursor = System.Windows.Forms.Cursors.Default;
+            this.comboTipoMoneda.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboTipoMoneda.FormattingEnabled = true;
+            this.comboTipoMoneda.Location = new System.Drawing.Point(86, 106);
+            this.comboTipoMoneda.Name = "comboTipoMoneda";
+            this.comboTipoMoneda.Size = new System.Drawing.Size(121, 21);
+            this.comboTipoMoneda.TabIndex = 16;
+            // 
+            // lblTipoMoneda
+            // 
+            this.lblTipoMoneda.AutoSize = true;
+            this.lblTipoMoneda.Location = new System.Drawing.Point(6, 109);
+            this.lblTipoMoneda.Name = "lblTipoMoneda";
+            this.lblTipoMoneda.Size = new System.Drawing.Size(70, 13);
+            this.lblTipoMoneda.TabIndex = 15;
+            this.lblTipoMoneda.Text = "Tipo Moneda";
             // 
             // comboCuentaOrigen
             // 
@@ -138,69 +201,6 @@
             this.btnTransferir.UseVisualStyleBackColor = true;
             this.btnTransferir.Click += new System.EventHandler(this.btnTransferir_Click);
             // 
-            // lblTipoMoneda
-            // 
-            this.lblTipoMoneda.AutoSize = true;
-            this.lblTipoMoneda.Location = new System.Drawing.Point(6, 109);
-            this.lblTipoMoneda.Name = "lblTipoMoneda";
-            this.lblTipoMoneda.Size = new System.Drawing.Size(70, 13);
-            this.lblTipoMoneda.TabIndex = 15;
-            this.lblTipoMoneda.Text = "Tipo Moneda";
-            // 
-            // comboTipoMoneda
-            // 
-            this.comboTipoMoneda.Cursor = System.Windows.Forms.Cursors.Default;
-            this.comboTipoMoneda.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboTipoMoneda.FormattingEnabled = true;
-            this.comboTipoMoneda.Location = new System.Drawing.Point(86, 106);
-            this.comboTipoMoneda.Name = "comboTipoMoneda";
-            this.comboTipoMoneda.Size = new System.Drawing.Size(121, 21);
-            this.comboTipoMoneda.TabIndex = 16;
-            // 
-            // lblSaldoActual
-            // 
-            this.lblSaldoActual.AutoSize = true;
-            this.lblSaldoActual.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSaldoActual.ForeColor = System.Drawing.Color.Black;
-            this.lblSaldoActual.Location = new System.Drawing.Point(389, 23);
-            this.lblSaldoActual.Name = "lblSaldoActual";
-            this.lblSaldoActual.Size = new System.Drawing.Size(64, 18);
-            this.lblSaldoActual.TabIndex = 18;
-            this.lblSaldoActual.Text = "elSaldo";
-            this.lblSaldoActual.Visible = false;
-            // 
-            // lblSaldoReadOnly
-            // 
-            this.lblSaldoReadOnly.AutoSize = true;
-            this.lblSaldoReadOnly.Location = new System.Drawing.Point(306, 27);
-            this.lblSaldoReadOnly.Name = "lblSaldoReadOnly";
-            this.lblSaldoReadOnly.Size = new System.Drawing.Size(66, 13);
-            this.lblSaldoReadOnly.TabIndex = 17;
-            this.lblSaldoReadOnly.Text = "Saldo actual";
-            this.lblSaldoReadOnly.Visible = false;
-            // 
-            // lblSaldoPosterior
-            // 
-            this.lblSaldoPosterior.AutoSize = true;
-            this.lblSaldoPosterior.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSaldoPosterior.ForeColor = System.Drawing.Color.Maroon;
-            this.lblSaldoPosterior.Location = new System.Drawing.Point(389, 48);
-            this.lblSaldoPosterior.Name = "lblSaldoPosterior";
-            this.lblSaldoPosterior.Size = new System.Drawing.Size(64, 18);
-            this.lblSaldoPosterior.TabIndex = 20;
-            this.lblSaldoPosterior.Text = "elSaldo";
-            this.lblSaldoPosterior.Visible = false;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(306, 53);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(77, 13);
-            this.label3.TabIndex = 19;
-            this.label3.Text = "Saldo posterior";
-            this.label3.Visible = false;
-            // 
             // TransferenciasCuentas
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -211,6 +211,7 @@
             this.Controls.Add(this.btnLimpiar);
             this.Name = "TransferenciasCuentas";
             this.Text = "Transferencias entre cuentas";
+            this.Load += new System.EventHandler(this.TransferenciasCuentas_Load);
             this.groupBoxTransferencia.ResumeLayout(false);
             this.groupBoxTransferencia.PerformLayout();
             this.ResumeLayout(false);

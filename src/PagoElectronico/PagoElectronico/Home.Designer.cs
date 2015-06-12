@@ -35,6 +35,8 @@
             this.listadoEstadisticoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.transaccionesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.transferenciasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.rolesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.crearNuevoRolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -43,7 +45,8 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.archivoToolStripMenuItem,
             this.accionesToolStripMenuItem,
-            this.transaccionesToolStripMenuItem});
+            this.transaccionesToolStripMenuItem,
+            this.rolesToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(685, 24);
@@ -90,9 +93,24 @@
             // transferenciasToolStripMenuItem
             // 
             this.transferenciasToolStripMenuItem.Name = "transferenciasToolStripMenuItem";
-            this.transferenciasToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.transferenciasToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.transferenciasToolStripMenuItem.Text = "Transferencias";
             this.transferenciasToolStripMenuItem.Click += new System.EventHandler(this.transferenciasToolStripMenuItem_Click);
+            // 
+            // rolesToolStripMenuItem
+            // 
+            this.rolesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.crearNuevoRolToolStripMenuItem});
+            this.rolesToolStripMenuItem.Name = "rolesToolStripMenuItem";
+            this.rolesToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
+            this.rolesToolStripMenuItem.Text = "Roles";
+            // 
+            // crearNuevoRolToolStripMenuItem
+            // 
+            this.crearNuevoRolToolStripMenuItem.Name = "crearNuevoRolToolStripMenuItem";
+            this.crearNuevoRolToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.crearNuevoRolToolStripMenuItem.Text = "Crear nuevo rol";
+            this.crearNuevoRolToolStripMenuItem.Click += new System.EventHandler(this.crearNuevoRolToolStripMenuItem_Click);
             // 
             // Home
             // 
@@ -121,6 +139,8 @@
         private System.Windows.Forms.ToolStripMenuItem consultarSaldoDeCuentaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem listadoEstadisticoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem transferenciasToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem rolesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem crearNuevoRolToolStripMenuItem;
     }
 }
 

@@ -78,6 +78,11 @@ namespace PagoElectronico.Transferencias
 
         }
 
+        private void TransferenciasCuentas_Load(object sender, EventArgs e)
+        {
+
+        }
+
  
 
 

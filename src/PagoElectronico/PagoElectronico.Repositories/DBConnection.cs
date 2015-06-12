@@ -33,7 +33,7 @@ namespace PagoElectronico.Repositories
         {
             SqlConnection conexion = new SqlConnection(ConnectionString);
 
-            SqlCommand command = new SqlCommand(string.Format("[GD1C2015].[{0}]", storedName), conexion);
+            SqlCommand command = new SqlCommand(string.Format("[GD1C2015].[QUIEN_BAJO_EL_KERNEL].[{0}]", storedName), conexion);
             command.CommandType = CommandType.StoredProcedure;
 
 

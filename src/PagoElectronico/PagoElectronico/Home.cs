@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using PagoElectronico.Consulta_Saldos;
 using PagoElectronico.Listados;
 using PagoElectronico.Transferencias;
+using PagoElectronico.ABM_Rol;
 
 namespace PagoElectronico
 {
@@ -54,6 +55,12 @@ namespace PagoElectronico
             unForm.ShowDialog();
             Application.DoEvents();
             this.Cursor = Cursors.Default;
+        }
+
+        private void crearNuevoRolToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+           // showForm(());
+           showForm( new CreacionRolForm());
         }
 
     }

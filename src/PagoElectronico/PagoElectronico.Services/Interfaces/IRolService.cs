@@ -6,9 +6,12 @@ using PagoElectronico.Entities;
 
 namespace PagoElectronico.Services.Interfaces
 {
-    public class IRolService
+    public interface IRolService
     {
-       
+         void crearRol(Rol rol);
+         
 
     }
+
+    
 }
