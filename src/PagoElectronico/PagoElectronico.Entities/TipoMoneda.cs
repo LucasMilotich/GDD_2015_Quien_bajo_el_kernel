@@ -5,11 +5,11 @@ using System.Text;
 
 namespace PagoElectronico.Entities
 {
-    class TipoMoneda
+    public class TipoMoneda
     {
         public int codigo { get; set; }
 
-        public string direccion { get; set; }
+        public string descripcion { get; set; }
 
     }
 }

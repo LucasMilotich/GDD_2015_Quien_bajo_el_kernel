@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PagoElectronico.Entities
 {
-    class Transacciones
+    public class Transacciones
     {
         public long idTransaccion { get; set; }
         public long operacionTipo { get; set; }

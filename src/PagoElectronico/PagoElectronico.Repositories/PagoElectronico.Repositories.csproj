@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseRepository.cs" />
+    <Compile Include="CuentaRepository.cs" />
     <Compile Include="RolRepository.cs" />
     <Compile Include="DBConnection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -57,6 +58,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="TipoMonedaRepository.cs" />
     <Compile Include="TransferenciaRepository.cs" />
     <Compile Include="UsuarioRepository.cs" />
   </ItemGroup>

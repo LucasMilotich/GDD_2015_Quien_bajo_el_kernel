@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PagoElectronico.Entities
 {
-    class ItemFactura
+    public class ItemFactura
     {
         public long numeroItem { get; set; }
         public string descripcion { get; set; }

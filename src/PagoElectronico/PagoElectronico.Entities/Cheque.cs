@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PagoElectronico.Entities
 {
-    class Cheque
+    public class Cheque
     {
         public long numero { get; set; }
 

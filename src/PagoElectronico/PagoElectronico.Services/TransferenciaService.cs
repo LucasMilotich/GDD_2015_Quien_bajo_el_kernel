@@ -12,13 +12,12 @@ namespace PagoElectronico.Services
     {
         public int Save(Transferencia transferencia)
         {
-            int id;
+            int filasInsertadas;
 
             var repository = new TransferenciaRepository();
+            filasInsertadas = repository.Insert(transferencia);
 
-            id = repository.Insert(transferencia);
-  
-            return id;
+            return filasInsertadas;
         }
 
     }

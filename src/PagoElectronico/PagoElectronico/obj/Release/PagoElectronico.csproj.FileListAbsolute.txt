@@ -40,3 +40,4 @@ C:\Users\Nicolas\Documents\GitHub\GDD_2015_Quien_bajo_el_kernel\src\PagoElectron
 C:\Users\Nicolas\Documents\GitHub\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.csproj.GenerateResource.Cache
 C:\Users\Nicolas\Documents\GitHub\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.exe
 C:\Users\Nicolas\Documents\GitHub\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.pdb
+C:\Users\Nicolas\Documents\GitHub\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.ABM_Rol.CreacionRolForm.resources

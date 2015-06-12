@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PagoElectronico.Entities
 {
-    class Cliente
+    public class Cliente
     {
         public long tipoDocumento { get; set; }
 
