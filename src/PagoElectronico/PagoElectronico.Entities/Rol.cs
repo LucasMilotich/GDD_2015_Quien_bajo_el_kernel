@@ -13,6 +13,6 @@ namespace PagoElectronico.Entities
 
         public bool Activo { get; set; }
 
-        public HashSet<Funcionalidad> Funcionalidades { get; set; }
+        public List<Funcionalidad> Funcionalidades { get; set; }
     }
 }

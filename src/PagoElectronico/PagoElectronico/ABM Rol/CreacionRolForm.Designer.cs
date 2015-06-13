@@ -30,7 +30,7 @@
         {
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
+            this.chkLFuncionalidades = new System.Windows.Forms.CheckedListBox();
             this.label3 = new System.Windows.Forms.Label();
             this.txtNombre = new System.Windows.Forms.TextBox();
             this.chkActivo = new System.Windows.Forms.CheckBox();
@@ -56,13 +56,14 @@
             this.label2.Text = "Estado del rol: ";
             this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
-            // checkedListBox1
+            // chkLFuncionalidades
             // 
-            this.checkedListBox1.FormattingEnabled = true;
-            this.checkedListBox1.Location = new System.Drawing.Point(34, 138);
-            this.checkedListBox1.Name = "checkedListBox1";
-            this.checkedListBox1.Size = new System.Drawing.Size(120, 94);
-            this.checkedListBox1.TabIndex = 2;
+            this.chkLFuncionalidades.FormattingEnabled = true;
+            this.chkLFuncionalidades.Location = new System.Drawing.Point(34, 138);
+            this.chkLFuncionalidades.Name = "chkLFuncionalidades";
+            this.chkLFuncionalidades.Size = new System.Drawing.Size(347, 139);
+            this.chkLFuncionalidades.TabIndex = 2;
+            this.chkLFuncionalidades.SelectedIndexChanged += new System.EventHandler(this.chkLFuncionalidades_SelectedIndexChanged);
             // 
             // label3
             // 
@@ -109,11 +110,12 @@
             this.Controls.Add(this.chkActivo);
             this.Controls.Add(this.txtNombre);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.checkedListBox1);
+            this.Controls.Add(this.chkLFuncionalidades);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Name = "CreacionRolForm";
             this.Text = "Creación de rol";
+            this.Load += new System.EventHandler(this.CreacionRolForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -123,7 +125,7 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.CheckedListBox checkedListBox1;
+        private System.Windows.Forms.CheckedListBox chkLFuncionalidades;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txtNombre;
         private System.Windows.Forms.CheckBox chkActivo;

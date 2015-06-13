@@ -17,6 +17,14 @@ namespace PagoElectronico.ABM_Rol
         public CreacionRolForm()
         {
             InitializeComponent();
+            IRolService rolserv = new RolService();
+            var funciones = rolserv.Getfunciones();
+            ((ListBox)chkLFuncionalidades).DataSource = funciones;
+            ((ListBox)chkLFuncionalidades).DisplayMember = "Nombre";
+            ((ListBox)chkLFuncionalidades).ValueMember = "Id";
+        
+          
+            
         }
 
         private void label2_Click(object sender, EventArgs e)
@@ -30,8 +38,28 @@ namespace PagoElectronico.ABM_Rol
             Rol rol = new Rol();
             rol.Nombre = txtNombre.Text;
             rol.Activo = chkActivo.Checked;
+            rol.Funcionalidades = new List<Funcionalidad>();
+            foreach (var item in chkLFuncionalidades.CheckedItems)
+            {
+                
+                rol.Funcionalidades.Add((Funcionalidad)item);
+            }
+            if (rolServv.crearRol(rol) !=0)
+                MessageBox.Show("Se creeo correctamente","OK");
+            else MessageBox.Show("NO se creeo correctamente", "ERROR");
 
-            rolServv.crearRol(rol);
+                
+
+        }
+
+        private void CreacionRolForm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void chkLFuncionalidades_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
