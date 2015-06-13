@@ -46,6 +46,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CuentaService.cs" />
+    <Compile Include="Interfaces\ILoginService.cs" />
+    <Compile Include="LoginService.cs" />
     <Compile Include="TipoMonedaService.cs" />
     <Compile Include="TransferenciaService.cs" />
     <Compile Include="UsuarioService.cs" />

@@ -50,12 +50,10 @@ GO
 
 CREATE TABLE QUIEN_BAJO_EL_KERNEL.USUARIO ( 
 	username varchar(255) NOT NULL,
-	password varchar(255) NULL,
+	password varbinary(max) NULL,
 	pregunta_secreta varchar(255) NULL,
 	respuesta_secreta varchar(255) NULL,
-	activo numeric(1) NULL,
-	cliente_num_doc numeric(18) NULL,
-	cliente_tipo_doc numeric(18) NULL
+	activo bit NOT NULL default (1)
 )
 GO
 
@@ -173,7 +171,8 @@ CREATE TABLE QUIEN_BAJO_EL_KERNEL.CLIENTE (
 	dom_dpto varchar(10) NULL,
 	fecha_nacimiento datetime NULL,
 	mail varchar(255) NULL,
-	localidad varchar(255) NULL
+	localidad varchar(255) NULL,
+	username varchar(255) NOT NULL
 )
 GO
 
@@ -405,6 +404,10 @@ GO
 
 ALTER TABLE QUIEN_BAJO_EL_KERNEL.CUENTA ADD CONSTRAINT FK_CUENTA_TRANSACCIONES 
 	FOREIGN KEY (id_transaccion) REFERENCES QUIEN_BAJO_EL_KERNEL.TRANSACCIONES (id_transaccion)
+GO
+
+ALTER TABLE QUIEN_BAJO_EL_KERNEL.CLIENTE ADD CONSTRAINT FK_CLIENTE_USUARIO 
+	FOREIGN KEY (username) REFERENCES QUIEN_BAJO_EL_KERNEL.USUARIO (username)
 GO
 
 -----	 ****************************** TRIGGERS ****************************** -----
@@ -742,9 +745,7 @@ GO
 exec QUIEN_BAJO_EL_KERNEL.completar_transacciones
 GO
 
-<<<<<<< HEAD
------	 ****************************** Modificar identities ****************************** -----
-=======
+-----	 ****************************** TRIGGERS ****************************** -----
 
 CREATE TRIGGER QUIEN_BAJO_EL_KERNEL.TransferenciaInsertarIdTransaccion
 ON QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA
@@ -780,4 +781,3 @@ BEGIN
     VALUES (@origen, @destino, @fecha, @importe, @costo, @moneda_tipo, @id_transaccion)
 END
 GO
->>>>>>> caf4e7add16ed16bce2b9af1e3f461560a95311b

@@ -40,5 +40,31 @@ namespace PagoElectronico.Repositories
 
 
         }
+
+        public IList<Rol> GetRolesByUsername(string username)
+        {
+            IList<Rol> roles = new List<Rol>();
+            SqlCommand command = DBConnection.CreateStoredProcedure("GetRolesByUsername");
+            command.Parameters.AddWithValue("@userName", username);
+            DataRowCollection collection = DBConnection.EjecutarStoredProcedureSelect(command).Rows;
+            foreach (DataRow row in collection)
+            {
+                var rol = this.CreateRol(row);
+                roles.Add(rol);
+                //agregar funcionalidades a los roles
+            }
+
+            return roles;
+        }
+
+        private Rol CreateRol(DataRow reader)
+        {
+            Rol rol = new Rol();
+            rol.Id = Convert.ToInt32(reader["id"]);
+            rol.Activo = Convert.ToBoolean(reader["activo"]);
+            rol.Nombre = reader["nombre"].ToString();
+
+            return rol;
+        }
     }
 }

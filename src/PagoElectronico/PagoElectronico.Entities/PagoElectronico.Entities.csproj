@@ -58,6 +58,7 @@
     <Compile Include="Pais.cs" />
     <Compile Include="Retiro.cs" />
     <Compile Include="Rol.cs" />
+    <Compile Include="Session.cs" />
     <Compile Include="Tarjeta.cs" />
     <Compile Include="TipoCuenta.cs" />
     <Compile Include="TipoDocumento.cs" />
