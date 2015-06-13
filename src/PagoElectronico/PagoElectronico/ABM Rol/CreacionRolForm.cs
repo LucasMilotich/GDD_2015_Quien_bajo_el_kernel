@@ -32,10 +32,5 @@ namespace PagoElectronico.ABM_Rol
 
             rolServv.crearRol(rol);
         }
-
-        private void CreacionRolForm_Load(object sender, EventArgs e)
-        {
-           
-        }
     }
 }
