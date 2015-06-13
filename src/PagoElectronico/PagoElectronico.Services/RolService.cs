@@ -28,6 +28,14 @@ namespace PagoElectronico.Services
             return funcionalidades;
         }
 
+        public List<Rol> getRoles(String nombre, bool activo)
+        {
+
+            RolRepository repo = new RolRepository();
+            return repo.getRoles(nombre, activo);
+            
+
+        }
 
 
 

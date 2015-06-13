@@ -12,6 +12,8 @@ namespace PagoElectronico.Services.Interfaces
 
          IList<Funcionalidad> Getfunciones();
 
+        List<Rol> getRoles(String nombre,bool activo);
+
     }
 
     

@@ -1,14 +1,11 @@
-CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.SELECT_FUNCIONALIDAD (@id numeric(10,0), @descripcion varchar(255))
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.SELECT_FUNCIONALIDAD (@id numeric(10,0) = null , @descripcion varchar(255) = null)
 AS 
 BEGIN
 
-IF(@id is not null)
-SELECT * FROM QUIEN_BAJO_EL_KERNEL.FUNCIONALIDAD f WHERE f.id_funcionalidad = @id 
 
-IF(@descripcion is not null)
-SELECT * FROM QUIEN_BAJO_EL_KERNEL.FUNCIONALIDAD f WHERE f.descripcion like '%' + @descripcion + '%'
+SELECT * FROM QUIEN_BAJO_EL_KERNEL.FUNCIONALIDAD f 
+WHERE (@descripcion is null or f.descripcion like '%' + @descripcion + '%') AND
+	  (@id is null or f.id_funcionalidad = @id)
 
-IF(@id is null AND @descripcion is  null) 
-SELECT * FROM QUIEN_BAJO_EL_KERNEL.FUNCIONALIDAD
 
 END

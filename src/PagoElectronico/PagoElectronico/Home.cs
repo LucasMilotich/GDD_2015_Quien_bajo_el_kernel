@@ -63,5 +63,13 @@ namespace PagoElectronico
             showForm(rolForm);
         }
 
+        private void buscarRolesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var rolBusquedaForm = new ConsultaRolFrom();
+            rolBusquedaForm.MdiParent = this;
+            showForm(rolBusquedaForm);
+
+        }
+
     }
 }
