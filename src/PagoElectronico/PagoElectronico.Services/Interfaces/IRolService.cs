@@ -10,6 +10,7 @@ namespace PagoElectronico.Services.Interfaces
     {
          void crearRol(Rol rol);
          
+        // IList
 
     }
 
