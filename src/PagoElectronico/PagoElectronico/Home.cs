@@ -52,15 +52,15 @@ namespace PagoElectronico
         private void showForm(Form unForm)
         {
             this.Cursor = Cursors.WaitCursor;
-            unForm.ShowDialog();
-            Application.DoEvents();
+            unForm.Show();
             this.Cursor = Cursors.Default;
         }
 
         private void crearNuevoRolToolStripMenuItem_Click(object sender, EventArgs e)
         {
-           // showForm(());
-           showForm( new CreacionRolForm());
+            var rolForm = new CreacionRolForm();
+            rolForm.MdiParent = this;
+            showForm(rolForm);
         }
 
     }

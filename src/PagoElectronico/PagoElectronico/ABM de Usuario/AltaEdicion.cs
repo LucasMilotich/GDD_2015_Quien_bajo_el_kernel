@@ -33,5 +33,13 @@ namespace PagoElectronico.ABM_de_Usuario
             //this.FillRoles(usuario);
             //this.FillOtherFields(usuario);
         }
+
+        private void btnGuardar_Click(object sender, EventArgs e)
+        {
+            var usuario = new Usuario
+            {
+                Username = txtUsername.Text
+            };
+        }
     }
 }
