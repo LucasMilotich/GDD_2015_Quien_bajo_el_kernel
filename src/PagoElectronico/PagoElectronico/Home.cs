@@ -49,6 +49,11 @@ namespace PagoElectronico
             showForm(new TransferenciasCuentas());
         }
 
+        private void crearNuevoRolToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            showForm(new CreacionRolForm());
+        }
+
         private void showForm(Form unForm)
         {
             this.Cursor = Cursors.WaitCursor;
@@ -56,11 +61,5 @@ namespace PagoElectronico
             unForm.Show();
             this.Cursor = Cursors.Default;
         }
-
-        private void crearNuevoRolToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            showForm(new CreacionRolForm());
-        }
-
     }
 }

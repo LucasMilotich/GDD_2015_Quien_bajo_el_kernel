@@ -21,16 +21,35 @@ namespace PagoElectronico.Repositories
 
         public override int Insert(Rol rol)
         {
-            int id;
+           
             using (var transaction = new TransactionScope())
             {
+                //Rol
                 SqlCommand command = DBConnection.CreateStoredProcedure("INSERT_ROL");
                 this.bindAtributos(rol, command);
-                id = DBConnection.ExecuteScalar(command);
-                transaction.Complete();
+                 rol.Id = DBConnection.ExecuteScalar(command);
+              
+                //Rol_funciones
+                  
+                {
+                    foreach (var item in rol.Funcionalidades)
+                    {
+
+                        command = DBConnection.CreateStoredProcedure("INSERT_ROL_FUNCIONALIDAD");
+                        command.Parameters.AddWithValue("id_rol", rol.Id);
+                        command.Parameters.AddWithValue("id_funcionalidad", item.Id);
+                         DBConnection.ExecuteNonQuery(command);
+                    }
+
+
+                    transaction.Complete();
+                }
+
             }
-            return id;
+            return rol.Id;
         }
+
+       
 
         public void bindAtributos(Rol rol, SqlCommand command)
         {

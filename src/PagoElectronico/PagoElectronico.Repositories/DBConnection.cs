@@ -36,16 +36,16 @@ namespace PagoElectronico.Repositories
             SqlCommand command = new SqlCommand(string.Format("[GD1C2015].[QUIEN_BAJO_EL_KERNEL].[{0}]", storedName), conexion);
             command.CommandType = CommandType.StoredProcedure;
 
-
             return command;
         }
 
         public static int ExecuteNonQuery(SqlCommand command)
         {
+            int retorno;
             try
             {
                 command.Connection.Open();
-                return command.ExecuteNonQuery();
+                retorno = command.ExecuteNonQuery();
             }
             catch (Exception exception)
             {
@@ -56,6 +56,8 @@ namespace PagoElectronico.Repositories
                 command.Connection.Close();
                 command.Connection.Dispose();
             }
+
+            return retorno;
         }
 
         public static int ExecuteScalar(SqlCommand command)
@@ -127,7 +129,7 @@ namespace PagoElectronico.Repositories
             try
             {
                 command.Connection.Open();
-                retorno= command.ExecuteScalar().ToString();
+                retorno = command.ExecuteScalar().ToString();
             }
             catch (Exception exception)
             {

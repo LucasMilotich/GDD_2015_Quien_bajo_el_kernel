@@ -10,13 +10,25 @@ namespace PagoElectronico.Services
 {
     public class RolService : IRolService
     {
-        public void crearRol(Rol rol) {
+        public int crearRol(Rol rol) {
 
             RolRepository repo = new RolRepository();
-            repo.Insert(rol);
+           return repo.Insert(rol);
 
         
         }
+
+        public IList<Funcionalidad> Getfunciones() {
+
+            FuncionesRepository repo = new FuncionesRepository();
+            List<Funcionalidad> funcionalidades = new List<Funcionalidad>();
+
+            funcionalidades = (List<Funcionalidad>) repo.GetAll();
+
+            return funcionalidades;
+        }
+
+
 
 
      

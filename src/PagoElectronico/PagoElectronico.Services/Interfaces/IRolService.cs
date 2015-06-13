@@ -8,8 +8,9 @@ namespace PagoElectronico.Services.Interfaces
 {
     public interface IRolService
     {
-         void crearRol(Rol rol);
-         
+         int crearRol(Rol rol);
+
+         IList<Funcionalidad> Getfunciones();
 
     }
 
