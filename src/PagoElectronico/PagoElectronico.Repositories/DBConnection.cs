@@ -33,7 +33,7 @@ namespace PagoElectronico.Repositories
         {
             SqlConnection conexion = new SqlConnection(ConnectionString);
 
-            SqlCommand command = new SqlCommand(string.Format("[GD1C2015].[{0}]", storedName), conexion);
+            SqlCommand command = new SqlCommand(string.Format("[GD1C2015].[QUIEN_BAJO_EL_KERNEL].[{0}]", storedName), conexion);
             command.CommandType = CommandType.StoredProcedure;
 
 
@@ -62,24 +62,79 @@ namespace PagoElectronico.Repositories
         {
             try
             {
+                int retorno;
                 command.Connection.Open();
-                return (int)command.ExecuteScalar();
+                retorno = Convert.ToInt32(command.ExecuteScalar());
+
+                command.Connection.Close();
+                command.Connection.Dispose();
+                return retorno;
             }
             catch (Exception exception)
             {
                 throw exception;
             }
-            finally
+        }
+
+        public static double ExecuteScalarDouble(SqlCommand command)
+        {
+            try
             {
+                double retorno;
+                command.Connection.Open();
+                retorno= Convert.ToDouble(command.ExecuteScalar());
+
                 command.Connection.Close();
                 command.Connection.Dispose();
+                return retorno;
+            }
+            catch (Exception exception)
+            {
+                throw exception;
             }
         }
 
-        public static SqlDataReader EjecutarComandoSelect(SqlCommand command)
+        public static long ExecuteScalarLong(SqlCommand command)
+        {
+            try
+            {
+                long retorno;
+                command.Connection.Open();
+                retorno = Convert.ToInt64(command.ExecuteScalar());
+
+                command.Connection.Close();
+                command.Connection.Dispose();
+                return retorno;
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+        }
+
+        public static string ExecuteScalarString(SqlCommand command)
+        {
+            try
+            {
+                string retorno;
+                command.Connection.Open();
+                retorno= command.ExecuteScalar().ToString();
+
+                command.Connection.Close();
+                command.Connection.Dispose();
+
+                return retorno;
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+
+        }
+
+        public static DataTable EjecutarComandoSelect(SqlCommand command)
         {
             SqlDataReader reader = null;
-
             try
             {
                 command.Connection.Open();
@@ -89,13 +144,13 @@ namespace PagoElectronico.Repositories
             {
                 throw exception;
             }
-            finally
-            {
-                reader.Close();
-                CloseCommand(command);
-            }
+            
+            DataTable dt = new DataTable();
+            dt.Load(reader);
+            reader.Close();
+            CloseCommand(command);
 
-            return reader;
+            return dt;
         }
 
         public static DataTable EjecutarStoredProcedureSelect(SqlCommand command)

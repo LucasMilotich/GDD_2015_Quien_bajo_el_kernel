@@ -45,10 +45,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Banco.cs" />
+    <Compile Include="Cheque.cs" />
+    <Compile Include="Cliente.cs" />
+    <Compile Include="Cuenta.cs" />
+    <Compile Include="CuentaModificacion.cs" />
+    <Compile Include="Deposito.cs" />
+    <Compile Include="Factura.cs" />
     <Compile Include="Funcionalidad.cs" />
+    <Compile Include="ItemFactura.cs" />
+    <Compile Include="Pais.cs" />
+    <Compile Include="Retiro.cs" />
     <Compile Include="Rol.cs" />
+    <Compile Include="Tarjeta.cs" />
+    <Compile Include="TipoCuenta.cs" />
+    <Compile Include="TipoDocumento.cs" />
+    <Compile Include="TipoEstadoCuenta.cs" />
+    <Compile Include="TipoMoneda.cs" />
+    <Compile Include="TipoTransaccion.cs" />
+    <Compile Include="Transacciones.cs" />
+    <Compile Include="Transferencia.cs" />
     <Compile Include="Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UsuarioRol.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

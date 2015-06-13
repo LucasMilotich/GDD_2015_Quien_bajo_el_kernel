@@ -1,3 +1,13 @@
+insert into QUIEN_BAJO_EL_KERNEL.tipo_transaccion (codigo,descripcion)
+											values	  (1,'Transferencia')
+insert into QUIEN_BAJO_EL_KERNEL.tipo_transaccion (codigo,descripcion)
+												values  (2,'Activacion')
+insert into QUIEN_BAJO_EL_KERNEL.tipo_transaccion (codigo,descripcion)
+												values  (3,'Modificacion')
+												  									  
+
+
+
 insert into QUIEN_BAJO_EL_KERNEL.TIPO_DOCUMENTO (codigo,descripcion)
 			 (select distinct cli_tipo_doc_cod,cli_tipo_doc_desc
 					from gd_esquema.Maestra
