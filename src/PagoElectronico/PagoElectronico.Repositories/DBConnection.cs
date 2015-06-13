@@ -62,17 +62,17 @@ namespace PagoElectronico.Repositories
         {
             try
             {
+                int retorno;
                 command.Connection.Open();
-                return (int)command.ExecuteScalar();
+                retorno = Convert.ToInt32(command.ExecuteScalar());
+
+                command.Connection.Close();
+                command.Connection.Dispose();
+                return retorno;
             }
             catch (Exception exception)
             {
                 throw exception;
-            }
-            finally
-            {
-                command.Connection.Close();
-                command.Connection.Dispose();
             }
         }
 
@@ -80,17 +80,35 @@ namespace PagoElectronico.Repositories
         {
             try
             {
+                double retorno;
                 command.Connection.Open();
-                return (double)command.ExecuteScalar();
+                retorno= Convert.ToDouble(command.ExecuteScalar());
+
+                command.Connection.Close();
+                command.Connection.Dispose();
+                return retorno;
             }
             catch (Exception exception)
             {
                 throw exception;
             }
-            finally
+        }
+
+        public static long ExecuteScalarLong(SqlCommand command)
+        {
+            try
             {
+                long retorno;
+                command.Connection.Open();
+                retorno = Convert.ToInt64(command.ExecuteScalar());
+
                 command.Connection.Close();
                 command.Connection.Dispose();
+                return retorno;
+            }
+            catch (Exception exception)
+            {
+                throw exception;
             }
         }
 
@@ -98,18 +116,20 @@ namespace PagoElectronico.Repositories
         {
             try
             {
+                string retorno;
                 command.Connection.Open();
-                return command.ExecuteScalar().ToString();
+                retorno= command.ExecuteScalar().ToString();
+
+                command.Connection.Close();
+                command.Connection.Dispose();
+
+                return retorno;
             }
             catch (Exception exception)
             {
                 throw exception;
             }
-            finally
-            {
-                command.Connection.Close();
-                command.Connection.Dispose();
-            }
+
         }
 
         public static DataTable EjecutarComandoSelect(SqlCommand command)

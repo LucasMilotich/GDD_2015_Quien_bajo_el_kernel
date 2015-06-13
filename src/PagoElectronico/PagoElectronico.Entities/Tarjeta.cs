@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PagoElectronico.Entities
 {
-    class Tarjeta
+    public class Tarjeta
     {
         public string tarjetaNumero { get; set; }
         public DateTime fechaEmision { get; set; }

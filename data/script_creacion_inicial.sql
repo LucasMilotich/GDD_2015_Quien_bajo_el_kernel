@@ -396,7 +396,7 @@ ALTER TABLE QUIEN_BAJO_EL_KERNEL.CUENTA ADD CONSTRAINT FK_CUENTA_PAIS
 GO
 
 ALTER TABLE QUIEN_BAJO_EL_KERNEL.CUENTA ADD CONSTRAINT FK_CUENTA_TIPO_CUENTA 
-	FOREIGN KEY (estado_codigo) REFERENCES QUIEN_BAJO_EL_KERNEL.TIPO_CUENTA (codigo)
+	FOREIGN KEY (tipo_cuenta) REFERENCES QUIEN_BAJO_EL_KERNEL.TIPO_CUENTA (codigo)
 GO
 
 ALTER TABLE QUIEN_BAJO_EL_KERNEL.CUENTA ADD CONSTRAINT FK_CUENTA_TIPO_ESTADO_CUENTA 
@@ -559,15 +559,30 @@ GO
 
 insert into QUIEN_BAJO_EL_KERNEL.tipo_transaccion (codigo,descripcion)
 											values	  (1,'Transferencia')
-GO											
+GO	
+										
 insert into QUIEN_BAJO_EL_KERNEL.tipo_transaccion (codigo,descripcion)
     											values  (2,'Activacion')
 GO
+
 insert into QUIEN_BAJO_EL_KERNEL.tipo_transaccion (codigo,descripcion)
 												values  (3,'Modificacion')
 GO												  									  
 
+insert into QUIEN_BAJO_EL_KERNEL.TIPO_ESTADO_CUENTA (codigo,descripcion) values (1, 'Pendiente de activacion')
+GO
 
+insert into QUIEN_BAJO_EL_KERNEL.TIPO_ESTADO_CUENTA (codigo,descripcion) values (2, 'Cerrada')
+GO
+
+insert into QUIEN_BAJO_EL_KERNEL.TIPO_ESTADO_CUENTA (codigo,descripcion) values (3, 'Inhabilitada')
+GO
+
+insert into QUIEN_BAJO_EL_KERNEL.TIPO_ESTADO_CUENTA (codigo,descripcion) values (4, 'Habilitada')
+GO
+
+insert into QUIEN_BAJO_EL_KERNEL.TIPO_MONEDA (codigo,descripcion) values (1,'U$S')
+GO
 
 insert into QUIEN_BAJO_EL_KERNEL.TIPO_DOCUMENTO (codigo,descripcion)
 			 (select distinct cli_tipo_doc_cod,cli_tipo_doc_desc
@@ -597,11 +612,12 @@ insert into QUIEN_BAJO_EL_KERNEL.CLIENTE (tipo_documento,numero_documento,
 				   )
 				   
 GO
-insert into QUIEN_BAJO_EL_KERNEL.CUENTA (numero,fecha_creacion,pais_codigo,fecha_cierre,
-				   cliente_tipo_doc,cliente_numero_doc,saldo)
-			 (select distinct cuenta_numero,cuenta_fecha_creacion,
+
+insert into QUIEN_BAJO_EL_KERNEL.CUENTA (numero,fecha_creacion,estado_codigo,pais_codigo,fecha_cierre,
+				   cliente_tipo_doc,cliente_numero_doc,moneda_tipo,saldo)
+			 (select distinct cuenta_numero,cuenta_fecha_creacion,'4',
 									cuenta_pais_codigo,cuenta_fecha_cierre,cli_tipo_doc_cod,
-									cli_nro_doc,'0'
+									cli_nro_doc,'1','0'
 					from gd_esquema.Maestra
 					)
 GO
@@ -611,47 +627,43 @@ insert into QUIEN_BAJO_EL_KERNEL.TARJETA (tarjeta_numero, fecha_emision,fecha_ve
 			  (select distinct tarjeta_numero, tarjeta_fecha_emision,tarjeta_fecha_vencimiento,
 					 tarjeta_codigo_seg, tarjeta_emisor_descripcion
 					 from gd_esquema.Maestra
-					 where Tarjeta_Numero is not null)
-					 
+					 where Tarjeta_Numero is not null)					 
 GO
+
 insert into QUIEN_BAJO_EL_KERNEL.DEPOSITO (deposito_codigo,fecha, importe, cuenta_numero, tarjeta_numero)
 				 (select deposito_codigo,deposito_fecha, deposito_importe, 
 							  cuenta_numero, tarjeta_numero
 					  from gd_esquema.Maestra
 					  where deposito_codigo is not null)
-
-
 GO
 
 insert into QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA (origen,destino,fecha,importe, costo)
 				    (select cuenta_numero,cuenta_dest_numero,
 						   transf_fecha,trans_importe,trans_costo_trans
 						   from gd_esquema.Maestra
-						   where transf_fecha is not null)
-						   
+						   where transf_fecha is not null)					   
 GO
 
 insert into QUIEN_BAJO_EL_KERNEL.BANCO  (codigo,nombre,direccion)
 			 (select distinct banco_cogido,banco_nombre,banco_direccion 
 					from gd_esquema.Maestra
 					where banco_cogido is not null
-					)
-					
-					
+					)				
 GO
 
 insert into QUIEN_BAJO_EL_KERNEL.CHEQUE (numero,fecha,importe,codigo_banco)		
 			 (select cheque_numero,cheque_fecha,cheque_importe,banco_cogido
 					from gd_esquema.Maestra
 					where cheque_numero is not null)
-
 GO
+
 insert into QUIEN_BAJO_EL_KERNEL.RETIRO (fecha,codigo,importe,cuenta,cheque)
 			 (select retiro_fecha, retiro_codigo,retiro_importe,cuenta_numero,cheque_numero
 					from gd_esquema.Maestra
 					where retiro_codigo is not null)
 
 GO
+
 
 
 -----	 ****************************** PROCEDURES ****************************** -----
@@ -730,4 +742,42 @@ GO
 exec QUIEN_BAJO_EL_KERNEL.completar_transacciones
 GO
 
+<<<<<<< HEAD
 -----	 ****************************** Modificar identities ****************************** -----
+=======
+
+CREATE TRIGGER QUIEN_BAJO_EL_KERNEL.TransferenciaInsertarIdTransaccion
+ON QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA
+INSTEAD OF INSERT
+AS
+BEGIN
+  DECLARE @codigo numeric(18, 0),
+          @origen numeric(18, 0),
+          @destino numeric(18, 0),
+          @fecha datetime,
+          @importe numeric(18, 2),
+          @costo numeric(18, 2),
+          @moneda_tipo numeric(1, 0),
+          @id_transaccion numeric(18, 0)
+
+  INSERT INTO QUIEN_BAJO_EL_KERNEL.TRANSACCIONES (operacion_tipo, fecha)
+    VALUES (1, GETDATE())
+
+  SET @id_transaccion = (SELECT
+    SCOPE_IDENTITY())
+
+  SELECT
+    @codigo = codigo,
+    @origen = origen,
+    @destino = destino,
+    @fecha = fecha,
+    @importe = importe,
+    @costo = costo,
+    @moneda_tipo = moneda_tipo
+  FROM inserted
+
+  INSERT INTO QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA (origen, destino, fecha, importe, costo, moneda_tipo, id_transaccion)
+    VALUES (@origen, @destino, @fecha, @importe, @costo, @moneda_tipo, @id_transaccion)
+END
+GO
+>>>>>>> caf4e7add16ed16bce2b9af1e3f461560a95311b

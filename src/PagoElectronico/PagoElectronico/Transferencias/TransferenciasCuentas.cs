@@ -12,11 +12,19 @@ using PagoElectronico.Repositories;
 using PagoElectronico.Entities;
 using PagoElectronico.Services;
 
+
 namespace PagoElectronico.Transferencias
 {
     public partial class TransferenciasCuentas : Form
     {
         TransferenciaService transferenciaService = new TransferenciaService();
+        CuentaService cuentaService = new CuentaService();
+        TipoMonedaService tipoMonedaService = new TipoMonedaService();
+        List<TipoMoneda> listaTiposMoneda;
+        List<long> listaCuentas;
+
+        //Para probar hasta q este el login: 10002 and cliente_numero_doc=45622098
+        long tipoDocCliente = 10002, nroDocCliente = 45622098;
 
         public TransferenciasCuentas()
         {
@@ -25,66 +33,198 @@ namespace PagoElectronico.Transferencias
             cargarComboTipoMoneda();
         }
 
+        #region Eventos
+        /*************    Metodos de componentes       *************/
         private void btnLimpiar_Click(object sender, EventArgs e)
+        {
+            limpiarDatos();
+        }
+
+        private void btnTransferir_Click(object sender, EventArgs e)
+        {
+            realizarTransferencia();
+            actualizarSaldoActual();
+
+        }
+
+        private void txtImporte_TextChanged(object sender, EventArgs e)
+        {
+            recalcularSaldoPosterior();
+        }
+
+        private void txtCuentaDestino_TextChanged(object sender, EventArgs e)
+        {
+            recalcularSaldoPosterior();
+        }
+
+        private void comboCuentaOrigen_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            actualizarSaldoActual();
+            recalcularSaldoPosterior();
+        }
+
+        #endregion
+
+
+        /*************    Metodos privados       *************/
+        private void realizarTransferencia()
+        {
+            double saldoActual = Convert.ToDouble(lblSaldoActual.Text.ToString());
+            double importe = Convert.ToDouble(txtImporte.Text.ToString());
+            double saldoPosterior = Convert.ToDouble(lblSaldoPosterior.Text.ToString());
+            double costo = calcularCosto();
+            long origen = Convert.ToInt64(comboCuentaOrigen.Text);
+            long destino = Convert.ToInt64(txtCuentaDestino.Text);
+
+            if (Validaciones.validarCampoVacio(txtImporte) & Validaciones.validarCampoVacio(txtCuentaDestino) & Validaciones.validarCampoNumericoDouble(txtImporte) & Validaciones.validarCampoNumericoDouble(txtCuentaDestino))
+            {
+                try
+                {
+                    validarEstadoCuenta(destino);
+                    validarSaldoDisponible(saldoPosterior);
+
+                    Transferencia transferencia = new Transferencia();
+                    transferencia.origen = origen;
+                    transferencia.destino = destino;
+                    transferencia.fecha = DateTime.Now;
+                    transferencia.importe = importe;
+                    transferencia.costo = calcularCosto();
+                    transferencia.monedaTipo = cuentaService.getMonedaTipo(origen);
+
+                    transferenciaService.Save(transferencia);
+                    MessageBox.Show("Transferencia realizada exitosamente. Saldo actual: " + lblSaldoPosterior.Text.ToString(), "Atencion !", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    limpiarDatos();
+                }
+                catch (OperationCanceledException ex)
+                {
+                    MessageBox.Show(ex.Message.ToString(), "No se pudo realizar la transferencia. !", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("La cuenta destino no existe", "No se pudo realizar la transferencia. !", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private double calcularCosto()
+        {
+            if (listaCuentas.Contains(Convert.ToInt64(txtCuentaDestino.Text.ToString())))
+            {
+                return 0;
+            }
+            return 2;
+            //como calculo esto?????
+        }
+
+        private void recalcularSaldoPosterior()
+        {
+            try
+            {
+                double saldoActual, saldoPosterior, costo, importe;
+
+                if (txtImporte.Text.Length == 0 || txtCuentaDestino.Text.Length == 0)
+                {
+                    ocultarComponentes();
+                }
+                else
+                {
+                    mostrarComponentes();
+
+                    saldoActual = Convert.ToDouble(lblSaldoActual.Text);
+                    importe = Convert.ToDouble(txtImporte.Text);
+                    costo = calcularCosto();
+                    lblCosto.Text = costo.ToString();
+
+                    if (String.Equals(comboCuentaOrigen.Text.ToString(), txtCuentaDestino.Text.ToString()))
+                    {
+                        lblSaldoPosterior.Text = lblSaldoActual.Text;
+                    }
+                    else
+                    {
+                        saldoPosterior = saldoActual - importe - costo;
+                        lblSaldoPosterior.Text = saldoPosterior.ToString();
+                    }
+                }
+            }
+            catch (Exception) { }
+        }
+
+        private void actualizarSaldoActual()
+        {
+            lblSaldoActual.Text = cuentaService.getSaldo(Convert.ToInt64(comboCuentaOrigen.Text.ToString())).ToString();
+        }
+
+        private void cargarComboCuentas()
+        {
+            listaCuentas = (List<long>)cuentaService.getByCliente(tipoDocCliente, nroDocCliente);
+            if (listaCuentas.Count > 0)
+            {
+                comboCuentaOrigen.DataSource = listaCuentas;
+            }
+            else
+            {
+                MessageBox.Show("No posees cuentas para realizar transferencias", "Atencion !", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //deberia salir del form, no se como hacerlo
+            }
+
+        }
+
+        private void cargarComboTipoMoneda()
+        {
+            listaTiposMoneda = (List<TipoMoneda>)tipoMonedaService.getAll();
+            foreach (var item in listaTiposMoneda)
+            {
+                comboTipoMoneda.Items.Add(item.descripcion);
+            }
+
+            comboTipoMoneda.SelectedIndex = 0;
+        }
+
+        private void ocultarComponentes()
+        {
+            lblSaldoPosterior.Visible = false;
+            lblSaldoPosteriorRO.Visible = false;
+            lblCostoRO.Visible = false;
+            lblCosto.Visible = false;
+        }
+
+        private void mostrarComponentes()
+        {
+            lblSaldoPosterior.Visible = true;
+            lblSaldoPosteriorRO.Visible = true;
+            lblCostoRO.Visible = true;
+            lblCosto.Visible = true;
+        }
+
+        private void limpiarDatos()
         {
             txtCuentaDestino.BackColor = System.Drawing.Color.White;
             txtImporte.BackColor = System.Drawing.Color.White;
             txtCuentaDestino.Text = String.Empty;
             txtImporte.Text = String.Empty;
             comboCuentaOrigen.SelectedIndex = 0;
+            comboTipoMoneda.SelectedIndex = 0;
+            ocultarComponentes();
         }
 
-        private void cargarComboCuentas()
+
+        /*************    Validadores privados       *************/
+        private void validarEstadoCuenta(long cuentaDestino)
         {
-            //TODO: select from cuentas where usuario..
-            comboCuentaOrigen.Items.Add("");
-
+            int estadoDeCuenta = cuentaService.getEstado(cuentaDestino);
+            if (estadoDeCuenta == 1 || estadoDeCuenta == 2)
+            {
+                throw new OperationCanceledException("La cuenta destino se encuentra en cerrada o pendiente de activacion");
+            }
         }
 
-        private void cargarComboTipoMoneda()
+        private void validarSaldoDisponible(double saldoPosterior)
         {
-            comboTipoMoneda.Items.Add("$");
-            comboTipoMoneda.Items.Add("U$S");
+            if (saldoPosterior < 0)
+            {
+                throw new OperationCanceledException("El saldo actual no es suficiente");
+            }
         }
-
-        private void btnTransferir_Click(object sender, EventArgs e)
-        {
-            //  Validaciones.validarCampoNumericoDouble(txtImporte);
-            //  Validaciones.validarCampoVacio(txtImporte);
-
-            //**Las cuentas cerradas o pendientes de activacion no pueden recibir dinero
-            //**Está permitido que las trasferencias puedan ser entre cuentas de distinto países.
-            //**Las operaciones realizadas son con fecha del día y debe generarse un número de operación independiente de los depósitos y retiros.
-            //
-            //**Una característica importante de las transferencias es que las mismas tienen un costo fijo
-            //que se cobra a la cuenta origen, dicho costo fijo dependerá del tipo de cuenta, pero si cuenta
-            //origen y destino son del mismo usuario, estas transferencias no tienen costo.
-
-            Transferencia transferencia = new Transferencia();
-            //transferencia.origen = Convert.ToInt64(comboCuentaOrigen.Text);
-            transferencia.origen = 50;
-            transferencia.destino = Convert.ToInt64(txtCuentaDestino.Text);
-            transferencia.fecha = DateTime.Now;
-            transferencia.importe = Convert.ToInt64(txtImporte.Text);
-            transferencia.costo = 0;
-            transferencia.monedaTipo = 3;
-            transferencia.idTransaccion = 1;
-            
-            transferenciaService.Save(transferencia);
-
-            MessageBox.Show("Transferencia realizada exitosamente. Saldo actual: unNro", "Atencion !", MessageBoxButtons.OK, MessageBoxIcon.Information);
-           
-
-
-        }
-
-        private void TransferenciasCuentas_Load(object sender, EventArgs e)
-        {
-
-        }
-
- 
-
 
     }
 }

@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{DC3C6463-CFBB-4E6E-BC61-407FEA86780E}</ProjectGuid>
+    <ProjectGuid>{B6379188-D3A2-4833-8F3F-CE1EA09F620E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PagoElectronico.Services</RootNamespace>
-    <AssemblyName>PagoElectronico.Services</AssemblyName>
+    <RootNamespace>PagoElectronico.Exceptions</RootNamespace>
+    <AssemblyName>PagoElectronico.Exceptions</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -45,24 +45,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CuentaService.cs" />
-    <Compile Include="TipoMonedaService.cs" />
-    <Compile Include="TransferenciaService.cs" />
-    <Compile Include="UsuarioService.cs" />
-    <Compile Include="RolService.cs" />
-    <Compile Include="Interfaces\IRolService.cs" />
-    <Compile Include="Interfaces\IUsuarioService.cs" />
+    <Compile Include="Class1.cs" />
+    <Compile Include="EstadoCuentaException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\PagoElectronico.Entities\PagoElectronico.Entities.csproj">
-      <Project>{8162C21C-804D-4495-A9EB-8984F98104D9}</Project>
-      <Name>PagoElectronico.Entities</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PagoElectronico.Repositories\PagoElectronico.Repositories.csproj">
-      <Project>{669711AB-EFB2-4C0B-BCF6-E9AEBF4EFA07}</Project>
-      <Name>PagoElectronico.Repositories</Name>
-    </ProjectReference>
+    <Compile Include="SaldoCuentaException.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
