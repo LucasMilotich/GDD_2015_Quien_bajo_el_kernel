@@ -742,10 +742,6 @@ GO
 exec QUIEN_BAJO_EL_KERNEL.completar_transacciones
 GO
 
-<<<<<<< HEAD
------	 ****************************** Modificar identities ****************************** -----
-=======
-
 CREATE TRIGGER QUIEN_BAJO_EL_KERNEL.TransferenciaInsertarIdTransaccion
 ON QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA
 INSTEAD OF INSERT
@@ -780,4 +776,3 @@ BEGIN
     VALUES (@origen, @destino, @fecha, @importe, @costo, @moneda_tipo, @id_transaccion)
 END
 GO
->>>>>>> caf4e7add16ed16bce2b9af1e3f461560a95311b
