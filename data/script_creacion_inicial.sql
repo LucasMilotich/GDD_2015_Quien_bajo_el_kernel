@@ -743,7 +743,9 @@ exec QUIEN_BAJO_EL_KERNEL.completar_transacciones
 GO
 
 
+
 -----	 ****************************** Modificar identities ****************************** -----
+
 
 
 CREATE TRIGGER QUIEN_BAJO_EL_KERNEL.TransferenciaInsertarIdTransaccion
