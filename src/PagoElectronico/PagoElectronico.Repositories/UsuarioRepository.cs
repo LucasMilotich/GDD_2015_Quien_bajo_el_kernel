@@ -96,6 +96,7 @@ namespace PagoElectronico.Repositories
 
         public Usuario GetByUsernameAndPassword(string username, byte[] password)
         {
+            RolRepository rolRepository = new RolRepository();
             Usuario usuario = null;
 
             SqlCommand command = DBConnection.CreateStoredProcedure("GetUsuarioByUsernameAndPassword");
@@ -105,16 +106,15 @@ namespace PagoElectronico.Repositories
             DataRowCollection collection = DBConnection.EjecutarStoredProcedureSelect(command).Rows;
             foreach (DataRow row in collection)
             {
-                command = DBConnection.CreateStoredProcedure("DeleteUsuarioLog");
-                command.Parameters.AddWithValue("@userName", username);
-                DBConnection.ExecuteNonQuery(command);
+                usuario = this.CreateUsuario(row);
+                usuario.Roles = rolRepository.GetRolesByUsername(username);
 
-                return this.CreateUsuario(row);
+                return usuario;
             }
 
-            command = DBConnection.CreateStoredProcedure("InsertUsuarioLog");
-            command.Parameters.AddWithValue("@userName", username);
-            DBConnection.ExecuteNonQuery(command);
+            //command = DBConnection.CreateStoredProcedure("InsertUsuarioLog");
+            //command.Parameters.AddWithValue("@userName", username);
+            //DBConnection.ExecuteNonQuery(command);
 
             return usuario;
         }
@@ -140,19 +140,10 @@ namespace PagoElectronico.Repositories
         private Usuario CreateUsuario(DataRow reader)
         {
             Usuario usuario = new Usuario();
-            //usuario.Apellido = reader["apellido"].ToString();
-            //usuario.FechaNacimiento = !string.IsNullOrEmpty(reader["fechaNacimiento"].ToString()) ? Convert.ToDateTime(reader["fechaNacimiento"]) : (DateTime?)null;
-            //usuario.Mail = reader["mail"].ToString();
-            //usuario.Nombre = reader["nombre"].ToString();
-            //usuario.NumeroDocumento = reader["numeroDocumento"].ToString();
-            //usuario.Telefono = reader["telefono"].ToString();
-            //usuario.TipoDocumento = !string.IsNullOrEmpty(reader["TipoDocumentoId"].ToString()) ? new TipoDocumento { Id = Convert.ToInt32(reader["TipoDocumentoId"]), Nombre = reader["TipoDocumentoNombre"].ToString() } : null;
-            //usuario.Direccion = new Direccion { Calle = reader["direccion"].ToString() };
-            //usuario.Id = Convert.ToInt32(reader["id"]);
-            //usuario.Rol = new Rol { Id = Convert.ToInt32(reader["rolId"]), Nombre = reader["rol"].ToString() };
-            //usuario.Username = reader["userName"].ToString();
-            //usuario.Habilitado = Convert.ToBoolean(reader["habilitado"]);
-            //usuario.Hoteles = new List<Hotel>();
+            usuario.Username = reader["username"].ToString();
+            usuario.Activo = Convert.ToBoolean(reader["activo"]);
+            usuario.PreguntaSecreta = reader["pregunta_secreta"].ToString();
+            usuario.RespuestaSecreta = reader["respuesta_secreta"].ToString();
 
             return usuario;
         }

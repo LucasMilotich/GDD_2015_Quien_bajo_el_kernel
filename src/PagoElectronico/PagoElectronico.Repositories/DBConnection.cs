@@ -36,16 +36,16 @@ namespace PagoElectronico.Repositories
             SqlCommand command = new SqlCommand(string.Format("[GD1C2015].[QUIEN_BAJO_EL_KERNEL].[{0}]", storedName), conexion);
             command.CommandType = CommandType.StoredProcedure;
 
-
             return command;
         }
 
         public static int ExecuteNonQuery(SqlCommand command)
         {
+            int retorno;
             try
             {
                 command.Connection.Open();
-                return command.ExecuteNonQuery();
+                retorno = command.ExecuteNonQuery();
             }
             catch (Exception exception)
             {
@@ -56,99 +56,113 @@ namespace PagoElectronico.Repositories
                 command.Connection.Close();
                 command.Connection.Dispose();
             }
+
+            return retorno;
         }
 
         public static int ExecuteScalar(SqlCommand command)
         {
+            int retorno;
             try
             {
-                int retorno;
                 command.Connection.Open();
                 retorno = Convert.ToInt32(command.ExecuteScalar());
-
-                command.Connection.Close();
-                command.Connection.Dispose();
-                return retorno;
             }
             catch (Exception exception)
             {
                 throw exception;
             }
+            finally
+            {
+                command.Connection.Close();
+                command.Connection.Dispose();
+            }
+
+            return retorno;
         }
 
         public static double ExecuteScalarDouble(SqlCommand command)
         {
+            double retorno;
             try
             {
-                double retorno;
                 command.Connection.Open();
-                retorno= Convert.ToDouble(command.ExecuteScalar());
-
-                command.Connection.Close();
-                command.Connection.Dispose();
-                return retorno;
+                retorno = Convert.ToDouble(command.ExecuteScalar());
             }
             catch (Exception exception)
             {
                 throw exception;
             }
+            finally
+            {
+                command.Connection.Close();
+                command.Connection.Dispose();
+            }
+
+            return retorno;
         }
 
         public static long ExecuteScalarLong(SqlCommand command)
         {
+            long retorno;
             try
             {
-                long retorno;
                 command.Connection.Open();
                 retorno = Convert.ToInt64(command.ExecuteScalar());
-
-                command.Connection.Close();
-                command.Connection.Dispose();
-                return retorno;
             }
             catch (Exception exception)
             {
                 throw exception;
             }
+            finally
+            {
+                command.Connection.Close();
+                command.Connection.Dispose();
+            }
+
+            return retorno;
         }
 
         public static string ExecuteScalarString(SqlCommand command)
         {
+            string retorno;
             try
             {
-                string retorno;
                 command.Connection.Open();
-                retorno= command.ExecuteScalar().ToString();
-
-                command.Connection.Close();
-                command.Connection.Dispose();
-
-                return retorno;
+                retorno = command.ExecuteScalar().ToString();
             }
             catch (Exception exception)
             {
                 throw exception;
             }
+            finally
+            {
+                command.Connection.Close();
+                command.Connection.Dispose();
+            }
 
+            return retorno;
         }
 
         public static DataTable EjecutarComandoSelect(SqlCommand command)
         {
             SqlDataReader reader = null;
+            DataTable dt = new DataTable();
             try
             {
                 command.Connection.Open();
                 reader = command.ExecuteReader();
+                dt.Load(reader);
             }
             catch (Exception exception)
             {
                 throw exception;
             }
-            
-            DataTable dt = new DataTable();
-            dt.Load(reader);
-            reader.Close();
-            CloseCommand(command);
+            finally
+            {
+                reader.Close();
+                CloseCommand(command);
+            }
 
             return dt;
         }

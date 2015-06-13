@@ -8,20 +8,25 @@ using System.Text;
 using System.Windows.Forms;
 using PagoElectronico.Common;
 using PagoElectronico.Entities;
+using PagoElectronico.Services;
 
 namespace PagoElectronico.Listados
 {
     public partial class ListadoEstadistico : Form
     {
+        PaisService paisService = new PaisService();
+
         public ListadoEstadistico()
         {
             InitializeComponent();
             cargarComboBoxTrimestres();
+            dataGridViewListado.ReadOnly = true;
+            groupBoxListado.Visible = false;
         }
 
         private void btnBuscar_Click(object sender, EventArgs e)
         {
-            if (!(Validaciones.validarCampoVacio(txtAnio) || Validaciones.validarCampoString(txtAnio)))
+            if ((Validaciones.validarCampoVacio(txtAnio) & Validaciones.validarCampoNumericoEntero(txtAnio)))
             {
                 realizarBusqueda();
             }
@@ -33,6 +38,8 @@ namespace PagoElectronico.Listados
             txtAnio.Text = String.Empty;
             txtAnio.BackColor = System.Drawing.Color.White;
             comboTrimestres.SelectedIndex = 0;
+            dataGridViewListado.DataSource = null;
+            groupBoxListado.Visible = false;
         }
 
         private void cargarComboBoxTrimestres()
@@ -82,12 +89,17 @@ namespace PagoElectronico.Listados
             }
             else if (rbPaisesCantMovimientos.Checked == true)
             {
+                dataGridViewListado.DataSource = paisService.getByMayorIngresosEgresos(fechaDesde, fechaHasta);
+            }
+            else if (rbTotalFacturado.Checked == true)
+            {
 
             }
             else
             {
-
+                throw new Exception("Eror en la selecion del radioButton");
             }
+            groupBoxListado.Visible = true;
         }
 
     }
