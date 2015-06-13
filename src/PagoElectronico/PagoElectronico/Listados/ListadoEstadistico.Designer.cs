@@ -38,7 +38,7 @@
             this.comboTrimestres = new System.Windows.Forms.ComboBox();
             this.lblTrimestre = new System.Windows.Forms.Label();
             this.btnBuscar = new System.Windows.Forms.Button();
-            this.txtCuenta = new System.Windows.Forms.TextBox();
+            this.txtAnio = new System.Windows.Forms.TextBox();
             this.lblAnio = new System.Windows.Forms.Label();
             this.groupBoxListado = new System.Windows.Forms.GroupBox();
             this.dataGridViewListado = new System.Windows.Forms.DataGridView();
@@ -58,7 +58,7 @@
             this.groupBoxConsulta.Controls.Add(this.comboTrimestres);
             this.groupBoxConsulta.Controls.Add(this.lblTrimestre);
             this.groupBoxConsulta.Controls.Add(this.btnBuscar);
-            this.groupBoxConsulta.Controls.Add(this.txtCuenta);
+            this.groupBoxConsulta.Controls.Add(this.txtAnio);
             this.groupBoxConsulta.Controls.Add(this.lblAnio);
             this.groupBoxConsulta.Location = new System.Drawing.Point(12, 12);
             this.groupBoxConsulta.Name = "groupBoxConsulta";
@@ -162,12 +162,12 @@
             this.btnBuscar.UseVisualStyleBackColor = true;
             this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
             // 
-            // txtCuenta
+            // txtAnio
             // 
-            this.txtCuenta.Location = new System.Drawing.Point(70, 21);
-            this.txtCuenta.Name = "txtCuenta";
-            this.txtCuenta.Size = new System.Drawing.Size(91, 20);
-            this.txtCuenta.TabIndex = 3;
+            this.txtAnio.Location = new System.Drawing.Point(70, 21);
+            this.txtAnio.Name = "txtAnio";
+            this.txtAnio.Size = new System.Drawing.Size(91, 20);
+            this.txtAnio.TabIndex = 3;
             // 
             // lblAnio
             // 
@@ -217,7 +217,7 @@
 
         private System.Windows.Forms.GroupBox groupBoxConsulta;
         private System.Windows.Forms.Button btnBuscar;
-        private System.Windows.Forms.TextBox txtCuenta;
+        private System.Windows.Forms.TextBox txtAnio;
         private System.Windows.Forms.Label lblAnio;
         private System.Windows.Forms.GroupBox groupBoxListado;
         private System.Windows.Forms.DataGridView dataGridViewListado;
