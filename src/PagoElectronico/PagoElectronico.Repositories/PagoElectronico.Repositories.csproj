@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{669711AB-EFB2-4C0B-BCF6-E9AEBF4EFA07}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -51,6 +51,7 @@
     <Compile Include="BaseRepository.cs" />
     <Compile Include="CuentaRepository.cs" />
     <Compile Include="FuncionesRepository.cs" />
+    <Compile Include="PaisRepository.cs" />
     <Compile Include="RolRepository.cs" />
     <Compile Include="DBConnection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

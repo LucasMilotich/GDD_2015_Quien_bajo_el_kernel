@@ -38,6 +38,8 @@
             this.rolesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.crearNuevoRolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cerrarSesiónToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.buscarRolesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.modificarRolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -103,7 +105,9 @@
             // rolesToolStripMenuItem
             // 
             this.rolesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.crearNuevoRolToolStripMenuItem});
+            this.crearNuevoRolToolStripMenuItem,
+            this.buscarRolesToolStripMenuItem,
+            this.modificarRolToolStripMenuItem});
             this.rolesToolStripMenuItem.Name = "rolesToolStripMenuItem";
             this.rolesToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
             this.rolesToolStripMenuItem.Text = "Roles";
@@ -121,6 +125,18 @@
             this.cerrarSesiónToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.cerrarSesiónToolStripMenuItem.Text = "Cerrar Sesión";
             this.cerrarSesiónToolStripMenuItem.Click += new System.EventHandler(this.cerrarSesiónToolStripMenuItem_Click);
+            // buscarRolesToolStripMenuItem
+            // 
+            this.buscarRolesToolStripMenuItem.Name = "buscarRolesToolStripMenuItem";
+            this.buscarRolesToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.buscarRolesToolStripMenuItem.Text = "Buscar roles";
+            this.buscarRolesToolStripMenuItem.Click += new System.EventHandler(this.buscarRolesToolStripMenuItem_Click);
+            // 
+            // modificarRolToolStripMenuItem
+            // 
+            this.modificarRolToolStripMenuItem.Name = "modificarRolToolStripMenuItem";
+            this.modificarRolToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.modificarRolToolStripMenuItem.Text = "Modificar rol";
             // 
             // Home
             // 
@@ -152,6 +168,8 @@
         private System.Windows.Forms.ToolStripMenuItem rolesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem crearNuevoRolToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cerrarSesiónToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem buscarRolesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem modificarRolToolStripMenuItem;
     }
 }
 

@@ -48,6 +48,8 @@
     <Compile Include="CuentaService.cs" />
     <Compile Include="Interfaces\ILoginService.cs" />
     <Compile Include="LoginService.cs" />
+    <Compile Include="FuncionesService.cs" />
+    <Compile Include="PaisService.cs" />
     <Compile Include="TipoMonedaService.cs" />
     <Compile Include="TransferenciaService.cs" />
     <Compile Include="UsuarioService.cs" />
