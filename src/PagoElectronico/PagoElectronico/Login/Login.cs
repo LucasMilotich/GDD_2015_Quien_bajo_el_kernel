@@ -16,10 +16,12 @@ namespace PagoElectronico.Login
     public partial class Login : Form
     {
         public ILoginService loginService { get; set; }
+        public FuncionalidadService funcionalidadService { get; set; }
 
         public Login()
         {
             this.loginService = new LoginService();
+            this.funcionalidadService = new FuncionalidadService();
             this.StartPosition = FormStartPosition.CenterScreen;
             InitializeComponent();
         }
@@ -37,7 +39,6 @@ namespace PagoElectronico.Login
 
                     if (usuario != null)
                     {
-                        //usuario.Rol.Funcionalidades = this.FuncionalidadService.GetByRolId(usuario.Rol.Id);
                         Session.Usuario = usuario;
                         if (usuario.Roles.Count > 1)
                         {
@@ -45,6 +46,8 @@ namespace PagoElectronico.Login
                         }
                         else
                         {
+                            usuario.SelectedRol = usuario.Roles.FirstOrDefault();
+                            usuario.SelectedRol.Funcionalidades = this.funcionalidadService.GetByRolId(usuario.SelectedRol.Id).ToList();
                             this.DisplayForm(new Home());
                         }                        
                     }

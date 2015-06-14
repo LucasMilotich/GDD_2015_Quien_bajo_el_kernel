@@ -7,15 +7,17 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using PagoElectronico.Entities;
+using PagoElectronico.Services;
 
 namespace PagoElectronico.Login
 {
     public partial class SeleccionRol : Form
     {
-        //public IFuncionalidadService funcionalidadService { get; set; }
+        public FuncionalidadService funcionalidadService { get; set; }
 
         public SeleccionRol()
         {
+            this.funcionalidadService = new FuncionalidadService();
             InitializeComponent();
         }
 
@@ -27,14 +29,23 @@ namespace PagoElectronico.Login
 
         private void btnAceptar_Click(object sender, EventArgs e)
         {
-            Session.Usuario.SelectedRol = new Rol 
+            if (cmbRoles.SelectedValue != null && Convert.ToInt32(cmbRoles.SelectedValue) > 0)
             {
-                Id = Convert.ToInt32(cmbRoles.SelectedValue),
-                Nombre = cmbRoles.SelectedText,
-                Activo = true
-            };
+                var funcionalidades = funcionalidadService.GetByRolId(Convert.ToInt32(cmbRoles.SelectedValue)).ToList();
+                Session.Usuario.SelectedRol = new Rol
+                {
+                    Id = Convert.ToInt32(cmbRoles.SelectedValue),
+                    Nombre = cmbRoles.SelectedText,
+                    Activo = true,
+                    Funcionalidades = funcionalidades
+                };
 
-            this.DisplayForm(new Home());
+                this.DisplayForm(new Home());
+            }
+            else 
+            {
+                MessageBox.Show("Rol seleccionado no válido", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
         }
 
         private void DisplayForm(Form form)

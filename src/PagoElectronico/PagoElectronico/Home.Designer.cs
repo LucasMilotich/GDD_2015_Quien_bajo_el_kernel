@@ -40,6 +40,8 @@
             this.crearNuevoRolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.buscarRolesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.modificarRolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cuentasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.altaDeCuenta = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -49,7 +51,8 @@
             this.archivoToolStripMenuItem,
             this.accionesToolStripMenuItem,
             this.transaccionesToolStripMenuItem,
-            this.rolesToolStripMenuItem});
+            this.rolesToolStripMenuItem,
+            this.cuentasToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(906, 24);
@@ -140,6 +143,21 @@
             this.modificarRolToolStripMenuItem.Text = "Modificar rol";
             this.modificarRolToolStripMenuItem.Click += new System.EventHandler(this.modificarRolToolStripMenuItem_Click);
             // 
+            // cuentasToolStripMenuItem
+            // 
+            this.cuentasToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.altaDeCuenta});
+            this.cuentasToolStripMenuItem.Name = "cuentasToolStripMenuItem";
+            this.cuentasToolStripMenuItem.Size = new System.Drawing.Size(62, 20);
+            this.cuentasToolStripMenuItem.Text = "Cuentas";
+            // 
+            // altaDeCuenta
+            // 
+            this.altaDeCuenta.Name = "altaDeCuenta";
+            this.altaDeCuenta.Size = new System.Drawing.Size(152, 22);
+            this.altaDeCuenta.Text = "Alta de Cuenta";
+            this.altaDeCuenta.Click += new System.EventHandler(this.altaDeCuenta_Click);
+            // 
             // Home
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -172,5 +190,7 @@
         private System.Windows.Forms.ToolStripMenuItem cerrarSesiónToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem buscarRolesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem modificarRolToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cuentasToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem altaDeCuenta;
     }
 }

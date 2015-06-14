@@ -9,7 +9,7 @@ namespace PagoElectronico.Services
 {
     public class TipoMonedaService
     {
-        public IEnumerable<TipoMoneda> getAll()
+        public IEnumerable<TipoMoneda> GetAll()
         {
             TipoMonedaRepository tipoMonedaRepo = new TipoMonedaRepository();
             return tipoMonedaRepo.GetAll();

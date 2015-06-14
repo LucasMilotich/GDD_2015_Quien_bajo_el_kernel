@@ -11,6 +11,7 @@ using PagoElectronico.Listados;
 using PagoElectronico.Transferencias;
 using PagoElectronico.ABM_Rol;
 using PagoElectronico.Entities;
+using PagoElectronico.ABM_Cuenta;
 
 namespace PagoElectronico
 {
@@ -83,6 +84,10 @@ namespace PagoElectronico
 
         }
 
+        private void altaDeCuenta_Click(object sender, EventArgs e)
+        {
+            showForm(new AltaCuenta());
+        }
         private void modificarRolToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var rolModificacionForm = new Modificacion();
