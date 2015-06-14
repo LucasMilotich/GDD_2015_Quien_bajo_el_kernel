@@ -11,6 +11,7 @@ using PagoElectronico.Listados;
 using PagoElectronico.Transferencias;
 using PagoElectronico.ABM_Rol;
 using PagoElectronico.Entities;
+using PagoElectronico.ABM_Cuenta;
 
 namespace PagoElectronico
 {
@@ -81,6 +82,11 @@ namespace PagoElectronico
             rolBusquedaForm.MdiParent = this;
             showForm(rolBusquedaForm);
 
+        }
+
+        private void altaDeCuenta_Click(object sender, EventArgs e)
+        {
+            showForm(new AltaCuenta());
         }
     }
 }

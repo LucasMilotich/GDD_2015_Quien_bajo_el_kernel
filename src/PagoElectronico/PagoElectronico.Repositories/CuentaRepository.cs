@@ -71,5 +71,39 @@ namespace PagoElectronico.Repositories
             command.CommandText = "select moneda_tipo from [QUIEN_BAJO_EL_KERNEL].[CUENTA] where numero=" + numeroCuenta.ToString();
             return DBConnection.ExecuteScalar(command);
         }
+
+        public IEnumerable<TipoCuenta> getTiposCuenta()
+        {
+            List<TipoCuenta> tipoCuentas = new List<TipoCuenta>();
+
+            SqlCommand command = DBConnection.CreateStoredProcedure("GetTiposCuenta");
+            DataRowCollection collection = DBConnection.EjecutarStoredProcedureSelect(command).Rows;
+            foreach (DataRow tipo in collection)
+            {
+                TipoCuenta entity = this.CreateCuenta(tipo);
+                tipoCuentas.Add(entity);
+            }
+
+            return tipoCuentas;
+
+        }
+
+
+        private TipoCuenta CreateCuenta(DataRow reader)
+        {
+            TipoCuenta tipo = new TipoCuenta();
+            tipo.codigo = Convert.ToInt32(reader["codigo"]);
+            tipo.costo = Convert.ToDouble(reader["costo"]);
+            tipo.descripcion = reader["descripcion"].ToString();
+            tipo.duracion = Convert.ToInt64(reader["duracion"]);
+
+            return tipo;
+        }
+
+        public long GetMaxNroCuenta()
+        {
+            SqlCommand command = DBConnection.CreateStoredProcedure("GetMaxNroCuenta");
+            return DBConnection.ExecuteScalarLong(command);
+        }
     }
 }
