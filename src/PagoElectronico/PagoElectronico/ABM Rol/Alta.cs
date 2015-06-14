@@ -12,9 +12,9 @@ using PagoElectronico.Services.Interfaces;
 
 namespace PagoElectronico.ABM_Rol
 {
-    public partial class CreacionRolForm : Form
+    public partial class Alta : Form
     {
-        public CreacionRolForm()
+        public Alta()
         {
             InitializeComponent();
             IRolService rolserv = new RolService();

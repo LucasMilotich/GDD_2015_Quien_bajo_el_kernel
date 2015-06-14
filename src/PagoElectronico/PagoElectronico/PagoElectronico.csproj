@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{1A425235-25E0-4A09-B3C4-84F19D9A2184}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -91,23 +91,23 @@
     <Compile Include="ABM de Usuario\AltaEdicion.Designer.cs">
       <DependentUpon>AltaEdicion.cs</DependentUpon>
     </Compile>
-    <Compile Include="ABM Rol\ConsultaRolFrom.cs">
+    <Compile Include="ABM Rol\Consulta.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ABM Rol\ConsultaRolFrom.Designer.cs">
-      <DependentUpon>ConsultaRolFrom.cs</DependentUpon>
+    <Compile Include="ABM Rol\Consulta.Designer.cs">
+      <DependentUpon>Consulta.cs</DependentUpon>
     </Compile>
-    <Compile Include="ABM Rol\CreacionRolForm.cs">
+    <Compile Include="ABM Rol\Alta.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ABM Rol\CreacionRolForm.Designer.cs">
-      <DependentUpon>CreacionRolForm.cs</DependentUpon>
+    <Compile Include="ABM Rol\Alta.Designer.cs">
+      <DependentUpon>Alta.cs</DependentUpon>
     </Compile>
-    <Compile Include="ABM Rol\ModificacionRolForm.cs">
+    <Compile Include="ABM Rol\Modificacion.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ABM Rol\ModificacionRolForm.Designer.cs">
-      <DependentUpon>ModificacionRolForm.cs</DependentUpon>
+    <Compile Include="ABM Rol\Modificacion.Designer.cs">
+      <DependentUpon>Modificacion.cs</DependentUpon>
     </Compile>
     <Compile Include="Common\Validaciones.cs" />
     <Compile Include="Consulta Saldos\ConsultaSaldos.cs">
@@ -166,14 +166,14 @@
     <EmbeddedResource Include="ABM de Usuario\AltaEdicion.resx">
       <DependentUpon>AltaEdicion.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ABM Rol\ConsultaRolFrom.resx">
-      <DependentUpon>ConsultaRolFrom.cs</DependentUpon>
+    <EmbeddedResource Include="ABM Rol\Consulta.resx">
+      <DependentUpon>Consulta.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ABM Rol\CreacionRolForm.resx">
-      <DependentUpon>CreacionRolForm.cs</DependentUpon>
+    <EmbeddedResource Include="ABM Rol\Alta.resx">
+      <DependentUpon>Alta.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ABM Rol\ModificacionRolForm.resx">
-      <DependentUpon>ModificacionRolForm.cs</DependentUpon>
+    <EmbeddedResource Include="ABM Rol\Modificacion.resx">
+      <DependentUpon>Modificacion.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Consulta Saldos\ConsultaSaldos.resx">
       <DependentUpon>ConsultaSaldos.cs</DependentUpon>

@@ -15,9 +15,8 @@ namespace PagoElectronico.Repositories
         {
             List<TipoMoneda> tipoMonedasList = new List<TipoMoneda>();
 
-            SqlCommand command = DBConnection.CreateCommand();
-            command.CommandText = "select * from QUIEN_BAJO_EL_KERNEL.TIPO_MONEDA";
-            DataRowCollection collection = DBConnection.EjecutarComandoSelect(command).Rows;
+            SqlCommand command = DBConnection.CreateStoredProcedure("GetTipoMoneda");
+            DataRowCollection collection = DBConnection.EjecutarStoredProcedureSelect(command).Rows;
             foreach (DataRow row in collection)
             {
                 TipoMoneda tipoMoneda = new TipoMoneda();
@@ -25,6 +24,7 @@ namespace PagoElectronico.Repositories
                 tipoMoneda.descripcion = row[1].ToString();
                 tipoMonedasList.Add(tipoMoneda);
             }
+
             return tipoMonedasList;
         }
 

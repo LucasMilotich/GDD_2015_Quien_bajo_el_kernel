@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using PagoElectronico.Repositories;
+using PagoElectronico.Entities;
 
 namespace PagoElectronico.Services
 {
@@ -25,11 +26,23 @@ namespace PagoElectronico.Services
             CuentaRepository repository = new CuentaRepository();
             return repository.getEstado(numeroCuenta);
         }
+
         public int getMonedaTipo(long numeroCuenta)
         {
             CuentaRepository repository = new CuentaRepository();
             return repository.getMonedaTipo(numeroCuenta);
         }
 
+        public IEnumerable<TipoCuenta> GetTiposCuenta()
+        {
+            CuentaRepository repository = new CuentaRepository();
+            return repository.getTiposCuenta();
+        }
+
+        public long GetMaxNroCuenta()
+        {
+            CuentaRepository repository = new CuentaRepository();
+            return repository.GetMaxNroCuenta();
+        }
     }
 }

@@ -11,6 +11,7 @@ using PagoElectronico.Listados;
 using PagoElectronico.Transferencias;
 using PagoElectronico.ABM_Rol;
 using PagoElectronico.Entities;
+using PagoElectronico.ABM_Cuenta;
 
 namespace PagoElectronico
 {
@@ -52,7 +53,7 @@ namespace PagoElectronico
 
         private void crearNuevoRolToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            showForm(new CreacionRolForm());
+            showForm(new Alta());
         }
 
         private void showForm(Form unForm)
@@ -77,9 +78,21 @@ namespace PagoElectronico
 
         private void buscarRolesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var rolBusquedaForm = new ConsultaRolFrom();
+            var rolBusquedaForm = new ConsultaRol();
             rolBusquedaForm.MdiParent = this;
             showForm(rolBusquedaForm);
+
+        }
+
+        private void altaDeCuenta_Click(object sender, EventArgs e)
+        {
+            showForm(new AltaCuenta());
+        }
+        private void modificarRolToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var rolModificacionForm = new Modificacion();
+            rolModificacionForm.MdiParent = this;
+            showForm(rolModificacionForm);
 
         }
     }
