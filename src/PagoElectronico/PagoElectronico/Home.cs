@@ -10,6 +10,7 @@ using PagoElectronico.Consulta_Saldos;
 using PagoElectronico.Listados;
 using PagoElectronico.Transferencias;
 using PagoElectronico.ABM_Rol;
+using PagoElectronico.Entities;
 
 namespace PagoElectronico
 {
@@ -57,9 +58,21 @@ namespace PagoElectronico
         private void showForm(Form unForm)
         {
             this.Cursor = Cursors.WaitCursor;
+            unForm.Location = this.Location;
+            unForm.StartPosition = FormStartPosition.CenterScreen;
             unForm.MdiParent = this;
             unForm.Show();
             this.Cursor = Cursors.Default;
+        }
+
+        private void cerrarSesiónToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Session.Usuario = null;
+            var form = new Login.Login();
+            form.Location = this.Location;
+            form.StartPosition = FormStartPosition.CenterScreen;
+            form.Show();
+            this.Hide();
         }
     }
 }
