@@ -141,6 +141,7 @@
             this.modificarRolToolStripMenuItem.Name = "modificarRolToolStripMenuItem";
             this.modificarRolToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
             this.modificarRolToolStripMenuItem.Text = "Modificar rol";
+            this.modificarRolToolStripMenuItem.Click += new System.EventHandler(this.modificarRolToolStripMenuItem_Click);
             // 
             // cuentasToolStripMenuItem
             // 
@@ -193,4 +194,3 @@
         private System.Windows.Forms.ToolStripMenuItem altaDeCuenta;
     }
 }
-
