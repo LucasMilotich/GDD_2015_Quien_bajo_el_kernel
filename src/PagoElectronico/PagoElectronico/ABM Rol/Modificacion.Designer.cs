@@ -33,6 +33,10 @@
             this.chkActivo = new System.Windows.Forms.CheckBox();
             this.dgrRoles = new System.Windows.Forms.DataGridView();
             this.btnBuscar = new System.Windows.Forms.Button();
+            this.btnModificar = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.txtNombreModif = new System.Windows.Forms.TextBox();
+            this.chkActivoModif = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgrRoles)).BeginInit();
             this.SuspendLayout();
             // 
@@ -55,6 +59,8 @@
             // chkActivo
             // 
             this.chkActivo.AutoSize = true;
+            this.chkActivo.Checked = true;
+            this.chkActivo.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkActivo.Location = new System.Drawing.Point(269, 22);
             this.chkActivo.Name = "chkActivo";
             this.chkActivo.Size = new System.Drawing.Size(56, 17);
@@ -70,12 +76,12 @@
             this.dgrRoles.Location = new System.Drawing.Point(123, 67);
             this.dgrRoles.Name = "dgrRoles";
             this.dgrRoles.ReadOnly = true;
-            this.dgrRoles.Size = new System.Drawing.Size(298, 127);
+            this.dgrRoles.Size = new System.Drawing.Size(432, 127);
             this.dgrRoles.TabIndex = 3;
             // 
             // btnBuscar
             // 
-            this.btnBuscar.Location = new System.Drawing.Point(27, 67);
+            this.btnBuscar.Location = new System.Drawing.Point(27, 68);
             this.btnBuscar.Name = "btnBuscar";
             this.btnBuscar.Size = new System.Drawing.Size(75, 23);
             this.btnBuscar.TabIndex = 4;
@@ -83,17 +89,56 @@
             this.btnBuscar.UseVisualStyleBackColor = true;
             this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
             // 
-            // ModificacionRolForm
+            // btnModificar
+            // 
+            this.btnModificar.Location = new System.Drawing.Point(27, 97);
+            this.btnModificar.Name = "btnModificar";
+            this.btnModificar.Size = new System.Drawing.Size(75, 23);
+            this.btnModificar.TabIndex = 5;
+            this.btnModificar.Text = "Modificar";
+            this.btnModificar.UseVisualStyleBackColor = true;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(24, 235);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(58, 13);
+            this.label2.TabIndex = 6;
+            this.label2.Text = "Nombre rol";
+            // 
+            // txtNombreModif
+            // 
+            this.txtNombreModif.Location = new System.Drawing.Point(99, 235);
+            this.txtNombreModif.Name = "txtNombreModif";
+            this.txtNombreModif.Size = new System.Drawing.Size(100, 20);
+            this.txtNombreModif.TabIndex = 7;
+            // 
+            // chkActivoModif
+            // 
+            this.chkActivoModif.AutoSize = true;
+            this.chkActivoModif.Location = new System.Drawing.Point(245, 238);
+            this.chkActivoModif.Name = "chkActivoModif";
+            this.chkActivoModif.Size = new System.Drawing.Size(56, 17);
+            this.chkActivoModif.TabIndex = 8;
+            this.chkActivoModif.Text = "Activo";
+            this.chkActivoModif.UseVisualStyleBackColor = true;
+            // 
+            // Modificacion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(652, 337);
+            this.ClientSize = new System.Drawing.Size(652, 436);
+            this.Controls.Add(this.chkActivoModif);
+            this.Controls.Add(this.txtNombreModif);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.btnModificar);
             this.Controls.Add(this.btnBuscar);
             this.Controls.Add(this.dgrRoles);
             this.Controls.Add(this.chkActivo);
             this.Controls.Add(this.txtNombreRol);
             this.Controls.Add(this.label1);
-            this.Name = "ModificacionRolForm";
+            this.Name = "Modificacion";
             this.Text = "Modificacion";
             ((System.ComponentModel.ISupportInitialize)(this.dgrRoles)).EndInit();
             this.ResumeLayout(false);
@@ -108,5 +153,9 @@
         private System.Windows.Forms.CheckBox chkActivo;
         private System.Windows.Forms.DataGridView dgrRoles;
         private System.Windows.Forms.Button btnBuscar;
+        private System.Windows.Forms.Button btnModificar;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox txtNombreModif;
+        private System.Windows.Forms.CheckBox chkActivoModif;
     }
 }

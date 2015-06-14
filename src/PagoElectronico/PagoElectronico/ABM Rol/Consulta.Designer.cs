@@ -66,6 +66,8 @@
             // chkActivo
             // 
             this.chkActivo.AutoSize = true;
+            this.chkActivo.Checked = true;
+            this.chkActivo.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkActivo.Location = new System.Drawing.Point(345, 23);
             this.chkActivo.Name = "chkActivo";
             this.chkActivo.Size = new System.Drawing.Size(56, 17);
@@ -80,7 +82,7 @@
             this.dgrRoles.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgrRoles.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dgrRoles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgrRoles.Location = new System.Drawing.Point(24, 127);
+            this.dgrRoles.Location = new System.Drawing.Point(24, 100);
             this.dgrRoles.Name = "dgrRoles";
             this.dgrRoles.ReadOnly = true;
             this.dgrRoles.Size = new System.Drawing.Size(377, 108);
