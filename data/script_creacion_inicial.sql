@@ -781,3 +781,10 @@ BEGIN
     VALUES (@origen, @destino, @fecha, @importe, @costo, @moneda_tipo, @id_transaccion)
 END
 GO
+
+-----	 ****************************** INSERTS AISLADOS ****************************** -----
+
+
+INSERT INTO [QUIEN_BAJO_EL_KERNEL].[Usuario]([username], [password], [activo]) VALUES ('admin', 0xE6B87050BFCB8143FCB8DB0170A4DC9ED00D904DDD3E2A4AD1B1E8DC0FDC9BE7, 1)
+GO
+
