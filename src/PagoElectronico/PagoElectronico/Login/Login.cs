@@ -9,16 +9,20 @@ using System.Windows.Forms;
 using PagoElectronico.Services;
 using PagoElectronico.Services.Interfaces;
 using PagoElectronico.Entities;
+using PagoElectronico.Common;
 
 namespace PagoElectronico.Login
 {
     public partial class Login : Form
     {
         public ILoginService loginService { get; set; }
+        public FuncionalidadService funcionalidadService { get; set; }
 
         public Login()
         {
             this.loginService = new LoginService();
+            this.funcionalidadService = new FuncionalidadService();
+            this.StartPosition = FormStartPosition.CenterScreen;
             InitializeComponent();
         }
 
@@ -26,26 +30,58 @@ namespace PagoElectronico.Login
         {
             try
             {
-
-                Usuario usuario = this.loginService.Login(txtUsername.Text, txtPassword.Text);
-
-                if (usuario != null)
+                Usuario usuario = null;
+                bool isValid = Validaciones.validarCampoVacio(txtUsername);
+                isValid = Validaciones.validarCampoVacio(txtPassword) && isValid;
+                if (isValid)
                 {
-                    //usuario.Rol.Funcionalidades = this.FuncionalidadService.GetByRolId(usuario.Rol.Id);
-                    Session.Usuario = usuario;
-                    this.Hide();
-                    Home formHome = new Home();
-                    formHome.Show();
+                    usuario = this.loginService.Login(txtUsername.Text, txtPassword.Text);
+
+                    if (usuario != null)
+                    {
+                        Session.Usuario = usuario;
+                        if (usuario.Roles.Count > 1)
+                        {
+                            this.DisplayForm(new SeleccionRol());
+                        }
+                        else
+                        {
+                            usuario.SelectedRol = usuario.Roles.FirstOrDefault();
+                            usuario.SelectedRol.Funcionalidades = this.funcionalidadService.GetByRolId(usuario.SelectedRol.Id).ToList();
+                            this.DisplayForm(new Home());
+                        }                        
+                    }
+                    else
+                    {
+                        MessageBox.Show("El usuario ingresado no existe", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    }
                 }
-                else
+                else 
                 {
-                    MessageBox.Show("El usuario ingresado no existe", "Error", MessageBoxButtons.OK);
+                    MessageBox.Show("Debe ingresar ambos campos", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
             }
             catch (Exception)
             {
                 MessageBox.Show("Ha ocurrido un error", "Error", MessageBoxButtons.OK);
             }            
+        }
+
+        private void DisplayForm(Form form)
+        {
+            form.Location = this.Location;
+            form.StartPosition = FormStartPosition.CenterScreen;
+            form.FormClosing += delegate { this.Show(); };
+            form.Show();
+            this.Hide();
+        }
+
+        private void Login_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                Environment.Exit(1);
+            }
         }
     }
 }

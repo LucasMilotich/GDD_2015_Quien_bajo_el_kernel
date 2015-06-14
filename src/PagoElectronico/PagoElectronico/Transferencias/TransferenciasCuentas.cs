@@ -171,7 +171,7 @@ namespace PagoElectronico.Transferencias
 
         private void cargarComboTipoMoneda()
         {
-            listaTiposMoneda = (List<TipoMoneda>)tipoMonedaService.getAll();
+            listaTiposMoneda = (List<TipoMoneda>)tipoMonedaService.GetAll();
             foreach (var item in listaTiposMoneda)
             {
                 comboTipoMoneda.Items.Add(item.descripcion);

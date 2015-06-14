@@ -1,0 +1,24 @@
+USE [GD1C2015]
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[QUIEN_BAJO_EL_KERNEL].[GetFuncionalidadesByRol]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [QUIEN_BAJO_EL_KERNEL].[GetFuncionalidadesByRol]
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [QUIEN_BAJO_EL_KERNEL].[GetFuncionalidadesByRol]
+@rolId numeric(10,0)
+AS
+BEGIN
+	SET NOCOUNT ON;
+	
+	SELECT 
+		f.*
+	FROM [QUIEN_BAJO_EL_KERNEL].FUNCIONALIDAD f
+	INNER JOIN [QUIEN_BAJO_EL_KERNEL].FUNCIONALIDAD_ROL fr ON fr.id_funcionalidad = f.id_funcionalidad
+	WHERE
+		fr.id_rol = @rolId
+END
+GO

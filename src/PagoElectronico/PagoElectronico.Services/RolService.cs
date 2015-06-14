@@ -20,7 +20,7 @@ namespace PagoElectronico.Services
 
         public IList<Funcionalidad> Getfunciones() {
 
-            FuncionesRepository repo = new FuncionesRepository();
+            FuncionalidadRepository repo = new FuncionalidadRepository();
             List<Funcionalidad> funcionalidades = new List<Funcionalidad>();
 
             funcionalidades = (List<Funcionalidad>) repo.GetAll();
@@ -28,6 +28,14 @@ namespace PagoElectronico.Services
             return funcionalidades;
         }
 
+        public List<Rol> getRoles(String nombre, bool activo)
+        {
+
+            RolRepository repo = new RolRepository();
+            return repo.getRoles(nombre, activo);
+            
+
+        }
 
 
 

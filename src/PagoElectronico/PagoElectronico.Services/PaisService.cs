@@ -15,5 +15,11 @@ namespace PagoElectronico.Services
             return paisRepo.getByMayorIngresosEgresos(fechaDesde, fechaHasta);
         }
 
+        public IEnumerable<Pais> GetAll()
+        {
+            PaisRepository paisRepo = new PaisRepository();
+            return paisRepo.GetAll().ToList();
+        }
+
     }
 }

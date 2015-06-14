@@ -13,7 +13,17 @@ namespace PagoElectronico.Repositories
 
         public override IEnumerable<Pais> GetAll()
         {
-            throw new NotImplementedException();
+            List<Pais> paises = new List<Pais>();
+
+            SqlCommand command = DBConnection.CreateStoredProcedure("GetPaises");
+            DataRowCollection collection = DBConnection.EjecutarStoredProcedureSelect(command).Rows;
+            foreach (DataRow pais in collection)
+            {
+                Pais entity = this.CreatePais(pais);
+                paises.Add(entity);
+            }
+
+            return paises;
         }
 
         public override Pais Get(int id)
@@ -36,7 +46,6 @@ namespace PagoElectronico.Repositories
             throw new NotImplementedException();
         }
 
-
         public IEnumerable<Pais> getByMayorIngresosEgresos(DateTime fechaDesde, DateTime fechaHasta)
         {
             SqlCommand command = DBConnection.CreateStoredProcedure("PaisesConMayorIngresosEgresos");
@@ -58,5 +67,13 @@ namespace PagoElectronico.Repositories
             return listaPaises;
         }
 
+        private Pais CreatePais(DataRow reader)
+        {
+            Pais pais = new Pais();
+            pais.codigoPais = Convert.ToInt64(reader["codigo_pais"]);
+            pais.descripcionPais = reader["descripcion_pais"].ToString();
+
+            return pais;
+        }
     }
 }

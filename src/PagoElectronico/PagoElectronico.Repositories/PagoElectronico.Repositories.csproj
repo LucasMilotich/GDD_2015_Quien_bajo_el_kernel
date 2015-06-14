@@ -51,7 +51,7 @@
     <Compile Include="BaseRepository.cs" />
     <Compile Include="ClienteRepository.cs" />
     <Compile Include="CuentaRepository.cs" />
-    <Compile Include="FuncionesRepository.cs" />
+    <Compile Include="FuncionalidadRepository.cs" />
     <Compile Include="PaisRepository.cs" />
     <Compile Include="RolRepository.cs" />
     <Compile Include="DBConnection.cs" />

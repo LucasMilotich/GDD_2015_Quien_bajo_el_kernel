@@ -10,6 +10,8 @@ using PagoElectronico.Consulta_Saldos;
 using PagoElectronico.Listados;
 using PagoElectronico.Transferencias;
 using PagoElectronico.ABM_Rol;
+using PagoElectronico.Entities;
+using PagoElectronico.ABM_Cuenta;
 
 namespace PagoElectronico
 {
@@ -51,15 +53,47 @@ namespace PagoElectronico
 
         private void crearNuevoRolToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            showForm(new CreacionRolForm());
+            showForm(new Alta());
         }
 
         private void showForm(Form unForm)
         {
             this.Cursor = Cursors.WaitCursor;
+            unForm.Location = this.Location;
+            unForm.StartPosition = FormStartPosition.CenterScreen;
             unForm.MdiParent = this;
             unForm.Show();
             this.Cursor = Cursors.Default;
+        }
+
+        private void cerrarSesiónToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Session.Usuario = null;
+            var form = new Login.Login();
+            form.Location = this.Location;
+            form.StartPosition = FormStartPosition.CenterScreen;
+            form.Show();
+            this.Hide();
+        }
+
+        private void buscarRolesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var rolBusquedaForm = new ConsultaRol();
+            rolBusquedaForm.MdiParent = this;
+            showForm(rolBusquedaForm);
+
+        }
+
+        private void altaDeCuenta_Click(object sender, EventArgs e)
+        {
+            showForm(new AltaCuenta());
+        }
+        private void modificarRolToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var rolModificacionForm = new Modificacion();
+            rolModificacionForm.MdiParent = this;
+            showForm(rolModificacionForm);
+
         }
     }
 }
