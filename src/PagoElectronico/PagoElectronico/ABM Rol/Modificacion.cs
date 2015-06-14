@@ -11,9 +11,9 @@ using PagoElectronico.Services.Interfaces;
 
 namespace PagoElectronico.ABM_Rol
 {
-    public partial class ModificacionRolForm : Form
+    public partial class Modificacion : Form
     {
-        public ModificacionRolForm()
+        public Modificacion()
         {
             InitializeComponent();
         }

@@ -1,6 +1,6 @@
 ﻿namespace PagoElectronico.ABM_Rol
 {
-    partial class ConsultaRolFrom
+    partial class ConsultaRol
     {
         /// <summary>
         /// Required designer variable.

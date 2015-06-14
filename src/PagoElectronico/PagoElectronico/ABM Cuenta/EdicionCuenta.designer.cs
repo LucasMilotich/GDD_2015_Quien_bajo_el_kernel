@@ -1,6 +1,6 @@
 ﻿namespace PagoElectronico.ABM_Cuenta
 {
-    partial class Form1
+    partial class EdicionCuenta
     {
         /// <summary>
         /// Required designer variable.
@@ -28,9 +28,17 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            this.SuspendLayout();
+            // 
+            // EdicionCuenta
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Text = "Form1";
+            this.ClientSize = new System.Drawing.Size(432, 354);
+            this.Name = "EdicionCuenta";
+            this.Text = "EdicionCuenta";
+            this.ResumeLayout(false);
+
         }
 
         #endregion

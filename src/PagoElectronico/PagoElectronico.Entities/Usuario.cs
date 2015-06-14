@@ -22,6 +22,8 @@ namespace PagoElectronico.Entities
 
         public IList<Rol> Roles { get; set; }
 
+        public Rol SelectedRol { get; set; }
+
         public byte[] HashedPassword
         {
             get

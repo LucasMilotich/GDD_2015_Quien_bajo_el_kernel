@@ -11,9 +11,9 @@ using PagoElectronico.Services;
 
 namespace PagoElectronico.ABM_Rol
 {
-    public partial class ConsultaRolFrom : Form
+    public partial class ConsultaRol : Form
     {
-        public ConsultaRolFrom()
+        public ConsultaRol()
         {
             InitializeComponent();
         }
