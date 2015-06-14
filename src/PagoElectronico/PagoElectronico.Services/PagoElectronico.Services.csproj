@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClienteService.cs" />
     <Compile Include="CuentaService.cs" />
     <Compile Include="Interfaces\ILoginService.cs" />
     <Compile Include="LoginService.cs" />

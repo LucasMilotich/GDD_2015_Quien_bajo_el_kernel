@@ -15,6 +15,7 @@ namespace PagoElectronico.Listados
     public partial class ListadoEstadistico : Form
     {
         PaisService paisService = new PaisService();
+        ClienteService clienteService = new ClienteService();
 
         public ListadoEstadistico()
         {
@@ -81,7 +82,7 @@ namespace PagoElectronico.Listados
             }
             else if (rbClientesCantTransacciones.Checked == true)
             {
-
+                dataGridViewListado.DataSource = clienteService.getByMayorIngresosEgresos(fechaDesde, fechaHasta);
             }
             else if (rbClientesCuentasInhabilitadas.Checked == true)
             {
