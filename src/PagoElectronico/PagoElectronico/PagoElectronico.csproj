@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -73,11 +73,17 @@
     <Compile Include="ABM Cliente\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="ABM Cuenta\Form1.cs">
+    <Compile Include="ABM Cuenta\AltaCuenta.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ABM Cuenta\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="ABM Cuenta\AltaCuenta.designer.cs">
+      <DependentUpon>AltaCuenta.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM Cuenta\EdicionCuenta.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM Cuenta\EdicionCuenta.designer.cs">
+      <DependentUpon>EdicionCuenta.cs</DependentUpon>
     </Compile>
     <Compile Include="ABM de Usuario\AltaEdicion.cs">
       <SubType>Form</SubType>
@@ -151,8 +157,11 @@
     <EmbeddedResource Include="ABM Cliente\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ABM Cuenta\Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="ABM Cuenta\AltaCuenta.resx">
+      <DependentUpon>AltaCuenta.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM Cuenta\EdicionCuenta.resx">
+      <DependentUpon>EdicionCuenta.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ABM de Usuario\AltaEdicion.resx">
       <DependentUpon>AltaEdicion.cs</DependentUpon>
