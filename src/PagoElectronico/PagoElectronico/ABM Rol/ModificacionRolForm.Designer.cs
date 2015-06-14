@@ -29,10 +29,11 @@
         private void InitializeComponent()
         {
             this.label1 = new System.Windows.Forms.Label();
-            this.txtNombre = new System.Windows.Forms.TextBox();
+            this.txtNombreRol = new System.Windows.Forms.TextBox();
             this.chkActivo = new System.Windows.Forms.CheckBox();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.dgrRoles = new System.Windows.Forms.DataGridView();
+            this.btnBuscar = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.dgrRoles)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -44,12 +45,12 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Nombre";
             // 
-            // txtNombre
+            // txtNombreRol
             // 
-            this.txtNombre.Location = new System.Drawing.Point(99, 19);
-            this.txtNombre.Name = "txtNombre";
-            this.txtNombre.Size = new System.Drawing.Size(100, 20);
-            this.txtNombre.TabIndex = 1;
+            this.txtNombreRol.Location = new System.Drawing.Point(99, 19);
+            this.txtNombreRol.Name = "txtNombreRol";
+            this.txtNombreRol.Size = new System.Drawing.Size(100, 20);
+            this.txtNombreRol.TabIndex = 1;
             // 
             // chkActivo
             // 
@@ -61,29 +62,40 @@
             this.chkActivo.Text = "Activo";
             this.chkActivo.UseVisualStyleBackColor = true;
             // 
-            // dataGridView1
+            // dgrRoles
             // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(27, 83);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.Size = new System.Drawing.Size(298, 127);
-            this.dataGridView1.TabIndex = 3;
+            this.dgrRoles.AllowUserToAddRows = false;
+            this.dgrRoles.AllowUserToDeleteRows = false;
+            this.dgrRoles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgrRoles.Location = new System.Drawing.Point(123, 67);
+            this.dgrRoles.Name = "dgrRoles";
+            this.dgrRoles.ReadOnly = true;
+            this.dgrRoles.Size = new System.Drawing.Size(298, 127);
+            this.dgrRoles.TabIndex = 3;
+            // 
+            // btnBuscar
+            // 
+            this.btnBuscar.Location = new System.Drawing.Point(27, 67);
+            this.btnBuscar.Name = "btnBuscar";
+            this.btnBuscar.Size = new System.Drawing.Size(75, 23);
+            this.btnBuscar.TabIndex = 4;
+            this.btnBuscar.Text = "Buscar";
+            this.btnBuscar.UseVisualStyleBackColor = true;
+            this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
             // 
             // ModificacionRolForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(652, 337);
-            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.btnBuscar);
+            this.Controls.Add(this.dgrRoles);
             this.Controls.Add(this.chkActivo);
-            this.Controls.Add(this.txtNombre);
+            this.Controls.Add(this.txtNombreRol);
             this.Controls.Add(this.label1);
             this.Name = "ModificacionRolForm";
             this.Text = "Modificacion";
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgrRoles)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -92,8 +104,9 @@
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox txtNombre;
+        private System.Windows.Forms.TextBox txtNombreRol;
         private System.Windows.Forms.CheckBox chkActivo;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView dgrRoles;
+        private System.Windows.Forms.Button btnBuscar;
     }
 }
