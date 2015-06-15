@@ -13,14 +13,29 @@ inner join QUIEN_BAJO_EL_KERNEL.FACTURA fac on fac.cliente_tipo_doc =cli.tipo_do
 inner join QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA itm on itm.factura_numero = fac.numero
 
 
+select * from QUIEN_BAJO_EL_KERNEL.CUENTA
+--where numero=1111111111111158
+where estado_codigo=3
+
+select c2.tipo_documento,c2.numero_documento,c2.apellido,c2.nombre,c1.numero as cuentaInhabilitada from QUIEN_BAJO_EL_KERNEL.CUENTA c1
+inner join QUIEN_BAJO_EL_KERNEL.CLIENTE c2 on c1.cliente_tipo_doc=c2.tipo_documento and c1.cliente_numero_doc=c2.numero_documento 
+where estado_codigo=3
+
+select * from QUIEN_BAJO_EL_KERNEL.TRANSACCIONES
+select * from QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA
+select * from QUIEN_BAJO_EL_KERNEL.CUENTA_MODIFICACION
+
+select * from QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA
+
+
 END
 GO
 --------------------------------------------------------------------------------------------
 --Cliente con mayor cantidad de comisiones facturadas en todas sus cuentas
-DROP PROCEDURE QUIEN_BAJO_EL_KERNEL.ClientesConMayorTransacciones
+DROP PROCEDURE QUIEN_BAJO_EL_KERNEL.ClientesComisionesFacturadas
 GO
 
-CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.ClientesConMayorTransacciones (@fechaDesde date, @fechaHasta date)
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.ClientesComisionesFacturadas (@fechaDesde date, @fechaHasta date)
 AS 
 BEGIN
 
@@ -32,6 +47,8 @@ group by  c1.tipo_documento,c1.numero_documento,c1.apellido,c1.nombre
 
 END
 GO
+
+
 --------------------------------------------------------------------------------------------
 -- Clientes con mayor cantidad de transacciones realizadas entre cuentas propias
 --
@@ -150,7 +167,9 @@ CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.TotalFacturadoPorCuentas(@fechaDesde date,
 AS 
 BEGIN
 
+insert into QUIEN_BAJO_EL_KERNEL.TIPO_CUENTA (codigo,descripcion,duracion,costo)
 select * from QUIEN_BAJO_EL_KERNEL.CUENTA
+select * from QUIEN_BAJO_EL_KERNEL.TIPO_CUENTA
 select * from QUIEN_BAJO_EL_KERNEL.FACTURA
 select * from QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA
 select * from QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA

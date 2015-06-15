@@ -17,6 +17,8 @@ namespace PagoElectronico.Consulta_Saldos
     public partial class ConsultaSaldos : Form
     {
         CuentaService cuentaService = new CuentaService();
+        TransferenciaService transferenciaService = new TransferenciaService();
+        
 
         public ConsultaSaldos()
         {
@@ -59,6 +61,7 @@ namespace PagoElectronico.Consulta_Saldos
             SqlCommand command = DBConnection.CreateCommand();
             if (rbDepositos.Checked)
             {
+
                 command.CommandText = "select top 5 * from [GD1C2015].[QUIEN_BAJO_EL_KERNEL].DEPOSITO  where cuenta_numero=" + txtCuenta.Text.ToString() + "  order by fecha desc ";
             }
             if (rbRetiros.Checked)

@@ -120,9 +120,15 @@ DROP PROCEDURE QUIEN_BAJO_EL_KERNEL.completar_transacciones;
 
 DROP PROCEDURE QUIEN_BAJO_EL_KERNEL.ClientesConCuentasInhabilitadas ;
 DROP PROCEDURE QUIEN_BAJO_EL_KERNEL.ClientesConMayorTransacciones;
-DROP PROCEDURE QUIEN_BAJO_EL_KERNEL.ClientesConMayorTransacciones ;
+DROP PROCEDURE QUIEN_BAJO_EL_KERNEL.ClientesComisionesFacturadas ;
 DROP PROCEDURE QUIEN_BAJO_EL_KERNEL.PaisesConMayorIngresosEgresos ;
 DROP PROCEDURE QUIEN_BAJO_EL_KERNEL.TotalFacturadoPorCuentas ;
+
+DROP PROCEDURE QUIEN_BAJO_EL_KERNEL.getUltimasDiezTransferenciasByCuenta;
+DROP PROCEDURE QUIEN_BAJO_EL_KERNEL.getUltimosCincoDepositosByCuenta;
+DROP PROCEDURE QUIEN_BAJO_EL_KERNEL.getUltimosCincoRetirosByCuenta;
+
+
 
 
 

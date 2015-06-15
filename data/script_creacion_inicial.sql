@@ -695,7 +695,7 @@ GO
 
 -----	 ****************************** STORED PROCEDURES ****************************** -----
 
----------------		SP ParaMigracion		---------------
+---------------		SP necesarios para migracion		---------------
 CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.completar_transacciones
 AS
 BEGIN
@@ -860,6 +860,40 @@ SELECT * FROM QUIEN_BAJO_EL_KERNEL.ROL f
 WHERE (@nombre is null or f.nombre like '%' + @nombre + '%') AND
 	  (@activo is null or f.activo = @activo)
 END
+GO
+
+---------------		SP ConsultaSaldos	---------------
+
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.getUltimosCincoDepositosByCuenta(@cuenta varchar(255))
+AS 
+BEGIN
+select top 5 * from [GD1C2015].[QUIEN_BAJO_EL_KERNEL].DEPOSITO  where cuenta_numero=@cuenta  order by fecha desc
+END
+GO
+
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.getUltimosCincoRetirosByCuenta(@cuenta varchar(255))
+AS 
+BEGIN
+select top 5 * from [GD1C2015].[QUIEN_BAJO_EL_KERNEL].RETIRO  where cuenta= @cuenta order by fecha desc
+END
+GO
+
+
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.getUltimasDiezTransferenciasByCuenta(@cuenta varchar(255))
+AS 
+BEGIN
+select top 10 *  from [GD1C2015].[QUIEN_BAJO_EL_KERNEL].TRANSFERENCIA  where origen= @cuenta or destino= @cuenta  order by fecha desc
+END
+GO
+
+---------------		SP Listados	---------------
+
+
+
+
+---------------		SP XXX	---------------
+
+
 
 -----	 ****************************** EXEC PROCS ****************************** -----
 
@@ -886,7 +920,6 @@ BEGIN
 END
 GO
 
----------------		SP Listados		---------------
 
 -----	 ****************************** TRIGGERS necesarios post-migracion ****************************** -----
 
