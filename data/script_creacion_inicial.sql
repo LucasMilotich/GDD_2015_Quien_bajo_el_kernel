@@ -695,6 +695,7 @@ GO
 
 -----	 ****************************** STORED PROCEDURES ****************************** -----
 
+---------------		SP ParaMigracion		---------------
 CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.completar_transacciones
 AS
 BEGIN
