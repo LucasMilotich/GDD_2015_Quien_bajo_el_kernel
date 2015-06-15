@@ -3,9 +3,7 @@ AS
 BEGIN
 
 insert into QUIEN_BAJO_EL_KERNEL.ROL (nombre,activo) values (@nombre,@activo)
-
  select scope_identity()
-
 
 END
 

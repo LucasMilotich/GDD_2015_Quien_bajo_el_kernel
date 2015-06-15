@@ -1,10 +1,37 @@
---  Clientes con..
+--  Clientes que alguna de sus cuentas fueron inhabilitadas por no pagar los costos de transacción
+DROP PROCEDURE QUIEN_BAJO_EL_KERNEL.ClientesConCuentasInhabilitadas 
+GO
+
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.ClientesConCuentasInhabilitadas (@fechaDesde date, @fechaHasta date)
+AS 
+BEGIN
+
 select cli.tipo_documento,cli.numero_documento,cta.numero, cta.estado_codigo 
 from QUIEN_BAJO_EL_KERNEL.CLIENTE cli
 inner join QUIEN_BAJO_EL_KERNEL.CUENTA cta on cta.cliente_tipo_doc=cli.tipo_documento and cta.cliente_numero_doc=cliente_numero_doc
 inner join QUIEN_BAJO_EL_KERNEL.FACTURA fac on fac.cliente_tipo_doc =cli.tipo_documento and fac.cliente_numero_doc=cli.numero_documento
 inner join QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA itm on itm.factura_numero = fac.numero
 
+
+END
+GO
+--------------------------------------------------------------------------------------------
+--Cliente con mayor cantidad de comisiones facturadas en todas sus cuentas
+DROP PROCEDURE QUIEN_BAJO_EL_KERNEL.ClientesConMayorTransacciones
+GO
+
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.ClientesConMayorTransacciones (@fechaDesde date, @fechaHasta date)
+AS 
+BEGIN
+
+select top 5  c1.tipo_documento,c1.numero_documento,c1.apellido,c1.nombre, COUNT(c3.id_transaccion) as cantComisiones from QUIEN_BAJO_EL_KERNEL.CLIENTE c1
+inner join QUIEN_BAJO_EL_KERNEL.FACTURA c2 on c2.cliente_tipo_doc=c1.tipo_documento and c2.cliente_numero_doc= c1.numero_documento 
+inner join QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA c3 on c2.numero = c3.factura_numero
+--where c2.fecha >=@fechaDesde and c2.fecha<=@fechaHasta
+group by  c1.tipo_documento,c1.numero_documento,c1.apellido,c1.nombre
+
+END
+GO
 --------------------------------------------------------------------------------------------
 -- Clientes con mayor cantidad de transacciones realizadas entre cuentas propias
 --
@@ -44,7 +71,8 @@ order by numero_documento
 
 
 
-drop procedure QUIEN_BAJO_EL_KERNEL.ClientesConMayorTransacciones 
+DROP PROCEDURE QUIEN_BAJO_EL_KERNEL.ClientesConMayorTransacciones 
+GO
 
 CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.ClientesConMayorTransacciones (@fechaDesde date, @fechaHasta date)
 AS 
@@ -73,6 +101,7 @@ select top 5* from QUIEN_BAJO_EL_KERNEL.TRANSACCIONES order by fecha desc
 select * from QUIEN_BAJO_EL_KERNEL.MovimientosPaises
 
 drop view QUIEN_BAJO_EL_KERNEL.MovimientosPaises
+GO
 
 create view QUIEN_BAJO_EL_KERNEL.MovimientosPaises as 
 select c2.pais_codigo,c1.fecha,COUNT(c2.numero) as cantMovimientos  from QUIEN_BAJO_EL_KERNEL.DEPOSITO  c1
@@ -97,9 +126,10 @@ select c2.pais_codigo,c1.fecha,count(c2.numero) as cantMovimientos from QUIEN_BA
 inner join QUIEN_BAJO_EL_KERNEL.CUENTA c2 on c1.destino=c2.numero
 where c1.origen=c1.destino
 group by pais_codigo,c1.fecha
+GO
 
-
-drop procedure QUIEN_BAJO_EL_KERNEL.PaisesConMayorIngresosEgresos 
+DROP PROCEDURE QUIEN_BAJO_EL_KERNEL.PaisesConMayorIngresosEgresos 
+GO
 
 CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.PaisesConMayorIngresosEgresos (@fechaDesde date, @fechaHasta date)
 AS 
@@ -112,5 +142,20 @@ order by cantMovimientos desc
 END
 
 --------------------------------------------------------------------------------------------
+-- Total facturado para los distintos tipos de cuentas.
+DROP PROCEDURE QUIEN_BAJO_EL_KERNEL.TotalFacturadoPorCuentas
+GO
 
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.TotalFacturadoPorCuentas(@fechaDesde date, @fechaHasta date)
+AS 
+BEGIN
+
+select * from QUIEN_BAJO_EL_KERNEL.CUENTA
+select * from QUIEN_BAJO_EL_KERNEL.FACTURA
+select * from QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA
+select * from QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA
+
+
+END
+GO
 

@@ -198,7 +198,7 @@ CREATE TABLE QUIEN_BAJO_EL_KERNEL.FUNCIONALIDAD (
 GO
 
 CREATE TABLE QUIEN_BAJO_EL_KERNEL.USUARIO_LOG(
-	id int IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	id int IDENTITY(1,1) NOT NULL ,
 	username varchar(255) NULL,
 	fecha datetime NULL
 )
@@ -296,6 +296,11 @@ GO
 ALTER TABLE QUIEN_BAJO_EL_KERNEL.CUENTA ADD CONSTRAINT PK_CUENTA 
 	PRIMARY KEY CLUSTERED (numero)
 GO
+
+ALTER TABLE QUIEN_BAJO_EL_KERNEL.USUARIO_LOG ADD CONSTRAINT PK_ID
+	PRIMARY KEY CLUSTERED (id)
+GO
+
 
 -----	 ****************************** FOREIGN KEYS ****************************** -----
 
@@ -420,7 +425,7 @@ ALTER TABLE QUIEN_BAJO_EL_KERNEL.USUARIO_LOG ADD CONSTRAINT FK_USUARIO_LOG_USUAR
 	FOREIGN KEY (username) REFERENCES QUIEN_BAJO_EL_KERNEL.USUARIO (username)
 GO
 
------	 ****************************** TRIGGERS ****************************** -----
+-----	 ****************************** TRIGGERS necesarios pre-migracion ****************************** -----
 
 CREATE TRIGGER QUIEN_BAJO_EL_KERNEL.DepositoActualizarSaldo
 ON QUIEN_BAJO_EL_KERNEL.DEPOSITO
@@ -597,6 +602,15 @@ GO
 insert into QUIEN_BAJO_EL_KERNEL.TIPO_MONEDA (codigo,descripcion) values (1,'U$S')
 GO
 
+INSERT INTO [QUIEN_BAJO_EL_KERNEL].[Usuario]([username], [password], [activo]) VALUES ('admin', 0xE6B87050BFCB8143FCB8DB0170A4DC9ED00D904DDD3E2A4AD1B1E8DC0FDC9BE7, 1)
+GO
+
+INSERT INTO  [QUIEN_BAJO_EL_KERNEL].[ROL] (nombre,activo) values ('admin',1)
+GO
+
+INSERT INTO  [QUIEN_BAJO_EL_KERNEL].[USUARIO_ROL] (id_rol,username) values (1,'admin')
+GO
+
 insert into QUIEN_BAJO_EL_KERNEL.TIPO_DOCUMENTO (codigo,descripcion)
 			 (select distinct cli_tipo_doc_cod,cli_tipo_doc_desc
 					from gd_esquema.Maestra
@@ -615,11 +629,11 @@ GO
 insert into QUIEN_BAJO_EL_KERNEL.CLIENTE (tipo_documento,numero_documento,
 					 pais_codigo,nombre,apellido,dom_calle,
 					 dom_nro,dom_piso,dom_dpto,fecha_nacimiento,
-					 mail)
+					 mail,username)
 			       (select distinct  cli_tipo_doc_cod,cli_nro_doc,cli_pais_codigo,
 						   cli_nombre,cli_apellido,cli_dom_calle,
 						   cli_dom_nro,cli_dom_piso,cli_dom_depto,
-						   cli_fecha_nac,cli_mail
+						   cli_fecha_nac,cli_mail, 'admin'
 					from gd_esquema.Maestra
 						   		
 				   )
@@ -679,7 +693,7 @@ GO
 
 
 
------	 ****************************** PROCEDURES ****************************** -----
+-----	 ****************************** STORED PROCEDURES ****************************** -----
 
 CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.completar_transacciones
 AS
@@ -750,12 +764,130 @@ BEGIN
 END
 GO
 
+---------------		SP Cuenta		---------------
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.GetMaxNroCuenta
+AS
+BEGIN
+
+	SELECT MAX(c.numero)+1 FROM QUIEN_BAJO_EL_KERNEL.CUENTA c;
+END
+GO
+
+CREATE PROCEDURE [QUIEN_BAJO_EL_KERNEL].[GetPaises]
+AS
+BEGIN	
+	SELECT * FROM QUIEN_BAJO_EL_KERNEL.PAIS p ORDER BY p.descripcion_pais ASC;
+END
+GO
+
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.GetTipoMoneda
+AS
+BEGIN
+	SELECT * FROM QUIEN_BAJO_EL_KERNEL.TIPO_MONEDA
+END
+GO
+
+CREATE PROCEDURE [QUIEN_BAJO_EL_KERNEL].[GetTiposCuenta]
+AS
+BEGIN
+	SELECT * FROM QUIEN_BAJO_EL_KERNEL.TIPO_CUENTA t ORDER BY t.codigo ASC;
+END
+GO
+
+---------------		SP Funcionalidad		---------------
+
+CREATE PROCEDURE [QUIEN_BAJO_EL_KERNEL].[GetFuncionalidadesByRol]
+@rolId numeric(10,0)
+AS
+BEGIN
+	SET NOCOUNT ON;
+	
+	SELECT 
+		f.*
+	FROM [QUIEN_BAJO_EL_KERNEL].FUNCIONALIDAD f
+	INNER JOIN [QUIEN_BAJO_EL_KERNEL].FUNCIONALIDAD_ROL fr ON fr.id_funcionalidad = f.id_funcionalidad
+	WHERE
+		fr.id_rol = @rolId
+END
+GO
+
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.SELECT_FUNCIONALIDAD
+AS 
+BEGIN
+	SELECT * FROM QUIEN_BAJO_EL_KERNEL.FUNCIONALIDAD f
+END
+GO
+
+---------------		SP Rol		---------------
+CREATE PROCEDURE [QUIEN_BAJO_EL_KERNEL].[GetRolesByUsername]
+@username nvarchar(255)
+AS
+BEGIN
+	SET NOCOUNT ON;
+	
+	SELECT 
+		r.*
+	FROM [QUIEN_BAJO_EL_KERNEL].Rol r
+	INNER JOIN [QUIEN_BAJO_EL_KERNEL].USUARIO_ROL ur ON ur.id_rol = r.id
+	WHERE
+		ur.username = @username AND
+		r.activo = 1
+END
+GO
+
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.INSERT_ROL_FUNCIONALIDAD (@id_rol numeric(10,0), @id_funcionalidad numeric(10,0))
+AS 
+BEGIN
+insert into QUIEN_BAJO_EL_KERNEL.FUNCIONALIDAD_ROL (id_rol,id_funcionalidad) values (@id_rol,@id_funcionalidad)
+END
+GO
+
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.INSERT_ROL (@nombre varchar(255), @activo BIT)
+AS 
+BEGIN
+insert into QUIEN_BAJO_EL_KERNEL.ROL (nombre,activo) values (@nombre,@activo)
+ select scope_identity()
+END
+GO
+
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.SELECT_ROL 
+(@nombre varchar(255) = null ,
+@activo BIT  = null)
+AS 
+BEGIN
+SELECT * FROM QUIEN_BAJO_EL_KERNEL.ROL f 
+WHERE (@nombre is null or f.nombre like '%' + @nombre + '%') AND
+	  (@activo is null or f.activo = @activo)
+END
+
 -----	 ****************************** EXEC PROCS ****************************** -----
 
 exec QUIEN_BAJO_EL_KERNEL.completar_transacciones
 GO
 
------	 ****************************** TRIGGERS ****************************** -----
+
+---------------		SP Usuarios		---------------
+
+CREATE PROCEDURE [QUIEN_BAJO_EL_KERNEL].[GetUsuarioByUsernameAndPassword]
+@username nvarchar(255),
+@password varbinary(max)
+AS
+BEGIN
+	SET NOCOUNT ON;
+	
+	SELECT 
+		u.*
+	FROM [QUIEN_BAJO_EL_KERNEL].Usuario u
+	WHERE 
+		u.username = @username AND
+		u.password = @password AND
+		u.activo = 1
+END
+GO
+
+---------------		SP Listados		---------------
+
+-----	 ****************************** TRIGGERS necesarios post-migracion ****************************** -----
 
 CREATE TRIGGER QUIEN_BAJO_EL_KERNEL.TransferenciaInsertarIdTransaccion
 ON QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA
@@ -792,9 +924,4 @@ BEGIN
 END
 GO
 
------	 ****************************** INSERTS AISLADOS ****************************** -----
-
-
-INSERT INTO [QUIEN_BAJO_EL_KERNEL].[Usuario]([username], [password], [activo]) VALUES ('admin', 0xE6B87050BFCB8143FCB8DB0170A4DC9ED00D904DDD3E2A4AD1B1E8DC0FDC9BE7, 1)
-GO
 
