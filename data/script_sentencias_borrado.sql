@@ -127,8 +127,8 @@ DROP PROCEDURE QUIEN_BAJO_EL_KERNEL.TotalFacturadoPorCuentas ;
 DROP PROCEDURE QUIEN_BAJO_EL_KERNEL.getUltimasDiezTransferenciasByCuenta;
 DROP PROCEDURE QUIEN_BAJO_EL_KERNEL.getUltimosCincoDepositosByCuenta;
 DROP PROCEDURE QUIEN_BAJO_EL_KERNEL.getUltimosCincoRetirosByCuenta;
-
-
+DROP PROCEDURE QUIEN_BAJO_EL_KERNEL.GetTiposMonedaByCuenta;
+DROP PROCEDURE QUIEN_BAJO_EL_KERNEL.insertTransferencia;
 
 
 

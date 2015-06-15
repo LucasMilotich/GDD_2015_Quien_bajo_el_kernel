@@ -4,3 +4,4 @@ BEGIN
 insert into [QUIEN_BAJO_EL_KERNEL].TRANSFERENCIA (origen, destino,fecha ,importe, costo, moneda_tipo, id_transaccion) values 
 (@origen, @destino, GETDATE(), @importe, @costo, @moneda_tipo, @id_transaccion)
 END
+
