@@ -23,6 +23,7 @@ namespace PagoElectronico.Transferencias
         List<TipoMoneda> listaTiposMoneda;
         List<long> listaCuentas;
 
+        Usuario usuario = Session.Usuario;
         //Para probar hasta q este el login: 10002 and cliente_numero_doc=45622098
         long tipoDocCliente = 10002, nroDocCliente = 45622098;
 
@@ -30,7 +31,6 @@ namespace PagoElectronico.Transferencias
         {
             InitializeComponent();
             cargarComboCuentas();
-            cargarComboTipoMoneda();
         }
 
         #region Eventos
@@ -44,7 +44,6 @@ namespace PagoElectronico.Transferencias
         {
             realizarTransferencia();
             actualizarSaldoActual();
-
         }
 
         private void txtImporte_TextChanged(object sender, EventArgs e)
@@ -61,6 +60,7 @@ namespace PagoElectronico.Transferencias
         {
             actualizarSaldoActual();
             recalcularSaldoPosterior();
+            cargarComboTipoMoneda();
         }
 
         #endregion
@@ -99,7 +99,7 @@ namespace PagoElectronico.Transferencias
                 {
                     MessageBox.Show(ex.Message.ToString(), "No se pudo realizar la transferencia. !", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     MessageBox.Show("La cuenta destino no existe", "No se pudo realizar la transferencia. !", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
@@ -154,7 +154,7 @@ namespace PagoElectronico.Transferencias
             lblSaldoActual.Text = cuentaService.getSaldo(Convert.ToInt64(comboCuentaOrigen.Text.ToString())).ToString();
         }
 
-        private void cargarComboCuentas()
+        private void  cargarComboCuentas()
         {
             listaCuentas = (List<long>)cuentaService.getByCliente(tipoDocCliente, nroDocCliente);
             if (listaCuentas.Count > 0)
@@ -171,7 +171,7 @@ namespace PagoElectronico.Transferencias
 
         private void cargarComboTipoMoneda()
         {
-            listaTiposMoneda = (List<TipoMoneda>)tipoMonedaService.GetAll();
+            listaTiposMoneda = (List<TipoMoneda>)tipoMonedaService.GetTiposMonedaByCuenta(comboCuentaOrigen.Text.ToString());
             foreach (var item in listaTiposMoneda)
             {
                 comboTipoMoneda.Items.Add(item.descripcion);

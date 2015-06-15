@@ -14,11 +14,11 @@ namespace PagoElectronico.Repositories
         private Retiro CreateRetiro(DataRow reader)
         {
             Retiro retiro = new Retiro();
-            retiro.codigo = Convert.ToInt64(reader[0]);
+            retiro.codigo = String.IsNullOrEmpty(reader[0].ToString()) ? 0 : Convert.ToInt64(reader[0]);
             retiro.fecha = Convert.ToDateTime(reader[1]);
-            retiro.importe = Convert.ToInt64(reader[2]);
-            retiro.cuenta = Convert.ToInt64(reader[3]);
-            retiro.cheque = Convert.ToInt64(reader[4]);
+            retiro.importe = String.IsNullOrEmpty(reader[2].ToString()) ? 0 : Convert.ToInt64(reader[2]);
+            retiro.cuenta = String.IsNullOrEmpty(reader[3].ToString()) ? 0 : Convert.ToInt64(reader[3]);
+            retiro.cheque = String.IsNullOrEmpty(reader[4].ToString()) ? 0 : Convert.ToInt64(reader[4]);
 
             return retiro;
         }
@@ -28,6 +28,7 @@ namespace PagoElectronico.Repositories
             List<Retiro> retiros = new List<Retiro>();
 
             SqlCommand command = DBConnection.CreateStoredProcedure("getUltimosCincoRetirosByCuenta");
+            command.Parameters.AddWithValue("@cuenta", cuenta);
             DataRowCollection collection = DBConnection.EjecutarStoredProcedureSelect(command).Rows;
             foreach (DataRow unRetiro in collection)
             {
@@ -35,6 +36,31 @@ namespace PagoElectronico.Repositories
                 retiros.Add(entity);
             }
             return retiros;
+        }
+
+        public override IEnumerable<Retiro> GetAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Retiro Get(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override int Insert(Retiro entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Update(Retiro entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Delete(Retiro entity)
+        {
+            throw new NotImplementedException();
         }
     }
 }

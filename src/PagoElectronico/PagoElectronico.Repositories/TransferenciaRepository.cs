@@ -6,6 +6,7 @@ using PagoElectronico.Entities;
 using System.Data.SqlClient;
 using System.Transactions;
 using System.Data;
+using System.Globalization;
 
 namespace PagoElectronico.Repositories
 {
@@ -15,14 +16,14 @@ namespace PagoElectronico.Repositories
         private Transferencia CreateTransferencia(DataRow reader)
         {
             Transferencia transferencia = new Transferencia();
-            transferencia.codigo = Convert.ToInt64(reader[0]);
-            transferencia.origen = Convert.ToInt64(reader[1]);
-            transferencia.destino = Convert.ToInt64(reader[2]);
+            transferencia.codigo = String.IsNullOrEmpty(reader[0].ToString()) ? 0 : Convert.ToInt64(reader[0]);
+            transferencia.origen = String.IsNullOrEmpty(reader[1].ToString()) ? 0 : Convert.ToInt64(reader[1]);
+            transferencia.destino = String.IsNullOrEmpty(reader[2].ToString()) ? 0 : Convert.ToInt64(reader[2]);
             transferencia.fecha = Convert.ToDateTime(reader[3]);
-            transferencia.importe = Convert.ToDouble(reader[4]);
-            transferencia.costo = Convert.ToDouble(reader[5]);
-            transferencia.monedaTipo = Convert.ToInt32(reader[6]);
-            transferencia.idTransaccion = Convert.ToInt64(reader[7]);
+            transferencia.importe = String.IsNullOrEmpty(reader[4].ToString()) ? 0 : Convert.ToDouble(reader[4]);
+            transferencia.costo = String.IsNullOrEmpty(reader[5].ToString()) ? 0 : Convert.ToDouble(reader[5]);
+            transferencia.monedaTipo = String.IsNullOrEmpty(reader[6].ToString()) ? 0 : Convert.ToInt32(reader[6]);
+            transferencia.idTransaccion = String.IsNullOrEmpty(reader[7].ToString()) ? 0 : Convert.ToInt64(reader[7]);
 
             return transferencia;
         }
@@ -32,6 +33,7 @@ namespace PagoElectronico.Repositories
             List<Transferencia> transferencias = new List<Transferencia>();
 
             SqlCommand command = DBConnection.CreateStoredProcedure("getUltimasDiezTransferenciasByCuenta");
+            command.Parameters.AddWithValue("@cuenta", cuenta); 
             DataRowCollection collection = DBConnection.EjecutarStoredProcedureSelect(command).Rows;
             foreach (DataRow unaTransferencia in collection)
             {
@@ -46,9 +48,16 @@ namespace PagoElectronico.Repositories
             int resultado;
              using (var transaction = new TransactionScope())
             {
-                SqlCommand unCommand = DBConnection.CreateCommand();
-                unCommand.CommandText = "insert into [QUIEN_BAJO_EL_KERNEL].TRANSFERENCIA (origen, destino, fecha, importe, costo, moneda_tipo, id_transaccion) values (" + entity.origen + ", " + entity.destino + ", \'" + entity.fecha.ToShortDateString() + "\', " + entity.importe + ", " + entity.costo + ", " + entity.monedaTipo + ", " + entity.idTransaccion + ")";
-                resultado=DBConnection.ExecuteNonQuery(unCommand);
+
+                SqlCommand unCommand = DBConnection.CreateStoredProcedure("insertTransferencia");
+                unCommand.Parameters.AddWithValue("@origen",entity.origen);
+                unCommand.Parameters.AddWithValue("@destino",entity.destino);
+                unCommand.Parameters.AddWithValue("@importe",entity.importe);
+                unCommand.Parameters.AddWithValue("@costo",entity.costo);
+                unCommand.Parameters.AddWithValue("@moneda_tipo", entity.monedaTipo);
+                unCommand.Parameters.AddWithValue("@id_transaccion",entity.idTransaccion);
+
+                resultado = DBConnection.ExecuteNonQuery(unCommand);
                 unCommand.Dispose();
 
                 transaction.Complete();

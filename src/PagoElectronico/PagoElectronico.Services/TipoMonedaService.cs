@@ -14,5 +14,11 @@ namespace PagoElectronico.Services
             TipoMonedaRepository tipoMonedaRepo = new TipoMonedaRepository();
             return tipoMonedaRepo.GetAll();
         }
+
+        public IEnumerable<TipoMoneda> GetTiposMonedaByCuenta(string cuenta)
+        {
+            TipoMonedaRepository tipoMonedaRepo = new TipoMonedaRepository();
+            return tipoMonedaRepo.GetTiposMonedaByCuenta(cuenta);
+        }
     }
 }

@@ -27,7 +27,7 @@ namespace PagoElectronico.Listados
 
         private void btnBuscar_Click(object sender, EventArgs e)
         {
-            bool validator = Validaciones.validarCampoVacio(txtAnio) & Validaciones.validarCampoNumericoEntero(txtAnio);
+            bool validator = Validaciones.validarCampoVacio(txtAnio) && Validaciones.validarCampoNumericoEntero(txtAnio);
 
             try
             {

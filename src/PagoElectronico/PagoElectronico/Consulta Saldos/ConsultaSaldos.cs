@@ -18,7 +18,8 @@ namespace PagoElectronico.Consulta_Saldos
     {
         CuentaService cuentaService = new CuentaService();
         TransferenciaService transferenciaService = new TransferenciaService();
-        
+        RetiroService retiroService = new RetiroService();
+        DepositoService depositoService = new DepositoService();
 
         public ConsultaSaldos()
         {
@@ -31,7 +32,8 @@ namespace PagoElectronico.Consulta_Saldos
         /*************    Metodos de componentes       *************/
         private void btnBuscar_Click(object sender, EventArgs e)
         {
-            if (Validaciones.validarCampoNumericoEntero(txtCuenta) && Validaciones.validarCampoVacio(txtCuenta))
+            bool validator = Validaciones.validarCampoNumericoEntero(txtCuenta) && Validaciones.validarCampoVacio(txtCuenta);
+            if (validator)
             {
                 try
                 {
@@ -42,9 +44,7 @@ namespace PagoElectronico.Consulta_Saldos
                 {
                     MessageBox.Show(ex.Message.ToString(), "Atencion !", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-
             }
-
         }
 
         private void btnLimpiar_Click(object sender, EventArgs e)
@@ -58,22 +58,18 @@ namespace PagoElectronico.Consulta_Saldos
         /*************    Metodos privados       *************/
         private void llenarGrilla()
         {
-            SqlCommand command = DBConnection.CreateCommand();
             if (rbDepositos.Checked)
             {
-
-                command.CommandText = "select top 5 * from [GD1C2015].[QUIEN_BAJO_EL_KERNEL].DEPOSITO  where cuenta_numero=" + txtCuenta.Text.ToString() + "  order by fecha desc ";
+               DataGridViewListado.DataSource = depositoService.getUltimosCincoDepositosByCuenta(txtCuenta.Text);      
             }
             if (rbRetiros.Checked)
             {
-                command.CommandText = "select top 5 * from [GD1C2015].[QUIEN_BAJO_EL_KERNEL].RETIRO  where cuenta= " + txtCuenta.Text.ToString() + " order by fecha desc";
+                DataGridViewListado.DataSource = retiroService.getUltimosCincoRetirosByCuenta(txtCuenta.Text);             
             }
             if (rbTransferencias.Checked)
             {
-                command.CommandText = "  select top 10 *  from [GD1C2015].[QUIEN_BAJO_EL_KERNEL].TRANSFERENCIA  where origen=" + txtCuenta.Text.ToString() + " or destino=" + txtCuenta.Text.ToString() + "  order by fecha desc  ";
-            }
-            DataGridViewListado.DataSource = DBConnection.EjecutarComandoSelect(command);
-            command.Dispose();
+                DataGridViewListado.DataSource = transferenciaService.getUltimasDiezTransferenciasByCuenta(txtCuenta.Text);             
+            }            
         }
 
         private void obtenerSaldo()

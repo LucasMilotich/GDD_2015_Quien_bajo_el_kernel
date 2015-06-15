@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using PagoElectronico.Entities;
 using PagoElectronico.Repositories;
-using PagoElectronico.Services.Interfaces;
+
 
 namespace PagoElectronico.Services
 {
@@ -18,6 +18,12 @@ namespace PagoElectronico.Services
             filasInsertadas = repository.Insert(transferencia);
 
             return filasInsertadas;
+        }
+
+        public IEnumerable<Transferencia> getUltimasDiezTransferenciasByCuenta(string cuenta)
+        {
+            TransferenciaRepository transferenciaRepo = new TransferenciaRepository();
+            return transferenciaRepo.getUltimasDiezTransferenciasByCuenta(cuenta);
         }
 
     }

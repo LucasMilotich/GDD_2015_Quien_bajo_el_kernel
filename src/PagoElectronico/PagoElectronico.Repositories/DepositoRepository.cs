@@ -14,11 +14,11 @@ namespace PagoElectronico.Repositories
         private Deposito CreateDeposito(DataRow reader)
         {
             Deposito deposito = new Deposito();
-            deposito.cuentaNumero = Convert.ToInt64(reader[0]);
+            deposito.depositoCodigo = Convert.ToInt64(reader[0]);
             deposito.fecha = Convert.ToDateTime(reader[1]);
-            deposito.importe = Convert.ToDouble(reader[2]);
-            deposito.cuentaNumero = Convert.ToInt64(reader[3]);
-            deposito.monedaTipo = Convert.ToInt32(reader[4]);
+            deposito.importe = String.IsNullOrEmpty(reader[2].ToString()) ? 0 : Convert.ToDouble(reader[2]);
+            deposito.cuentaNumero = String.IsNullOrEmpty(reader[3].ToString()) ? 0 : Convert.ToInt64(reader[3]);
+            deposito.monedaTipo = String.IsNullOrEmpty(reader[4].ToString()) ? 0 : Convert.ToInt32(reader[4]);
             deposito.tarjetaNumero = reader[5].ToString();
 
             return deposito;
@@ -30,6 +30,7 @@ namespace PagoElectronico.Repositories
             List<Deposito> depositos = new List<Deposito>();
 
             SqlCommand command = DBConnection.CreateStoredProcedure("getUltimosCincoDepositosByCuenta");
+            command.Parameters.AddWithValue("@cuenta", cuenta); 
             DataRowCollection collection = DBConnection.EjecutarStoredProcedureSelect(command).Rows;
             foreach (DataRow unDeposito in collection)
             {
