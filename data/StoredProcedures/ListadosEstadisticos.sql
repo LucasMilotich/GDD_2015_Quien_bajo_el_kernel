@@ -12,6 +12,8 @@ inner join QUIEN_BAJO_EL_KERNEL.CUENTA cta on cta.cliente_tipo_doc=cli.tipo_docu
 inner join QUIEN_BAJO_EL_KERNEL.FACTURA fac on fac.cliente_tipo_doc =cli.tipo_documento and fac.cliente_numero_doc=cli.numero_documento
 inner join QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA itm on itm.factura_numero = fac.numero
 
+select * from QUIEN_BAJO_EL_KERNEL
+
 
 select * from QUIEN_BAJO_EL_KERNEL.CUENTA
 --where numero=1111111111111158
@@ -42,7 +44,7 @@ BEGIN
 select top 5  c1.tipo_documento,c1.numero_documento,c1.apellido,c1.nombre, COUNT(c3.id_transaccion) as cantComisiones from QUIEN_BAJO_EL_KERNEL.CLIENTE c1
 inner join QUIEN_BAJO_EL_KERNEL.FACTURA c2 on c2.cliente_tipo_doc=c1.tipo_documento and c2.cliente_numero_doc= c1.numero_documento 
 inner join QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA c3 on c2.numero = c3.factura_numero
---where c2.fecha >=@fechaDesde and c2.fecha<=@fechaHasta
+where c2.fecha >=@fechaDesde and c2.fecha<=@fechaHasta
 group by  c1.tipo_documento,c1.numero_documento,c1.apellido,c1.nombre
 
 END
@@ -94,7 +96,7 @@ GO
 CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.ClientesConMayorTransacciones (@fechaDesde date, @fechaHasta date)
 AS 
 BEGIN
-select tipo_documento,numero_documento,apellido,nombre, SUM(cantTransacciones) as cantTrancciones from  QUIEN_BAJO_EL_KERNEL.TransaccionesClientes
+select  top 5 tipo_documento,numero_documento,apellido,nombre, SUM(cantTransacciones) as cantTrancciones from  QUIEN_BAJO_EL_KERNEL.TransaccionesClientes
 where fecha>=@fechaDesde and fecha <= @fechaHasta
 group by tipo_documento,numero_documento,apellido,nombre
 order by cantTrancciones
@@ -155,7 +157,6 @@ select top 5 pais_codigo, SUM(cantMovimientos) as cantMovimientos from QUIEN_BAJ
 where fecha>=@fechaDesde and fecha <= @fechaHasta
 group by pais_codigo
 order by cantMovimientos desc
-
 END
 
 --------------------------------------------------------------------------------------------
