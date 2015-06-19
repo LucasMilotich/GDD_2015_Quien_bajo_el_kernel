@@ -15,5 +15,10 @@ namespace PagoElectronico.ABM_Cuenta
         {
             InitializeComponent();
         }
+
+        private void btnGuardar_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

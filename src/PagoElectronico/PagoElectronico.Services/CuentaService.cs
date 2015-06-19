@@ -44,5 +44,12 @@ namespace PagoElectronico.Services
             CuentaRepository repository = new CuentaRepository();
             return repository.GetMaxNroCuenta();
         }
+
+        public int InsertaCuenta(long numeroCuenta, int codPais, int tipoMoneda, int tipoCuenta, long tipoDocCliente, long nroDocCliente)
+        {
+            CuentaRepository repository = new CuentaRepository();
+            return repository.InsertaCuenta(numeroCuenta, codPais, tipoMoneda, tipoCuenta, tipoDocCliente, nroDocCliente);
+
+        }
     }
 }
