@@ -668,7 +668,7 @@ INSERT INTO QUIEN_BAJO_EL_KERNEL.EMISOR_TARJETA (emisor_descripcion)
 GO
 
 insert into QUIEN_BAJO_EL_KERNEL.TARJETA (tarjeta_numero, fecha_emision,fecha_vencimiento,
-					 codigo_seguridad, emisor_descripcion)
+					 codigo_seguridad, cod_emisor)
 			  (select distinct tarjeta_numero, 
 							   tarjeta_fecha_emision,
 							   tarjeta_fecha_vencimiento,
@@ -1110,7 +1110,7 @@ BEGIN
 	DECLARE @numero_item NUMERIC(18,0),
 			@descripcion VARCHAR(255),
 			@importe	 NUMERIC(18,2),
-			@fact_num	 NUMBERIC(18,0),
+			@fact_num	 NUMERIC(18,0),
 			@trans_id	 NUMERIC(18,0)
 	
 	IF((SELECT COUNT(*) 
