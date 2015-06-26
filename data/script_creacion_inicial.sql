@@ -824,6 +824,23 @@ BEGIN
 END
 GO
 
+CREATE PROCEDURE [QUIEN_BAJO_EL_KERNEL].[InsertaCuenta]
+@an_num_cuenta			NUMERIC(18,0),
+@an_cod_pais			NUMERIC(18,0),
+@an_moneda_tipo			NUMERIC(1,0),
+@an_cuenta_tipo			NUMERIC(1,0),
+@an_cliente_doc			NUMERIC(10,0),
+@an_cliente_tipo_doc	NUMERIC(18,0)
+AS
+BEGIN
+	SET NOCOUNT ON;
+	
+	INSERT INTO QUIEN_BAJO_EL_KERNEL.CUENTA([numero],[pais_codigo],[moneda_tipo],[tipo_cuenta],[cliente_numero_doc],[cliente_tipo_doc])
+		 VALUES (@an_num_cuenta, @an_cod_pais, @an_moneda_tipo, @an_cuenta_tipo, @an_cliente_doc, @an_cliente_tipo_doc)
+
+END
+GO
+
 ---------------		SP Funcionalidad		---------------
 
 CREATE PROCEDURE [QUIEN_BAJO_EL_KERNEL].[GetFuncionalidadesByRol]
@@ -1107,7 +1124,7 @@ BEGIN
 			  FROM inserted
 		
 		OPEN unCursor
-		FETCH NEXT unCursor INTO @descripcion, @importe, @fact_num, @trans_id
+		FETCH NEXT FROM unCursor INTO @descripcion, @importe, @fact_num, @trans_id
 		WHILE @@FETCH_STATUS = 0
 		BEGIN
 		  SELECT @numero_item = COUNT(*) + 1
