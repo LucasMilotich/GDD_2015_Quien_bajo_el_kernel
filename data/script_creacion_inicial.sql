@@ -5,14 +5,6 @@ GO
 
 -----	 ****************************** CREATE TABLES ****************************** -----
 
-CREATE TABLE QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA ( 
-	numero_item numeric(18)  NOT NULL,
-	descripcion varchar(255) NULL,
-	importe numeric(18,2) NULL,
-	factura_numero numeric(18) NULL,
-	id_transaccion numeric(18) NULL
-)
-GO
 
 CREATE TABLE QUIEN_BAJO_EL_KERNEL.FACTURA ( 
 	numero numeric(18)  NOT NULL,
@@ -24,7 +16,7 @@ GO
 
 CREATE TABLE QUIEN_BAJO_EL_KERNEL.CUENTA_MODIFICACION ( 
 	cuenta numeric(18) NOT NULL,
-	transaccion numeric(18) NOT NULL,
+	id_modificacion numeric(18) NOT NULL,
 	fecha datetime NULL
 )
 GO
@@ -71,18 +63,8 @@ CREATE TABLE QUIEN_BAJO_EL_KERNEL.TIPO_ESTADO_CUENTA (
 )
 GO
 
-CREATE TABLE QUIEN_BAJO_EL_KERNEL.TIPO_TRANSACCION ( 
-	codigo numeric(10) NOT NULL,
-	descripcion varchar(255) NULL
-)
-GO
 
-CREATE TABLE QUIEN_BAJO_EL_KERNEL.TRANSACCIONES ( 
-	id_transaccion numeric(18) identity(1,1)  NOT NULL,
-	operacion_tipo numeric(10) NOT NULL,
-	fecha datetime NULL
-)
-GO
+
 
 CREATE TABLE QUIEN_BAJO_EL_KERNEL.TIPO_MONEDA ( 
 	codigo numeric(1) NOT NULL,
@@ -135,8 +117,7 @@ CREATE TABLE QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA (
 	fecha datetime NULL,
 	importe numeric(18,2) NULL,
 	costo numeric(18,2) NULL,
-	moneda_tipo numeric(1) NULL,
-	id_transaccion numeric(18) NULL
+	moneda_tipo numeric(1) NULL
 )
 GO
 
@@ -145,7 +126,7 @@ CREATE TABLE QUIEN_BAJO_EL_KERNEL.TARJETA (
 	fecha_emision datetime NULL,
 	fecha_vencimiento datetime NULL,
 	codigo_seguridad varchar(3) NULL,
-	emisor_descripcion varchar(255) NULL
+	cod_emisor int NOT NULL
 )
 GO
 
@@ -186,7 +167,6 @@ CREATE TABLE QUIEN_BAJO_EL_KERNEL.CUENTA (
 	cliente_numero_doc numeric(10) NULL,
 	moneda_tipo numeric(1) NULL,
 	tipo_cuenta numeric(1) NULL,
-	id_transaccion numeric(18) NULL,
 	saldo numeric(18,2) NULL
 )
 GO
@@ -204,22 +184,70 @@ CREATE TABLE QUIEN_BAJO_EL_KERNEL.USUARIO_LOG(
 	login_correcto bit NULL
 )
 GO
+
+CREATE TABLE QUIEN_BAJO_EL_KERNEL.EMISOR_TARJETA(
+	id_emisor	int IDENTITY(1,1) NOT NULL,
+	emisor_descripcion	varchar(255) NOT NULL
+)
+GO
+
+CREATE TABLE QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA_TRANSFERENCIAS(
+	transferencia	NUMERIC(18,0) NOT NULL,
+	descripcion varchar(255),
+	importe NUMERIC(18,2),
+	factura_numero NUMERIC(18,0) NOT NULL
+)
+GO
+
+CREATE TABLE QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA_ACTIVACION_CUENTA(
+	cuenta	NUMERIC(18,0) NOT NULL,
+	descripcion varchar(255),
+	importe NUMERIC(18,2),
+	factura_numero NUMERIC(18,0) NOT NULL
+)
+GO
+
+
+CREATE TABLE QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA_MODIFICACION_CUENTA(
+	id_modificacion	NUMERIC(18,0) NOT NULL,
+	descripcion varchar(255),
+	importe NUMERIC(18,2),
+	factura_numero NUMERIC(18,0) NOT NULL
+)
+GO
+
+
+
 -----	 ****************************** PRIMARY KEYS ****************************** -----
+
+
+ALTER TABLE QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA_TRANSFERENCIAS ADD CONSTRAINT PK_ITEM_FACTURA_TRANSFERENCIA
+	PRIMARY KEY CLUSTERED (transferencia,factura_numero)
+GO
+
+ALTER TABLE QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA_ACTIVACION_CUENTA ADD CONSTRAINT PK_ITEM_FACTURA_ACT_CUENTA
+	PRIMARY KEY CLUSTERED (cuenta,factura_numero)
+GO
+
+ALTER TABLE QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA_MODIFICACION_CUENTA ADD CONSTRAINT PK_ITEM_FACTURA_MOD_CUENTA
+	PRIMARY KEY CLUSTERED (id_modificacion,factura_numero)
+GO
 
 ALTER TABLE QUIEN_BAJO_EL_KERNEL.FUNCIONALIDAD ADD CONSTRAINT PK_FUNCIONALIDAD 
 	PRIMARY KEY CLUSTERED (id_funcionalidad)
 GO
 
 ALTER TABLE QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA ADD CONSTRAINT PK_ITEM_FACTURA 
-	PRIMARY KEY CLUSTERED (numero_item)
+	PRIMARY KEY CLUSTERED (numero_item,factura_numero)
 GO
+
 
 ALTER TABLE QUIEN_BAJO_EL_KERNEL.FACTURA ADD CONSTRAINT PK_FACTURA 
 	PRIMARY KEY CLUSTERED (numero)
 GO
 
 ALTER TABLE QUIEN_BAJO_EL_KERNEL.CUENTA_MODIFICACION ADD CONSTRAINT PK_CUENTA_MODIFICACION 
-	PRIMARY KEY CLUSTERED (cuenta, transaccion)
+	PRIMARY KEY CLUSTERED (cuenta, id_modificacion)
 GO
 
 ALTER TABLE QUIEN_BAJO_EL_KERNEL.FUNCIONALIDAD_ROL ADD CONSTRAINT PK_FUNCIONALIDAD_ROL 
@@ -244,14 +272,6 @@ GO
 
 ALTER TABLE QUIEN_BAJO_EL_KERNEL.TIPO_ESTADO_CUENTA ADD CONSTRAINT PK_TIPO_ESTADO_CUENTA 
 	PRIMARY KEY CLUSTERED (codigo)
-GO
-
-ALTER TABLE QUIEN_BAJO_EL_KERNEL.TIPO_TRANSACCION ADD CONSTRAINT PK_TIPO_TRANSACCION 
-	PRIMARY KEY CLUSTERED (codigo)
-GO
-
-ALTER TABLE QUIEN_BAJO_EL_KERNEL.TRANSACCIONES ADD CONSTRAINT PK_TRANSACCIONES 
-	PRIMARY KEY CLUSTERED (id_transaccion)
 GO
 
 ALTER TABLE QUIEN_BAJO_EL_KERNEL.TIPO_MONEDA ADD CONSTRAINT PK_TIPO_MONEDA 
@@ -302,21 +322,39 @@ ALTER TABLE QUIEN_BAJO_EL_KERNEL.USUARIO_LOG ADD CONSTRAINT PK_ID
 	PRIMARY KEY CLUSTERED (id)
 GO
 
+ALTER TABLE QUIEN_BAJO_EL_KERNEL.EMISOR_TARJETA ADD CONSTRAINT PK_EMISOR
+	PRIMARY KEY CLUSTERED (id_emisor)
+GO
 
 -----	 ****************************** FOREIGN KEYS ****************************** -----
+
+
+ALTER TABLE QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA_TRANSFERENCIAS ADD CONSTRAINT FK_I_FACT_TRANSF
+	FOREIGN KEY (factura_numero) REFERENCES QUIEN_BAJO_EL_KERNEL.FACTURA(numero)
+GO
+
+ALTER TABLE QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA_MODIFICACION_CUENTA ADD CONSTRAINT FK_I_FACT_MODCTA
+	FOREIGN KEY (factura_numero) REFERENCES QUIEN_BAJO_EL_KERNEL.FACTURA(numero)
+GO
+ALTER TABLE QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA_ACTIVACION_CUENTA ADD CONSTRAINT FK_I_FACT_ACTCTA
+	FOREIGN KEY (factura_numero) REFERENCES QUIEN_BAJO_EL_KERNEL.FACTURA(numero)
+GO
+ALTER TABLE QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA_TRANSFERENCIAS ADD CONSTRAINT FK_IF_TRANSF_TRANSF
+	FOREIGN KEY (transferencia) REFERENCES QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA(codigo)
+GO
+ALTER TABLE QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA_MODIFICACION_CUENTA ADD CONSTRAINT FK_IF_MODCTA_MODCTA
+	FOREIGN KEY (id_modificacion) REFERENCES QUIEN_BAJO_EL_KERNEL.CUENTA_MODIFICACION(id_modificacion)
+GO
+ALTER TABLE QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA_ACTIVACION_CUENTA ADD CONSTRAINT FK_IF_ACTCTA_ACTCTA
+	FOREIGN KEY (cuenta) REFERENCES QUIEN_BAJO_EL_KERNEL.CUENTA(numero)
+GO
 
 
 ALTER TABLE QUIEN_BAJO_EL_KERNEL.FUNCIONALIDAD_ROL ADD CONSTRAINT FK_FUNCIONALIDADROL_FUNCIONALIDAD 
 	FOREIGN KEY (id_funcionalidad) REFERENCES QUIEN_BAJO_EL_KERNEL.FUNCIONALIDAD (id_funcionalidad)
 GO
 
-ALTER TABLE QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA ADD CONSTRAINT FK_ITEM_FACTURA_FACTURA 
-	FOREIGN KEY (factura_numero) REFERENCES QUIEN_BAJO_EL_KERNEL.FACTURA (numero)
-GO
 
-ALTER TABLE QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA ADD CONSTRAINT FK_ITEM_FACTURA_TRANSACCIONES 
-	FOREIGN KEY (id_transaccion) REFERENCES QUIEN_BAJO_EL_KERNEL.TRANSACCIONES (id_transaccion)
-GO
 
 ALTER TABLE QUIEN_BAJO_EL_KERNEL.FACTURA ADD CONSTRAINT FK_FACTURA_CLIENTE 
 	FOREIGN KEY (cliente_tipo_doc,cliente_numero_doc) REFERENCES QUIEN_BAJO_EL_KERNEL.CLIENTE (tipo_documento,numero_documento)
@@ -326,9 +364,7 @@ ALTER TABLE QUIEN_BAJO_EL_KERNEL.CUENTA_MODIFICACION ADD CONSTRAINT FK_CUENTA_MO
 	FOREIGN KEY (cuenta) REFERENCES QUIEN_BAJO_EL_KERNEL.CUENTA (numero)
 GO
 
-ALTER TABLE QUIEN_BAJO_EL_KERNEL.CUENTA_MODIFICACION ADD CONSTRAINT FK_CUENTA_MODIFICACION_TRANSACCIONES 
-	FOREIGN KEY (transaccion) REFERENCES QUIEN_BAJO_EL_KERNEL.TRANSACCIONES (id_transaccion)
-GO
+
 
 ALTER TABLE QUIEN_BAJO_EL_KERNEL.FUNCIONALIDAD_ROL ADD CONSTRAINT FK_FUNCIONALIDAD_ROL_ROL 
 	FOREIGN KEY (id_rol) REFERENCES QUIEN_BAJO_EL_KERNEL.ROL (id)
@@ -340,10 +376,7 @@ GO
 
 ALTER TABLE QUIEN_BAJO_EL_KERNEL.USUARIO_ROL ADD CONSTRAINT FK_USUARIO_ROL_USUARIO 
 	FOREIGN KEY (username) REFERENCES QUIEN_BAJO_EL_KERNEL.USUARIO (username)
-GO
 
-ALTER TABLE QUIEN_BAJO_EL_KERNEL.TRANSACCIONES ADD CONSTRAINT FK_TRANSACCIONES_TIPO_TRANSACCION 
-	FOREIGN KEY (operacion_tipo) REFERENCES QUIEN_BAJO_EL_KERNEL.TIPO_TRANSACCION (codigo)
 GO
 
 ALTER TABLE QUIEN_BAJO_EL_KERNEL.CHEQUE ADD CONSTRAINT FK_CHEQUE_BANCO 
@@ -374,9 +407,6 @@ ALTER TABLE QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA ADD CONSTRAINT FK_TRANSFERENCIA_T
 	FOREIGN KEY (moneda_tipo) REFERENCES QUIEN_BAJO_EL_KERNEL.TIPO_MONEDA (codigo)
 GO
 
-ALTER TABLE QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA ADD CONSTRAINT FK_TRANSFERENCIA_TRANSACCIONES 
-	FOREIGN KEY (id_transaccion) REFERENCES QUIEN_BAJO_EL_KERNEL.TRANSACCIONES (id_transaccion)
-GO
 
 ALTER TABLE QUIEN_BAJO_EL_KERNEL.DEPOSITO ADD CONSTRAINT FK_DEPOSITO_CUENTA 
 	FOREIGN KEY (cuenta_numero) REFERENCES QUIEN_BAJO_EL_KERNEL.CUENTA (numero)
@@ -414,9 +444,7 @@ ALTER TABLE QUIEN_BAJO_EL_KERNEL.CUENTA ADD CONSTRAINT FK_CUENTA_TIPO_ESTADO_CUE
 	FOREIGN KEY (estado_codigo) REFERENCES QUIEN_BAJO_EL_KERNEL.TIPO_ESTADO_CUENTA (codigo)
 GO
 
-ALTER TABLE QUIEN_BAJO_EL_KERNEL.CUENTA ADD CONSTRAINT FK_CUENTA_TRANSACCIONES 
-	FOREIGN KEY (id_transaccion) REFERENCES QUIEN_BAJO_EL_KERNEL.TRANSACCIONES (id_transaccion)
-GO
+
 
 ALTER TABLE QUIEN_BAJO_EL_KERNEL.CLIENTE ADD CONSTRAINT FK_CLIENTE_USUARIO 
 	FOREIGN KEY (username) REFERENCES QUIEN_BAJO_EL_KERNEL.USUARIO (username)
@@ -424,6 +452,10 @@ GO
 
 ALTER TABLE QUIEN_BAJO_EL_KERNEL.USUARIO_LOG ADD CONSTRAINT FK_USUARIO_LOG_USUARIO 
 	FOREIGN KEY (username) REFERENCES QUIEN_BAJO_EL_KERNEL.USUARIO (username)
+GO
+
+ALTER TABLE QUIEN_BAJO_EL_KERNEL.TARJETA ADD CONSTRAINT FK_EMISOR
+	FOREIGN KEY (cod_emisor) REFERENCES QUIEN_BAJO_EL_KERNEL.EMISOR_TARJETA (id_emisor)
 GO
 
 -----	 ****************************** TRIGGERS necesarios pre-migracion ****************************** -----
@@ -574,19 +606,8 @@ BEGIN
 END
 GO
 
+
 -----	 ****************************** INSERTS ****************************** -----
-
-insert into QUIEN_BAJO_EL_KERNEL.tipo_transaccion (codigo,descripcion)
-											values	  (1,'Transferencia')
-GO	
-										
-insert into QUIEN_BAJO_EL_KERNEL.tipo_transaccion (codigo,descripcion)
-    											values  (2,'Activacion')
-GO
-
-insert into QUIEN_BAJO_EL_KERNEL.tipo_transaccion (codigo,descripcion)
-												values  (3,'Modificacion')
-GO												  									  
 
 insert into QUIEN_BAJO_EL_KERNEL.TIPO_ESTADO_CUENTA (codigo,descripcion) values (1, 'Pendiente de activacion')
 GO
@@ -636,26 +657,37 @@ insert into QUIEN_BAJO_EL_KERNEL.CLIENTE (tipo_documento,numero_documento,
 						   cli_dom_nro,cli_dom_piso,cli_dom_depto,
 						   cli_fecha_nac,cli_mail, 'admin'
 					from gd_esquema.Maestra
-						   		
 				   )
-				   
 GO
 
 insert into QUIEN_BAJO_EL_KERNEL.CUENTA (numero,fecha_creacion,estado_codigo,pais_codigo,fecha_cierre,
 				   cliente_tipo_doc,cliente_numero_doc,moneda_tipo,saldo)
 			 (select distinct cuenta_numero,cuenta_fecha_creacion,'4',
 									cuenta_pais_codigo,cuenta_fecha_cierre,cli_tipo_doc_cod,
-									cli_nro_doc,'1','0'
+									cli_nro_doc,1,0
 					from gd_esquema.Maestra
 					)
 GO
 
+INSERT INTO QUIEN_BAJO_EL_KERNEL.EMISOR_TARJETA (emisor_descripcion)
+			 (SELECT DISTINCT Tarjeta_Emisor_Descripcion 
+				FROM gd_esquema.Maestra 
+			   WHERE Tarjeta_Emisor_Descripcion IS NOT NULL)
+GO
+
 insert into QUIEN_BAJO_EL_KERNEL.TARJETA (tarjeta_numero, fecha_emision,fecha_vencimiento,
-					 codigo_seguridad, emisor_descripcion)
-			  (select distinct tarjeta_numero, tarjeta_fecha_emision,tarjeta_fecha_vencimiento,
-					 tarjeta_codigo_seg, tarjeta_emisor_descripcion
-					 from gd_esquema.Maestra
-					 where Tarjeta_Numero is not null)					 
+					 codigo_seguridad, cod_emisor)
+			  (select distinct tarjeta_numero, 
+							   tarjeta_fecha_emision,
+							   tarjeta_fecha_vencimiento,
+							   tarjeta_codigo_seg,		
+							   CASE tarjeta_emisor_descripcion
+								WHEN 'Master Card' THEN 1
+								WHEN 'American Express' THEN 2
+								WHEN 'Visa' THEN 3
+							   END 
+				from gd_esquema.Maestra
+			   where Tarjeta_Numero is not null)					 
 GO
 
 insert into QUIEN_BAJO_EL_KERNEL.DEPOSITO (deposito_codigo,fecha, importe, cuenta_numero, tarjeta_numero)
@@ -669,7 +701,8 @@ insert into QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA (origen,destino,fecha,importe, co
 				    (select cuenta_numero,cuenta_dest_numero,
 						   transf_fecha,trans_importe,trans_costo_trans
 						   from gd_esquema.Maestra
-						   where transf_fecha is not null)					   
+						   where transf_fecha is not null
+						     and Factura_Numero is not null)					   
 GO
 
 insert into QUIEN_BAJO_EL_KERNEL.BANCO  (codigo,nombre,direccion)
@@ -679,8 +712,8 @@ insert into QUIEN_BAJO_EL_KERNEL.BANCO  (codigo,nombre,direccion)
 					)				
 GO
 
-insert into QUIEN_BAJO_EL_KERNEL.CHEQUE (numero,fecha,importe,codigo_banco)		
-			 (select cheque_numero,cheque_fecha,cheque_importe,banco_cogido
+insert into QUIEN_BAJO_EL_KERNEL.CHEQUE (numero,fecha,importe,codigo_banco,moneda_tipo)		
+			 (select cheque_numero,cheque_fecha,cheque_importe,banco_cogido,1
 					from gd_esquema.Maestra
 					where cheque_numero is not null)
 GO
@@ -689,13 +722,32 @@ insert into QUIEN_BAJO_EL_KERNEL.RETIRO (fecha,codigo,importe,cuenta,cheque)
 			 (select retiro_fecha, retiro_codigo,retiro_importe,cuenta_numero,cheque_numero
 					from gd_esquema.Maestra
 					where retiro_codigo is not null)
+GO
+
+INSERT INTO QUIEN_BAJO_EL_KERNEL.FACTURA (numero, fecha, cliente_numero_doc, cliente_tipo_doc)
+			  (SELECT DISTINCT Factura_Numero,Factura_Fecha,Cli_Nro_Doc,Cli_Tipo_Doc_Cod
+				 FROM gd_esquema.Maestra
+				WHERE Factura_Numero IS NOT NULL)
+GO
+
+INSERT INTO QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA_TRANSFERENCIAS (transferencia,descripcion,importe,factura_numero)
+									(SELECT t.transferencia,m.item_factura_descr, m.item_factura_importe, m.Factura_Numero
+									 FROM QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA t JOIN gd_esquema.Maestra m
+													on t.destino = m.cuenta_dest_numero and
+													   t.origen = m.cuenta  and
+													   t.transf_fecha = m.transf_fecha
+									WHERE m.Factura_Numero is not null)
 
 GO
 
 
 
+
+
 -----	 ****************************** STORED PROCEDURES ****************************** -----
 
+---------------		SP necesarios para migracion		---------------
+/*
 CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.completar_transacciones
 AS
 BEGIN
@@ -764,7 +816,7 @@ BEGIN
 
 END
 GO
-
+*/
 ---------------		SP Cuenta		---------------
 CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.GetMaxNroCuenta
 AS
@@ -792,6 +844,23 @@ CREATE PROCEDURE [QUIEN_BAJO_EL_KERNEL].[GetTiposCuenta]
 AS
 BEGIN
 	SELECT * FROM QUIEN_BAJO_EL_KERNEL.TIPO_CUENTA t ORDER BY t.codigo ASC;
+END
+GO
+
+CREATE PROCEDURE [QUIEN_BAJO_EL_KERNEL].[InsertaCuenta]
+@an_num_cuenta			NUMERIC(18,0),
+@an_cod_pais			NUMERIC(18,0),
+@an_moneda_tipo			NUMERIC(1,0),
+@an_cuenta_tipo			NUMERIC(1,0),
+@an_cliente_doc			NUMERIC(10,0),
+@an_cliente_tipo_doc	NUMERIC(18,0)
+AS
+BEGIN
+	SET NOCOUNT ON;
+	
+	INSERT INTO QUIEN_BAJO_EL_KERNEL.CUENTA([numero],[pais_codigo],[moneda_tipo],[tipo_cuenta],[cliente_numero_doc],[cliente_tipo_doc])
+		 VALUES (@an_num_cuenta, @an_cod_pais, @an_moneda_tipo, @an_cuenta_tipo, @an_cliente_doc, @an_cliente_tipo_doc)
+
 END
 GO
 
@@ -860,12 +929,143 @@ SELECT * FROM QUIEN_BAJO_EL_KERNEL.ROL f
 WHERE (@nombre is null or f.nombre like '%' + @nombre + '%') AND
 	  (@activo is null or f.activo = @activo)
 END
+GO
+
+---------------		SP ConsultaSaldos	---------------
+
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.getUltimosCincoDepositosByCuenta(@cuenta varchar(255))
+AS 
+BEGIN
+select top 5 * from [GD1C2015].[QUIEN_BAJO_EL_KERNEL].DEPOSITO  where cuenta_numero=@cuenta  order by fecha desc
+END
+GO
+
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.getUltimosCincoRetirosByCuenta(@cuenta varchar(255))
+AS 
+BEGIN
+select top 5 * from [GD1C2015].[QUIEN_BAJO_EL_KERNEL].RETIRO  where cuenta= @cuenta order by fecha desc
+END
+GO
+
+
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.getUltimasDiezTransferenciasByCuenta(@cuenta varchar(255))
+AS 
+BEGIN
+select top 10 *  from [GD1C2015].[QUIEN_BAJO_EL_KERNEL].TRANSFERENCIA  where origen= @cuenta or destino= @cuenta  order by fecha desc
+END
+GO
+
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.GetTiposMonedaByCuenta (@cuenta varchar(255))
+AS
+BEGIN
+	SELECT c2.codigo,c2.descripcion FROM QUIEN_BAJO_EL_KERNEL.CUENTA c1
+	inner join QUIEN_BAJO_EL_KERNEL.TIPO_MONEDA c2 on c1.moneda_tipo= c2.codigo
+	where numero=@cuenta
+END
+GO
+
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.insertTransferencia (@origen numeric(18,0), @destino numeric(18,0), @importe numeric(18,2), @costo numeric(18,2), @moneda_tipo numeric(1,0))
+AS 
+BEGIN
+insert into [QUIEN_BAJO_EL_KERNEL].TRANSFERENCIA (origen, destino,fecha ,importe, costo, moneda_tipo) values 
+(@origen, @destino, GETDATE(), @importe, @costo, @moneda_tipo)
+END
+GO
+
+
+---------------		SP Listados	---------------
+
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.ClientesComisionesFacturadas (@fechaDesde date, @fechaHasta date)
+AS 
+BEGIN
+select top 5  c1.tipo_documento,c1.numero_documento,c1.apellido,c1.nombre, COUNT(c3.id_transaccion) as cantComisiones from QUIEN_BAJO_EL_KERNEL.CLIENTE c1
+inner join QUIEN_BAJO_EL_KERNEL.FACTURA c2 on c2.cliente_tipo_doc=c1.tipo_documento and c2.cliente_numero_doc= c1.numero_documento 
+inner join QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA c3 on c2.numero = c3.factura_numero
+where c2.fecha >=@fechaDesde and c2.fecha<=@fechaHasta
+group by  c1.tipo_documento,c1.numero_documento,c1.apellido,c1.nombre
+END
+GO
+
+
+create view QUIEN_BAJO_EL_KERNEL.TransaccionesClientes as 
+--modificacionDeCuenta
+select c3.tipo_documento,c3.numero_documento,c3.apellido,c3.nombre,c2.fecha, COUNT(numero) cantTransacciones from QUIEN_BAJO_EL_KERNEL.CUENTA c1
+inner join QUIEN_BAJO_EL_KERNEL.CUENTA_MODIFICACION c2 on c1.numero=c2.cuenta
+inner join QUIEN_BAJO_EL_KERNEL.CLIENTE c3 on c3.tipo_documento =c1.cliente_tipo_doc and c3.numero_documento=c1.cliente_numero_doc
+group by c3.tipo_documento,c3.numero_documento,c3.apellido,c3.nombre,c2.fecha
+
+UNION ALL
+
+-- apertura cuentas
+select c3.tipo_documento,c3.numero_documento,c3.apellido,c3.nombre, c1.fecha_creacion,count (numero)as  cantTransacciones from QUIEN_BAJO_EL_KERNEL.CUENTA c1
+inner join QUIEN_BAJO_EL_KERNEL.CLIENTE c3 on c3.tipo_documento =c1.cliente_tipo_doc and c3.numero_documento=c1.cliente_numero_doc
+group by c3.tipo_documento,c3.numero_documento,c3.apellido,c3.nombre, c1.fecha_creacion
+
+UNION ALL
+
+-- transferencias entre cuentas propias
+select t4.tipo_documento, t4.numero_documento, t4.apellido, t4.nombre, t1.fecha, COUNT(*) as cantTransacciones from QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA t1
+inner join QUIEN_BAJO_EL_KERNEL.CUENTA t2 on t2.numero = t1.origen
+inner join QUIEN_BAJO_EL_KERNEL.CUENTA t3 on t3.numero = t1.destino
+inner join QUIEN_BAJO_EL_KERNEL.CLIENTE t4 on t3.cliente_tipo_doc =t4.tipo_documento and t3.cliente_numero_doc=t4.numero_documento
+where t3.cliente_tipo_doc = t2.cliente_tipo_doc and t3.cliente_numero_doc=t2.cliente_numero_doc
+group by t4.tipo_documento, t4.numero_documento, t4.apellido, t4.nombre, t1.fecha
+GO
+
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.ClientesConMayorTransacciones (@fechaDesde date, @fechaHasta date)
+AS 
+BEGIN
+select  top 5 tipo_documento,numero_documento,apellido,nombre, SUM(cantTransacciones) as cantTrancciones from  QUIEN_BAJO_EL_KERNEL.TransaccionesClientes
+where fecha>=@fechaDesde and fecha <= @fechaHasta
+group by tipo_documento,numero_documento,apellido,nombre
+order by cantTrancciones
+END
+GO
+
+create view QUIEN_BAJO_EL_KERNEL.MovimientosPaises as 
+select c2.pais_codigo,c1.fecha,COUNT(c2.numero) as cantMovimientos  from QUIEN_BAJO_EL_KERNEL.DEPOSITO  c1
+inner join QUIEN_BAJO_EL_KERNEL.CUENTA c2 on c1.cuenta_numero=c2.numero
+group by pais_codigo,c1.fecha
+UNION ALL
+select c2.pais_codigo,c1.fecha,COUNT(c2.numero) as cantMovimientos from QUIEN_BAJO_EL_KERNEL.RETIRO c1
+inner join QUIEN_BAJO_EL_KERNEL.CUENTA c2 on c1.cuenta=c2.numero
+group by pais_codigo,c1.fecha
+UNION ALL
+select c2.pais_codigo,c1.fecha,count(c2.numero) as cantMovimientos from QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA c1
+inner join QUIEN_BAJO_EL_KERNEL.CUENTA c2 on c1.origen=c2.numero
+where c1.origen<>c1.destino
+group by pais_codigo,c1.fecha
+UNION ALL
+select c2.pais_codigo,c1.fecha,count(c2.numero) as cantMovimientos from QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA c1
+inner join QUIEN_BAJO_EL_KERNEL.CUENTA c2 on c1.destino=c2.numero
+where c1.origen<>c1.destino
+group by pais_codigo,c1.fecha
+UNION ALL
+select c2.pais_codigo,c1.fecha,count(c2.numero) as cantMovimientos from QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA c1
+inner join QUIEN_BAJO_EL_KERNEL.CUENTA c2 on c1.destino=c2.numero
+where c1.origen=c1.destino
+group by pais_codigo,c1.fecha
+GO
+
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.PaisesConMayorIngresosEgresos (@fechaDesde date, @fechaHasta date)
+AS 
+BEGIN
+select top 5 pais_codigo, SUM(cantMovimientos) as cantMovimientos from QUIEN_BAJO_EL_KERNEL.MovimientosPaises
+where fecha>=@fechaDesde and fecha <= @fechaHasta
+group by pais_codigo
+order by cantMovimientos desc
+END
+GO
+
+---------------		SP XXX	---------------
+
+
 
 -----	 ****************************** EXEC PROCS ****************************** -----
 
-exec QUIEN_BAJO_EL_KERNEL.completar_transacciones
+/*exec QUIEN_BAJO_EL_KERNEL.completar_transacciones
 GO
-
+*/
 
 ---------------		SP Usuarios		---------------
 
@@ -886,10 +1086,9 @@ BEGIN
 END
 GO
 
----------------		SP Listados		---------------
 
 -----	 ****************************** TRIGGERS necesarios post-migracion ****************************** -----
-
+/*
 CREATE TRIGGER QUIEN_BAJO_EL_KERNEL.TransferenciaInsertarIdTransaccion
 ON QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA
 INSTEAD OF INSERT
@@ -924,5 +1123,61 @@ BEGIN
     VALUES (@origen, @destino, @fecha, @importe, @costo, @moneda_tipo, @id_transaccion)
 END
 GO
+
+
+CREATE TRIGGER QUIEN_BAJO_EL_KERNEL.InsertaItemFactura
+ON QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA
+INSTEAD OF INSERT
+AS
+BEGIN
+	DECLARE @numero_item NUMERIC(18,0),
+			@descripcion VARCHAR(255),
+			@importe	 NUMERIC(18,2),
+			@fact_num	 NUMERIC(18,0),
+			@trans_id	 NUMERIC(18,0)
+	
+	IF((SELECT COUNT(*) 
+		  FROM inserted) > 1)
+	BEGIN
+		DECLARE unCursor CURSOR FOR
+			SELECT descripcion,
+				   importe,
+				   factura_numero,
+				   id_transaccion
+			  FROM inserted
+		
+		OPEN unCursor
+		FETCH NEXT FROM unCursor INTO @descripcion, @importe, @fact_num, @trans_id
+		WHILE @@FETCH_STATUS = 0
+		BEGIN
+		  SELECT @numero_item = COUNT(*) + 1
+		    FROM QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA
+		   WHERE factura_numero = @fact_num
+		  
+		  INSERT INTO QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA(numero_item, descripcion, importe, factura_numero, id_transaccion)
+			VALUES(@numero_item, @descripcion, @importe, @fact_num, @trans_id)
+		END
+		
+		CLOSE unCursor
+		DEALLOCATE unCursor
+	END
+	ELSE
+	BEGIN
+		SELECT @numero_item = COUNT(*) + 1
+		  FROM QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA
+		 WHERE factura_numero = @fact_num
+		   
+		SELECT @descripcion = descripcion,
+			   @importe = importe,
+			   @fact_num = factura_numero,
+			   @trans_id = id_transaccion
+		  FROM inserted
+		 
+		INSERT INTO QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA(numero_item, descripcion, importe, factura_numero, id_transaccion)
+			VALUES(@numero_item, @descripcion, @importe, @fact_num, @trans_id)
+	END
+END
+GO
+*/
 
 

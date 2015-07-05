@@ -51,8 +51,11 @@
     <Compile Include="BaseRepository.cs" />
     <Compile Include="ClienteRepository.cs" />
     <Compile Include="CuentaRepository.cs" />
+    <Compile Include="DepositoRepository.cs" />
     <Compile Include="FuncionalidadRepository.cs" />
+    <Compile Include="ListadoRepository.cs" />
     <Compile Include="PaisRepository.cs" />
+    <Compile Include="RetiroRepository.cs" />
     <Compile Include="RolRepository.cs" />
     <Compile Include="DBConnection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

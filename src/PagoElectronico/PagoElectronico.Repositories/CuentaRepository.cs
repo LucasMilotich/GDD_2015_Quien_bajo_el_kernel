@@ -5,6 +5,7 @@ using System.Text;
 using PagoElectronico.Entities;
 using System.Data.SqlClient;
 using System.Data;
+using System.Transactions;
 
 namespace PagoElectronico.Repositories
 {
@@ -34,6 +35,28 @@ namespace PagoElectronico.Repositories
         public override void Delete(Cuenta entity)
         {
             throw new NotImplementedException();
+        }
+
+        public int InsertaCuenta(long numeroCuenta, int codPais, int tipoMoneda, int tipoCuenta, long tipoDocCliente, long nroDocCliente)
+        {
+            int resultado;
+            using (var transaction = new TransactionScope())
+            {
+                SqlCommand command = DBConnection.CreateStoredProcedure("InsertaCuenta");
+                command.Parameters.AddWithValue("@an_num_cuenta", numeroCuenta);
+                command.Parameters.AddWithValue("@an_cod_pais", codPais);
+                command.Parameters.AddWithValue("@an_moneda_tipo", tipoMoneda);
+                command.Parameters.AddWithValue("@an_cuenta_tipo", tipoCuenta);
+                command.Parameters.AddWithValue("@an_cliente_tipo_doc", tipoDocCliente);
+                command.Parameters.AddWithValue("@an_cliente_doc", nroDocCliente);
+
+                resultado = DBConnection.ExecuteNonQuery(command);
+                command.Dispose();
+
+                transaction.Complete();
+            }
+            return resultado;
+
         }
 
         public IEnumerable<long> getByCliente(long tipoDocCliente, long nroDocCliente)

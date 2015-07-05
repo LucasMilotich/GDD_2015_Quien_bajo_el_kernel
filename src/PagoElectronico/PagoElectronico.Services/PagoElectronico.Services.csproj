@@ -47,10 +47,13 @@
   <ItemGroup>
     <Compile Include="ClienteService.cs" />
     <Compile Include="CuentaService.cs" />
+    <Compile Include="DepositoService.cs" />
     <Compile Include="Interfaces\ILoginService.cs" />
+    <Compile Include="ListadoService.cs" />
     <Compile Include="LoginService.cs" />
     <Compile Include="FuncionalidadService.cs" />
     <Compile Include="PaisService.cs" />
+    <Compile Include="RetiroService.cs" />
     <Compile Include="TipoMonedaService.cs" />
     <Compile Include="TransferenciaService.cs" />
     <Compile Include="UsuarioService.cs" />

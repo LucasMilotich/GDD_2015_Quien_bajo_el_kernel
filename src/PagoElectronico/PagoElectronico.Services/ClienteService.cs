@@ -9,11 +9,8 @@ namespace PagoElectronico.Services
 {
     public class ClienteService
     {
-        public IEnumerable<Cliente> getByMayorIngresosEgresos(DateTime fechaDesde, DateTime fechaHasta)
-        {
-            ClienteRepository clienteRepo = new ClienteRepository();
-            return clienteRepo.getByMayorTransacciones(fechaDesde, fechaHasta);
-        }
+    
+
     }
 
 }

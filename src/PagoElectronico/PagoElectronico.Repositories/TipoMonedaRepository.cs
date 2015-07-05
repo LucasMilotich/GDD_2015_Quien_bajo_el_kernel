@@ -28,6 +28,24 @@ namespace PagoElectronico.Repositories
             return tipoMonedasList;
         }
 
+        public IEnumerable<TipoMoneda> GetTiposMonedaByCuenta(string cuenta)
+        {
+            List<TipoMoneda> tipoMonedasList = new List<TipoMoneda>();
+
+            SqlCommand command = DBConnection.CreateStoredProcedure("GetTiposMonedaByCuenta");
+            command.Parameters.AddWithValue("@cuenta",cuenta);
+            DataRowCollection collection = DBConnection.EjecutarStoredProcedureSelect(command).Rows;
+            foreach (DataRow row in collection)
+            {
+                TipoMoneda tipoMoneda = new TipoMoneda();
+                tipoMoneda.codigo = Convert.ToInt32(row[0]);
+                tipoMoneda.descripcion = row[1].ToString();
+                tipoMonedasList.Add(tipoMoneda);
+            }
+
+            return tipoMonedasList;
+        }
+
         public override TipoMoneda Get(int id)
         {
             throw new NotImplementedException();

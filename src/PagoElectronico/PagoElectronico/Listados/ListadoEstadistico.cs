@@ -9,13 +9,13 @@ using System.Windows.Forms;
 using PagoElectronico.Common;
 using PagoElectronico.Entities;
 using PagoElectronico.Services;
+using System.Data.SqlTypes;
 
 namespace PagoElectronico.Listados
 {
     public partial class ListadoEstadistico : Form
     {
-        PaisService paisService = new PaisService();
-        ClienteService clienteService = new ClienteService();
+        ListadoService listadoService = new ListadoService();
 
         public ListadoEstadistico()
         {
@@ -27,11 +27,22 @@ namespace PagoElectronico.Listados
 
         private void btnBuscar_Click(object sender, EventArgs e)
         {
-            if ((Validaciones.validarCampoVacio(txtAnio) & Validaciones.validarCampoNumericoEntero(txtAnio)))
-            {
-                realizarBusqueda();
-            }
+            bool validator = Validaciones.validarCampoVacio(txtAnio) && Validaciones.validarCampoNumericoEntero(txtAnio);
 
+            try
+            {
+                if (validator)                
+                    realizarBusqueda();                
+            }
+        
+            catch (SqlTypeException )
+            {
+                MessageBox.Show("La fecha debe estar comprendida entre 1753 y 9999", "Atencion !", MessageBoxButtons.OK, MessageBoxIcon.Error);                
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Atencion !", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }   
         }
 
         private void btnLimpiar_Click(object sender, EventArgs e)
@@ -76,25 +87,25 @@ namespace PagoElectronico.Listados
             }
             fechaHasta = fechaDesde.AddMonths(3).AddDays(-1);
 
-            if (rbClientesCantComisiones.Checked == true)
+            if (rbClientesCuentasInhabilitadas.Checked)
             {
-
+                dataGridViewListado.DataSource = (DataTable)listadoService.getByCuentasInhabilitadas(fechaDesde, fechaHasta);
             }
-            else if (rbClientesCantTransacciones.Checked == true)
+            else if (rbClientesCantComisiones.Checked)
             {
-                dataGridViewListado.DataSource = clienteService.getByMayorIngresosEgresos(fechaDesde, fechaHasta);
+                dataGridViewListado.DataSource = (DataTable)listadoService.getByMayorComisionesFacturadas(fechaDesde, fechaHasta);
             }
-            else if (rbClientesCuentasInhabilitadas.Checked == true)
+            else if (rbClientesCantTransacciones.Checked)
             {
-
+                dataGridViewListado.DataSource = (DataTable)listadoService.getByMayorTransacciones(fechaDesde, fechaHasta);
             }
-            else if (rbPaisesCantMovimientos.Checked == true)
+            else if (rbPaisesCantMovimientos.Checked)
             {
-                dataGridViewListado.DataSource = paisService.getByMayorIngresosEgresos(fechaDesde, fechaHasta);
+                dataGridViewListado.DataSource = (DataTable)listadoService.getByMayorIngresosEgresos(fechaDesde, fechaHasta);
             }
-            else if (rbTotalFacturado.Checked == true)
+            else if (rbTotalFacturado.Checked)
             {
-
+                dataGridViewListado.DataSource = (DataTable)listadoService.getByTotalFacturado(fechaDesde, fechaHasta);
             }
             else
             {
