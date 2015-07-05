@@ -200,7 +200,8 @@ GO
 CREATE TABLE QUIEN_BAJO_EL_KERNEL.USUARIO_LOG(
 	id int IDENTITY(1,1) NOT NULL ,
 	username varchar(255) NULL,
-	fecha datetime NULL
+	fecha datetime NULL,
+	login_correcto bit NULL
 )
 GO
 -----	 ****************************** PRIMARY KEYS ****************************** -----
