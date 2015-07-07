@@ -627,6 +627,8 @@ gd_esquema.Maestra m
 WHERE
 m.Factura_Numero IS NOT NULL
 
+GO
+
 
 
 -----	 ****************************** INSERTS ****************************** -----
