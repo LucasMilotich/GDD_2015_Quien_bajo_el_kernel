@@ -770,7 +770,7 @@ INSERT INTO QUIEN_BAJO_EL_KERNEL.item_factura_transferencias (transferencia,desc
 	,Factura_Numero
 	FROM QUIEN_BAJO_EL_KERNEL.facturas_transferencias)
 
-
+GO
 -----	 ****************************** STORED PROCEDURES ****************************** -----
 
 ---------------		SP necesarios para migracion		---------------
