@@ -15,8 +15,8 @@ CREATE TABLE QUIEN_BAJO_EL_KERNEL.FACTURA (
 GO
 
 CREATE TABLE QUIEN_BAJO_EL_KERNEL.CUENTA_MODIFICACION ( 
+	id_modificacion numeric(18) IDENTITY(1,1) NOT NULL,
 	cuenta numeric(18) NOT NULL,
-	id_modificacion numeric(18) NOT NULL,
 	fecha datetime NULL
 )
 GO
@@ -222,32 +222,27 @@ GO
 
 
 ALTER TABLE QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA_TRANSFERENCIAS ADD CONSTRAINT PK_ITEM_FACTURA_TRANSFERENCIA
-	PRIMARY KEY CLUSTERED (transferencia,factura_numero)
+	PRIMARY KEY CLUSTERED (transferencia)
 GO
 
 ALTER TABLE QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA_ACTIVACION_CUENTA ADD CONSTRAINT PK_ITEM_FACTURA_ACT_CUENTA
-	PRIMARY KEY CLUSTERED (cuenta,factura_numero)
+	PRIMARY KEY CLUSTERED (cuenta)
 GO
 
 ALTER TABLE QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA_MODIFICACION_CUENTA ADD CONSTRAINT PK_ITEM_FACTURA_MOD_CUENTA
-	PRIMARY KEY CLUSTERED (id_modificacion,factura_numero)
+	PRIMARY KEY CLUSTERED (id_modificacion)
 GO
 
 ALTER TABLE QUIEN_BAJO_EL_KERNEL.FUNCIONALIDAD ADD CONSTRAINT PK_FUNCIONALIDAD 
 	PRIMARY KEY CLUSTERED (id_funcionalidad)
 GO
 
-ALTER TABLE QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA ADD CONSTRAINT PK_ITEM_FACTURA 
-	PRIMARY KEY CLUSTERED (numero_item,factura_numero)
-GO
-
-
 ALTER TABLE QUIEN_BAJO_EL_KERNEL.FACTURA ADD CONSTRAINT PK_FACTURA 
 	PRIMARY KEY CLUSTERED (numero)
 GO
 
 ALTER TABLE QUIEN_BAJO_EL_KERNEL.CUENTA_MODIFICACION ADD CONSTRAINT PK_CUENTA_MODIFICACION 
-	PRIMARY KEY CLUSTERED (cuenta, id_modificacion)
+	PRIMARY KEY CLUSTERED (id_modificacion)
 GO
 
 ALTER TABLE QUIEN_BAJO_EL_KERNEL.FUNCIONALIDAD_ROL ADD CONSTRAINT PK_FUNCIONALIDAD_ROL 
@@ -730,19 +725,18 @@ INSERT INTO QUIEN_BAJO_EL_KERNEL.FACTURA (numero, fecha, cliente_numero_doc, cli
 				WHERE Factura_Numero IS NOT NULL)
 GO
 
+
 INSERT INTO QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA_TRANSFERENCIAS (transferencia,descripcion,importe,factura_numero)
-									(SELECT t.transferencia,m.item_factura_descr, m.item_factura_importe, m.Factura_Numero
-									 FROM QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA t JOIN gd_esquema.Maestra m
+									(SELECT t.codigo,m.item_factura_descr, m.item_factura_importe, m.Factura_Numero
+									 FROM QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA t 
+									 inner join gd_esquema.Maestra m
 													on t.destino = m.cuenta_dest_numero and
-													   t.origen = m.cuenta  and
-													   t.transf_fecha = m.transf_fecha
+													   t.origen = m.Cuenta_Numero  and
+													   t.fecha = m.transf_fecha and
+													   t.importe = m.Trans_Importe
 									WHERE m.Factura_Numero is not null)
 
 GO
-
-
-
-
 
 -----	 ****************************** STORED PROCEDURES ****************************** -----
 
