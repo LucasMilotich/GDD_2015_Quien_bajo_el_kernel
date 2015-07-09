@@ -651,7 +651,10 @@ GO
 INSERT INTO [QUIEN_BAJO_EL_KERNEL].[Usuario]([username], [password], [activo]) VALUES ('admin', 0xE6B87050BFCB8143FCB8DB0170A4DC9ED00D904DDD3E2A4AD1B1E8DC0FDC9BE7, 1)
 GO
 
-INSERT INTO  [QUIEN_BAJO_EL_KERNEL].[ROL] (nombre,activo) values ('admin',1)
+INSERT INTO  [QUIEN_BAJO_EL_KERNEL].[ROL] (nombre,activo) values ('Administrador',1)
+GO
+
+INSERT INTO  [QUIEN_BAJO_EL_KERNEL].[ROL] (nombre,activo) values ('Cliente',1)
 GO
 
 INSERT INTO  [QUIEN_BAJO_EL_KERNEL].[USUARIO_ROL] (id_rol,username) values (1,'admin')
