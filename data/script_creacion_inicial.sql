@@ -557,6 +557,7 @@ AFTER INSERT
 AS
 BEGIN
   DECLARE @montoImporte numeric(18, 2),
+		  @costo numeric(18, 2),
           @cuentaNumeroOrigen numeric(18),
           @cuentaNumeroDestino numeric(18)
   IF ((SELECT
@@ -567,22 +568,23 @@ BEGIN
     DECLARE unCursor CURSOR FOR
     SELECT
       importe,
+      costo,
       origen,
       destino
     FROM inserted
 
     OPEN unCursor
-    FETCH NEXT FROM unCursor INTO @montoImporte, @cuentaNumeroOrigen, @cuentaNumeroDestino
+    FETCH NEXT FROM unCursor INTO @montoImporte,@costo, @cuentaNumeroOrigen, @cuentaNumeroDestino
     WHILE @@FETCH_STATUS = 0
     BEGIN
       UPDATE QUIEN_BAJO_EL_KERNEL.CUENTA
-      SET Saldo = Saldo - @montoImporte
+      SET Saldo = Saldo - @montoImporte - @costo
       WHERE numero = @cuentaNumeroOrigen
 
       UPDATE QUIEN_BAJO_EL_KERNEL.CUENTA
       SET Saldo = Saldo + @montoImporte
       WHERE numero = @cuentaNumeroDestino
-      FETCH NEXT FROM unCursor INTO @montoImporte, @cuentaNumeroOrigen, @cuentaNumeroDestino
+      FETCH NEXT FROM unCursor INTO @montoImporte,@costo, @cuentaNumeroOrigen, @cuentaNumeroDestino
     END
 
     CLOSE unCursor
@@ -592,12 +594,13 @@ BEGIN
   BEGIN
     SELECT
       @montoImporte = importe,
+      @costo = costo,
       @cuentaNumeroOrigen = origen,
-      @cuentaNumeroDestino = destino
+      @cuentaNumeroDestino = destino      
     FROM inserted
 
     UPDATE QUIEN_BAJO_EL_KERNEL.CUENTA
-    SET Saldo = Saldo - @montoImporte
+    SET Saldo = Saldo - @montoImporte - @costo
     WHERE numero = @cuentaNumeroOrigen
 
     UPDATE QUIEN_BAJO_EL_KERNEL.CUENTA
@@ -777,76 +780,7 @@ GO
 -----	 ****************************** STORED PROCEDURES ****************************** -----
 
 ---------------		SP necesarios para migracion		---------------
-/*
-CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.completar_transacciones
-AS
-BEGIN
 
-  DECLARE @CANT_CUENTAS numeric(18, 0)
-  DECLARE @CANT_CUENTAS_MODIF numeric(18, 0)
-  DECLARE @CANT_TRANSF numeric(18, 0)
-  DECLARE @i numeric(18, 0)
-  DECLARE @cuenta numeric(18, 0)
-  DECLARE @transf numeric(18, 0)
-
-
-  SELECT
-    @CANT_CUENTAS = COUNT(*)
-  FROM QUIEN_BAJO_EL_KERNEL.CUENTA
-  SELECT
-    @CANT_CUENTAS_MODIF = COUNT(*)
-  FROM QUIEN_BAJO_EL_KERNEL.CUENTA_MODIFICACION
-  SELECT
-    @CANT_TRANSF = COUNT(*)
-  FROM QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA
-
-  -- LIMPIO
-
-  UPDATE QUIEN_BAJO_EL_KERNEL.CUENTA
-  SET id_transaccion = NULL
-  UPDATE QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA
-  SET id_transaccion = NULL
-  DELETE FROM QUIEN_BAJO_EL_KERNEL.TRANSACCIONES
-  DBCC CHECKIDENT ('QUIEN_BAJO_EL_KERNEL.TRANSACCIONES', RESEED, 1)
-
-
-  SET @i = 1
-
-  WHILE @i <= @CANT_CUENTAS
-  BEGIN
-
-    INSERT INTO QUIEN_BAJO_EL_KERNEL.TRANSACCIONES (operacion_tipo)
-      VALUES (2)
-    SET @i = @i + 1
-
-  END
-
-  SET @i = 0
-  UPDATE QUIEN_BAJO_EL_KERNEL.CUENTA
-  SET @i = id_transaccion = @i + 1
-  WHERE id_transaccion IS NULL
-
-
-  SET @i = 1
-
-  WHILE @i <= @CANT_TRANSF
-  BEGIN
-
-    INSERT INTO QUIEN_BAJO_EL_KERNEL.TRANSACCIONES (operacion_tipo)
-      VALUES (1)
-
-    SET @i = @i + 1
-
-  END
-  SET @i = @CANT_CUENTAS
-  UPDATE QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA
-  SET @i = id_transaccion = @i + 1
-  WHERE id_transaccion IS NULL
-
-
-END
-GO
-*/
 ---------------		SP Cuenta		---------------
 CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.GetMaxNroCuenta
 AS
@@ -979,11 +913,12 @@ GO
 
 
 CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.getUltimasDiezTransferenciasByCuenta(@cuenta varchar(255))
-AS
+AS 
 BEGIN
 select top 10 *  from [GD1C2015].[QUIEN_BAJO_EL_KERNEL].TRANSFERENCIA  where origen= @cuenta or destino= @cuenta  order by fecha desc
 END
 GO
+
 
 CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.GetTiposMonedaByCuenta (@cuenta varchar(255))
 AS
@@ -995,9 +930,9 @@ END
 GO
 
 CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.insertTransferencia (@origen numeric(18,0), @destino numeric(18,0), @importe numeric(18,2), @costo numeric(18,2), @moneda_tipo numeric(1,0))
-AS
+AS 
 BEGIN
-insert into [QUIEN_BAJO_EL_KERNEL].TRANSFERENCIA (origen, destino,fecha ,importe, costo, moneda_tipo) values
+insert into [QUIEN_BAJO_EL_KERNEL].TRANSFERENCIA (origen, destino,fecha ,importe, costo, moneda_tipo) values 
 (@origen, @destino, GETDATE(), @importe, @costo, @moneda_tipo)
 END
 GO
@@ -1117,30 +1052,25 @@ END
 GO
 
 
+
+
 -----	 ****************************** TRIGGERS necesarios post-migracion ****************************** -----
-/*
-CREATE TRIGGER QUIEN_BAJO_EL_KERNEL.TransferenciaInsertarIdTransaccion
+CREATE TRIGGER QUIEN_BAJO_EL_KERNEL.TransferenciasManejoID
 ON QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA
 INSTEAD OF INSERT
 AS
 BEGIN
-  DECLARE @codigo numeric(18, 0),
+DECLARE   @codigo numeric(18, 0),
           @origen numeric(18, 0),
           @destino numeric(18, 0),
           @fecha datetime,
           @importe numeric(18, 2),
           @costo numeric(18, 2),
-          @moneda_tipo numeric(1, 0),
-          @id_transaccion numeric(18, 0)
-
-  INSERT INTO QUIEN_BAJO_EL_KERNEL.TRANSACCIONES (operacion_tipo, fecha)
-    VALUES (1, GETDATE())
-
-  SET @id_transaccion = (SELECT
-    SCOPE_IDENTITY())
-
-  SELECT
-    @codigo = codigo,
+          @moneda_tipo numeric(1, 0)
+          
+select @codigo=COUNT(*)+1 from QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA
+ 
+SELECT
     @origen = origen,
     @destino = destino,
     @fecha = fecha,
@@ -1149,63 +1079,8 @@ BEGIN
     @moneda_tipo = moneda_tipo
   FROM inserted
 
-  INSERT INTO QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA (origen, destino, fecha, importe, costo, moneda_tipo, id_transaccion)
-    VALUES (@origen, @destino, @fecha, @importe, @costo, @moneda_tipo, @id_transaccion)
+INSERT INTO QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA (codigo,origen, destino, fecha, importe, costo, moneda_tipo)
+VALUES (@codigo,@origen, @destino, @fecha, @importe, @costo, @moneda_tipo)
+
 END
 GO
-
-
-CREATE TRIGGER QUIEN_BAJO_EL_KERNEL.InsertaItemFactura
-ON QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA
-INSTEAD OF INSERT
-AS
-BEGIN
-	DECLARE @numero_item NUMERIC(18,0),
-			@descripcion VARCHAR(255),
-			@importe	 NUMERIC(18,2),
-			@fact_num	 NUMERIC(18,0),
-			@trans_id	 NUMERIC(18,0)
-
-	IF((SELECT COUNT(*)
-		  FROM inserted) > 1)
-	BEGIN
-		DECLARE unCursor CURSOR FOR
-			SELECT descripcion,
-				   importe,
-				   factura_numero,
-				   id_transaccion
-			  FROM inserted
-
-		OPEN unCursor
-		FETCH NEXT FROM unCursor INTO @descripcion, @importe, @fact_num, @trans_id
-		WHILE @@FETCH_STATUS = 0
-		BEGIN
-		  SELECT @numero_item = COUNT(*) + 1
-		    FROM QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA
-		   WHERE factura_numero = @fact_num
-
-		  INSERT INTO QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA(numero_item, descripcion, importe, factura_numero, id_transaccion)
-			VALUES(@numero_item, @descripcion, @importe, @fact_num, @trans_id)
-		END
-
-		CLOSE unCursor
-		DEALLOCATE unCursor
-	END
-	ELSE
-	BEGIN
-		SELECT @numero_item = COUNT(*) + 1
-		  FROM QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA
-		 WHERE factura_numero = @fact_num
-
-		SELECT @descripcion = descripcion,
-			   @importe = importe,
-			   @fact_num = factura_numero,
-			   @trans_id = id_transaccion
-		  FROM inserted
-
-		INSERT INTO QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA(numero_item, descripcion, importe, factura_numero, id_transaccion)
-			VALUES(@numero_item, @descripcion, @importe, @fact_num, @trans_id)
-	END
-END
-GO
-*/
