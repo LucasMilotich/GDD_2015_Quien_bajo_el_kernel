@@ -29,6 +29,12 @@
         private void InitializeComponent()
         {
             this.groupBoxTransferencia = new System.Windows.Forms.GroupBox();
+            this.comboBanco = new System.Windows.Forms.ComboBox();
+            this.lblBanco = new System.Windows.Forms.Label();
+            this.lblNombreLibra = new System.Windows.Forms.Label();
+            this.txtNombreLibrar = new System.Windows.Forms.TextBox();
+            this.lblNroCheque = new System.Windows.Forms.Label();
+            this.txtNroCheque = new System.Windows.Forms.TextBox();
             this.txtNroDoc = new System.Windows.Forms.TextBox();
             this.comboTipoDoc = new System.Windows.Forms.ComboBox();
             this.lblDocumento = new System.Windows.Forms.Label();
@@ -49,6 +55,12 @@
             // 
             // groupBoxTransferencia
             // 
+            this.groupBoxTransferencia.Controls.Add(this.comboBanco);
+            this.groupBoxTransferencia.Controls.Add(this.lblBanco);
+            this.groupBoxTransferencia.Controls.Add(this.lblNombreLibra);
+            this.groupBoxTransferencia.Controls.Add(this.txtNombreLibrar);
+            this.groupBoxTransferencia.Controls.Add(this.lblNroCheque);
+            this.groupBoxTransferencia.Controls.Add(this.txtNroCheque);
             this.groupBoxTransferencia.Controls.Add(this.txtNroDoc);
             this.groupBoxTransferencia.Controls.Add(this.comboTipoDoc);
             this.groupBoxTransferencia.Controls.Add(this.lblDocumento);
@@ -64,10 +76,61 @@
             this.groupBoxTransferencia.Controls.Add(this.lblCuentaOrigen);
             this.groupBoxTransferencia.Location = new System.Drawing.Point(12, 12);
             this.groupBoxTransferencia.Name = "groupBoxTransferencia";
-            this.groupBoxTransferencia.Size = new System.Drawing.Size(513, 171);
+            this.groupBoxTransferencia.Size = new System.Drawing.Size(475, 268);
             this.groupBoxTransferencia.TabIndex = 5;
             this.groupBoxTransferencia.TabStop = false;
             this.groupBoxTransferencia.Text = "Retiro";
+            // 
+            // comboBanco
+            // 
+            this.comboBanco.Cursor = System.Windows.Forms.Cursors.Default;
+            this.comboBanco.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBanco.FormattingEnabled = true;
+            this.comboBanco.Location = new System.Drawing.Point(87, 140);
+            this.comboBanco.Name = "comboBanco";
+            this.comboBanco.Size = new System.Drawing.Size(103, 21);
+            this.comboBanco.TabIndex = 29;
+            // 
+            // lblBanco
+            // 
+            this.lblBanco.AutoSize = true;
+            this.lblBanco.Location = new System.Drawing.Point(6, 148);
+            this.lblBanco.Name = "lblBanco";
+            this.lblBanco.Size = new System.Drawing.Size(38, 13);
+            this.lblBanco.TabIndex = 28;
+            this.lblBanco.Text = "Banco";
+            // 
+            // lblNombreLibra
+            // 
+            this.lblNombreLibra.AutoSize = true;
+            this.lblNombreLibra.Location = new System.Drawing.Point(6, 203);
+            this.lblNombreLibra.Name = "lblNombreLibra";
+            this.lblNombreLibra.Size = new System.Drawing.Size(78, 13);
+            this.lblNombreLibra.TabIndex = 27;
+            this.lblNombreLibra.Text = "Nombre a librar";
+            // 
+            // txtNombreLibrar
+            // 
+            this.txtNombreLibrar.Location = new System.Drawing.Point(86, 196);
+            this.txtNombreLibrar.Name = "txtNombreLibrar";
+            this.txtNombreLibrar.Size = new System.Drawing.Size(192, 20);
+            this.txtNombreLibrar.TabIndex = 26;
+            // 
+            // lblNroCheque
+            // 
+            this.lblNroCheque.AutoSize = true;
+            this.lblNroCheque.Location = new System.Drawing.Point(6, 176);
+            this.lblNroCheque.Name = "lblNroCheque";
+            this.lblNroCheque.Size = new System.Drawing.Size(44, 13);
+            this.lblNroCheque.TabIndex = 25;
+            this.lblNroCheque.Text = "Cheque";
+            // 
+            // txtNroCheque
+            // 
+            this.txtNroCheque.Location = new System.Drawing.Point(87, 169);
+            this.txtNroCheque.Name = "txtNroCheque";
+            this.txtNroCheque.Size = new System.Drawing.Size(192, 20);
+            this.txtNroCheque.TabIndex = 24;
             // 
             // txtNroDoc
             // 
@@ -143,15 +206,15 @@
             this.comboTipoMoneda.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboTipoMoneda.Enabled = false;
             this.comboTipoMoneda.FormattingEnabled = true;
-            this.comboTipoMoneda.Location = new System.Drawing.Point(87, 118);
+            this.comboTipoMoneda.Location = new System.Drawing.Point(88, 113);
             this.comboTipoMoneda.Name = "comboTipoMoneda";
-            this.comboTipoMoneda.Size = new System.Drawing.Size(192, 21);
+            this.comboTipoMoneda.Size = new System.Drawing.Size(102, 21);
             this.comboTipoMoneda.TabIndex = 4;
             // 
             // lblTipoMoneda
             // 
             this.lblTipoMoneda.AutoSize = true;
-            this.lblTipoMoneda.Location = new System.Drawing.Point(6, 118);
+            this.lblTipoMoneda.Location = new System.Drawing.Point(6, 121);
             this.lblTipoMoneda.Name = "lblTipoMoneda";
             this.lblTipoMoneda.Size = new System.Drawing.Size(70, 13);
             this.lblTipoMoneda.TabIndex = 15;
@@ -196,7 +259,7 @@
             // 
             // btnRetirar
             // 
-            this.btnRetirar.Location = new System.Drawing.Point(21, 205);
+            this.btnRetirar.Location = new System.Drawing.Point(40, 295);
             this.btnRetirar.Name = "btnRetirar";
             this.btnRetirar.Size = new System.Drawing.Size(117, 44);
             this.btnRetirar.TabIndex = 7;
@@ -206,7 +269,7 @@
             // 
             // btnLimpiar
             // 
-            this.btnLimpiar.Location = new System.Drawing.Point(354, 205);
+            this.btnLimpiar.Location = new System.Drawing.Point(302, 295);
             this.btnLimpiar.Name = "btnLimpiar";
             this.btnLimpiar.Size = new System.Drawing.Size(124, 44);
             this.btnLimpiar.TabIndex = 8;
@@ -218,7 +281,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(571, 269);
+            this.ClientSize = new System.Drawing.Size(516, 364);
             this.Controls.Add(this.btnRetirar);
             this.Controls.Add(this.btnLimpiar);
             this.Controls.Add(this.groupBoxTransferencia);
@@ -249,5 +312,11 @@
         private System.Windows.Forms.TextBox txtNroDoc;
         private System.Windows.Forms.ComboBox comboTipoDoc;
         private System.Windows.Forms.Label lblDocumento;
+        private System.Windows.Forms.Label lblNroCheque;
+        private System.Windows.Forms.TextBox txtNroCheque;
+        private System.Windows.Forms.ComboBox comboBanco;
+        private System.Windows.Forms.Label lblBanco;
+        private System.Windows.Forms.Label lblNombreLibra;
+        private System.Windows.Forms.TextBox txtNombreLibrar;
     }
 }

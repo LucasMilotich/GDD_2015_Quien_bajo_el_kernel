@@ -18,9 +18,11 @@ namespace PagoElectronico.Retiros
         CuentaService cuentaService = new CuentaService();
         TipoMonedaService tipoMonedaService = new TipoMonedaService();
         TipoDocumentoService tipoDocumentoService = new TipoDocumentoService();
+        BancoService bancoService = new BancoService();
         List<long> listaCuentas;
         List<TipoMoneda> listaTiposMoneda;
         List<TipoDocumento> listaTiposDocumentos;
+        List<Banco> listaBancos;
 
         Usuario usuario = Session.Usuario;
         //Para probar hasta q este el login: 10002 and cliente_numero_doc=45622098
@@ -33,6 +35,7 @@ namespace PagoElectronico.Retiros
             cargarComboCuentas();
             cargarComboTipoDoc();
             cargarComboTipoMoneda();
+            cargarComboBanco();
         }
 
         #region Eventos
@@ -60,6 +63,11 @@ namespace PagoElectronico.Retiros
             recalcularSaldoPosterior();
         }
 
+        private void Retiro_Load(object sender, EventArgs e)
+        {
+
+        }
+
         #endregion
 
         #region MetodosPrivados
@@ -70,7 +78,10 @@ namespace PagoElectronico.Retiros
             // tener saldo
             // el importe ingresado debe ser menor o igual al saldo de la cuenta
             // el importe debe estar en dls
-            if (Validaciones.validarCampoVacio(txtNroDoc) & Validaciones.validarCampoVacio(txtImporte)  & Validaciones.validarCampoNumericoDouble(txtImporte) & Validaciones.validarCampoNumericoEntero(txtNroDoc))
+            Boolean validador;
+            validador = Validaciones.validarCampoVacio(txtNroDoc) & Validaciones.validarCampoVacio(txtImporte) & Validaciones.validarCampoVacio(txtNroCheque) & Validaciones.validarCampoVacio(txtNombreLibrar);
+            validador = validador & Validaciones.validarCampoNumericoDouble(txtImporte) & Validaciones.validarCampoNumericoEntero(txtNroDoc) & Validaciones.validarCampoNumericoEntero(txtNroCheque) & Validaciones.validarCampoString(txtNombreLibrar);
+            if (validador)
             {
                 try
                 {
@@ -121,10 +132,17 @@ namespace PagoElectronico.Retiros
         {
             txtNroDoc.BackColor = System.Drawing.Color.White;
             txtImporte.BackColor = System.Drawing.Color.White;
+            txtNroCheque.BackColor = System.Drawing.Color.White;
+            txtNombreLibrar.BackColor = System.Drawing.Color.White;
+
             txtNroDoc.Text = String.Empty;
             txtImporte.Text = String.Empty;
+            txtNroCheque.Text = String.Empty;
+            txtNroDoc.Text = String.Empty;
+
             comboCuentaOrigen.SelectedIndex = 0;
             comboTipoMoneda.SelectedIndex = 0;
+            comboBanco.SelectedIndex = 0;
             //ocultarComponentes();
         }
 
@@ -145,7 +163,7 @@ namespace PagoElectronico.Retiros
 
         private void cargarComboTipoDoc()
         {
-            listaTiposDocumentos = (List<TipoDocumento>) tipoDocumentoService.GetAll();
+            listaTiposDocumentos = (List<TipoDocumento>)tipoDocumentoService.GetAll();
             foreach (var item in listaTiposDocumentos)
             {
                 comboTipoDoc.Items.Add(item.descripcion);
@@ -166,6 +184,17 @@ namespace PagoElectronico.Retiros
             comboTipoMoneda.SelectedIndex = 0;
         }
 
+        private void cargarComboBanco()
+        {
+            listaBancos = (List<Banco>)bancoService.GetAll(); ;
+            foreach (var item in listaBancos)
+            {
+                comboBanco.Items.Add(item.nombre);
+            }
+
+            comboBanco.SelectedIndex = 0;
+        }
+
         private void ocultarComponentes()
         {
             lblSaldoPosterior.Visible = false;
@@ -184,7 +213,11 @@ namespace PagoElectronico.Retiros
         /*************    Validadores privados       *************/
         private void validarCuentaHabilitada()
         {
+            if (cuentaService.getEstado(Int64.Parse(comboCuentaOrigen.Text)) != (Int32)Entities.Enums.EstadosCuenta.Habilitada)
+            {
 
+                throw new OperationCanceledException("La cuenta no se encuentra habilitada");
+            }
         }
 
         private void validarNumeroDocumento()
@@ -194,12 +227,12 @@ namespace PagoElectronico.Retiros
 
         private void validarSaldoDisponible()
         {
-            if (Int64.Parse(lblSaldoActual.Text) <= 0)
+            if (Double.Parse(lblSaldoActual.Text) <= 0)
             {
                 throw new OperationCanceledException("La cuenta no posee fondos!");
             }
 
-            if (Int64.Parse(txtImporte.Text) > Int64.Parse(lblSaldoActual.Text))
+            if (Double.Parse(txtImporte.Text) > Double.Parse(lblSaldoActual.Text))
             {
                 throw new OperationCanceledException("El saldo actual no es suficiente");
             }
@@ -212,10 +245,7 @@ namespace PagoElectronico.Retiros
 
         #endregion
 
-        private void Retiro_Load(object sender, EventArgs e)
-        {
 
-        }
 
 
     }

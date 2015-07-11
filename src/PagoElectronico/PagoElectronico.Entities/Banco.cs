@@ -11,7 +11,7 @@ namespace PagoElectronico.Entities
 
         public string nombre { get; set; }
 
-        public string descripcion { get; set; }
+        public string direccion { get; set; }
 
     }
 }

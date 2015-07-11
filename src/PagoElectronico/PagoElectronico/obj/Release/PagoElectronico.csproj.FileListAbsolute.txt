@@ -42,7 +42,6 @@ C:\Users\Nicolas\Documents\GitHub\GDD_2015_Quien_bajo_el_kernel\src\PagoElectron
 C:\Users\Nicolas\Documents\GitHub\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.ABM_Cuenta.EdicionCuenta.resources
 C:\Users\Nicolas\Documents\GitHub\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.ABM_Rol.ConsultaRol.resources
 C:\Users\Nicolas\Documents\GitHub\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.ABM_Rol.Alta.resources
-C:\Users\Nicolas\Documents\GitHub\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.ABM_Rol.Modificacion.resources
 C:\Users\Nicolas\Documents\GitHub\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.Login.SeleccionRol.resources
 C:\Users\Nicolas\Documents\GitHub\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.ABM_Cliente.Alta.resources
 C:\Users\Nicolas\Documents\GitHub\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.ABM_Cliente.Listado.resources
