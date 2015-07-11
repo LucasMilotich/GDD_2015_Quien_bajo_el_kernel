@@ -664,6 +664,7 @@ GO
 INSERT INTO  [QUIEN_BAJO_EL_KERNEL].[USUARIO_ROL] (id_rol,username) values (1,'admin')
 GO
 
+
 insert into QUIEN_BAJO_EL_KERNEL.TIPO_DOCUMENTO (codigo,descripcion)
 			 (select distinct cli_tipo_doc_cod,cli_tipo_doc_desc
 					from gd_esquema.Maestra
@@ -946,8 +947,6 @@ GO
 
 --- 2.- Cliente con mayor cantidad de comisiones facturadas en todas sus cuentas --
 
-drop view QUIEN_BAJO_EL_KERNEL.ComisionesFacturadas
-GO
 create view QUIEN_BAJO_EL_KERNEL.ComisionesFacturadas as
 -- Transferencias
 select cl.apellido, cl.nombre, f.cliente_numero_doc, f.cliente_tipo_doc , f.fecha
@@ -1125,3 +1124,30 @@ VALUES (@codigo,@origen, @destino, @fecha, @importe, @costo, @moneda_tipo)
 
 END
 GO
+
+CREATE TRIGGER QUIEN_BAJO_EL_KERNEL.RetirosManejoID
+ON QUIEN_BAJO_EL_KERNEL.Retiro
+INSTEAD OF INSERT
+AS
+BEGIN
+DECLARE   @codigo numeric(18, 0),
+          @fecha datetime,
+          @importe numeric(18, 2),
+          @cuenta numeric(18, 0),
+          @cheque numeric(18, 0)
+          
+select @codigo=COUNT(*)+1 from QUIEN_BAJO_EL_KERNEL.Retiro
+ 
+SELECT
+    @fecha = fecha,
+    @importe = importe,
+    @cuenta = cuenta,
+    @cheque = cheque
+  FROM inserted
+
+INSERT INTO QUIEN_BAJO_EL_KERNEL.Retiro (codigo,fecha, importe, cuenta, cheque)
+VALUES (@codigo,@fecha, @importe, @cuenta, @cheque)
+
+END
+GO
+

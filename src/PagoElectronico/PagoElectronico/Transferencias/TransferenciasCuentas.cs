@@ -154,7 +154,7 @@ namespace PagoElectronico.Transferencias
             lblSaldoActual.Text = cuentaService.getSaldo(Convert.ToInt64(comboCuentaOrigen.Text.ToString())).ToString();
         }
 
-        private void  cargarComboCuentas()
+        private void cargarComboCuentas()
         {
             listaCuentas = (List<long>)cuentaService.getByCliente(tipoDocCliente, nroDocCliente);
             if (listaCuentas.Count > 0)

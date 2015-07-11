@@ -119,7 +119,7 @@
             this.comboTipoMoneda.FormattingEnabled = true;
             this.comboTipoMoneda.Location = new System.Drawing.Point(87, 118);
             this.comboTipoMoneda.Name = "comboTipoMoneda";
-            this.comboTipoMoneda.Size = new System.Drawing.Size(181, 21);
+            this.comboTipoMoneda.Size = new System.Drawing.Size(192, 21);
             this.comboTipoMoneda.TabIndex = 4;
             // 
             // lblTipoMoneda
@@ -138,7 +138,7 @@
             this.comboCuentaOrigen.FormattingEnabled = true;
             this.comboCuentaOrigen.Location = new System.Drawing.Point(87, 19);
             this.comboCuentaOrigen.Name = "comboCuentaOrigen";
-            this.comboCuentaOrigen.Size = new System.Drawing.Size(181, 21);
+            this.comboCuentaOrigen.Size = new System.Drawing.Size(192, 21);
             this.comboCuentaOrigen.TabIndex = 1;
             this.comboCuentaOrigen.SelectedIndexChanged += new System.EventHandler(this.comboCuentaOrigen_SelectedIndexChanged);
             // 
@@ -155,7 +155,7 @@
             // 
             this.txtImporte.Location = new System.Drawing.Point(87, 85);
             this.txtImporte.Name = "txtImporte";
-            this.txtImporte.Size = new System.Drawing.Size(181, 20);
+            this.txtImporte.Size = new System.Drawing.Size(192, 20);
             this.txtImporte.TabIndex = 3;
             this.txtImporte.TextChanged += new System.EventHandler(this.txtImporte_TextChanged);
             // 
@@ -204,14 +204,14 @@
             this.comboTipoDoc.FormattingEnabled = true;
             this.comboTipoDoc.Location = new System.Drawing.Point(86, 51);
             this.comboTipoDoc.Name = "comboTipoDoc";
-            this.comboTipoDoc.Size = new System.Drawing.Size(56, 21);
+            this.comboTipoDoc.Size = new System.Drawing.Size(83, 21);
             this.comboTipoDoc.TabIndex = 22;
             // 
             // txtNroDoc
             // 
-            this.txtNroDoc.Location = new System.Drawing.Point(148, 52);
+            this.txtNroDoc.Location = new System.Drawing.Point(175, 52);
             this.txtNroDoc.Name = "txtNroDoc";
-            this.txtNroDoc.Size = new System.Drawing.Size(120, 20);
+            this.txtNroDoc.Size = new System.Drawing.Size(104, 20);
             this.txtNroDoc.TabIndex = 23;
             // 
             // Retiro
@@ -224,6 +224,7 @@
             this.Controls.Add(this.groupBoxTransferencia);
             this.Name = "Retiro";
             this.Text = "Retiro";
+            this.Load += new System.EventHandler(this.Retiro_Load);
             this.groupBoxTransferencia.ResumeLayout(false);
             this.groupBoxTransferencia.PerformLayout();
             this.ResumeLayout(false);

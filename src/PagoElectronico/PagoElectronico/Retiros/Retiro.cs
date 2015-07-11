@@ -146,11 +146,24 @@ namespace PagoElectronico.Retiros
         private void cargarComboTipoDoc()
         {
             listaTiposDocumentos = (List<TipoDocumento>) tipoDocumentoService.GetAll();
+            foreach (var item in listaTiposDocumentos)
+            {
+                comboTipoDoc.Items.Add(item.descripcion);
+            }
+
+            comboTipoDoc.SelectedIndex = 0;
 
         }
 
         private void cargarComboTipoMoneda()
         {
+            listaTiposMoneda = (List<TipoMoneda>)tipoMonedaService.GetTiposMonedaByCuenta(comboCuentaOrigen.Text.ToString());
+            foreach (var item in listaTiposMoneda)
+            {
+                comboTipoMoneda.Items.Add(item.descripcion);
+            }
+
+            comboTipoMoneda.SelectedIndex = 0;
         }
 
         private void ocultarComponentes()
@@ -198,7 +211,6 @@ namespace PagoElectronico.Retiros
         }
 
         #endregion
-
 
 
     }
