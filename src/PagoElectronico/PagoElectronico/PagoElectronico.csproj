@@ -67,11 +67,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ABM Cliente\Form1.cs">
+    <Compile Include="ABM Cliente\Alta.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ABM Cliente\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="ABM Cliente\Alta.Designer.cs">
+      <DependentUpon>Alta.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM Cliente\Listado.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM Cliente\Listado.Designer.cs">
+      <DependentUpon>Listado.cs</DependentUpon>
     </Compile>
     <Compile Include="ABM Cuenta\AltaCuenta.cs">
       <SubType>Form</SubType>
@@ -102,12 +108,6 @@
     </Compile>
     <Compile Include="ABM Rol\Alta.Designer.cs">
       <DependentUpon>Alta.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ABM Rol\Modificacion.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ABM Rol\Modificacion.Designer.cs">
-      <DependentUpon>Modificacion.cs</DependentUpon>
     </Compile>
     <Compile Include="Common\Validaciones.cs" />
     <Compile Include="Consulta Saldos\ConsultaSaldos.cs">
@@ -154,8 +154,11 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="ABM Cliente\Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="ABM Cliente\Alta.resx">
+      <DependentUpon>Alta.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM Cliente\Listado.resx">
+      <DependentUpon>Listado.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ABM Cuenta\AltaCuenta.resx">
       <DependentUpon>AltaCuenta.cs</DependentUpon>
@@ -171,9 +174,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ABM Rol\Alta.resx">
       <DependentUpon>Alta.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ABM Rol\Modificacion.resx">
-      <DependentUpon>Modificacion.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Consulta Saldos\ConsultaSaldos.resx">
       <DependentUpon>ConsultaSaldos.cs</DependentUpon>
@@ -195,6 +195,9 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Retiros\Retiro.resx">
+      <DependentUpon>Retiro.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Transferencias\TransferenciasCuentas.resx">
       <DependentUpon>TransferenciasCuentas.cs</DependentUpon>
     </EmbeddedResource>
@@ -213,11 +216,11 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Retiros\Form1.cs">
+    <Compile Include="Retiros\Retiro.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Retiros\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Retiros\Retiro.Designer.cs">
+      <DependentUpon>Retiro.cs</DependentUpon>
     </Compile>
     <Compile Include="Transferencias\TransferenciasCuentas.cs">
       <SubType>Form</SubType>

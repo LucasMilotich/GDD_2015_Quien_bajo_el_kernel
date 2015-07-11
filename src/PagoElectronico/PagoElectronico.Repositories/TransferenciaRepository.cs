@@ -23,7 +23,6 @@ namespace PagoElectronico.Repositories
             transferencia.importe = String.IsNullOrEmpty(reader[4].ToString()) ? 0 : Convert.ToDouble(reader[4]);
             transferencia.costo = String.IsNullOrEmpty(reader[5].ToString()) ? 0 : Convert.ToDouble(reader[5]);
             transferencia.monedaTipo = String.IsNullOrEmpty(reader[6].ToString()) ? 0 : Convert.ToInt32(reader[6]);
-            transferencia.idTransaccion = String.IsNullOrEmpty(reader[7].ToString()) ? 0 : Convert.ToInt64(reader[7]);
 
             return transferencia;
         }
@@ -55,7 +54,6 @@ namespace PagoElectronico.Repositories
                 unCommand.Parameters.AddWithValue("@importe",entity.importe);
                 unCommand.Parameters.AddWithValue("@costo",entity.costo);
                 unCommand.Parameters.AddWithValue("@moneda_tipo", entity.monedaTipo);
-                unCommand.Parameters.AddWithValue("@id_transaccion",entity.idTransaccion);
 
                 resultado = DBConnection.ExecuteNonQuery(unCommand);
                 unCommand.Dispose();

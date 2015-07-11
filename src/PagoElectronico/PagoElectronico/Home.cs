@@ -93,6 +93,20 @@ namespace PagoElectronico
         {
 
         }
-       
+
+        private void listadoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            showForm(new ABM_Cliente.Listado());
+        }
+
+        private void retiroToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            showForm(new Retiros.Retiro());
+        }
+
+        private void altaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -7,13 +7,15 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace PagoElectronico.Retiros
+namespace PagoElectronico.ABM_Cliente
 {
-    public partial class Form1 : Form
+    public partial class Listado : Form
     {
-        public Form1()
+        public Listado()
         {
             InitializeComponent();
         }
+
+
     }
 }

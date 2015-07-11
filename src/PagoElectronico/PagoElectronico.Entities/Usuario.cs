@@ -18,6 +18,8 @@ namespace PagoElectronico.Entities
 
         public bool Activo { get; set; }
 
+        public bool Habilitado { get; set; }
+
         public IList<Rol> Roles { get; set; }
 
         public Rol SelectedRol { get; set; }
