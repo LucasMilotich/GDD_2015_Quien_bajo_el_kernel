@@ -164,7 +164,7 @@ namespace PagoElectronico.Transferencias
             else
             {
                 MessageBox.Show("No posees cuentas para realizar transferencias", "Atencion !", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                //deberia salir del form, no se como hacerlo
+                
             }
 
         }
