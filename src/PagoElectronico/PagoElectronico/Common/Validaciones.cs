@@ -42,6 +42,18 @@ namespace PagoElectronico.Common
 
         public static bool validarCampoNumericoEntero(TextBox textBox)
         {
+            Int64 num;
+            if (!Int64.TryParse(textBox.Text, out num))
+            {
+                textBox.BackColor = System.Drawing.Color.LightCoral;
+                return false;
+            }
+            else
+            {
+                textBox.BackColor = System.Drawing.Color.White;
+                return true;
+            }
+            /*
             Regex expRegular = new Regex("^[0-9]*$");
             if (!expRegular.IsMatch(textBox.Text))
             {
@@ -53,6 +65,7 @@ namespace PagoElectronico.Common
                 textBox.BackColor = System.Drawing.Color.White;
                 return true;
             }
+            */
         }
 
         public static bool validarCampoNumericoDouble(TextBox textBox)

@@ -54,6 +54,7 @@
     <Compile Include="FuncionalidadService.cs" />
     <Compile Include="PaisService.cs" />
     <Compile Include="RetiroService.cs" />
+    <Compile Include="TipoDocumentoService.cs" />
     <Compile Include="TipoMonedaService.cs" />
     <Compile Include="TransferenciaService.cs" />
     <Compile Include="UsuarioService.cs" />

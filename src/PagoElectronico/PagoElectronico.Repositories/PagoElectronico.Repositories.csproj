@@ -64,6 +64,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="TipoDocumentoRepository.cs" />
     <Compile Include="TipoMonedaRepository.cs" />
     <Compile Include="TransferenciaRepository.cs" />
     <Compile Include="UsuarioRepository.cs" />

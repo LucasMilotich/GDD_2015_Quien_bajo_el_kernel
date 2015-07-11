@@ -100,5 +100,10 @@ namespace PagoElectronico
         {
             showForm(new ABM_Cliente.Listado());
         }
+
+        private void retiroToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            showForm(new Retiros.Retiro());
+        }
     }
 }

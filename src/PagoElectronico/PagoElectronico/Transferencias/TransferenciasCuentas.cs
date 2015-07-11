@@ -69,17 +69,17 @@ namespace PagoElectronico.Transferencias
         /*************    Metodos privados       *************/
         private void realizarTransferencia()
         {
-            double saldoActual = Convert.ToDouble(lblSaldoActual.Text.ToString());
-            double importe = Convert.ToDouble(txtImporte.Text.ToString());
-            double saldoPosterior = Convert.ToDouble(lblSaldoPosterior.Text.ToString());
-            double costo = calcularCosto();
-            long origen = Convert.ToInt64(comboCuentaOrigen.Text);
-            long destino = Convert.ToInt64(txtCuentaDestino.Text);
-
             if (Validaciones.validarCampoVacio(txtImporte) & Validaciones.validarCampoVacio(txtCuentaDestino) & Validaciones.validarCampoNumericoDouble(txtImporte) & Validaciones.validarCampoNumericoDouble(txtCuentaDestino))
             {
                 try
                 {
+                    double saldoActual = Convert.ToDouble(lblSaldoActual.Text.ToString());
+                    double importe = Convert.ToDouble(txtImporte.Text.ToString());
+                    double saldoPosterior = Convert.ToDouble(lblSaldoPosterior.Text.ToString());
+                    double costo = calcularCosto();
+                    long origen = Convert.ToInt64(comboCuentaOrigen.Text);
+                    long destino = Convert.ToInt64(txtCuentaDestino.Text);
+
                     validarEstadoCuenta(destino);
                     validarSaldoDisponible(saldoPosterior);
 
