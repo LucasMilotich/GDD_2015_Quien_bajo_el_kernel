@@ -24,14 +24,7 @@ namespace PagoElectronico.ABM_de_Usuario
 
         private void AltaEdicion_Load(object sender, EventArgs e)
         {
-            Usuario usuario = null;
-            if (this.IdUsuario > 0)
-            {
-                usuario = this.UsuarioService.Get(this.IdUsuario);
-            }
 
-            //this.FillRoles(usuario);
-            //this.FillOtherFields(usuario);
         }
 
         private void btnGuardar_Click(object sender, EventArgs e)
