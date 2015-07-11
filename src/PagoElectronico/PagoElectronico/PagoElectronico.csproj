@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{1A425235-25E0-4A09-B3C4-84F19D9A2184}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -85,6 +85,12 @@
     <Compile Include="ABM Cuenta\EdicionCuenta.designer.cs">
       <DependentUpon>EdicionCuenta.cs</DependentUpon>
     </Compile>
+    <Compile Include="ABM Cuenta\ConsultaCuenta.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM Cuenta\ConsultaCuenta.Designer.cs">
+      <DependentUpon>ConsultaCuenta.cs</DependentUpon>
+    </Compile>
     <Compile Include="ABM de Usuario\AltaEdicion.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -159,6 +165,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ABM Cuenta\AltaCuenta.resx">
       <DependentUpon>AltaCuenta.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM Cuenta\ConsultaCuenta.resx">
+      <DependentUpon>ConsultaCuenta.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ABM Cuenta\EdicionCuenta.resx">
       <DependentUpon>EdicionCuenta.cs</DependentUpon>

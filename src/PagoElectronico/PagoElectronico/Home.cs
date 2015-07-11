@@ -86,7 +86,7 @@ namespace PagoElectronico
 
         private void altaDeCuenta_Click(object sender, EventArgs e)
         {
-            showForm(new AltaCuenta());
+            showForm(new AltaCuenta((long)0));
         }
         private void modificarRolToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -94,6 +94,11 @@ namespace PagoElectronico
             rolModificacionForm.MdiParent = this;
             showForm(rolModificacionForm);
 
+        }
+
+        private void listadoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            showForm(new ConsultaCuenta());
         }
     }
 }

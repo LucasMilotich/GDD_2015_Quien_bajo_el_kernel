@@ -37,13 +37,12 @@ namespace PagoElectronico.Repositories
             throw new NotImplementedException();
         }
 
-        public int InsertaCuenta(long numeroCuenta, int codPais, int tipoMoneda, int tipoCuenta, long tipoDocCliente, long nroDocCliente)
+        public int InsertaCuenta(int codPais, int tipoMoneda, int tipoCuenta, long tipoDocCliente, long nroDocCliente)
         {
             int resultado;
             using (var transaction = new TransactionScope())
             {
                 SqlCommand command = DBConnection.CreateStoredProcedure("InsertaCuenta");
-                command.Parameters.AddWithValue("@an_num_cuenta", numeroCuenta);
                 command.Parameters.AddWithValue("@an_cod_pais", codPais);
                 command.Parameters.AddWithValue("@an_moneda_tipo", tipoMoneda);
                 command.Parameters.AddWithValue("@an_cuenta_tipo", tipoCuenta);
@@ -103,7 +102,7 @@ namespace PagoElectronico.Repositories
             DataRowCollection collection = DBConnection.EjecutarStoredProcedureSelect(command).Rows;
             foreach (DataRow tipo in collection)
             {
-                TipoCuenta entity = this.CreateCuenta(tipo);
+                TipoCuenta entity = this.CreateTipoCuenta(tipo);
                 tipoCuentas.Add(entity);
             }
 
@@ -112,7 +111,7 @@ namespace PagoElectronico.Repositories
         }
 
 
-        private TipoCuenta CreateCuenta(DataRow reader)
+        private TipoCuenta CreateTipoCuenta(DataRow reader)
         {
             TipoCuenta tipo = new TipoCuenta();
             tipo.codigo = Convert.ToInt32(reader["codigo"]);
@@ -127,6 +126,66 @@ namespace PagoElectronico.Repositories
         {
             SqlCommand command = DBConnection.CreateStoredProcedure("GetMaxNroCuenta");
             return DBConnection.ExecuteScalarLong(command);
+        }
+
+        public DataTable GetCuentas(long? pais, int? tipoEstado, int? moneda, int? tipoCuenta)
+        {
+            SqlCommand command = DBConnection.CreateStoredProcedure("GetCuentas");
+            command.Parameters.AddWithValue("@an_pais", pais);
+            command.Parameters.AddWithValue("@an_estado", tipoEstado);
+            command.Parameters.AddWithValue("@an_moneda", moneda);
+            command.Parameters.AddWithValue("@an_tipo_cuenta", tipoCuenta);
+            return DBConnection.EjecutarStoredProcedureSelect(command);
+           
+        }
+
+        public Cuenta GetCuentaByNumero(long nroCuenta)
+        {
+            SqlCommand command = DBConnection.CreateStoredProcedure("GetCuentaByNumero");
+            command.Parameters.AddWithValue("@an_nro_cuenta", nroCuenta);
+
+            DataRowCollection collection = DBConnection.EjecutarStoredProcedureSelect(command).Rows;
+            Cuenta cuenta = null;
+            foreach (DataRow row in collection)
+            {
+                cuenta = this.CreateCuenta(row);
+            }
+
+            return cuenta;
+        }
+
+        private Cuenta CreateCuenta(DataRow row)
+        {
+            Cuenta cuenta = new Cuenta();
+            cuenta.numero = Convert.ToInt64(row["numero"]);
+            cuenta.paisCodigo = Convert.ToInt64(row["pais_codigo"]);
+            cuenta.monedaTipo = Convert.ToInt32(row["moneda_tipo"]);
+            cuenta.tipoCuenta = string.IsNullOrEmpty(row["tipo_cuenta"].ToString()) ? 0 : Convert.ToInt32(row["tipo_cuenta"]);
+            cuenta.nroDoc = Convert.ToInt64(row["cliente_numero_doc"]);
+            cuenta.tipoDoc = Convert.ToInt64(row["cliente_tipo_doc"]);
+
+            return cuenta;
+
+        }
+
+        public int ModificaCuenta(long numCuenta, int tipoMoneda, int tipoCuenta, int codPais)
+        {
+            int resultado;
+            using (var transaction = new TransactionScope())
+            {
+                SqlCommand command = DBConnection.CreateStoredProcedure("ModificaCuenta");
+                command.Parameters.AddWithValue("@an_nro_cuenta", numCuenta);
+                command.Parameters.AddWithValue("@an_moneda_tipo", tipoMoneda);
+                command.Parameters.AddWithValue("@an_cuenta_tipo", tipoCuenta);
+                command.Parameters.AddWithValue("@an_cod_pais", codPais);
+
+                resultado = DBConnection.ExecuteNonQuery(command);
+                command.Dispose();
+
+                transaction.Complete();
+            }
+
+            return resultado;
         }
     }
 }

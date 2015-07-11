@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClienteService.cs" />
+    <Compile Include="TipoEstadoCuentaService.cs" />
     <Compile Include="CuentaService.cs" />
     <Compile Include="DepositoService.cs" />
     <Compile Include="Interfaces\ILoginService.cs" />
