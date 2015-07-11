@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{1A425235-25E0-4A09-B3C4-84F19D9A2184}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -67,11 +67,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ABM Cliente\Form1.cs">
+    <Compile Include="ABM Cliente\Alta.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ABM Cliente\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="ABM Cliente\Alta.Designer.cs">
+      <DependentUpon>Alta.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM Cliente\Listado.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM Cliente\Listado.Designer.cs">
+      <DependentUpon>Listado.cs</DependentUpon>
     </Compile>
     <Compile Include="ABM Cuenta\AltaCuenta.cs">
       <SubType>Form</SubType>
@@ -154,8 +160,11 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="ABM Cliente\Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="ABM Cliente\Alta.resx">
+      <DependentUpon>Alta.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM Cliente\Listado.resx">
+      <DependentUpon>Listado.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ABM Cuenta\AltaCuenta.resx">
       <DependentUpon>AltaCuenta.cs</DependentUpon>

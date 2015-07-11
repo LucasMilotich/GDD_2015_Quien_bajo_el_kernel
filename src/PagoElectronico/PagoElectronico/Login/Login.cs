@@ -39,17 +39,24 @@ namespace PagoElectronico.Login
 
                     if (usuario != null)
                     {
-                        Session.Usuario = usuario;
-                        if (usuario.Roles.Count > 1)
+                        if (usuario.Habilitado)
                         {
-                            this.DisplayForm(new SeleccionRol());
+                            Session.Usuario = usuario;
+                            if (usuario.Roles.Count > 1)
+                            {
+                                this.DisplayForm(new SeleccionRol());
+                            }
+                            else
+                            {
+                                usuario.SelectedRol = usuario.Roles.FirstOrDefault();
+                                usuario.SelectedRol.Funcionalidades = this.funcionalidadService.GetByRolId(usuario.SelectedRol.Id).ToList();
+                                this.DisplayForm(new Home());
+                            }
                         }
-                        else
+                        else 
                         {
-                            usuario.SelectedRol = usuario.Roles.FirstOrDefault();
-                            usuario.SelectedRol.Funcionalidades = this.funcionalidadService.GetByRolId(usuario.SelectedRol.Id).ToList();
-                            this.DisplayForm(new Home());
-                        }                        
+                            MessageBox.Show("Su usuario ha sido inhabilitado", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        }
                     }
                     else
                     {

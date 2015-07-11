@@ -95,5 +95,10 @@ namespace PagoElectronico
             showForm(rolModificacionForm);
 
         }
+
+        private void listadoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            showForm(new ABM_Cliente.Listado());
+        }
     }
 }

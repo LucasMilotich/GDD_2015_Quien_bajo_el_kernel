@@ -42,6 +42,9 @@
             this.modificarRolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cuentasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.altaDeCuenta = new System.Windows.Forms.ToolStripMenuItem();
+            this.clientesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.listadoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.altaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -52,7 +55,8 @@
             this.accionesToolStripMenuItem,
             this.transaccionesToolStripMenuItem,
             this.rolesToolStripMenuItem,
-            this.cuentasToolStripMenuItem});
+            this.cuentasToolStripMenuItem,
+            this.clientesToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(906, 24);
@@ -70,7 +74,7 @@
             // cerrarSesiónToolStripMenuItem
             // 
             this.cerrarSesiónToolStripMenuItem.Name = "cerrarSesiónToolStripMenuItem";
-            this.cerrarSesiónToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.cerrarSesiónToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.cerrarSesiónToolStripMenuItem.Text = "Cerrar Sesión";
             this.cerrarSesiónToolStripMenuItem.Click += new System.EventHandler(this.cerrarSesiónToolStripMenuItem_Click);
             // 
@@ -158,6 +162,28 @@
             this.altaDeCuenta.Text = "Alta de Cuenta";
             this.altaDeCuenta.Click += new System.EventHandler(this.altaDeCuenta_Click);
             // 
+            // clientesToolStripMenuItem
+            // 
+            this.clientesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.listadoToolStripMenuItem,
+            this.altaToolStripMenuItem});
+            this.clientesToolStripMenuItem.Name = "clientesToolStripMenuItem";
+            this.clientesToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
+            this.clientesToolStripMenuItem.Text = "Clientes";
+            // 
+            // listadoToolStripMenuItem
+            // 
+            this.listadoToolStripMenuItem.Name = "listadoToolStripMenuItem";
+            this.listadoToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.listadoToolStripMenuItem.Text = "Listado";
+            this.listadoToolStripMenuItem.Click += new System.EventHandler(this.listadoToolStripMenuItem_Click);
+            // 
+            // altaToolStripMenuItem
+            // 
+            this.altaToolStripMenuItem.Name = "altaToolStripMenuItem";
+            this.altaToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.altaToolStripMenuItem.Text = "Alta";
+            // 
             // Home
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -192,5 +218,8 @@
         private System.Windows.Forms.ToolStripMenuItem modificarRolToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cuentasToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem altaDeCuenta;
+        private System.Windows.Forms.ToolStripMenuItem clientesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem listadoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem altaToolStripMenuItem;
     }
 }

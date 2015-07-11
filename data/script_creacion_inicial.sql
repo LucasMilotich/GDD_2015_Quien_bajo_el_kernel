@@ -46,7 +46,8 @@ CREATE TABLE QUIEN_BAJO_EL_KERNEL.USUARIO (
 	password varbinary(max) NULL,
 	pregunta_secreta varchar(255) NULL,
 	respuesta_secreta varchar(255) NULL,
-	activo bit NOT NULL default (1)
+	activo bit NOT NULL default (1),
+	habilitado bit not null default (1)
 )
 GO
 
@@ -648,7 +649,7 @@ GO
 insert into QUIEN_BAJO_EL_KERNEL.TIPO_MONEDA (codigo,descripcion) values (1,'U$S')
 GO
 
-INSERT INTO [QUIEN_BAJO_EL_KERNEL].[Usuario]([username], [password], [activo]) VALUES ('admin', 0xE6B87050BFCB8143FCB8DB0170A4DC9ED00D904DDD3E2A4AD1B1E8DC0FDC9BE7, 1)
+INSERT INTO [QUIEN_BAJO_EL_KERNEL].[Usuario]([username], [password], [activo], [habilitado]) VALUES ('admin', 0xE6B87050BFCB8143FCB8DB0170A4DC9ED00D904DDD3E2A4AD1B1E8DC0FDC9BE7, 1, 1)
 GO
 
 INSERT INTO  [QUIEN_BAJO_EL_KERNEL].[ROL] (nombre,activo) values ('Administrador',1)

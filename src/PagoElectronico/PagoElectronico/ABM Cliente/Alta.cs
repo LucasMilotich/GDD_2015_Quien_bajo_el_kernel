@@ -12,11 +12,11 @@ using PagoElectronico.Common;
 namespace PagoElectronico.ABM_Cliente
 {
 
-    public partial class Form1 : Form
+    public partial class Alta : Form
     {
         Validaciones validador = new Validaciones();
 
-        public Form1()
+        public Alta()
         {
             InitializeComponent();
         }
