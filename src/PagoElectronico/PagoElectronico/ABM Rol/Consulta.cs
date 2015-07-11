@@ -28,14 +28,23 @@ namespace PagoElectronico.ABM_Rol
         private void btnBuscar_Click(object sender, EventArgs e)
         {
             IRolService rolServ = new RolService();
-
+            dgrRoles.AutoGenerateColumns = false;
             dgrRoles.DataSource = rolServ.getRoles(txtNombreRol.Text, chkActivo.Checked);
             
         }
 
         private void dgrRoles_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+            if (e.ColumnIndex == 3)
+            {
 
+                DataGridViewRow row = dgrRoles.Rows[e.RowIndex];
+                DataGridViewCell cell = row.Cells["Id"];
+                var form = new Alta((int)cell.Value);
+                form.Show();
+                this.Hide();
+                form.MdiParent = this.MdiParent;
+            }
         }
 
         private void btnLimpiar_Click(object sender, EventArgs e)

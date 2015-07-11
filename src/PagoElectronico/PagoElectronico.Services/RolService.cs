@@ -38,6 +38,13 @@ namespace PagoElectronico.Services
         }
 
 
+        public Rol getRolByID(int id)
+        {   
+            Rol rol;
+            RolRepository repo = new RolRepository();
+            rol =  repo.getRolById(id);
+            return rol;
+        }
 
      
 

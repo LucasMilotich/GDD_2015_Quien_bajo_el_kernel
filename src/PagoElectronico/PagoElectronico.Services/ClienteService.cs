@@ -9,7 +9,12 @@ namespace PagoElectronico.Services
 {
     public class ClienteService
     {
-    
+        public void createCliente(Cliente cliente)
+        {
+            ClienteRepository repo = new ClienteRepository();
+            repo.Insert(cliente);
+
+        }
 
     }
 
