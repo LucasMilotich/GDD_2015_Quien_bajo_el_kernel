@@ -29,6 +29,9 @@
         private void InitializeComponent()
         {
             this.groupBoxTransferencia = new System.Windows.Forms.GroupBox();
+            this.txtNroDoc = new System.Windows.Forms.TextBox();
+            this.comboTipoDoc = new System.Windows.Forms.ComboBox();
+            this.lblDocumento = new System.Windows.Forms.Label();
             this.lblSaldoPosterior = new System.Windows.Forms.Label();
             this.lblSaldoActual = new System.Windows.Forms.Label();
             this.lblSaldoPosteriorRO = new System.Windows.Forms.Label();
@@ -41,9 +44,6 @@
             this.lblCuentaOrigen = new System.Windows.Forms.Label();
             this.btnRetirar = new System.Windows.Forms.Button();
             this.btnLimpiar = new System.Windows.Forms.Button();
-            this.lblDocumento = new System.Windows.Forms.Label();
-            this.comboTipoDoc = new System.Windows.Forms.ComboBox();
-            this.txtNroDoc = new System.Windows.Forms.TextBox();
             this.groupBoxTransferencia.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -68,6 +68,32 @@
             this.groupBoxTransferencia.TabIndex = 5;
             this.groupBoxTransferencia.TabStop = false;
             this.groupBoxTransferencia.Text = "Retiro";
+            // 
+            // txtNroDoc
+            // 
+            this.txtNroDoc.Location = new System.Drawing.Point(175, 52);
+            this.txtNroDoc.Name = "txtNroDoc";
+            this.txtNroDoc.Size = new System.Drawing.Size(104, 20);
+            this.txtNroDoc.TabIndex = 23;
+            // 
+            // comboTipoDoc
+            // 
+            this.comboTipoDoc.Cursor = System.Windows.Forms.Cursors.Default;
+            this.comboTipoDoc.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboTipoDoc.FormattingEnabled = true;
+            this.comboTipoDoc.Location = new System.Drawing.Point(86, 51);
+            this.comboTipoDoc.Name = "comboTipoDoc";
+            this.comboTipoDoc.Size = new System.Drawing.Size(83, 21);
+            this.comboTipoDoc.TabIndex = 22;
+            // 
+            // lblDocumento
+            // 
+            this.lblDocumento.AutoSize = true;
+            this.lblDocumento.Location = new System.Drawing.Point(6, 59);
+            this.lblDocumento.Name = "lblDocumento";
+            this.lblDocumento.Size = new System.Drawing.Size(62, 13);
+            this.lblDocumento.TabIndex = 21;
+            this.lblDocumento.Text = "Documento";
             // 
             // lblSaldoPosterior
             // 
@@ -187,32 +213,6 @@
             this.btnLimpiar.Text = "Limpiar";
             this.btnLimpiar.UseVisualStyleBackColor = true;
             this.btnLimpiar.Click += new System.EventHandler(this.btnLimpiar_Click);
-            // 
-            // lblDocumento
-            // 
-            this.lblDocumento.AutoSize = true;
-            this.lblDocumento.Location = new System.Drawing.Point(6, 59);
-            this.lblDocumento.Name = "lblDocumento";
-            this.lblDocumento.Size = new System.Drawing.Size(62, 13);
-            this.lblDocumento.TabIndex = 21;
-            this.lblDocumento.Text = "Documento";
-            // 
-            // comboTipoDoc
-            // 
-            this.comboTipoDoc.Cursor = System.Windows.Forms.Cursors.Default;
-            this.comboTipoDoc.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboTipoDoc.FormattingEnabled = true;
-            this.comboTipoDoc.Location = new System.Drawing.Point(86, 51);
-            this.comboTipoDoc.Name = "comboTipoDoc";
-            this.comboTipoDoc.Size = new System.Drawing.Size(83, 21);
-            this.comboTipoDoc.TabIndex = 22;
-            // 
-            // txtNroDoc
-            // 
-            this.txtNroDoc.Location = new System.Drawing.Point(175, 52);
-            this.txtNroDoc.Name = "txtNroDoc";
-            this.txtNroDoc.Size = new System.Drawing.Size(104, 20);
-            this.txtNroDoc.TabIndex = 23;
             // 
             // Retiro
             // 

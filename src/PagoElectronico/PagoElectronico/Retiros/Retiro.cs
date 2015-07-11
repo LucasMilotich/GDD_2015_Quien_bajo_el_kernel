@@ -212,6 +212,11 @@ namespace PagoElectronico.Retiros
 
         #endregion
 
+        private void Retiro_Load(object sender, EventArgs e)
+        {
+
+        }
+
 
     }
 }
