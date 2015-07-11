@@ -39,9 +39,9 @@
             this.rolesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.crearNuevoRolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.buscarRolesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.modificarRolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cuentasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.altaDeCuenta = new System.Windows.Forms.ToolStripMenuItem();
+            this.clienteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -52,12 +52,14 @@
             this.accionesToolStripMenuItem,
             this.transaccionesToolStripMenuItem,
             this.rolesToolStripMenuItem,
-            this.cuentasToolStripMenuItem});
+            this.cuentasToolStripMenuItem,
+            this.clienteToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(906, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
+            this.menuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip1_ItemClicked);
             // 
             // archivoToolStripMenuItem
             // 
@@ -116,8 +118,7 @@
             // 
             this.rolesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.crearNuevoRolToolStripMenuItem,
-            this.buscarRolesToolStripMenuItem,
-            this.modificarRolToolStripMenuItem});
+            this.buscarRolesToolStripMenuItem});
             this.rolesToolStripMenuItem.Name = "rolesToolStripMenuItem";
             this.rolesToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
             this.rolesToolStripMenuItem.Text = "Roles";
@@ -136,13 +137,6 @@
             this.buscarRolesToolStripMenuItem.Text = "Buscar roles";
             this.buscarRolesToolStripMenuItem.Click += new System.EventHandler(this.buscarRolesToolStripMenuItem_Click);
             // 
-            // modificarRolToolStripMenuItem
-            // 
-            this.modificarRolToolStripMenuItem.Name = "modificarRolToolStripMenuItem";
-            this.modificarRolToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
-            this.modificarRolToolStripMenuItem.Text = "Modificar rol";
-            this.modificarRolToolStripMenuItem.Click += new System.EventHandler(this.modificarRolToolStripMenuItem_Click);
-            // 
             // cuentasToolStripMenuItem
             // 
             this.cuentasToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -157,6 +151,12 @@
             this.altaDeCuenta.Size = new System.Drawing.Size(152, 22);
             this.altaDeCuenta.Text = "Alta de Cuenta";
             this.altaDeCuenta.Click += new System.EventHandler(this.altaDeCuenta_Click);
+            // 
+            // clienteToolStripMenuItem
+            // 
+            this.clienteToolStripMenuItem.Name = "clienteToolStripMenuItem";
+            this.clienteToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
+            this.clienteToolStripMenuItem.Text = "Cliente";
             // 
             // Home
             // 
@@ -189,8 +189,8 @@
         private System.Windows.Forms.ToolStripMenuItem crearNuevoRolToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cerrarSesiónToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem buscarRolesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem modificarRolToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cuentasToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem altaDeCuenta;
+        private System.Windows.Forms.ToolStripMenuItem clienteToolStripMenuItem;
     }
 }

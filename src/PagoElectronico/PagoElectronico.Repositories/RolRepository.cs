@@ -71,7 +71,17 @@ namespace PagoElectronico.Repositories
         }
 
 
-
+        public Rol getRolById(int id) {
+            Rol rol = new Rol();
+            SqlCommand command = DBConnection.CreateStoredProcedure("SELECT_ROL_BY_ID");
+            command.Parameters.AddWithValue("@id", id);
+            DataRow data = DBConnection.EjecutarComandoSelect(command).Rows[0];
+            rol.Activo = Convert.ToBoolean(data["activo"]);
+            rol.Nombre = data["nombre"].ToString();
+            rol.Id = id;
+            rol.Funcionalidades = (List<Funcionalidad>)(new FuncionalidadRepository()).GetByRolId(id);
+            return rol;
+        }
 
 
         private void bindAtributos(Rol rol, SqlCommand command)

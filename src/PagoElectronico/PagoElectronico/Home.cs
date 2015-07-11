@@ -53,7 +53,7 @@ namespace PagoElectronico
 
         private void crearNuevoRolToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            showForm(new Alta());
+            showForm(new Alta(0));
         }
 
         private void showForm(Form unForm)
@@ -88,12 +88,11 @@ namespace PagoElectronico
         {
             showForm(new AltaCuenta());
         }
-        private void modificarRolToolStripMenuItem_Click(object sender, EventArgs e)
+
+        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            var rolModificacionForm = new Modificacion();
-            rolModificacionForm.MdiParent = this;
-            showForm(rolModificacionForm);
 
         }
+       
     }
 }
