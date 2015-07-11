@@ -8,8 +8,6 @@ namespace PagoElectronico.Entities
 {
     public class Usuario
     {
-        public int Id { get; set; }
-
         public string Username { get; set; }
 
         public string Password { get; set; }
@@ -19,6 +17,8 @@ namespace PagoElectronico.Entities
         public string RespuestaSecreta { get; set; }
 
         public bool Activo { get; set; }
+
+        public bool Habilitado { get; set; }
 
         public IList<Rol> Roles { get; set; }
 
@@ -30,11 +30,6 @@ namespace PagoElectronico.Entities
             {
                 return SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(this.Password));
             }            
-        }
-
-        public bool IsNew()
-        {
-            return this.Id == 0;
         }
     }
 }

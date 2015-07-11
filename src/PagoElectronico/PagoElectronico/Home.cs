@@ -53,7 +53,7 @@ namespace PagoElectronico
 
         private void crearNuevoRolToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            showForm(new Alta());
+            showForm(new Alta(0));
         }
 
         private void showForm(Form unForm)

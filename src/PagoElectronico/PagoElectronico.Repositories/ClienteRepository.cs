@@ -23,6 +23,7 @@ namespace PagoElectronico.Repositories
 
         public override int Insert(Cliente entity)
         {
+
             throw new NotImplementedException();
         }
 

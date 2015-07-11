@@ -14,7 +14,8 @@ namespace PagoElectronico.ABM_Rol
 {
     public partial class Alta : Form
     {
-        public Alta()
+        public int id_rol;
+        public Alta(int id)
         {
             InitializeComponent();
             IRolService rolserv = new RolService();
@@ -22,7 +23,8 @@ namespace PagoElectronico.ABM_Rol
             ((ListBox)chkLFuncionalidades).DataSource = funciones;
             ((ListBox)chkLFuncionalidades).DisplayMember = "Nombre";
             ((ListBox)chkLFuncionalidades).ValueMember = "Id";
-        
+            this.id_rol = id;
+
           
             
         }
@@ -54,7 +56,14 @@ namespace PagoElectronico.ABM_Rol
 
         private void CreacionRolForm_Load(object sender, EventArgs e)
         {
-
+            if (this.id_rol > 0)
+            {
+                RolService rolser = new RolService();
+               Rol rol =  rolser.getRolByID(id_rol);
+               this.txtNombre.Text = rol.Nombre;
+               this.chkActivo.Checked = rol.Activo;
+               this.Text = "Modificar rol";
+            }
         }
 
         private void chkLFuncionalidades_SelectedIndexChanged(object sender, EventArgs e)

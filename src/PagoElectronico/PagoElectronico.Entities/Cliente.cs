@@ -30,6 +30,7 @@ namespace PagoElectronico.Entities
         public string mail { get; set; }
 
         public string localidad { get; set; }
+        public string nacionalidad { get; set; }
         
     }
 }
