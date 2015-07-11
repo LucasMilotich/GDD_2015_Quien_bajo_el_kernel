@@ -72,6 +72,7 @@ namespace PagoElectronico.Repositories
             Usuario usuario = new Usuario();
             usuario.Username = reader["username"].ToString();
             usuario.Activo = Convert.ToBoolean(reader["activo"]);
+            usuario.Habilitado = Convert.ToBoolean(reader["habilitado"]);
             usuario.PreguntaSecreta = reader["pregunta_secreta"].ToString();
             usuario.RespuestaSecreta = reader["respuesta_secreta"].ToString();
 

@@ -27,7 +27,7 @@ BEGIN
 		
 		IF ((SELECT COUNT(*) FROM [QUIEN_BAJO_EL_KERNEL].USUARIO_LOG WHERE username = @username AND login_correcto = 0) >= 3 AND @login_correcto = 0)
 		BEGIN
-			UPDATE [QUIEN_BAJO_EL_KERNEL].USUARIO SET activo = 0 WHERE username = @username
+			UPDATE [QUIEN_BAJO_EL_KERNEL].USUARIO SET habilitado = 0 WHERE username = @username
 		END
 	END
 END
