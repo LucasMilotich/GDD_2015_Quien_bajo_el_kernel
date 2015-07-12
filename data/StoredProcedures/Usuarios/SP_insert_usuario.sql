@@ -5,6 +5,7 @@ CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.INSERT_USUARIO
 ,@pregunta_secreta varchar(255)
 ,@respuesta_secreta varchar(255)
 ,@activo bit
+,@habilitado bit 
 )
 AS 
 BEGIN
@@ -14,15 +15,17 @@ insert into QUIEN_BAJO_EL_KERNEL.USUARIO
 ,password
 ,pregunta_secreta
 ,respuesta_secreta
-,activo)
+,activo
+,habilitado)
 VALUES
 (@username
 ,@password
 ,@pregunta_secreta
 ,@respuesta_secreta
-,@activo)
+,@activo
+,@habilitado)
 
-select scope_identity()
+
 
 END
 
