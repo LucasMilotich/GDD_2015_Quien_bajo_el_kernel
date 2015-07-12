@@ -83,5 +83,20 @@ namespace PagoElectronico.Repositories
 
         }
 
+
+        public IEnumerable<Cliente> GetClientes()
+        {
+            List<Cliente> clientes = new List<Cliente>();
+
+            SqlCommand command = DBConnection.CreateStoredProcedure("GetClientes");
+            DataRowCollection collection = DBConnection.EjecutarStoredProcedureSelect(command).Rows;
+            foreach (DataRow cliente in collection)
+            {
+                Cliente entity = this.materializarCliente(cliente);
+                clientes.Add(entity);
+            }
+
+            return clientes;
+        }
     }
 }

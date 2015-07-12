@@ -37,8 +37,8 @@
             this.cmbPaises = new System.Windows.Forms.ComboBox();
             this.cmbTiposCuenta = new System.Windows.Forms.ComboBox();
             this.cmbMonedas = new System.Windows.Forms.ComboBox();
-            this.txtCliente = new System.Windows.Forms.TextBox();
             this.lblCliente = new System.Windows.Forms.Label();
+            this.cmbClientes = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // txtCuenta
@@ -128,14 +128,6 @@
             this.cmbMonedas.TabIndex = 14;
             this.cmbMonedas.ValueMember = "codigo";
             // 
-            // txtCliente
-            // 
-            this.txtCliente.Location = new System.Drawing.Point(116, 188);
-            this.txtCliente.Name = "txtCliente";
-            this.txtCliente.Size = new System.Drawing.Size(159, 20);
-            this.txtCliente.TabIndex = 15;
-            this.txtCliente.Visible = false;
-            // 
             // lblCliente
             // 
             this.lblCliente.AutoSize = true;
@@ -146,13 +138,25 @@
             this.lblCliente.Text = "Cliente";
             this.lblCliente.Visible = false;
             // 
+            // cmbClientes
+            // 
+            this.cmbClientes.DisplayMember = "nombreCompleto";
+            this.cmbClientes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbClientes.FormattingEnabled = true;
+            this.cmbClientes.Location = new System.Drawing.Point(116, 186);
+            this.cmbClientes.Name = "cmbClientes";
+            this.cmbClientes.Size = new System.Drawing.Size(189, 21);
+            this.cmbClientes.TabIndex = 17;
+            this.cmbClientes.ValueMember = "numeroDocumento";
+            this.cmbClientes.Visible = false;
+            // 
             // AltaCuenta
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(440, 310);
+            this.Controls.Add(this.cmbClientes);
             this.Controls.Add(this.lblCliente);
-            this.Controls.Add(this.txtCliente);
             this.Controls.Add(this.cmbMonedas);
             this.Controls.Add(this.cmbTiposCuenta);
             this.Controls.Add(this.cmbPaises);
@@ -181,7 +185,7 @@
         private System.Windows.Forms.ComboBox cmbPaises;
         private System.Windows.Forms.ComboBox cmbTiposCuenta;
         private System.Windows.Forms.ComboBox cmbMonedas;
-        private System.Windows.Forms.TextBox txtCliente;
         private System.Windows.Forms.Label lblCliente;
+        private System.Windows.Forms.ComboBox cmbClientes;
     }
 }

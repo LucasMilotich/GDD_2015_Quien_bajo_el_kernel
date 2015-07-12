@@ -18,7 +18,8 @@ GO
 CREATE TABLE QUIEN_BAJO_EL_KERNEL.CUENTA_MODIFICACION (
 	id_modificacion numeric(18) IDENTITY(1,1) NOT NULL,
 	cuenta numeric(18) NOT NULL,
-	fecha datetime NULL
+	fecha datetime NULL,
+	nuevo_tipo_cuenta	NUMERIC(1,0) NOT NULL
 )
 GO
 
@@ -460,6 +461,9 @@ ALTER TABLE QUIEN_BAJO_EL_KERNEL.TARJETA ADD CONSTRAINT FK_EMISOR
 	FOREIGN KEY (cod_emisor) REFERENCES QUIEN_BAJO_EL_KERNEL.EMISOR_TARJETA (id_emisor)
 GO
 
+ALTER TABLE QUIEN_BAJO_EL_KERNEL.CUENTA_MODIFICACION ADD CONSTRAINT FK_MODIF_TIPO_CUENTA
+	FOREIGN KEY (nuevo_tipo_cuenta) REFERENCES QUIEN_BAJO_EL_KERNEL.TIPO_ESTADO_CUENTA (codigo)
+GO
 -----	 ****************************** TRIGGERS necesarios pre-migracion ****************************** -----
 
 CREATE TRIGGER QUIEN_BAJO_EL_KERNEL.DepositoActualizarSaldo
@@ -1305,5 +1309,28 @@ SELECT
 INSERT INTO QUIEN_BAJO_EL_KERNEL.Retiro (codigo,fecha, importe, cuenta, cheque)
 VALUES (@codigo,@fecha, @importe, @cuenta, @cheque)
 
+END
+GO
+
+CREATE TRIGGER QUIEN_BAJO_EL_KERNEL.ModificacionCuenta
+ON QUIEN_BAJO_EL_KERNEL.CUENTA
+AFTER UPDATE
+AS
+	SET NOCOUNT ON
+	DECLARE
+		@nro_cuenta	NUMERIC(18,0),
+		@tipo_viejo	NUMERIC(1,0),
+		@tipo_nuevo	NUMERIC(1,0)
+IF UPDATE(tipo_cuenta)
+BEGIN
+	SELECT @tipo_nuevo = tipo_cuenta,
+		   @nro_cuenta = numero
+	  FROM inserted
+	
+	IF @tipo_nuevo <> 1
+		INSERT INTO QUIEN_BAJO_EL_KERNEL.CUENTA_MODIFICACION(cuenta, fecha,nuevo_tipo_cuenta)
+			 VALUES (@nro_cuenta, GETDATE(), @tipo_nuevo)
+			 
+	
 END
 GO

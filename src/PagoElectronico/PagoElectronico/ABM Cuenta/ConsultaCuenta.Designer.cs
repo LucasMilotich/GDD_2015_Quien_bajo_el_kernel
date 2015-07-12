@@ -40,7 +40,7 @@
             this.dgvCuentas = new System.Windows.Forms.DataGridView();
             this.cmbPaises = new System.Windows.Forms.ComboBox();
             this.edicion = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.eliminar = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.cerrar = new System.Windows.Forms.DataGridViewButtonColumn();
             this.Numero = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.nroDocumento = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tipoDocCliente = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -150,7 +150,7 @@
             this.dgvCuentas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvCuentas.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.edicion,
-            this.eliminar,
+            this.cerrar,
             this.Numero,
             this.nroDocumento,
             this.tipoDocCliente,
@@ -187,15 +187,15 @@
             this.edicion.UseColumnTextForButtonValue = true;
             this.edicion.Width = 50;
             // 
-            // eliminar
+            // cerrar
             // 
-            this.eliminar.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.eliminar.HeaderText = "Eliminar";
-            this.eliminar.Name = "eliminar";
-            this.eliminar.ReadOnly = true;
-            this.eliminar.Text = "Eliminar";
-            this.eliminar.UseColumnTextForButtonValue = true;
-            this.eliminar.Width = 49;
+            this.cerrar.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.cerrar.HeaderText = "Cerrar";
+            this.cerrar.Name = "cerrar";
+            this.cerrar.ReadOnly = true;
+            this.cerrar.Text = "Cerrar";
+            this.cerrar.UseColumnTextForButtonValue = true;
+            this.cerrar.Width = 41;
             // 
             // Numero
             // 
@@ -300,7 +300,7 @@
         private System.Windows.Forms.DataGridView dgvCuentas;
         private System.Windows.Forms.ComboBox cmbPaises;
         private System.Windows.Forms.DataGridViewButtonColumn edicion;
-        private System.Windows.Forms.DataGridViewButtonColumn eliminar;
+        private System.Windows.Forms.DataGridViewButtonColumn cerrar;
         private System.Windows.Forms.DataGridViewTextBoxColumn Numero;
         private System.Windows.Forms.DataGridViewTextBoxColumn nroDocumento;
         private System.Windows.Forms.DataGridViewTextBoxColumn tipoDocCliente;

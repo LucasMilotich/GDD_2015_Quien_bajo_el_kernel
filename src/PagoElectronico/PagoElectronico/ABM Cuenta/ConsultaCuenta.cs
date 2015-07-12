@@ -98,8 +98,15 @@ namespace PagoElectronico.ABM_Cuenta
                     var cell = row.Cells["Numero"];
                     try
                     {
-                        cuentaService.CerrarCuenta(Convert.ToInt64(cell.Value));
-                        MessageBox.Show("Cuenta cerrada!", "Atención!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        int resp = cuentaService.CerrarCuenta(Convert.ToInt64(cell.Value));
+                        if (resp == -1)
+                        {
+                            MessageBox.Show("La cuenta no se podrá cerrar mientras haya transacciones pendientes de pago", "Atención!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Cuenta cerrada!", "Atención!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
                     }
                     catch (OperationCanceledException ex)
                     {

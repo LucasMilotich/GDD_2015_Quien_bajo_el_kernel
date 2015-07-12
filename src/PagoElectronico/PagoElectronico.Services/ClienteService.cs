@@ -22,6 +22,12 @@ namespace PagoElectronico.Services
         }
 
 
+
+        public IEnumerable<Cliente> GetClientes()
+        {
+            ClienteRepository repository = new ClienteRepository();
+            return repository.GetClientes();
+        }
     }
 
 }
