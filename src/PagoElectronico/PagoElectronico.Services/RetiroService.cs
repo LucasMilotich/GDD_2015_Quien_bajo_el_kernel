@@ -20,24 +20,14 @@ namespace PagoElectronico.Services
         {
             using (var transaction = new TransactionScope())
             {
-                try
-                {
-                    ChequeService chequeService = new ChequeService();
-                    chequeService.insert(retiro.cheque);
-                    RetiroRepository repo = new RetiroRepository();
-                    repo.Insert(retiro);
-                    throw new Exception();
+                ChequeService chequeService = new ChequeService();
+                chequeService.insert(retiro.cheque);
+                RetiroRepository repo = new RetiroRepository();
+                repo.Insert(retiro);
+            
+                transaction.Complete();
+                transaction.Dispose();
 
-                }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
-                finally
-                {
-                    transaction.Complete();
-                    transaction.Dispose();
-                }
             }
         }
     }

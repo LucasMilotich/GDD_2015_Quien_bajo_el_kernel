@@ -10,6 +10,7 @@ using PagoElectronico.Common;
 using PagoElectronico.Repositories;
 using PagoElectronico.Entities;
 using PagoElectronico.Services;
+using System.Data.SqlClient;
 
 namespace PagoElectronico.Retiros
 {
@@ -27,14 +28,16 @@ namespace PagoElectronico.Retiros
         List<TipoDocumento> listaTiposDocumentos;
         List<Banco> listaBancos;
 
-        Usuario usuario = Session.Usuario;
-        //Para probar hasta q este el login: 10002 and cliente_numero_doc=45622098
-        long tipoDocCliente = 10002, nroDocCliente = 45622098;
+        Cliente clienteLogueado;
+        Usuario usuarioLogueado = Session.Usuario;
 
+        // ver el caso de un admin q no tenga cuentas, explota
+        // un admin puede hacer retiro o trans de cualquier cuenta ??
 
         public Retiro()
         {
             InitializeComponent();
+            obtenerCliente();
             cargarComboCuentas();
             cargarComboTipoDoc();
             cargarComboTipoMoneda();
@@ -75,12 +78,20 @@ namespace PagoElectronico.Retiros
 
         #region MetodosPrivados
         /*************    Metodos privados       *************/
+        private void obtenerCliente()
+        {
+            try
+            {
+                clienteLogueado = clienteService.getClienteByUsername(usuarioLogueado.Username);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("El usuario actual no posee cuentas asociadas ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        
         private void realizarRetiro()
         {
-            //validar que este habilitada
-            // tener saldo
-            // el importe ingresado debe ser menor o igual al saldo de la cuenta
-            // el importe debe estar en dls
             Boolean validador;
             validador = Validaciones.validarCampoVacio(txtNroDoc) & Validaciones.validarCampoVacio(txtImporte) & Validaciones.validarCampoVacio(txtNroCheque) & Validaciones.validarCampoVacio(txtNombreLibrar);
             validador = validador & Validaciones.validarCampoNumericoDouble(txtImporte) & Validaciones.validarCampoNumericoEntero(txtNroDoc) & Validaciones.validarCampoNumericoEntero(txtNroCheque) & Validaciones.validarCampoString(txtNombreLibrar);
@@ -97,24 +108,36 @@ namespace PagoElectronico.Retiros
                     Cheque cheque = new Cheque();
                     cheque.numero = Int64.Parse(txtNroCheque.Text);
                     cheque.fecha = DateTime.Now;
-                    cheque.importe = Int64.Parse(txtImporte.Text);
+                    cheque.importe = Double.Parse(txtImporte.Text);
                     cheque.codigoBanco = ((Banco)comboBanco.SelectedItem).codigo;
                     cheque.monedaTipo = ((TipoMoneda)comboTipoMoneda.SelectedItem).codigo;
                     cheque.nombreDestinatario = txtNombreLibrar.Text;
 
-                    var retiro = new Entities.Retiro();
+                    Entities.Retiro retiro = new Entities.Retiro();
                     retiro.cheque = cheque;
+
+                    retiro.importe = cheque.importe;
+                    retiro.fecha = cheque.fecha;
+                    retiro.cuenta = Int64.Parse(comboCuentaOrigen.Text);
+                    retiro.codigoCheque = cheque.numero;
                     
 
                     retiroService.GuardarRetiro(retiro);
 
-                    MessageBox.Show("Se ha realizado el retiro de saldo. ", "Retiro realizado satisfactoriamente", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Se ha realizado el retiro de saldo. ", "Retiro realizado satisfactoriamente", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     limpiarDatos();
-                    recalcularSaldoPosterior();
+                    
                 }
                 catch (OperationCanceledException ex)
                 {
                     MessageBox.Show(ex.Message.ToString(), "No se pudo realizar el retiro!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                catch (SqlException ex)
+                {
+                    if (ex.Number == 2627)
+                    {
+                        MessageBox.Show("El numero de cheque ya existe", "No se pudo realizar el retiro!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
 
@@ -170,7 +193,7 @@ namespace PagoElectronico.Retiros
 
         private void cargarComboCuentas()
         {
-            listaCuentas = (List<long>)cuentaService.getByCliente(tipoDocCliente, nroDocCliente);
+            listaCuentas = (List<long>)cuentaService.getByCliente(clienteLogueado.tipoDocumento, clienteLogueado.numeroDocumento);
             if (listaCuentas.Count > 0)
             {
                 comboCuentaOrigen.DataSource = listaCuentas;
@@ -233,7 +256,7 @@ namespace PagoElectronico.Retiros
 
         private void validarNumeroDocumento()
         {
-            Cliente cliente = clienteService.getClienteByUsername(usuario.Username);
+            Cliente cliente = clienteService.getClienteByUsername(usuarioLogueado.Username);
             if (txtNroDoc.Text != cliente.numeroDocumento.ToString() | Convert.ToInt64(comboTipoDoc.SelectedValue) != cliente.tipoDocumento)
             {
                 throw new OperationCanceledException("El documento ingresado no coincide");
@@ -262,9 +285,6 @@ namespace PagoElectronico.Retiros
         }
 
         #endregion
-
-
-
 
     }
 }
