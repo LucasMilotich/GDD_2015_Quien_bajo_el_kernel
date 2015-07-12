@@ -110,7 +110,7 @@ namespace PagoElectronico.Retiros
         {
             try
             {
-                double saldoActual, saldoPosterior, costo, importe;
+                double saldoActual, saldoPosterior, importe;
 
                 if (txtImporte.Text.Length == 0)
                 {
