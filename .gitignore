@@ -191,3 +191,9 @@ src/PagoElectronico/PagoElectronico/obj/Release/PagoElectronico.exe
 src/PagoElectronico/PagoElectronico/obj/Release/PagoElectronico.pdb
 src/PagoElectronico/PagoElectronico/bin/Release/PagoElectronico.exe
 src/PagoElectronico/PagoElectronico/bin/Debug/PagoElectronico.vshost.exe
+src/PagoElectronico/PagoElectronico.suo
+src/PagoElectronico/PagoElectronico/obj/Release/PagoElectronico.pdb
+src/PagoElectronico/PagoElectronico/bin/Debug/PagoElectronico.vshost.exe
+src/PagoElectronico/PagoElectronico/obj/Release/PagoElectronico.exe
+src/PagoElectronico/PagoElectronico/obj/Release/PagoElectronico.exe
+*.exe

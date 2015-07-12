@@ -84,12 +84,14 @@
             // comboBanco
             // 
             this.comboBanco.Cursor = System.Windows.Forms.Cursors.Default;
+            this.comboBanco.DisplayMember = "nombre";
             this.comboBanco.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBanco.FormattingEnabled = true;
             this.comboBanco.Location = new System.Drawing.Point(87, 140);
             this.comboBanco.Name = "comboBanco";
             this.comboBanco.Size = new System.Drawing.Size(103, 21);
             this.comboBanco.TabIndex = 29;
+            this.comboBanco.ValueMember = "nombre";
             // 
             // lblBanco
             // 
@@ -142,12 +144,14 @@
             // comboTipoDoc
             // 
             this.comboTipoDoc.Cursor = System.Windows.Forms.Cursors.Default;
+            this.comboTipoDoc.DisplayMember = "descripcion";
             this.comboTipoDoc.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboTipoDoc.FormattingEnabled = true;
             this.comboTipoDoc.Location = new System.Drawing.Point(86, 51);
             this.comboTipoDoc.Name = "comboTipoDoc";
             this.comboTipoDoc.Size = new System.Drawing.Size(83, 21);
             this.comboTipoDoc.TabIndex = 22;
+            this.comboTipoDoc.ValueMember = "codigo";
             // 
             // lblDocumento
             // 
@@ -203,6 +207,7 @@
             // comboTipoMoneda
             // 
             this.comboTipoMoneda.Cursor = System.Windows.Forms.Cursors.Default;
+            this.comboTipoMoneda.DisplayMember = "descripcion";
             this.comboTipoMoneda.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboTipoMoneda.Enabled = false;
             this.comboTipoMoneda.FormattingEnabled = true;
@@ -210,6 +215,7 @@
             this.comboTipoMoneda.Name = "comboTipoMoneda";
             this.comboTipoMoneda.Size = new System.Drawing.Size(102, 21);
             this.comboTipoMoneda.TabIndex = 4;
+            this.comboTipoMoneda.ValueMember = "codigo";
             // 
             // lblTipoMoneda
             // 

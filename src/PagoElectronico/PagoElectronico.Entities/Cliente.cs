@@ -1,7 +1,7 @@
-﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System;
 
 namespace PagoElectronico.Entities
 {
@@ -19,9 +19,9 @@ namespace PagoElectronico.Entities
 
         public string domCalle { get; set; }
 
-        public string domNro { get; set; }
+        public long domNro { get; set; }
 
-        public string domPiso { get; set; }
+        public long domPiso { get; set; }
 
         public string domDpto { get; set; }
 
@@ -29,10 +29,10 @@ namespace PagoElectronico.Entities
 
         public string mail { get; set; }
 
-
         public string localidad { get; set; }
+
         public string nacionalidad { get; set; }
-        public string username { get; set; }
-        
+
+        public string username { get; set; }        
     }
 }

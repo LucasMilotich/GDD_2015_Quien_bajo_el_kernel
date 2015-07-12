@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="BancoRepository.cs" />
     <Compile Include="BaseRepository.cs" />
+    <Compile Include="ChequeRepository.cs" />
     <Compile Include="ClienteRepository.cs" />
     <Compile Include="TipoEstadoCuentaRepository.cs" />
     <Compile Include="CuentaRepository.cs" />

@@ -35,6 +35,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -46,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BancoService.cs" />
+    <Compile Include="ChequeService.cs" />
     <Compile Include="ClienteService.cs" />
     <Compile Include="TipoEstadoCuentaService.cs" />
     <Compile Include="CuentaService.cs" />
