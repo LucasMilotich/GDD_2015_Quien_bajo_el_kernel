@@ -11,6 +11,12 @@ namespace PagoElectronico.Services
 {
     public class UsuarioService : IUsuarioService
     {
+        public int insert(Usuario usuario)
+        {
+            UsuarioRepository usrRep = new UsuarioRepository();
+          return  usrRep.Insert(usuario);
+
+        }
 
     }
 }

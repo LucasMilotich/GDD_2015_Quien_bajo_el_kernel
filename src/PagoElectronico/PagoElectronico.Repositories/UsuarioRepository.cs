@@ -23,7 +23,17 @@ namespace PagoElectronico.Repositories
 
         public override int Insert(Usuario entity)
         {
-            throw new NotImplementedException();
+            SqlCommand command = DBConnection.CreateStoredProcedure("INSERT_USUARIO");
+
+            command.Parameters.AddWithValue("@username", entity.Username);
+            command.Parameters.AddWithValue("@password", entity.Password);
+            command.Parameters.AddWithValue("@pregunta_secreta", entity.PreguntaSecreta);
+            command.Parameters.AddWithValue("@respuesta_secreta", entity.RespuestaSecreta);
+            command.Parameters.AddWithValue("@activo", entity.Activo);
+            command.Parameters.AddWithValue("@habilitado", entity.Habilitado);
+
+            return DBConnection.ExecuteNonQuery(command);
+           
         }
 
         public override void Update(Usuario entity)

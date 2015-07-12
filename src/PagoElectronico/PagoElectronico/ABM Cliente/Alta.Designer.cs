@@ -27,8 +27,12 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
+
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cmbTipoDoc = new System.Windows.Forms.ComboBox();
+            this.txtNumCalle = new System.Windows.Forms.TextBox();
+            this.lblNumCalle = new System.Windows.Forms.Label();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.btnGuardar = new System.Windows.Forms.Button();
             this.btnLimpiar = new System.Windows.Forms.Button();
@@ -54,9 +58,6 @@
             this.lblApellido = new System.Windows.Forms.Label();
             this.txtNombre = new System.Windows.Forms.TextBox();
             this.lblNombre = new System.Windows.Forms.Label();
-            this.lblNumCalle = new System.Windows.Forms.Label();
-            this.txtNumCalle = new System.Windows.Forms.TextBox();
-            this.cmbTipoDoc = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -95,6 +96,32 @@
             this.groupBox1.Size = new System.Drawing.Size(602, 416);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
+            this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
+            // 
+            // cmbTipoDoc
+            // 
+            this.cmbTipoDoc.FormattingEnabled = true;
+            this.cmbTipoDoc.Location = new System.Drawing.Point(297, 32);
+            this.cmbTipoDoc.Name = "cmbTipoDoc";
+            this.cmbTipoDoc.Size = new System.Drawing.Size(100, 21);
+            this.cmbTipoDoc.TabIndex = 33;
+            this.cmbTipoDoc.SelectedIndexChanged += new System.EventHandler(this.cmbTipoDoc_SelectedIndexChanged);
+            // 
+            // txtNumCalle
+            // 
+            this.txtNumCalle.Location = new System.Drawing.Point(297, 168);
+            this.txtNumCalle.Name = "txtNumCalle";
+            this.txtNumCalle.Size = new System.Drawing.Size(100, 20);
+            this.txtNumCalle.TabIndex = 32;
+            // 
+            // lblNumCalle
+            // 
+            this.lblNumCalle.AutoSize = true;
+            this.lblNumCalle.Location = new System.Drawing.Point(225, 171);
+            this.lblNumCalle.Name = "lblNumCalle";
+            this.lblNumCalle.Size = new System.Drawing.Size(44, 13);
+            this.lblNumCalle.TabIndex = 31;
+            this.lblNumCalle.Text = "Numero";
             // 
             // dateTimePicker1
             // 
@@ -303,30 +330,6 @@
             this.lblNombre.TabIndex = 0;
             this.lblNombre.Text = "Nombre";
             // 
-            // lblNumCalle
-            // 
-            this.lblNumCalle.AutoSize = true;
-            this.lblNumCalle.Location = new System.Drawing.Point(225, 171);
-            this.lblNumCalle.Name = "lblNumCalle";
-            this.lblNumCalle.Size = new System.Drawing.Size(44, 13);
-            this.lblNumCalle.TabIndex = 31;
-            this.lblNumCalle.Text = "Numero";
-            // 
-            // txtNumCalle
-            // 
-            this.txtNumCalle.Location = new System.Drawing.Point(297, 168);
-            this.txtNumCalle.Name = "txtNumCalle";
-            this.txtNumCalle.Size = new System.Drawing.Size(100, 20);
-            this.txtNumCalle.TabIndex = 32;
-            // 
-            // cmbTipoDoc
-            // 
-            this.cmbTipoDoc.FormattingEnabled = true;
-            this.cmbTipoDoc.Location = new System.Drawing.Point(297, 32);
-            this.cmbTipoDoc.Name = "cmbTipoDoc";
-            this.cmbTipoDoc.Size = new System.Drawing.Size(100, 21);
-            this.cmbTipoDoc.TabIndex = 33;
-            // 
             // Alta
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -335,11 +338,12 @@
             this.Controls.Add(this.groupBox1);
             this.Name = "Alta";
             this.Text = "Alta Cliente";
+            this.Load += new System.EventHandler(this.Alta_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
-
-        }
+    }
+       
 
         #endregion
 

@@ -1,3 +1,4 @@
+
 CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.INSERT_CLIENTE 
 (@nombre varchar(255)
 ,@apellido varchar(255)
@@ -9,19 +10,18 @@ CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.INSERT_CLIENTE
 ,@localidad (255)
 ,@nacionalidad (255)
 ,@fechaNac datetime
-,@tipoDocDesc varchar(255)
+,@tipoDocCod numeric(18,0)
 ,@dni numeric(10,0)
 ,@username varchar(255)
 )
 AS 
 BEGIN
 
-declare @tipoDocCod numeric(10,0)
+
 declare @paisCod numeric(18,0)
 
 
-select @tipoDocCod = codigo from QUIEN_BAJO_EL_KERNEL.TIPO_DOCUMENTO 
-where descripcion like @tipoDocDesc
+
 
 select @paisCod = codigo_pais FROM QUIEN_BAJO_EL_KERNEL.PAIS 
 where descripcion_pais like @paisDesc
@@ -59,6 +59,5 @@ insert into QUIEN_BAJO_EL_KERNEL.CLIENTE
 select scope_identity()
 
 END
-
 
 
