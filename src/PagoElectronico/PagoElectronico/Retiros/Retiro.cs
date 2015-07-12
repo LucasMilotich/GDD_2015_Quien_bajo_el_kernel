@@ -20,6 +20,8 @@ namespace PagoElectronico.Retiros
         TipoMonedaService tipoMonedaService = new TipoMonedaService();
         TipoDocumentoService tipoDocumentoService = new TipoDocumentoService();
         BancoService bancoService = new BancoService();
+        ChequeService chequeService = new ChequeService();
+        RetiroService retiroService = new RetiroService();
         List<long> listaCuentas;
         List<TipoMoneda> listaTiposMoneda;
         List<TipoDocumento> listaTiposDocumentos;
@@ -92,6 +94,23 @@ namespace PagoElectronico.Retiros
                     validarImporteEnDolares();
 
 
+                    Cheque cheque = new Cheque();
+                    cheque.numero = Int64.Parse(txtNroCheque.Text);
+                    cheque.fecha = DateTime.Now;
+                    cheque.importe = Int64.Parse(txtImporte.Text);
+                    cheque.codigoBanco = ((Banco)comboBanco.SelectedItem).codigo;
+                    cheque.monedaTipo = ((TipoMoneda)comboTipoMoneda.SelectedItem).codigo;
+                    cheque.nombreDestinatario = txtNombreLibrar.Text;
+
+                    var retiro = new Entities.Retiro();
+                    retiro.cheque = cheque;
+                    
+
+                    retiroService.GuardarRetiro(retiro);
+
+                    MessageBox.Show("Se ha realizado el retiro de saldo. ", "Retiro realizado satisfactoriamente", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    limpiarDatos();
+                    recalcularSaldoPosterior();
                 }
                 catch (OperationCanceledException ex)
                 {
@@ -167,11 +186,7 @@ namespace PagoElectronico.Retiros
         private void cargarComboTipoDoc()
         {
             listaTiposDocumentos = (List<TipoDocumento>)tipoDocumentoService.GetAll();
-            foreach (var item in listaTiposDocumentos)
-            {
-                comboTipoDoc.Items.Add(item.descripcion);
-            }
-
+            comboTipoDoc.DataSource = listaTiposDocumentos;
             comboTipoDoc.SelectedIndex = 0;
 
         }
@@ -179,22 +194,15 @@ namespace PagoElectronico.Retiros
         private void cargarComboTipoMoneda()
         {
             listaTiposMoneda = (List<TipoMoneda>)tipoMonedaService.GetTiposMonedaByCuenta(comboCuentaOrigen.Text.ToString());
-            foreach (var item in listaTiposMoneda)
-            {
-                comboTipoMoneda.Items.Add(item.descripcion);
-            }
-
+            comboTipoMoneda.DataSource = listaTiposMoneda;
             comboTipoMoneda.SelectedIndex = 0;
         }
 
         private void cargarComboBanco()
         {
+            
             listaBancos = (List<Banco>)bancoService.GetAll(); ;
-            foreach (var item in listaBancos)
-            {
-                comboBanco.Items.Add(item.nombre);
-            }
-
+            comboBanco.DataSource = listaBancos;
             comboBanco.SelectedIndex = 0;
         }
 
@@ -226,7 +234,7 @@ namespace PagoElectronico.Retiros
         private void validarNumeroDocumento()
         {
             Cliente cliente = clienteService.getClienteByUsername(usuario.Username);
-            if (txtNroDoc.Text != cliente.numeroDocumento.ToString() | comboTipoDoc.Text != cliente.tipoDocumento.ToString())
+            if (txtNroDoc.Text != cliente.numeroDocumento.ToString() | Convert.ToInt64(comboTipoDoc.SelectedValue) != cliente.tipoDocumento)
             {
                 throw new OperationCanceledException("El documento ingresado no coincide");
             }
@@ -247,7 +255,7 @@ namespace PagoElectronico.Retiros
 
         private void validarImporteEnDolares()
         {
-             if ( String.Compare(comboTipoMoneda.Text,"U$S")==0)
+             if ( String.Compare(comboTipoMoneda.Text,"U$S")!=0)
             {
                 throw new OperationCanceledException("El importe debe ser en dolares estadounidenses");
             }           

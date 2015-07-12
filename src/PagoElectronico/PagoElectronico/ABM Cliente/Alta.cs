@@ -54,8 +54,8 @@ namespace PagoElectronico.ABM_Cliente
                 cliente.mail = this.txtMail.Text;
                // this.txtPais.Text;
                 cliente.domCalle = this.txtCalle.Text;
-                cliente.domNro = this.txtNumCalle.Text;
-                cliente.domPiso = this.txtPiso.Text;
+                cliente.domNro = Int32.Parse(this.txtNumCalle.Text);
+                cliente.domPiso = Int32.Parse(this.txtPiso.Text);
                 cliente.localidad = this.txtLocalidad.Text;
                 cliente.nacionalidad = this.txtNacionalidad.Text;
 
