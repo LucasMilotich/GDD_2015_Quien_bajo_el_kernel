@@ -5,7 +5,8 @@ using System.Text;
 
 namespace PagoElectronico.Services
 {
-    class ChequeService
+    public class ChequeService
     {
+
     }
 }
