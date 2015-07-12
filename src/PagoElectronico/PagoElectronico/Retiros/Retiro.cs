@@ -30,11 +30,14 @@ namespace PagoElectronico.Retiros
 
         Cliente clienteLogueado;
         Usuario usuarioLogueado = Session.Usuario;
-        
+
+        // ver el caso de un admin q no tenga cuentas, explota
+        // un admin puede hacer retiro o trans de cualquier cuenta ??
+
         public Retiro()
         {
-            clienteLogueado = clienteService.getClienteByUsername(usuarioLogueado.Username);
             InitializeComponent();
+            obtenerCliente();
             cargarComboCuentas();
             cargarComboTipoDoc();
             cargarComboTipoMoneda();
@@ -75,6 +78,18 @@ namespace PagoElectronico.Retiros
 
         #region MetodosPrivados
         /*************    Metodos privados       *************/
+        private void obtenerCliente()
+        {
+            try
+            {
+                clienteLogueado = clienteService.getClienteByUsername(usuarioLogueado.Username);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("El usuario actual no posee cuentas asociadas ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        
         private void realizarRetiro()
         {
             Boolean validador;
@@ -270,9 +285,6 @@ namespace PagoElectronico.Retiros
         }
 
         #endregion
-
-
-
 
     }
 }

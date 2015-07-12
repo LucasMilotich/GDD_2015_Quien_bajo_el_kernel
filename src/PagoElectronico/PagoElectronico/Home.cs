@@ -12,6 +12,7 @@ using PagoElectronico.Transferencias;
 using PagoElectronico.ABM_Rol;
 using PagoElectronico.Entities;
 using PagoElectronico.ABM_Cuenta;
+using PagoElectronico.Depositos;
 
 namespace PagoElectronico
 {
@@ -112,6 +113,11 @@ namespace PagoElectronico
         private void listadoCuentasToolStripMenuItem_Click(object sender, EventArgs e)
         {
             showForm(new ConsultaCuenta());
+        }
+
+        private void depositoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            showForm(new DepositoForm());
         }
     }
 }

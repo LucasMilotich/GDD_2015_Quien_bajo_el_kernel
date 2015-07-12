@@ -27,9 +27,12 @@ namespace PagoElectronico.Transferencias
         Cliente clienteLogueado;
         Usuario usuarioLogueado = Session.Usuario;
 
+        // ver el caso de un admin q no tenga cuentas, explota
+        // un admin puede hacer retiro o trans de cualquier cuenta ??
+
         public TransferenciasCuentas()
         {
-            clienteLogueado = clienteService.getClienteByUsername(usuarioLogueado.Username);
+            obtenerCliente();
             InitializeComponent();
             cargarComboCuentas();
         }
@@ -66,8 +69,20 @@ namespace PagoElectronico.Transferencias
 
         #endregion
 
-
+        #region metodosPrivados
         /*************    Metodos privados       *************/
+        private void obtenerCliente()
+        {
+            try
+            {
+                clienteLogueado = clienteService.getClienteByUsername(usuarioLogueado.Username);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("El usuario actual no posee cuentas asociadas ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+                
         private void realizarTransferencia()
         {
             if (Validaciones.validarCampoVacio(txtImporte) & Validaciones.validarCampoVacio(txtCuentaDestino) & Validaciones.validarCampoNumericoDouble(txtImporte) & Validaciones.validarCampoNumericoDouble(txtCuentaDestino))
@@ -208,7 +223,9 @@ namespace PagoElectronico.Transferencias
             ocultarComponentes();
         }
 
+        #endregion
 
+        #region validacionesPrivadas
         /*************    Validadores privados       *************/
         private void validarEstadoCuenta(long cuentaDestino)
         {
@@ -227,5 +244,6 @@ namespace PagoElectronico.Transferencias
             }
         }
 
+        #endregion
     }
 }
