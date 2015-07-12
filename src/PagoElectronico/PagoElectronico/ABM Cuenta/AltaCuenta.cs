@@ -79,7 +79,7 @@ namespace PagoElectronico.ABM_Cuenta
                 }
                 catch (Exception)
                 {
-                    MessageBox.Show("Error", "No se pudo crear la cuenta.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("No se pudo crear la cuenta", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else

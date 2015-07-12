@@ -89,6 +89,29 @@ namespace PagoElectronico.ABM_Cuenta
                 form.Show();
                 form.MdiParent = this.MdiParent;
             }
+            else if (e.ColumnIndex == 1)
+            {
+
+                if (MessageBox.Show("Desea cerrar la cuenta seleccionada? La misma no podrá volver a activarse", "Atención!", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
+                {
+                    var row = dgvCuentas.Rows[e.RowIndex];
+                    var cell = row.Cells["Numero"];
+                    try
+                    {
+                        cuentaService.CerrarCuenta(Convert.ToInt64(cell.Value));
+                        MessageBox.Show("Cuenta cerrada!", "Atención!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    catch (OperationCanceledException ex)
+                    {
+                        MessageBox.Show(ex.Message.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("Error al cerrar la cuenta.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                } 
+
+            }
         }
     }
 }
