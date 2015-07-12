@@ -1,3 +1,4 @@
+
 CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.INSERT_CLIENTE 
 (@nombre varchar(255)
 ,@apellido varchar(255)
@@ -58,6 +59,5 @@ insert into QUIEN_BAJO_EL_KERNEL.CLIENTE
 select scope_identity()
 
 END
-
 
 

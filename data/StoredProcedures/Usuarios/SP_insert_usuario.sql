@@ -1,3 +1,4 @@
+
 CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.INSERT_USUARIO 
 (
 @username varchar(255)
@@ -28,6 +29,5 @@ VALUES
 
 
 END
-
 
 

@@ -1125,6 +1125,7 @@ VALUES (@codigo,@origen, @destino, @fecha, @importe, @costo, @moneda_tipo)
 END
 GO
 
+
 CREATE TRIGGER QUIEN_BAJO_EL_KERNEL.RetirosManejoID
 ON QUIEN_BAJO_EL_KERNEL.Retiro
 INSTEAD OF INSERT
@@ -1136,7 +1137,7 @@ DECLARE   @codigo numeric(18, 0),
           @cuenta numeric(18, 0),
           @cheque numeric(18, 0)
           
-select @codigo=COUNT(*)+1 from QUIEN_BAJO_EL_KERNEL.Retiro
+select @codigo=MAX(codigo)+1 from QUIEN_BAJO_EL_KERNEL.Retiro
  
 SELECT
     @fecha = fecha,
@@ -1150,4 +1151,3 @@ VALUES (@codigo,@fecha, @importe, @cuenta, @cheque)
 
 END
 GO
-

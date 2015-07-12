@@ -28,6 +28,12 @@ namespace PagoElectronico.Common
         public static bool validarCampoString(TextBox textBox)
         {
             Regex expRegular = new Regex("^[a-zA-Z]*$");
+            if (textBox.Text.Length == 0)
+            {
+                textBox.BackColor = System.Drawing.Color.LightCoral;
+                return false;
+            }
+
             if (!expRegular.IsMatch(textBox.Text))
             {
                 textBox.BackColor = System.Drawing.Color.LightCoral;
@@ -86,6 +92,13 @@ namespace PagoElectronico.Common
         public static bool validarCampoAlfaNumerico(TextBox textBox)
         {
             Regex expRegular = new Regex("^[a-zA-Z0-9]*$");
+
+            if (textBox.Text.Length == 0)
+            {
+                textBox.BackColor = System.Drawing.Color.LightCoral;
+                return false;
+            }
+
             if (!expRegular.IsMatch(textBox.Text))
             {
                 textBox.BackColor = System.Drawing.Color.LightCoral;

@@ -7,13 +7,13 @@ using PagoElectronico.Entities;
 
 namespace PagoElectronico.Services
 {
-    public class ClienteService
+    public class BancoService
     {
-        public void createCliente(Cliente cliente)
+        public IEnumerable<Banco> GetAll()
         {
-            ClienteRepository repo = new ClienteRepository();
-            repo.Insert(cliente);
-
+            BancoRepository bancoRepo = new BancoRepository();
+            return bancoRepo.GetAll();
         }
+
     }
 }

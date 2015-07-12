@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using PagoElectronico.Repositories;
 using PagoElectronico.Entities;
+using System.Data;
 
 namespace PagoElectronico.Services
 {
@@ -45,11 +46,29 @@ namespace PagoElectronico.Services
             return repository.GetMaxNroCuenta();
         }
 
-        public int InsertaCuenta(long numeroCuenta, int codPais, int tipoMoneda, int tipoCuenta, long tipoDocCliente, long nroDocCliente)
+        public int InsertaCuenta(int codPais, int tipoMoneda, int tipoCuenta, long tipoDocCliente, long nroDocCliente)
         {
             CuentaRepository repository = new CuentaRepository();
-            return repository.InsertaCuenta(numeroCuenta, codPais, tipoMoneda, tipoCuenta, tipoDocCliente, nroDocCliente);
+            return repository.InsertaCuenta(codPais, tipoMoneda, tipoCuenta, tipoDocCliente, nroDocCliente);
 
+        }
+
+        public DataTable GetCuentas(long? pais, int? tipoEstado, int? moneda, int? tipoCuenta)
+        {
+            CuentaRepository repository = new CuentaRepository();
+            return repository.GetCuentas( pais, tipoEstado, moneda, tipoCuenta);
+        }
+
+        public Cuenta GetCuentaByNumero(long nroCuenta)
+        {
+            CuentaRepository repository = new CuentaRepository();
+            return repository.GetCuentaByNumero(nroCuenta);
+        }
+
+        public int ModificaCuenta(long numCuenta, int tipoMoneda, int tipoCuenta, int codPais)
+        {
+            CuentaRepository repository = new CuentaRepository();
+            return repository.ModificaCuenta(numCuenta, tipoMoneda, tipoCuenta, codPais);
         }
     }
 }

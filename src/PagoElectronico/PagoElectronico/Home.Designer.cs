@@ -42,9 +42,10 @@
             this.buscarRolesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cuentasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.altaDeCuenta = new System.Windows.Forms.ToolStripMenuItem();
-            this.clientesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.listadoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.clientesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.altaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.listadoCuentasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -151,7 +152,8 @@
             // cuentasToolStripMenuItem
             // 
             this.cuentasToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.altaDeCuenta});
+            this.altaDeCuenta,
+            this.listadoCuentasToolStripMenuItem});
             this.cuentasToolStripMenuItem.Name = "cuentasToolStripMenuItem";
             this.cuentasToolStripMenuItem.Size = new System.Drawing.Size(62, 20);
             this.cuentasToolStripMenuItem.Text = "Cuentas";
@@ -159,9 +161,16 @@
             // altaDeCuenta
             // 
             this.altaDeCuenta.Name = "altaDeCuenta";
-            this.altaDeCuenta.Size = new System.Drawing.Size(152, 22);
+            this.altaDeCuenta.Size = new System.Drawing.Size(158, 22);
             this.altaDeCuenta.Text = "Alta de Cuenta";
             this.altaDeCuenta.Click += new System.EventHandler(this.altaDeCuenta_Click);
+            // 
+            // listadoToolStripMenuItem
+            // 
+            this.listadoToolStripMenuItem.Name = "listadoToolStripMenuItem";
+            this.listadoToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.listadoToolStripMenuItem.Text = "Listado";
+            this.listadoToolStripMenuItem.Click += new System.EventHandler(this.listadoToolStripMenuItem_Click);
             // 
             // clientesToolStripMenuItem
             // 
@@ -172,19 +181,19 @@
             this.clientesToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             this.clientesToolStripMenuItem.Text = "Clientes";
             // 
-            // listadoToolStripMenuItem
-            // 
-            this.listadoToolStripMenuItem.Name = "listadoToolStripMenuItem";
-            this.listadoToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.listadoToolStripMenuItem.Text = "Listado";
-            this.listadoToolStripMenuItem.Click += new System.EventHandler(this.listadoToolStripMenuItem_Click);
-            // 
             // altaToolStripMenuItem
             // 
             this.altaToolStripMenuItem.Name = "altaToolStripMenuItem";
             this.altaToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.altaToolStripMenuItem.Text = "Alta";
             this.altaToolStripMenuItem.Click += new System.EventHandler(this.altaToolStripMenuItem_Click);
+            // 
+            // listadoCuentasToolStripMenuItem
+            // 
+            this.listadoCuentasToolStripMenuItem.Name = "listadoCuentasToolStripMenuItem";
+            this.listadoCuentasToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
+            this.listadoCuentasToolStripMenuItem.Text = "Listado Cuentas";
+            this.listadoCuentasToolStripMenuItem.Click += new System.EventHandler(this.listadoCuentasToolStripMenuItem_Click);
             // 
             // Home
             // 
@@ -223,5 +232,7 @@
         private System.Windows.Forms.ToolStripMenuItem listadoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem altaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem retiroToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem listadoCuentasToolStripMenuItem;
     }
 }
+

@@ -86,7 +86,7 @@ namespace PagoElectronico
 
         private void altaDeCuenta_Click(object sender, EventArgs e)
         {
-            showForm(new AltaCuenta());
+            showForm(new AltaCuenta((long)0));
         }
 
         private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -107,6 +107,11 @@ namespace PagoElectronico
         private void altaToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void listadoCuentasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            showForm(new ConsultaCuenta());
         }
     }
 }

@@ -27,6 +27,7 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
+
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.cmbTipoDoc = new System.Windows.Forms.ComboBox();
@@ -341,8 +342,8 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
-
-        }
+    }
+       
 
         #endregion
 

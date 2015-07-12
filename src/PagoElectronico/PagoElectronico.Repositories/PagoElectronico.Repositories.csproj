@@ -48,8 +48,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BancoRepository.cs" />
     <Compile Include="BaseRepository.cs" />
     <Compile Include="ClienteRepository.cs" />
+    <Compile Include="TipoEstadoCuentaRepository.cs" />
     <Compile Include="CuentaRepository.cs" />
     <Compile Include="DepositoRepository.cs" />
     <Compile Include="FuncionalidadRepository.cs" />
