@@ -681,6 +681,9 @@ INSERT INTO  [QUIEN_BAJO_EL_KERNEL].[USUARIO_ROL] (id_rol,username) values (1,'a
 GO
 
 
+
+
+
 insert into QUIEN_BAJO_EL_KERNEL.TIPO_DOCUMENTO (codigo,descripcion)
 			 (select distinct cli_tipo_doc_cod,cli_tipo_doc_desc
 					from gd_esquema.Maestra
@@ -696,23 +699,37 @@ insert into QUIEN_BAJO_EL_KERNEL.PAIS (codigo_pais, descripcion_pais)
 		  		 )
 GO
 
+INSERT INTO [QUIEN_BAJO_EL_KERNEL].[Usuario]
+([username], [password], [activo], [habilitado])  
+(select distinct  cli_nro_doc, 0xE6B87050BFCB8143FCB8DB0170A4DC9ED00D904DDD3E2A4AD1B1E8DC0FDC9BE7, 1, 1
+	from gd_esquema.Maestra	   )
+GO
+
+INSERT INTO [QUIEN_BAJO_EL_KERNEL].USUARIO_ROL (id_rol,username) (select distinct  1,username
+	from QUIEN_BAJO_EL_KERNEL.USUARIO where username<>'admin'	   )
+GO
+
+INSERT INTO [QUIEN_BAJO_EL_KERNEL].USUARIO_ROL (id_rol,username) (select distinct  2,username
+	from QUIEN_BAJO_EL_KERNEL.USUARIO where username<>'admin'	   )
+GO
+
 insert into QUIEN_BAJO_EL_KERNEL.CLIENTE (tipo_documento,numero_documento,
 					 pais_codigo,nombre,apellido,dom_calle,
 					 dom_nro,dom_piso,dom_dpto,fecha_nacimiento,
-					 mail,username)
+					 mail, username)
 			       (select distinct  cli_tipo_doc_cod,cli_nro_doc,cli_pais_codigo,
 						   cli_nombre,cli_apellido,cli_dom_calle,
 						   cli_dom_nro,cli_dom_piso,cli_dom_depto,
-						   cli_fecha_nac,cli_mail, 'admin'
+						   cli_fecha_nac,cli_mail, cli_nro_doc
 					from gd_esquema.Maestra
 				   )
 GO
 
 insert into QUIEN_BAJO_EL_KERNEL.CUENTA (numero,fecha_creacion,estado_codigo,pais_codigo,fecha_cierre,
-				   cliente_tipo_doc,cliente_numero_doc,moneda_tipo,saldo)
-			 (select distinct cuenta_numero,cuenta_fecha_creacion,'4',
+				   cliente_tipo_doc,cliente_numero_doc,moneda_tipo,saldo,tipo_cuenta)
+			 (select distinct cuenta_numero,cuenta_fecha_creacion,4,
 									cuenta_pais_codigo,cuenta_fecha_cierre,cli_tipo_doc_cod,
-									cli_nro_doc,1,0
+									cli_nro_doc,1,0,1
 					from gd_esquema.Maestra
 					)
 GO
@@ -738,12 +755,13 @@ insert into QUIEN_BAJO_EL_KERNEL.TARJETA (tarjeta_numero, fecha_emision,fecha_ve
 			   where Tarjeta_Numero is not null)
 GO
 
-insert into QUIEN_BAJO_EL_KERNEL.DEPOSITO (deposito_codigo,fecha, importe, cuenta_numero, tarjeta_numero)
+insert into QUIEN_BAJO_EL_KERNEL.DEPOSITO (deposito_codigo,fecha, importe, cuenta_numero, moneda_tipo,tarjeta_numero)
 				 (select deposito_codigo,deposito_fecha, deposito_importe,
-							  cuenta_numero, tarjeta_numero
+							  cuenta_numero, 1,tarjeta_numero
 					  from gd_esquema.Maestra
 					  where deposito_codigo is not null)
 GO
+
 
 insert into QUIEN_BAJO_EL_KERNEL.BANCO  (codigo,nombre,direccion)
 			 (select distinct banco_cogido,banco_nombre,banco_direccion
@@ -764,14 +782,15 @@ insert into QUIEN_BAJO_EL_KERNEL.RETIRO (fecha,codigo,importe,cuenta,cheque)
 					where retiro_codigo is not null)
 GO
 
-INSERT INTO QUIEN_BAJO_EL_KERNEL.transferencia (codigo,origen,destino,fecha,importe,costo)
+INSERT INTO QUIEN_BAJO_EL_KERNEL.transferencia (codigo,origen,destino,fecha,importe,costo,moneda_tipo)
 	(SELECT
 	id_transf,
 	cuenta_numero,
 	cuenta_dest_numero,
 	transf_fecha,
 	trans_importe,
-	trans_costo_trans
+	trans_costo_trans,
+	'1'
 	FROM QUIEN_BAJO_EL_KERNEL.facturas_transferencias )
 GO
 

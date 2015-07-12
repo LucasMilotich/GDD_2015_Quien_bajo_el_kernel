@@ -28,13 +28,12 @@ namespace PagoElectronico.Retiros
         List<TipoDocumento> listaTiposDocumentos;
         List<Banco> listaBancos;
 
-        Usuario usuario = Session.Usuario;
-        //Para probar hasta q este el login: 10002 and cliente_numero_doc=45622098
-        long tipoDocCliente = 10002, nroDocCliente = 45622098;
-
-
+        Cliente clienteLogueado;
+        Usuario usuarioLogueado = Session.Usuario;
+        
         public Retiro()
         {
+            clienteLogueado = clienteService.getClienteByUsername(usuarioLogueado.Username);
             InitializeComponent();
             cargarComboCuentas();
             cargarComboTipoDoc();
@@ -179,7 +178,7 @@ namespace PagoElectronico.Retiros
 
         private void cargarComboCuentas()
         {
-            listaCuentas = (List<long>)cuentaService.getByCliente(tipoDocCliente, nroDocCliente);
+            listaCuentas = (List<long>)cuentaService.getByCliente(clienteLogueado.tipoDocumento, clienteLogueado.numeroDocumento);
             if (listaCuentas.Count > 0)
             {
                 comboCuentaOrigen.DataSource = listaCuentas;
@@ -242,7 +241,7 @@ namespace PagoElectronico.Retiros
 
         private void validarNumeroDocumento()
         {
-            Cliente cliente = clienteService.getClienteByUsername(usuario.Username);
+            Cliente cliente = clienteService.getClienteByUsername(usuarioLogueado.Username);
             if (txtNroDoc.Text != cliente.numeroDocumento.ToString() | Convert.ToInt64(comboTipoDoc.SelectedValue) != cliente.tipoDocumento)
             {
                 throw new OperationCanceledException("El documento ingresado no coincide");

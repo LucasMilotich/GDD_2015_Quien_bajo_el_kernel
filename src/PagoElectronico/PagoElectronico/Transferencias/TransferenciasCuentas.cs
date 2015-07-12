@@ -19,16 +19,17 @@ namespace PagoElectronico.Transferencias
     {
         TransferenciaService transferenciaService = new TransferenciaService();
         CuentaService cuentaService = new CuentaService();
+        ClienteService clienteService = new ClienteService();
         TipoMonedaService tipoMonedaService = new TipoMonedaService();
         List<TipoMoneda> listaTiposMoneda;
         List<long> listaCuentas;
 
-        Usuario usuario = Session.Usuario;
-        //Para probar hasta q este el login: 10002 and cliente_numero_doc=45622098
-        long tipoDocCliente = 10002, nroDocCliente = 45622098;
+        Cliente clienteLogueado;
+        Usuario usuarioLogueado = Session.Usuario;
 
         public TransferenciasCuentas()
         {
+            clienteLogueado = clienteService.getClienteByUsername(usuarioLogueado.Username);
             InitializeComponent();
             cargarComboCuentas();
         }
@@ -156,7 +157,7 @@ namespace PagoElectronico.Transferencias
 
         private void cargarComboCuentas()
         {
-            listaCuentas = (List<long>)cuentaService.getByCliente(tipoDocCliente, nroDocCliente);
+            listaCuentas = (List<long>)cuentaService.getByCliente(clienteLogueado.tipoDocumento, clienteLogueado.numeroDocumento);
             if (listaCuentas.Count > 0)
             {
                 comboCuentaOrigen.DataSource = listaCuentas;
@@ -212,7 +213,7 @@ namespace PagoElectronico.Transferencias
         private void validarEstadoCuenta(long cuentaDestino)
         {
             int estadoDeCuenta = cuentaService.getEstado(cuentaDestino);
-            if (estadoDeCuenta == 1 || estadoDeCuenta == 2)
+            if (estadoDeCuenta == (Int32)Entities.Enums.EstadosCuenta.Cerrada || estadoDeCuenta == (Int32)Entities.Enums.EstadosCuenta.PendienteActivacion)
             {
                 throw new OperationCanceledException("La cuenta destino se encuentra en cerrada o pendiente de activacion");
             }
