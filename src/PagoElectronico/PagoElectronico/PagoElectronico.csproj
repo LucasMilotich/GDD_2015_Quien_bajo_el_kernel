@@ -85,12 +85,6 @@
     <Compile Include="ABM Cuenta\AltaCuenta.designer.cs">
       <DependentUpon>AltaCuenta.cs</DependentUpon>
     </Compile>
-    <Compile Include="ABM Cuenta\EdicionCuenta.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ABM Cuenta\EdicionCuenta.designer.cs">
-      <DependentUpon>EdicionCuenta.cs</DependentUpon>
-    </Compile>
     <Compile Include="ABM Cuenta\ConsultaCuenta.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -171,9 +165,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ABM Cuenta\ConsultaCuenta.resx">
       <DependentUpon>ConsultaCuenta.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ABM Cuenta\EdicionCuenta.resx">
-      <DependentUpon>EdicionCuenta.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ABM de Usuario\AltaEdicion.resx">
       <DependentUpon>AltaEdicion.cs</DependentUpon>

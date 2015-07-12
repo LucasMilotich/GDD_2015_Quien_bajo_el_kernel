@@ -652,6 +652,22 @@ GO
 insert into QUIEN_BAJO_EL_KERNEL.TIPO_MONEDA (codigo,descripcion) values (1,'U$S')
 GO
 
+INSERT INTO QUIEN_BAJO_EL_KERNEL.TIPO_CUENTA(codigo, descripcion)
+		VALUES(1, 'Gratis')
+GO
+		
+INSERT INTO QUIEN_BAJO_EL_KERNEL.TIPO_CUENTA(codigo, descripcion)
+		VALUES(2, 'Bronce')
+GO
+	
+INSERT INTO QUIEN_BAJO_EL_KERNEL.TIPO_CUENTA(codigo, descripcion)
+		VALUES(3, 'Plata')
+GO
+		
+INSERT INTO QUIEN_BAJO_EL_KERNEL.TIPO_CUENTA(codigo, descripcion)
+		VALUES(4, 'Oro')	
+GO
+
 INSERT INTO [QUIEN_BAJO_EL_KERNEL].[Usuario]([username], [password], [activo], [habilitado]) VALUES ('admin', 0xE6B87050BFCB8143FCB8DB0170A4DC9ED00D904DDD3E2A4AD1B1E8DC0FDC9BE7, 1, 1)
 GO
 
@@ -1091,8 +1107,148 @@ BEGIN
 END
 GO
 
+CREATE PROCEDURE [QUIEN_BAJO_EL_KERNEL].[DeleteUsuarioLog]
+@username nvarchar(255)
+AS
+BEGIN
+	SET NOCOUNT ON;
+	
+	DELETE FROM [QUIEN_BAJO_EL_KERNEL].USUARIO_LOG
+	WHERE username = username AND login_correcto = 0
+	
+END
+GO
+
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.INSERT_USUARIO 
+(
+@username varchar(255)
+,@password varbinary(max)
+,@pregunta_secreta varchar(255)
+,@respuesta_secreta varchar(255)
+,@activo bit
+,@habilitado bit 
+)
+AS 
+BEGIN
+
+insert into QUIEN_BAJO_EL_KERNEL.USUARIO 
+(username
+,password
+,pregunta_secreta
+,respuesta_secreta
+,activo
+,habilitado)
+VALUES
+(@username
+,@password
+,@pregunta_secreta
+,@respuesta_secreta
+,@activo
+,@habilitado)
 
 
+
+END
+GO
+
+CREATE PROCEDURE [QUIEN_BAJO_EL_KERNEL].[InsertUsuarioLog]
+@username nvarchar(255),
+@login_correcto bit
+AS
+BEGIN
+	SET NOCOUNT ON;
+	
+	IF (EXISTS (SELECT * FROM [QUIEN_BAJO_EL_KERNEL].USUARIO WHERE username = @username))
+	BEGIN
+		INSERT INTO [QUIEN_BAJO_EL_KERNEL].USUARIO_LOG
+		(
+			username,
+			fecha,
+			login_correcto
+		)
+		VALUES
+		(
+			@username,
+			GETDATE(),
+			@login_correcto
+		)
+		
+		IF ((SELECT COUNT(*) FROM [QUIEN_BAJO_EL_KERNEL].USUARIO_LOG WHERE username = @username AND login_correcto = 0) >= 3 AND @login_correcto = 0)
+		BEGIN
+			UPDATE [QUIEN_BAJO_EL_KERNEL].USUARIO SET habilitado = 0 WHERE username = @username
+		END
+	END
+END
+GO
+
+CREATE PROCEDURE [QUIEN_BAJO_EL_KERNEL].[GetTiposEstadoCuenta]
+AS
+BEGIN
+	SELECT * FROM QUIEN_BAJO_EL_KERNEL.TIPO_ESTADO_CUENTA t ORDER BY t.codigo ASC;
+END
+GO
+
+CREATE PROCEDURE [QUIEN_BAJO_EL_KERNEL].[ModificaCuenta]
+@an_nro_cuenta	NUMERIC(18,0),
+@an_moneda_tipo NUMERIC(1,0),
+@an_cuenta_tipo	NUMERIC(1,0),
+@an_cod_pais	NUMERIC(18,0)
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+    UPDATE QUIEN_BAJO_EL_KERNEL.CUENTA
+       SET moneda_tipo = @an_moneda_tipo,
+		   tipo_cuenta = @an_cuenta_tipo,
+		   pais_codigo = @an_cod_pais
+	 WHERE numero = @an_nro_cuenta
+	 
+END
+GO
+
+CREATE PROCEDURE [QUIEN_BAJO_EL_KERNEL].[GetCuentas]
+@an_pais		NUMERIC(18,0) = NULL,
+@an_estado		NUMERIC(1,0) = NULL,
+@an_moneda		NUMERIC(1,0) = NULL,
+@an_tipo_cuenta	NUMERIC(1,0) = NULL
+AS
+BEGIN
+	SELECT numero as Numero,
+		   c.cliente_numero_doc as NroDocumento,
+		   c.cliente_tipo_doc as TipoDocumento,
+		   ec.descripcion as Estado,
+		   p.descripcion_pais as Pais,
+		   m.descripcion as Moneda,
+		   tc.descripcion as Tipo,
+		   c.saldo as Saldo,
+		   c.fecha_creacion as FechaCreacion
+	  FROM QUIEN_BAJO_EL_KERNEL.CUENTA c 
+		left join QUIEN_BAJO_EL_KERNEL.TIPO_CUENTA tc on c.tipo_cuenta=tc.codigo
+		left join QUIEN_BAJO_EL_KERNEL.PAIS p on c.pais_codigo=p.codigo_pais
+		left join QUIEN_BAJO_EL_KERNEL.TIPO_MONEDA m on c.moneda_tipo=m.codigo
+		left join QUIEN_BAJO_EL_KERNEL.TIPO_ESTADO_CUENTA ec on c.estado_codigo=ec.codigo
+	 WHERE (@an_pais is null or c.pais_codigo = @an_pais) 
+	   AND (@an_estado is null or c.estado_codigo = @an_estado) 
+	   AND (@an_moneda is null or c.moneda_tipo = @an_moneda) 
+	   AND (@an_tipo_cuenta is null or c.tipo_cuenta = @an_tipo_cuenta)
+		   
+END
+GO
+
+CREATE PROCEDURE [QUIEN_BAJO_EL_KERNEL].[GetCuentaByNumero]
+@an_nro_cuenta	NUMERIC(18,0)
+AS
+BEGIN
+	SELECT c.numero,
+		   c.moneda_tipo,
+		   c.pais_codigo,
+		   c.tipo_cuenta,
+		   c.cliente_numero_doc,
+		   c.cliente_tipo_doc
+	  FROM QUIEN_BAJO_EL_KERNEL.CUENTA c
+	 WHERE c.numero = @an_nro_cuenta
+END
+GO
 
 -----	 ****************************** TRIGGERS necesarios post-migracion ****************************** -----
 CREATE TRIGGER QUIEN_BAJO_EL_KERNEL.TransferenciasManejoID
