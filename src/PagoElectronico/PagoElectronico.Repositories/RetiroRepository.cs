@@ -52,7 +52,6 @@ namespace PagoElectronico.Repositories
         {
             SqlCommand command = DBConnection.CreateStoredProcedure("Insert_Retiro");
 
-            command.Parameters.AddWithValue("@codigo", entity.codigo);
             command.Parameters.AddWithValue("@fecha", entity.fecha);
             command.Parameters.AddWithValue("@importe", entity.importe);
             command.Parameters.AddWithValue("@cuenta", entity.cuenta);

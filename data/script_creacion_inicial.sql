@@ -1151,5 +1151,3 @@ VALUES (@codigo,@fecha, @importe, @cuenta, @cheque)
 
 END
 GO
-
-select * from QUIEN_BAJO_EL_KERNEL.CUENTA

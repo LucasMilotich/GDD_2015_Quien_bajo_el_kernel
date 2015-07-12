@@ -10,6 +10,7 @@ using PagoElectronico.Common;
 using PagoElectronico.Repositories;
 using PagoElectronico.Entities;
 using PagoElectronico.Services;
+using System.Data.SqlClient;
 
 namespace PagoElectronico.Retiros
 {
@@ -77,10 +78,6 @@ namespace PagoElectronico.Retiros
         /*************    Metodos privados       *************/
         private void realizarRetiro()
         {
-            //validar que este habilitada
-            // tener saldo
-            // el importe ingresado debe ser menor o igual al saldo de la cuenta
-            // el importe debe estar en dls
             Boolean validador;
             validador = Validaciones.validarCampoVacio(txtNroDoc) & Validaciones.validarCampoVacio(txtImporte) & Validaciones.validarCampoVacio(txtNroCheque) & Validaciones.validarCampoVacio(txtNombreLibrar);
             validador = validador & Validaciones.validarCampoNumericoDouble(txtImporte) & Validaciones.validarCampoNumericoEntero(txtNroDoc) & Validaciones.validarCampoNumericoEntero(txtNroCheque) & Validaciones.validarCampoString(txtNombreLibrar);
@@ -97,24 +94,36 @@ namespace PagoElectronico.Retiros
                     Cheque cheque = new Cheque();
                     cheque.numero = Int64.Parse(txtNroCheque.Text);
                     cheque.fecha = DateTime.Now;
-                    cheque.importe = Int64.Parse(txtImporte.Text);
+                    cheque.importe = Double.Parse(txtImporte.Text);
                     cheque.codigoBanco = ((Banco)comboBanco.SelectedItem).codigo;
                     cheque.monedaTipo = ((TipoMoneda)comboTipoMoneda.SelectedItem).codigo;
                     cheque.nombreDestinatario = txtNombreLibrar.Text;
 
-                    var retiro = new Entities.Retiro();
+                    Entities.Retiro retiro = new Entities.Retiro();
                     retiro.cheque = cheque;
+
+                    retiro.importe = cheque.importe;
+                    retiro.fecha = cheque.fecha;
+                    retiro.cuenta = Int64.Parse(comboCuentaOrigen.Text);
+                    retiro.codigoCheque = cheque.numero;
                     
 
                     retiroService.GuardarRetiro(retiro);
 
-                    MessageBox.Show("Se ha realizado el retiro de saldo. ", "Retiro realizado satisfactoriamente", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Se ha realizado el retiro de saldo. ", "Retiro realizado satisfactoriamente", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     limpiarDatos();
-                    recalcularSaldoPosterior();
+                    
                 }
                 catch (OperationCanceledException ex)
                 {
                     MessageBox.Show(ex.Message.ToString(), "No se pudo realizar el retiro!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                catch (SqlException ex)
+                {
+                    if (ex.Number == 2627)
+                    {
+                        MessageBox.Show("El numero de cheque ya existe", "No se pudo realizar el retiro!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
 

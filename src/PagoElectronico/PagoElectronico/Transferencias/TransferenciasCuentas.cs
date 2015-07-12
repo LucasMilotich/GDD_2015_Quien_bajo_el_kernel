@@ -91,7 +91,7 @@ namespace PagoElectronico.Transferencias
                     transferencia.costo = calcularCosto();
                     transferencia.monedaTipo = cuentaService.getMonedaTipo(origen);
 
-                    transferenciaService.Save(transferencia);
+                    transferenciaService.GuardarTransferencia(transferencia);
                     MessageBox.Show("Transferencia realizada exitosamente. Saldo actual: " + lblSaldoPosterior.Text.ToString(), "Atencion !", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     limpiarDatos();
                 }
@@ -99,7 +99,7 @@ namespace PagoElectronico.Transferencias
                 {
                     MessageBox.Show(ex.Message.ToString(), "No se pudo realizar la transferencia. !", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     MessageBox.Show("La cuenta destino no existe", "No se pudo realizar la transferencia. !", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
