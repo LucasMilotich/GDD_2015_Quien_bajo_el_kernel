@@ -28,7 +28,6 @@ C:\Users\Nicolas\Documents\GitHub\GDD_2015_Quien_bajo_el_kernel\src\PagoElectron
 C:\Users\Nicolas\Documents\GitHub\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\bin\Release\PagoElectronico.Services.pdb
 C:\Users\Nicolas\Documents\GitHub\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\bin\Release\PagoElectronico.Repositories.pdb
 C:\Users\Nicolas\Documents\GitHub\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\ResolveAssemblyReference.cache
-C:\Users\Nicolas\Documents\GitHub\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.ABM_Cliente.Form1.resources
 C:\Users\Nicolas\Documents\GitHub\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.ABM_de_Usuario.AltaEdicion.resources
 C:\Users\Nicolas\Documents\GitHub\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.Consulta_Saldos.ConsultaSaldos.resources
 C:\Users\Nicolas\Documents\GitHub\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.Home.resources
@@ -43,5 +42,35 @@ C:\Users\Nicolas\Documents\GitHub\GDD_2015_Quien_bajo_el_kernel\src\PagoElectron
 C:\Users\Nicolas\Documents\GitHub\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.ABM_Cuenta.EdicionCuenta.resources
 C:\Users\Nicolas\Documents\GitHub\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.ABM_Rol.ConsultaRol.resources
 C:\Users\Nicolas\Documents\GitHub\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.ABM_Rol.Alta.resources
-C:\Users\Nicolas\Documents\GitHub\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.ABM_Rol.Modificacion.resources
 C:\Users\Nicolas\Documents\GitHub\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.Login.SeleccionRol.resources
+C:\Users\Nicolas\Documents\GitHub\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.ABM_Cliente.Alta.resources
+C:\Users\Nicolas\Documents\GitHub\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.ABM_Cliente.Listado.resources
+C:\Users\Nicolas\Documents\GitHub\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.Retiros.Retiro.resources
+\\psf\Home\Documents\Visual Studio 2008\Projects\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\ResolveAssemblyReference.cache
+\\psf\Home\Documents\Visual Studio 2008\Projects\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.exe
+\\psf\Home\Documents\Visual Studio 2008\Projects\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.pdb
+\\psf\Home\Documents\Visual Studio 2008\Projects\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.ABM_Cliente.Listado.resources
+\\psf\Home\Documents\Visual Studio 2008\Projects\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.ABM_Cuenta.AltaCuenta.resources
+\\psf\Home\Documents\Visual Studio 2008\Projects\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.ABM_Cuenta.EdicionCuenta.resources
+\\psf\Home\Documents\Visual Studio 2008\Projects\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.ABM_de_Usuario.AltaEdicion.resources
+\\psf\Home\Documents\Visual Studio 2008\Projects\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.ABM_Rol.ConsultaRol.resources
+\\psf\Home\Documents\Visual Studio 2008\Projects\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.ABM_Rol.Alta.resources
+\\psf\Home\Documents\Visual Studio 2008\Projects\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.Consulta_Saldos.ConsultaSaldos.resources
+\\psf\Home\Documents\Visual Studio 2008\Projects\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.Home.resources
+\\psf\Home\Documents\Visual Studio 2008\Projects\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.Listados.ListadoEstadistico.resources
+\\psf\Home\Documents\Visual Studio 2008\Projects\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.Login.Login.resources
+\\psf\Home\Documents\Visual Studio 2008\Projects\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.Login.SeleccionRol.resources
+\\psf\Home\Documents\Visual Studio 2008\Projects\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.Properties.Resources.resources
+\\psf\Home\Documents\Visual Studio 2008\Projects\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.Retiros.Retiro.resources
+\\psf\Home\Documents\Visual Studio 2008\Projects\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.Transferencias.TransferenciasCuentas.resources
+\\psf\Home\Documents\Visual Studio 2008\Projects\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.csproj.GenerateResource.Cache
+\\psf\Home\Documents\Visual Studio 2008\Projects\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\obj\Release\PagoElectronico.ABM_Cliente.Alta.resources
+\\psf\Home\Documents\Visual Studio 2008\Projects\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\bin\Release\PagoElectronico.exe.config
+\\psf\Home\Documents\Visual Studio 2008\Projects\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\bin\Release\PagoElectronico.exe
+\\psf\Home\Documents\Visual Studio 2008\Projects\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\bin\Release\PagoElectronico.pdb
+\\psf\Home\Documents\Visual Studio 2008\Projects\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\bin\Release\PagoElectronico.Entities.dll
+\\psf\Home\Documents\Visual Studio 2008\Projects\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\bin\Release\PagoElectronico.Repositories.dll
+\\psf\Home\Documents\Visual Studio 2008\Projects\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\bin\Release\PagoElectronico.Services.dll
+\\psf\Home\Documents\Visual Studio 2008\Projects\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\bin\Release\PagoElectronico.Services.pdb
+\\psf\Home\Documents\Visual Studio 2008\Projects\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\bin\Release\PagoElectronico.Entities.pdb
+\\psf\Home\Documents\Visual Studio 2008\Projects\GDD_2015_Quien_bajo_el_kernel\src\PagoElectronico\PagoElectronico\bin\Release\PagoElectronico.Repositories.pdb

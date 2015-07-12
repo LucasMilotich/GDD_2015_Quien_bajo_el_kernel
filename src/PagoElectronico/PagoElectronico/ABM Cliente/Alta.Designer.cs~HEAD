@@ -1,6 +1,6 @@
 ﻿namespace PagoElectronico.ABM_Cliente
 {
-    partial class Form1
+    partial class Alta
     {
         /// <summary>
         /// Required designer variable.
@@ -29,6 +29,9 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.btnGuardar = new System.Windows.Forms.Button();
+            this.btnLimpiar = new System.Windows.Forms.Button();
             this.txtNacionalidad = new System.Windows.Forms.TextBox();
             this.lblFechaNac = new System.Windows.Forms.Label();
             this.lblNacionalidad = new System.Windows.Forms.Label();
@@ -51,14 +54,17 @@
             this.lblApellido = new System.Windows.Forms.Label();
             this.txtNombre = new System.Windows.Forms.TextBox();
             this.lblNombre = new System.Windows.Forms.Label();
-            this.btnLimpiar = new System.Windows.Forms.Button();
-            this.btnGuardar = new System.Windows.Forms.Button();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.lblNumCalle = new System.Windows.Forms.Label();
+            this.txtNumCalle = new System.Windows.Forms.TextBox();
+            this.cmbTipoDoc = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.cmbTipoDoc);
+            this.groupBox1.Controls.Add(this.txtNumCalle);
+            this.groupBox1.Controls.Add(this.lblNumCalle);
             this.groupBox1.Controls.Add(this.dateTimePicker1);
             this.groupBox1.Controls.Add(this.btnGuardar);
             this.groupBox1.Controls.Add(this.btnLimpiar);
@@ -89,7 +95,34 @@
             this.groupBox1.Size = new System.Drawing.Size(602, 416);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "groupBox1";
+            // 
+            // dateTimePicker1
+            // 
+            this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dateTimePicker1.Location = new System.Drawing.Point(87, 323);
+            this.dateTimePicker1.Name = "dateTimePicker1";
+            this.dateTimePicker1.Size = new System.Drawing.Size(101, 20);
+            this.dateTimePicker1.TabIndex = 28;
+            // 
+            // btnGuardar
+            // 
+            this.btnGuardar.Location = new System.Drawing.Point(492, 133);
+            this.btnGuardar.Name = "btnGuardar";
+            this.btnGuardar.Size = new System.Drawing.Size(75, 23);
+            this.btnGuardar.TabIndex = 27;
+            this.btnGuardar.Text = "Guardar";
+            this.btnGuardar.UseVisualStyleBackColor = true;
+            this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
+            // 
+            // btnLimpiar
+            // 
+            this.btnLimpiar.Location = new System.Drawing.Point(492, 162);
+            this.btnLimpiar.Name = "btnLimpiar";
+            this.btnLimpiar.Size = new System.Drawing.Size(75, 23);
+            this.btnLimpiar.TabIndex = 26;
+            this.btnLimpiar.Text = "Limpiar";
+            this.btnLimpiar.UseVisualStyleBackColor = true;
+            this.btnLimpiar.Click += new System.EventHandler(this.button1_Click);
             // 
             // txtNacionalidad
             // 
@@ -118,21 +151,21 @@
             // 
             // txtPiso
             // 
-            this.txtPiso.Location = new System.Drawing.Point(89, 191);
+            this.txtPiso.Location = new System.Drawing.Point(87, 190);
             this.txtPiso.Name = "txtPiso";
             this.txtPiso.Size = new System.Drawing.Size(100, 20);
             this.txtPiso.TabIndex = 21;
             // 
             // txtDpto
             // 
-            this.txtDpto.Location = new System.Drawing.Point(90, 224);
+            this.txtDpto.Location = new System.Drawing.Point(87, 224);
             this.txtDpto.Name = "txtDpto";
             this.txtDpto.Size = new System.Drawing.Size(100, 20);
             this.txtDpto.TabIndex = 20;
             // 
             // txtLocalidad
             // 
-            this.txtLocalidad.Location = new System.Drawing.Point(88, 265);
+            this.txtLocalidad.Location = new System.Drawing.Point(87, 264);
             this.txtLocalidad.Name = "txtLocalidad";
             this.txtLocalidad.Size = new System.Drawing.Size(100, 20);
             this.txtLocalidad.TabIndex = 19;
@@ -182,7 +215,7 @@
             // 
             // txtMail
             // 
-            this.txtMail.Location = new System.Drawing.Point(92, 94);
+            this.txtMail.Location = new System.Drawing.Point(87, 94);
             this.txtMail.Name = "txtMail";
             this.txtMail.Size = new System.Drawing.Size(100, 20);
             this.txtMail.TabIndex = 13;
@@ -232,7 +265,7 @@
             // 
             // txtApellido
             // 
-            this.txtApellido.Location = new System.Drawing.Point(88, 64);
+            this.txtApellido.Location = new System.Drawing.Point(87, 64);
             this.txtApellido.Name = "txtApellido";
             this.txtApellido.Size = new System.Drawing.Size(100, 20);
             this.txtApellido.TabIndex = 4;
@@ -255,12 +288,11 @@
             // 
             // txtNombre
             // 
-            this.txtNombre.BackColor = System.Drawing.Color.LightSalmon;
-            this.txtNombre.Location = new System.Drawing.Point(88, 34);
+            this.txtNombre.BackColor = System.Drawing.Color.Snow;
+            this.txtNombre.Location = new System.Drawing.Point(87, 34);
             this.txtNombre.Name = "txtNombre";
             this.txtNombre.Size = new System.Drawing.Size(100, 20);
             this.txtNombre.TabIndex = 1;
-            this.txtNombre.Text = "asdas";
             // 
             // lblNombre
             // 
@@ -271,42 +303,38 @@
             this.lblNombre.TabIndex = 0;
             this.lblNombre.Text = "Nombre";
             // 
-            // btnLimpiar
+            // lblNumCalle
             // 
-            this.btnLimpiar.Location = new System.Drawing.Point(216, 167);
-            this.btnLimpiar.Name = "btnLimpiar";
-            this.btnLimpiar.Size = new System.Drawing.Size(75, 23);
-            this.btnLimpiar.TabIndex = 26;
-            this.btnLimpiar.Text = "Limpiar";
-            this.btnLimpiar.UseVisualStyleBackColor = true;
-            this.btnLimpiar.Click += new System.EventHandler(this.button1_Click);
+            this.lblNumCalle.AutoSize = true;
+            this.lblNumCalle.Location = new System.Drawing.Point(225, 171);
+            this.lblNumCalle.Name = "lblNumCalle";
+            this.lblNumCalle.Size = new System.Drawing.Size(44, 13);
+            this.lblNumCalle.TabIndex = 31;
+            this.lblNumCalle.Text = "Numero";
             // 
-            // btnGuardar
+            // txtNumCalle
             // 
-            this.btnGuardar.Location = new System.Drawing.Point(216, 138);
-            this.btnGuardar.Name = "btnGuardar";
-            this.btnGuardar.Size = new System.Drawing.Size(75, 23);
-            this.btnGuardar.TabIndex = 27;
-            this.btnGuardar.Text = "Guardar";
-            this.btnGuardar.UseVisualStyleBackColor = true;
-            this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
+            this.txtNumCalle.Location = new System.Drawing.Point(297, 168);
+            this.txtNumCalle.Name = "txtNumCalle";
+            this.txtNumCalle.Size = new System.Drawing.Size(100, 20);
+            this.txtNumCalle.TabIndex = 32;
             // 
-            // dateTimePicker1
+            // cmbTipoDoc
             // 
-            this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTimePicker1.Location = new System.Drawing.Point(87, 323);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(101, 20);
-            this.dateTimePicker1.TabIndex = 28;
+            this.cmbTipoDoc.FormattingEnabled = true;
+            this.cmbTipoDoc.Location = new System.Drawing.Point(297, 32);
+            this.cmbTipoDoc.Name = "cmbTipoDoc";
+            this.cmbTipoDoc.Size = new System.Drawing.Size(100, 21);
+            this.cmbTipoDoc.TabIndex = 33;
             // 
-            // Form1
+            // Alta
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(628, 453);
             this.Controls.Add(this.groupBox1);
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.Name = "Alta";
+            this.Text = "Alta Cliente";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
@@ -341,5 +369,8 @@
         private System.Windows.Forms.Button btnGuardar;
         private System.Windows.Forms.Button btnLimpiar;
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
+        private System.Windows.Forms.TextBox txtNumCalle;
+        private System.Windows.Forms.Label lblNumCalle;
+        private System.Windows.Forms.ComboBox cmbTipoDoc;
     }
 }

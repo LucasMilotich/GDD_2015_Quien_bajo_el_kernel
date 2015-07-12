@@ -88,15 +88,28 @@ namespace PagoElectronico
         {
             showForm(new AltaCuenta((long)0));
         }
-        private void modificarRolToolStripMenuItem_Click(object sender, EventArgs e)
+
+        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            var rolModificacionForm = new Modificacion();
-            rolModificacionForm.MdiParent = this;
-            showForm(rolModificacionForm);
 
         }
 
         private void listadoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            showForm(new ABM_Cliente.Listado());
+        }
+
+        private void retiroToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            showForm(new Retiros.Retiro());
+        }
+
+        private void altaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void listadoCuentasToolStripMenuItem_Click(object sender, EventArgs e)
         {
             showForm(new ConsultaCuenta());
         }

@@ -59,6 +59,3 @@ insert into QUIEN_BAJO_EL_KERNEL.CLIENTE
 select scope_identity()
 
 END
-
-
-

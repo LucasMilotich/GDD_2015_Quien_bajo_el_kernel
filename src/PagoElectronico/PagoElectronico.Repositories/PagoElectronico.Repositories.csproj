@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BancoRepository.cs" />
     <Compile Include="BaseRepository.cs" />
     <Compile Include="ClienteRepository.cs" />
     <Compile Include="TipoEstadoCuentaRepository.cs" />
@@ -65,6 +66,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="TipoDocumentoRepository.cs" />
     <Compile Include="TipoMonedaRepository.cs" />
     <Compile Include="TransferenciaRepository.cs" />
     <Compile Include="UsuarioRepository.cs" />

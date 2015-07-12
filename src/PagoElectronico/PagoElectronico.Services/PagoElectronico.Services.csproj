@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BancoService.cs" />
     <Compile Include="ClienteService.cs" />
     <Compile Include="TipoEstadoCuentaService.cs" />
     <Compile Include="CuentaService.cs" />
@@ -55,6 +56,7 @@
     <Compile Include="FuncionalidadService.cs" />
     <Compile Include="PaisService.cs" />
     <Compile Include="RetiroService.cs" />
+    <Compile Include="TipoDocumentoService.cs" />
     <Compile Include="TipoMonedaService.cs" />
     <Compile Include="TransferenciaService.cs" />
     <Compile Include="UsuarioService.cs" />

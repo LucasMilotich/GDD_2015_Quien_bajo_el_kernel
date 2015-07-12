@@ -25,6 +25,3 @@ VALUES
 select scope_identity()
 
 END
-
-
-
