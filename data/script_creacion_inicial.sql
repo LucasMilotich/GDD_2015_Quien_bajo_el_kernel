@@ -150,7 +150,7 @@ CREATE TABLE QUIEN_BAJO_EL_KERNEL.CLIENTE (
 	apellido varchar(255) NULL,
 	dom_calle varchar(255) NULL,
 	dom_nro numeric(18) NULL,
-	dom_piso numeric(18) NULL,
+	dom_piso varchar(255) NULL,
 	dom_dpto varchar(10) NULL,
 	fecha_nacimiento datetime NULL,
 	mail varchar(255) NULL,
@@ -1151,3 +1151,5 @@ VALUES (@codigo,@fecha, @importe, @cuenta, @cheque)
 
 END
 GO
+
+select * from QUIEN_BAJO_EL_KERNEL.CUENTA

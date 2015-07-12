@@ -13,8 +13,14 @@ namespace PagoElectronico.Services
         {
             ClienteRepository repo = new ClienteRepository();
             repo.Insert(cliente);
-
         }
+
+        public Cliente getClienteByUsername(String usuario)
+        {
+            ClienteRepository repo = new ClienteRepository();
+            return repo.getClienteByUsername(usuario);
+        }
+
 
     }
 

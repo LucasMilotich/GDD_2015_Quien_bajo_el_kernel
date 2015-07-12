@@ -16,6 +16,7 @@ namespace PagoElectronico.Retiros
     public partial class Retiro : Form
     {
         CuentaService cuentaService = new CuentaService();
+        ClienteService clienteService = new ClienteService();
         TipoMonedaService tipoMonedaService = new TipoMonedaService();
         TipoDocumentoService tipoDocumentoService = new TipoDocumentoService();
         BancoService bancoService = new BancoService();
@@ -89,6 +90,8 @@ namespace PagoElectronico.Retiros
                     validarSaldoDisponible();
                     validarNumeroDocumento();
                     validarImporteEnDolares();
+
+
                 }
                 catch (OperationCanceledException ex)
                 {
@@ -222,7 +225,11 @@ namespace PagoElectronico.Retiros
 
         private void validarNumeroDocumento()
         {
-
+            Cliente cliente = clienteService.getClienteByUsername(usuario.Username);
+            if (txtNroDoc.Text != cliente.numeroDocumento.ToString() | comboTipoDoc.Text != cliente.tipoDocumento.ToString())
+            {
+                throw new OperationCanceledException("El documento ingresado no coincide");
+            }
         }
 
         private void validarSaldoDisponible()
@@ -240,7 +247,10 @@ namespace PagoElectronico.Retiros
 
         private void validarImporteEnDolares()
         {
-
+             if ( String.Compare(comboTipoMoneda.Text,"U$S")==0)
+            {
+                throw new OperationCanceledException("El importe debe ser en dolares estadounidenses");
+            }           
         }
 
         #endregion
