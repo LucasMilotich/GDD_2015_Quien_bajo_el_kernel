@@ -9,9 +9,9 @@ using System.Windows.Forms;
 
 namespace PagoElectronico.Facturacion
 {
-    public partial class Form1 : Form
+    public partial class FacturacionForm : Form
     {
-        public Form1()
+        public FacturacionForm()
         {
             InitializeComponent();
         }
