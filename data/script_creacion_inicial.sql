@@ -18,7 +18,8 @@ GO
 CREATE TABLE QUIEN_BAJO_EL_KERNEL.CUENTA_MODIFICACION (
 	id_modificacion numeric(18) IDENTITY(1,1) NOT NULL,
 	cuenta numeric(18) NOT NULL,
-	fecha datetime NULL
+	fecha datetime NULL,
+	nuevo_tipo_cuenta	NUMERIC(1,0) NOT NULL
 )
 GO
 
@@ -174,7 +175,7 @@ CREATE TABLE QUIEN_BAJO_EL_KERNEL.CUENTA (
 GO
 
 CREATE TABLE QUIEN_BAJO_EL_KERNEL.FUNCIONALIDAD (
-	id_funcionalidad numeric(10) NOT NULL,
+	id_funcionalidad NUMERIC(10) IDENTITY(1,1) NOT NULL,
 	descripcion varchar(255) NULL
 )
 GO
@@ -460,6 +461,9 @@ ALTER TABLE QUIEN_BAJO_EL_KERNEL.TARJETA ADD CONSTRAINT FK_EMISOR
 	FOREIGN KEY (cod_emisor) REFERENCES QUIEN_BAJO_EL_KERNEL.EMISOR_TARJETA (id_emisor)
 GO
 
+ALTER TABLE QUIEN_BAJO_EL_KERNEL.CUENTA_MODIFICACION ADD CONSTRAINT FK_MODIF_TIPO_CUENTA
+	FOREIGN KEY (nuevo_tipo_cuenta) REFERENCES QUIEN_BAJO_EL_KERNEL.TIPO_ESTADO_CUENTA (codigo)
+GO
 -----	 ****************************** TRIGGERS necesarios pre-migracion ****************************** -----
 
 CREATE TRIGGER QUIEN_BAJO_EL_KERNEL.DepositoActualizarSaldo
@@ -652,6 +656,52 @@ GO
 insert into QUIEN_BAJO_EL_KERNEL.TIPO_MONEDA (codigo,descripcion) values (1,'U$S')
 GO
 
+INSERT INTO QUIEN_BAJO_EL_KERNEL.TIPO_CUENTA(codigo, descripcion)
+		VALUES(1, 'Gratis')
+GO
+		
+INSERT INTO QUIEN_BAJO_EL_KERNEL.TIPO_CUENTA(codigo, descripcion)
+		VALUES(2, 'Bronce')
+GO
+	
+INSERT INTO QUIEN_BAJO_EL_KERNEL.TIPO_CUENTA(codigo, descripcion)
+		VALUES(3, 'Plata')
+GO
+		
+INSERT INTO QUIEN_BAJO_EL_KERNEL.TIPO_CUENTA(codigo, descripcion)
+		VALUES(4, 'Oro')	
+GO
+
+INSERT INTO QUIEN_BAJO_EL_KERNEL.FUNCIONALIDAD (descripcion) values ('ABM_ROL')
+GO
+
+INSERT INTO QUIEN_BAJO_EL_KERNEL.FUNCIONALIDAD (descripcion) values ('ABM_CLIENTE')
+GO
+
+INSERT INTO QUIEN_BAJO_EL_KERNEL.FUNCIONALIDAD (descripcion) values ('ABM_CUENTA')
+GO
+
+INSERT INTO QUIEN_BAJO_EL_KERNEL.FUNCIONALIDAD (descripcion) values ('ASOCIAR_DESASOCIAR_TC')
+GO
+
+INSERT INTO QUIEN_BAJO_EL_KERNEL.FUNCIONALIDAD (descripcion) values ('DEPOSITO')
+GO
+
+INSERT INTO QUIEN_BAJO_EL_KERNEL.FUNCIONALIDAD (descripcion) values ('RETIRO')
+GO
+
+INSERT INTO QUIEN_BAJO_EL_KERNEL.FUNCIONALIDAD (descripcion) values ('TRANSFERENCIA')
+GO
+
+INSERT INTO QUIEN_BAJO_EL_KERNEL.FUNCIONALIDAD (descripcion) values ('FACTURACION')
+GO
+
+INSERT INTO QUIEN_BAJO_EL_KERNEL.FUNCIONALIDAD (descripcion) values ('CONSULTA_SALDO')
+GO
+
+INSERT INTO QUIEN_BAJO_EL_KERNEL.FUNCIONALIDAD (descripcion) values ('LISTADO_ESTADISTICO')
+GO
+
 INSERT INTO [QUIEN_BAJO_EL_KERNEL].[Usuario]([username], [password], [activo], [habilitado]) VALUES ('admin', 0xE6B87050BFCB8143FCB8DB0170A4DC9ED00D904DDD3E2A4AD1B1E8DC0FDC9BE7, 1, 1)
 GO
 
@@ -680,23 +730,37 @@ insert into QUIEN_BAJO_EL_KERNEL.PAIS (codigo_pais, descripcion_pais)
 		  		 )
 GO
 
+INSERT INTO [QUIEN_BAJO_EL_KERNEL].[Usuario]
+([username], [password], [activo], [habilitado])  
+(select distinct  cli_nro_doc, 0xE6B87050BFCB8143FCB8DB0170A4DC9ED00D904DDD3E2A4AD1B1E8DC0FDC9BE7, 1, 1
+	from gd_esquema.Maestra	   )
+GO
+
+INSERT INTO [QUIEN_BAJO_EL_KERNEL].USUARIO_ROL (id_rol,username) (select distinct  1,username
+	from QUIEN_BAJO_EL_KERNEL.USUARIO where username<>'admin'	   )
+GO
+
+INSERT INTO [QUIEN_BAJO_EL_KERNEL].USUARIO_ROL (id_rol,username) (select distinct  2,username
+	from QUIEN_BAJO_EL_KERNEL.USUARIO where username<>'admin'	   )
+GO
+
 insert into QUIEN_BAJO_EL_KERNEL.CLIENTE (tipo_documento,numero_documento,
 					 pais_codigo,nombre,apellido,dom_calle,
 					 dom_nro,dom_piso,dom_dpto,fecha_nacimiento,
-					 mail,username)
+					 mail, username)
 			       (select distinct  cli_tipo_doc_cod,cli_nro_doc,cli_pais_codigo,
 						   cli_nombre,cli_apellido,cli_dom_calle,
 						   cli_dom_nro,cli_dom_piso,cli_dom_depto,
-						   cli_fecha_nac,cli_mail, 'admin'
+						   cli_fecha_nac,cli_mail, cli_nro_doc
 					from gd_esquema.Maestra
 				   )
 GO
 
 insert into QUIEN_BAJO_EL_KERNEL.CUENTA (numero,fecha_creacion,estado_codigo,pais_codigo,fecha_cierre,
-				   cliente_tipo_doc,cliente_numero_doc,moneda_tipo,saldo)
-			 (select distinct cuenta_numero,cuenta_fecha_creacion,'4',
+				   cliente_tipo_doc,cliente_numero_doc,moneda_tipo,saldo,tipo_cuenta)
+			 (select distinct cuenta_numero,cuenta_fecha_creacion,4,
 									cuenta_pais_codigo,cuenta_fecha_cierre,cli_tipo_doc_cod,
-									cli_nro_doc,1,0
+									cli_nro_doc,1,0,1
 					from gd_esquema.Maestra
 					)
 GO
@@ -722,12 +786,13 @@ insert into QUIEN_BAJO_EL_KERNEL.TARJETA (tarjeta_numero, fecha_emision,fecha_ve
 			   where Tarjeta_Numero is not null)
 GO
 
-insert into QUIEN_BAJO_EL_KERNEL.DEPOSITO (deposito_codigo,fecha, importe, cuenta_numero, tarjeta_numero)
+insert into QUIEN_BAJO_EL_KERNEL.DEPOSITO (deposito_codigo,fecha, importe, cuenta_numero, moneda_tipo,tarjeta_numero)
 				 (select deposito_codigo,deposito_fecha, deposito_importe,
-							  cuenta_numero, tarjeta_numero
+							  cuenta_numero, 1,tarjeta_numero
 					  from gd_esquema.Maestra
 					  where deposito_codigo is not null)
 GO
+
 
 insert into QUIEN_BAJO_EL_KERNEL.BANCO  (codigo,nombre,direccion)
 			 (select distinct banco_cogido,banco_nombre,banco_direccion
@@ -748,14 +813,15 @@ insert into QUIEN_BAJO_EL_KERNEL.RETIRO (fecha,codigo,importe,cuenta,cheque)
 					where retiro_codigo is not null)
 GO
 
-INSERT INTO QUIEN_BAJO_EL_KERNEL.transferencia (codigo,origen,destino,fecha,importe,costo)
+INSERT INTO QUIEN_BAJO_EL_KERNEL.transferencia (codigo,origen,destino,fecha,importe,costo,moneda_tipo)
 	(SELECT
 	id_transf,
 	cuenta_numero,
 	cuenta_dest_numero,
 	transf_fecha,
 	trans_importe,
-	trans_costo_trans
+	trans_costo_trans,
+	'1'
 	FROM QUIEN_BAJO_EL_KERNEL.facturas_transferencias )
 GO
 
@@ -1091,8 +1157,148 @@ BEGIN
 END
 GO
 
+CREATE PROCEDURE [QUIEN_BAJO_EL_KERNEL].[DeleteUsuarioLog]
+@username nvarchar(255)
+AS
+BEGIN
+	SET NOCOUNT ON;
+	
+	DELETE FROM [QUIEN_BAJO_EL_KERNEL].USUARIO_LOG
+	WHERE username = username AND login_correcto = 0
+	
+END
+GO
+
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.INSERT_USUARIO 
+(
+@username varchar(255)
+,@password varbinary(max)
+,@pregunta_secreta varchar(255)
+,@respuesta_secreta varchar(255)
+,@activo bit
+,@habilitado bit 
+)
+AS 
+BEGIN
+
+insert into QUIEN_BAJO_EL_KERNEL.USUARIO 
+(username
+,password
+,pregunta_secreta
+,respuesta_secreta
+,activo
+,habilitado)
+VALUES
+(@username
+,@password
+,@pregunta_secreta
+,@respuesta_secreta
+,@activo
+,@habilitado)
 
 
+
+END
+GO
+
+CREATE PROCEDURE [QUIEN_BAJO_EL_KERNEL].[InsertUsuarioLog]
+@username nvarchar(255),
+@login_correcto bit
+AS
+BEGIN
+	SET NOCOUNT ON;
+	
+	IF (EXISTS (SELECT * FROM [QUIEN_BAJO_EL_KERNEL].USUARIO WHERE username = @username))
+	BEGIN
+		INSERT INTO [QUIEN_BAJO_EL_KERNEL].USUARIO_LOG
+		(
+			username,
+			fecha,
+			login_correcto
+		)
+		VALUES
+		(
+			@username,
+			GETDATE(),
+			@login_correcto
+		)
+		
+		IF ((SELECT COUNT(*) FROM [QUIEN_BAJO_EL_KERNEL].USUARIO_LOG WHERE username = @username AND login_correcto = 0) >= 3 AND @login_correcto = 0)
+		BEGIN
+			UPDATE [QUIEN_BAJO_EL_KERNEL].USUARIO SET habilitado = 0 WHERE username = @username
+		END
+	END
+END
+GO
+
+CREATE PROCEDURE [QUIEN_BAJO_EL_KERNEL].[GetTiposEstadoCuenta]
+AS
+BEGIN
+	SELECT * FROM QUIEN_BAJO_EL_KERNEL.TIPO_ESTADO_CUENTA t ORDER BY t.codigo ASC;
+END
+GO
+
+CREATE PROCEDURE [QUIEN_BAJO_EL_KERNEL].[ModificaCuenta]
+@an_nro_cuenta	NUMERIC(18,0),
+@an_moneda_tipo NUMERIC(1,0),
+@an_cuenta_tipo	NUMERIC(1,0),
+@an_cod_pais	NUMERIC(18,0)
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+    UPDATE QUIEN_BAJO_EL_KERNEL.CUENTA
+       SET moneda_tipo = @an_moneda_tipo,
+		   tipo_cuenta = @an_cuenta_tipo,
+		   pais_codigo = @an_cod_pais
+	 WHERE numero = @an_nro_cuenta
+	 
+END
+GO
+
+CREATE PROCEDURE [QUIEN_BAJO_EL_KERNEL].[GetCuentas]
+@an_pais		NUMERIC(18,0) = NULL,
+@an_estado		NUMERIC(1,0) = NULL,
+@an_moneda		NUMERIC(1,0) = NULL,
+@an_tipo_cuenta	NUMERIC(1,0) = NULL
+AS
+BEGIN
+	SELECT numero as Numero,
+		   c.cliente_numero_doc as NroDocumento,
+		   c.cliente_tipo_doc as TipoDocumento,
+		   ec.descripcion as Estado,
+		   p.descripcion_pais as Pais,
+		   m.descripcion as Moneda,
+		   tc.descripcion as Tipo,
+		   c.saldo as Saldo,
+		   c.fecha_creacion as FechaCreacion
+	  FROM QUIEN_BAJO_EL_KERNEL.CUENTA c 
+		left join QUIEN_BAJO_EL_KERNEL.TIPO_CUENTA tc on c.tipo_cuenta=tc.codigo
+		left join QUIEN_BAJO_EL_KERNEL.PAIS p on c.pais_codigo=p.codigo_pais
+		left join QUIEN_BAJO_EL_KERNEL.TIPO_MONEDA m on c.moneda_tipo=m.codigo
+		left join QUIEN_BAJO_EL_KERNEL.TIPO_ESTADO_CUENTA ec on c.estado_codigo=ec.codigo
+	 WHERE (@an_pais is null or c.pais_codigo = @an_pais) 
+	   AND (@an_estado is null or c.estado_codigo = @an_estado) 
+	   AND (@an_moneda is null or c.moneda_tipo = @an_moneda) 
+	   AND (@an_tipo_cuenta is null or c.tipo_cuenta = @an_tipo_cuenta)
+		   
+END
+GO
+
+CREATE PROCEDURE [QUIEN_BAJO_EL_KERNEL].[GetCuentaByNumero]
+@an_nro_cuenta	NUMERIC(18,0)
+AS
+BEGIN
+	SELECT c.numero,
+		   c.moneda_tipo,
+		   c.pais_codigo,
+		   c.tipo_cuenta,
+		   c.cliente_numero_doc,
+		   c.cliente_tipo_doc
+	  FROM QUIEN_BAJO_EL_KERNEL.CUENTA c
+	 WHERE c.numero = @an_nro_cuenta
+END
+GO
 
 -----	 ****************************** TRIGGERS necesarios post-migracion ****************************** -----
 CREATE TRIGGER QUIEN_BAJO_EL_KERNEL.TransferenciasManejoID
@@ -1149,5 +1355,28 @@ SELECT
 INSERT INTO QUIEN_BAJO_EL_KERNEL.Retiro (codigo,fecha, importe, cuenta, cheque)
 VALUES (@codigo,@fecha, @importe, @cuenta, @cheque)
 
+END
+GO
+
+CREATE TRIGGER QUIEN_BAJO_EL_KERNEL.ModificacionCuenta
+ON QUIEN_BAJO_EL_KERNEL.CUENTA
+AFTER UPDATE
+AS
+	SET NOCOUNT ON
+	DECLARE
+		@nro_cuenta	NUMERIC(18,0),
+		@tipo_viejo	NUMERIC(1,0),
+		@tipo_nuevo	NUMERIC(1,0)
+IF UPDATE(tipo_cuenta)
+BEGIN
+	SELECT @tipo_nuevo = tipo_cuenta,
+		   @nro_cuenta = numero
+	  FROM inserted
+	
+	IF @tipo_nuevo <> 1
+		INSERT INTO QUIEN_BAJO_EL_KERNEL.CUENTA_MODIFICACION(cuenta, fecha,nuevo_tipo_cuenta)
+			 VALUES (@nro_cuenta, GETDATE(), @tipo_nuevo)
+			 
+	
 END
 GO

@@ -70,5 +70,11 @@ namespace PagoElectronico.Services
             CuentaRepository repository = new CuentaRepository();
             return repository.ModificaCuenta(numCuenta, tipoMoneda, tipoCuenta, codPais);
         }
+
+        public int CerrarCuenta(long numCuenta)
+        {
+            CuentaRepository repository = new CuentaRepository();
+            return repository.CerrarCuenta(numCuenta);
+        }
     }
 }

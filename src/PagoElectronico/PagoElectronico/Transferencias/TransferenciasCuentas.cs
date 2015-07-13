@@ -19,16 +19,20 @@ namespace PagoElectronico.Transferencias
     {
         TransferenciaService transferenciaService = new TransferenciaService();
         CuentaService cuentaService = new CuentaService();
+        ClienteService clienteService = new ClienteService();
         TipoMonedaService tipoMonedaService = new TipoMonedaService();
         List<TipoMoneda> listaTiposMoneda;
         List<long> listaCuentas;
 
-        Usuario usuario = Session.Usuario;
-        //Para probar hasta q este el login: 10002 and cliente_numero_doc=45622098
-        long tipoDocCliente = 10002, nroDocCliente = 45622098;
+        Cliente clienteLogueado;
+        Usuario usuarioLogueado = Session.Usuario;
+
+        // ver el caso de un admin q no tenga cuentas, explota
+        // un admin puede hacer retiro o trans de cualquier cuenta ??
 
         public TransferenciasCuentas()
         {
+            obtenerCliente();
             InitializeComponent();
             cargarComboCuentas();
         }
@@ -65,8 +69,20 @@ namespace PagoElectronico.Transferencias
 
         #endregion
 
-
+        #region metodosPrivados
         /*************    Metodos privados       *************/
+        private void obtenerCliente()
+        {
+            try
+            {
+                clienteLogueado = clienteService.getClienteByUsername(usuarioLogueado.Username);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("El usuario actual no posee cuentas asociadas ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+                
         private void realizarTransferencia()
         {
             if (Validaciones.validarCampoVacio(txtImporte) & Validaciones.validarCampoVacio(txtCuentaDestino) & Validaciones.validarCampoNumericoDouble(txtImporte) & Validaciones.validarCampoNumericoDouble(txtCuentaDestino))
@@ -91,7 +107,7 @@ namespace PagoElectronico.Transferencias
                     transferencia.costo = calcularCosto();
                     transferencia.monedaTipo = cuentaService.getMonedaTipo(origen);
 
-                    transferenciaService.Save(transferencia);
+                    transferenciaService.GuardarTransferencia(transferencia);
                     MessageBox.Show("Transferencia realizada exitosamente. Saldo actual: " + lblSaldoPosterior.Text.ToString(), "Atencion !", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     limpiarDatos();
                 }
@@ -99,7 +115,7 @@ namespace PagoElectronico.Transferencias
                 {
                     MessageBox.Show(ex.Message.ToString(), "No se pudo realizar la transferencia. !", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     MessageBox.Show("La cuenta destino no existe", "No se pudo realizar la transferencia. !", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
@@ -156,7 +172,7 @@ namespace PagoElectronico.Transferencias
 
         private void cargarComboCuentas()
         {
-            listaCuentas = (List<long>)cuentaService.getByCliente(tipoDocCliente, nroDocCliente);
+            listaCuentas = (List<long>)cuentaService.getByCliente(clienteLogueado.tipoDocumento, clienteLogueado.numeroDocumento);
             if (listaCuentas.Count > 0)
             {
                 comboCuentaOrigen.DataSource = listaCuentas;
@@ -207,12 +223,14 @@ namespace PagoElectronico.Transferencias
             ocultarComponentes();
         }
 
+        #endregion
 
+        #region validacionesPrivadas
         /*************    Validadores privados       *************/
         private void validarEstadoCuenta(long cuentaDestino)
         {
             int estadoDeCuenta = cuentaService.getEstado(cuentaDestino);
-            if (estadoDeCuenta == 1 || estadoDeCuenta == 2)
+            if (estadoDeCuenta == (Int32)Entities.Enums.EstadosCuenta.Cerrada || estadoDeCuenta == (Int32)Entities.Enums.EstadosCuenta.PendienteActivacion)
             {
                 throw new OperationCanceledException("La cuenta destino se encuentra en cerrada o pendiente de activacion");
             }
@@ -226,5 +244,6 @@ namespace PagoElectronico.Transferencias
             }
         }
 
+        #endregion
     }
 }

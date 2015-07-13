@@ -10,28 +10,34 @@ using PagoElectronico.Common;
 using PagoElectronico.Repositories;
 using PagoElectronico.Entities;
 using PagoElectronico.Services;
+using System.Data.SqlClient;
 
 namespace PagoElectronico.Retiros
 {
     public partial class Retiro : Form
     {
         CuentaService cuentaService = new CuentaService();
+        ClienteService clienteService = new ClienteService();
         TipoMonedaService tipoMonedaService = new TipoMonedaService();
         TipoDocumentoService tipoDocumentoService = new TipoDocumentoService();
         BancoService bancoService = new BancoService();
+        ChequeService chequeService = new ChequeService();
+        RetiroService retiroService = new RetiroService();
         List<long> listaCuentas;
         List<TipoMoneda> listaTiposMoneda;
         List<TipoDocumento> listaTiposDocumentos;
         List<Banco> listaBancos;
 
-        Usuario usuario = Session.Usuario;
-        //Para probar hasta q este el login: 10002 and cliente_numero_doc=45622098
-        long tipoDocCliente = 10002, nroDocCliente = 45622098;
+        Cliente clienteLogueado;
+        Usuario usuarioLogueado = Session.Usuario;
 
+        // ver el caso de un admin q no tenga cuentas, explota
+        // un admin puede hacer retiro o trans de cualquier cuenta ??
 
         public Retiro()
         {
             InitializeComponent();
+            obtenerCliente();
             cargarComboCuentas();
             cargarComboTipoDoc();
             cargarComboTipoMoneda();
@@ -72,12 +78,20 @@ namespace PagoElectronico.Retiros
 
         #region MetodosPrivados
         /*************    Metodos privados       *************/
+        private void obtenerCliente()
+        {
+            try
+            {
+                clienteLogueado = clienteService.getClienteByUsername(usuarioLogueado.Username);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("El usuario actual no posee cuentas asociadas ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        
         private void realizarRetiro()
         {
-            //validar que este habilitada
-            // tener saldo
-            // el importe ingresado debe ser menor o igual al saldo de la cuenta
-            // el importe debe estar en dls
             Boolean validador;
             validador = Validaciones.validarCampoVacio(txtNroDoc) & Validaciones.validarCampoVacio(txtImporte) & Validaciones.validarCampoVacio(txtNroCheque) & Validaciones.validarCampoVacio(txtNombreLibrar);
             validador = validador & Validaciones.validarCampoNumericoDouble(txtImporte) & Validaciones.validarCampoNumericoEntero(txtNroDoc) & Validaciones.validarCampoNumericoEntero(txtNroCheque) & Validaciones.validarCampoString(txtNombreLibrar);
@@ -89,10 +103,41 @@ namespace PagoElectronico.Retiros
                     validarSaldoDisponible();
                     validarNumeroDocumento();
                     validarImporteEnDolares();
+
+
+                    Cheque cheque = new Cheque();
+                    cheque.numero = Int64.Parse(txtNroCheque.Text);
+                    cheque.fecha = DateTime.Now;
+                    cheque.importe = Double.Parse(txtImporte.Text);
+                    cheque.codigoBanco = ((Banco)comboBanco.SelectedItem).codigo;
+                    cheque.monedaTipo = ((TipoMoneda)comboTipoMoneda.SelectedItem).codigo;
+                    cheque.nombreDestinatario = txtNombreLibrar.Text;
+
+                    Entities.Retiro retiro = new Entities.Retiro();
+                    retiro.cheque = cheque;
+
+                    retiro.importe = cheque.importe;
+                    retiro.fecha = cheque.fecha;
+                    retiro.cuenta = Int64.Parse(comboCuentaOrigen.Text);
+                    retiro.codigoCheque = cheque.numero;
+                    
+
+                    retiroService.GuardarRetiro(retiro);
+
+                    MessageBox.Show("Se ha realizado el retiro de saldo. ", "Retiro realizado satisfactoriamente", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    limpiarDatos();
+                    
                 }
                 catch (OperationCanceledException ex)
                 {
                     MessageBox.Show(ex.Message.ToString(), "No se pudo realizar el retiro!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                catch (SqlException ex)
+                {
+                    if (ex.Number == 2627)
+                    {
+                        MessageBox.Show("El numero de cheque ya existe", "No se pudo realizar el retiro!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
 
@@ -107,7 +152,7 @@ namespace PagoElectronico.Retiros
         {
             try
             {
-                double saldoActual, saldoPosterior, costo, importe;
+                double saldoActual, saldoPosterior, importe;
 
                 if (txtImporte.Text.Length == 0)
                 {
@@ -148,7 +193,7 @@ namespace PagoElectronico.Retiros
 
         private void cargarComboCuentas()
         {
-            listaCuentas = (List<long>)cuentaService.getByCliente(tipoDocCliente, nroDocCliente);
+            listaCuentas = (List<long>)cuentaService.getByCliente(clienteLogueado.tipoDocumento, clienteLogueado.numeroDocumento);
             if (listaCuentas.Count > 0)
             {
                 comboCuentaOrigen.DataSource = listaCuentas;
@@ -164,11 +209,7 @@ namespace PagoElectronico.Retiros
         private void cargarComboTipoDoc()
         {
             listaTiposDocumentos = (List<TipoDocumento>)tipoDocumentoService.GetAll();
-            foreach (var item in listaTiposDocumentos)
-            {
-                comboTipoDoc.Items.Add(item.descripcion);
-            }
-
+            comboTipoDoc.DataSource = listaTiposDocumentos;
             comboTipoDoc.SelectedIndex = 0;
 
         }
@@ -176,22 +217,15 @@ namespace PagoElectronico.Retiros
         private void cargarComboTipoMoneda()
         {
             listaTiposMoneda = (List<TipoMoneda>)tipoMonedaService.GetTiposMonedaByCuenta(comboCuentaOrigen.Text.ToString());
-            foreach (var item in listaTiposMoneda)
-            {
-                comboTipoMoneda.Items.Add(item.descripcion);
-            }
-
+            comboTipoMoneda.DataSource = listaTiposMoneda;
             comboTipoMoneda.SelectedIndex = 0;
         }
 
         private void cargarComboBanco()
         {
+            
             listaBancos = (List<Banco>)bancoService.GetAll(); ;
-            foreach (var item in listaBancos)
-            {
-                comboBanco.Items.Add(item.nombre);
-            }
-
+            comboBanco.DataSource = listaBancos;
             comboBanco.SelectedIndex = 0;
         }
 
@@ -222,7 +256,11 @@ namespace PagoElectronico.Retiros
 
         private void validarNumeroDocumento()
         {
-
+            Cliente cliente = clienteService.getClienteByUsername(usuarioLogueado.Username);
+            if (txtNroDoc.Text != cliente.numeroDocumento.ToString() | Convert.ToInt64(comboTipoDoc.SelectedValue) != cliente.tipoDocumento)
+            {
+                throw new OperationCanceledException("El documento ingresado no coincide");
+            }
         }
 
         private void validarSaldoDisponible()
@@ -240,13 +278,13 @@ namespace PagoElectronico.Retiros
 
         private void validarImporteEnDolares()
         {
-
+             if ( String.Compare(comboTipoMoneda.Text,"U$S")!=0)
+            {
+                throw new OperationCanceledException("El importe debe ser en dolares estadounidenses");
+            }           
         }
 
         #endregion
-
-
-
 
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,5 +15,22 @@ namespace PagoElectronico.Services
             return repo.Insert(cliente);
 
         }
+    
+
+
+        public Cliente getClienteByUsername(String usuario)
+        {
+            ClienteRepository repo = new ClienteRepository();
+            return repo.getClienteByUsername(usuario);
+        }
+
+
+
+        public IEnumerable<Cliente> GetClientes()
+        {
+            ClienteRepository repository = new ClienteRepository();
+            return repository.GetClientes();
+        }
     }
+
 }

@@ -33,6 +33,7 @@ namespace PagoElectronico.Repositories
             command.Parameters.AddWithValue("@habilitado", entity.Habilitado);
 
             return DBConnection.ExecuteNonQuery(command);
+
            
         }
 

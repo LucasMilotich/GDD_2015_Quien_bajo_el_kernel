@@ -18,7 +18,7 @@ namespace PagoElectronico.Repositories
             retiro.fecha = Convert.ToDateTime(reader[1]);
             retiro.importe = String.IsNullOrEmpty(reader[2].ToString()) ? 0 : Convert.ToInt64(reader[2]);
             retiro.cuenta = String.IsNullOrEmpty(reader[3].ToString()) ? 0 : Convert.ToInt64(reader[3]);
-            retiro.cheque = String.IsNullOrEmpty(reader[4].ToString()) ? 0 : Convert.ToInt64(reader[4]);
+            retiro.codigoCheque = String.IsNullOrEmpty(reader[4].ToString()) ? 0 : Convert.ToInt64(reader[4]);
 
             return retiro;
         }
@@ -50,7 +50,14 @@ namespace PagoElectronico.Repositories
 
         public override int Insert(Retiro entity)
         {
-            throw new NotImplementedException();
+            SqlCommand command = DBConnection.CreateStoredProcedure("Insert_Retiro");
+
+            command.Parameters.AddWithValue("@fecha", entity.fecha);
+            command.Parameters.AddWithValue("@importe", entity.importe);
+            command.Parameters.AddWithValue("@cuenta", entity.cuenta);
+            command.Parameters.AddWithValue("@cheque", entity.codigoCheque);
+
+            return DBConnection.ExecuteNonQuery(command);
         }
 
         public override void Update(Retiro entity)

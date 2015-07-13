@@ -45,6 +45,7 @@ namespace PagoElectronico.ABM_Cliente
              {
 
 
+
                  cliente.nombre = this.txtNombre.Text;
                  cliente.apellido = this.txtApellido.Text;
                  cliente.fechaNacimiento = Convert.ToDateTime(dateTimePicker1.Text);
@@ -58,7 +59,9 @@ namespace PagoElectronico.ABM_Cliente
                  cliente.domPiso = Convert.ToInt32(this.txtPiso.Text);
                  cliente.localidad = this.txtLocalidad.Text;
 
+
                  ClienteService cliServ = new ClienteService();
+
 
                  var form = new ABM_de_Usuario.AltaEdicion(cliente,cliServ,this);
                  form.Show();
@@ -104,22 +107,30 @@ namespace PagoElectronico.ABM_Cliente
             }
             */
             return true;
-        }
+
+            }
+        
+    
+
+        
 
         private void cmbTipoDoc_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
 
-        private void groupBox1_Enter(object sender, EventArgs e)
+        private void groupBox1_Enter(object sensder, EventArgs e)
         {
 
         }
 
         private void Alta_Load(object sender, EventArgs e)
         {
+
             cmbPais.DataSource = new PaisService().GetAll();
             cmbTipoDoc.DataSource = new TipoDocumentoService().GetAll();
         }
     }
 }
+
+
