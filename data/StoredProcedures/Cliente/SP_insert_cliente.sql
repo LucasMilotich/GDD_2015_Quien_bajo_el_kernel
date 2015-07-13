@@ -1,30 +1,25 @@
 
 CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.INSERT_CLIENTE 
-(@nombre varchar(255)
-,@apellido varchar(255)
-,@mail varchar(255)
-,@paisDesc varchar(255)
-,@calle varchar(255)
-,@piso varchar(255)
-,@dpto varchar(255)
-,@localidad (255)
-,@nacionalidad (255)
-,@fechaNac datetime
-,@tipoDocCod numeric(18,0)
-,@dni numeric(10,0)
-,@username varchar(255)
-)
+(
+  @tipoDocCod numeric(18,0)
+ ,@dni numeric(10,0)
+ ,@paisCod numeric(18,0)
+ ,@apellido  varchar(255)
+ ,@nombre varchar(255)
+ ,@dom_calle varchar(255)
+ ,@dom_nro numeric(18,0)
+ ,@dom_piso numeric(18,0)
+ ,@dom_dpto varchar(255)
+ ,@fechaNac datetime
+ ,@mail varchar(255)
+ ,@localidad varchar(255)
+ ,@username varchar(255)
+ )
+
 AS 
 BEGIN
 
 
-declare @paisCod numeric(18,0)
-
-
-
-
-select @paisCod = codigo_pais FROM QUIEN_BAJO_EL_KERNEL.PAIS 
-where descripcion_pais like @paisDesc
 
 
 insert into QUIEN_BAJO_EL_KERNEL.CLIENTE

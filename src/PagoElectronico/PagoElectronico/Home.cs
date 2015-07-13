@@ -12,6 +12,8 @@ using PagoElectronico.Transferencias;
 using PagoElectronico.ABM_Rol;
 using PagoElectronico.Entities;
 using PagoElectronico.ABM_Cuenta;
+using PagoElectronico.Depositos;
+using PagoElectronico.Facturacion;
 
 namespace PagoElectronico
 {
@@ -106,12 +108,22 @@ namespace PagoElectronico
 
         private void altaToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            showForm(new ABM_Cliente.Alta());
         }
 
         private void listadoCuentasToolStripMenuItem_Click(object sender, EventArgs e)
         {
             showForm(new ConsultaCuenta());
+        }
+
+        private void depositoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            showForm(new DepositoForm());
+        }
+
+        private void facturarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            showForm(new FacturacionForm());
         }
     }
 }

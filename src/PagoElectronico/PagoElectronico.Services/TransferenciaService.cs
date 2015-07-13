@@ -10,7 +10,7 @@ namespace PagoElectronico.Services
 {
     public class TransferenciaService
     {
-        public int Save(Transferencia transferencia)
+        public int GuardarTransferencia(Transferencia transferencia)
         {
             int filasInsertadas;
 

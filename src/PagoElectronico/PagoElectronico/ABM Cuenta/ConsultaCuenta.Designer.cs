@@ -38,7 +38,9 @@
             this.btnLimpiar = new System.Windows.Forms.Button();
             this.btnBuscar = new System.Windows.Forms.Button();
             this.dgvCuentas = new System.Windows.Forms.DataGridView();
+            this.cmbPaises = new System.Windows.Forms.ComboBox();
             this.edicion = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.cerrar = new System.Windows.Forms.DataGridViewButtonColumn();
             this.Numero = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.nroDocumento = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tipoDocCliente = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -48,7 +50,6 @@
             this.tipoCuenta = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.saldo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.fechaCreacion = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.cmbPaises = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCuentas)).BeginInit();
             this.SuspendLayout();
             // 
@@ -149,6 +150,7 @@
             this.dgvCuentas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvCuentas.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.edicion,
+            this.cerrar,
             this.Numero,
             this.nroDocumento,
             this.tipoDocCliente,
@@ -165,6 +167,17 @@
             this.dgvCuentas.TabIndex = 11;
             this.dgvCuentas.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCuentas_CellContentClick);
             // 
+            // cmbPaises
+            // 
+            this.cmbPaises.DisplayMember = "descripcionPais";
+            this.cmbPaises.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbPaises.FormattingEnabled = true;
+            this.cmbPaises.Location = new System.Drawing.Point(69, 37);
+            this.cmbPaises.Name = "cmbPaises";
+            this.cmbPaises.Size = new System.Drawing.Size(196, 21);
+            this.cmbPaises.TabIndex = 12;
+            this.cmbPaises.ValueMember = "codigoPais";
+            // 
             // edicion
             // 
             this.edicion.HeaderText = "Editar";
@@ -174,12 +187,23 @@
             this.edicion.UseColumnTextForButtonValue = true;
             this.edicion.Width = 50;
             // 
+            // cerrar
+            // 
+            this.cerrar.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.cerrar.HeaderText = "Cerrar";
+            this.cerrar.Name = "cerrar";
+            this.cerrar.ReadOnly = true;
+            this.cerrar.Text = "Cerrar";
+            this.cerrar.UseColumnTextForButtonValue = true;
+            this.cerrar.Width = 41;
+            // 
             // Numero
             // 
             this.Numero.DataPropertyName = "Numero";
             this.Numero.HeaderText = "Número";
             this.Numero.Name = "Numero";
             this.Numero.ReadOnly = true;
+            this.Numero.Width = 110;
             // 
             // nroDocumento
             // 
@@ -237,17 +261,6 @@
             this.fechaCreacion.Name = "fechaCreacion";
             this.fechaCreacion.ReadOnly = true;
             // 
-            // cmbPaises
-            // 
-            this.cmbPaises.DisplayMember = "descripcionPais";
-            this.cmbPaises.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbPaises.FormattingEnabled = true;
-            this.cmbPaises.Location = new System.Drawing.Point(69, 37);
-            this.cmbPaises.Name = "cmbPaises";
-            this.cmbPaises.Size = new System.Drawing.Size(196, 21);
-            this.cmbPaises.TabIndex = 12;
-            this.cmbPaises.ValueMember = "codigoPais";
-            // 
             // ConsultaCuenta
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -287,6 +300,7 @@
         private System.Windows.Forms.DataGridView dgvCuentas;
         private System.Windows.Forms.ComboBox cmbPaises;
         private System.Windows.Forms.DataGridViewButtonColumn edicion;
+        private System.Windows.Forms.DataGridViewButtonColumn cerrar;
         private System.Windows.Forms.DataGridViewTextBoxColumn Numero;
         private System.Windows.Forms.DataGridViewTextBoxColumn nroDocumento;
         private System.Windows.Forms.DataGridViewTextBoxColumn tipoDocCliente;

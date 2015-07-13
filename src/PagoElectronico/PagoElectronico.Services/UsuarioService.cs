@@ -18,5 +18,11 @@ namespace PagoElectronico.Services
 
         }
 
+        public int insertRolesUsuario(Usuario usuario)
+        {
+            UsuarioRepository usrRep = new UsuarioRepository();
+            return usrRep.InsertRolesUsuario(usuario);
+        }
+
     }
 }

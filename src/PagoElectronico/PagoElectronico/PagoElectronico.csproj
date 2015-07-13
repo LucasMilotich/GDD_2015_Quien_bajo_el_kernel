@@ -51,6 +51,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web.Extensions">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -85,12 +86,6 @@
     <Compile Include="ABM Cuenta\AltaCuenta.designer.cs">
       <DependentUpon>AltaCuenta.cs</DependentUpon>
     </Compile>
-    <Compile Include="ABM Cuenta\EdicionCuenta.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ABM Cuenta\EdicionCuenta.designer.cs">
-      <DependentUpon>EdicionCuenta.cs</DependentUpon>
-    </Compile>
     <Compile Include="ABM Cuenta\ConsultaCuenta.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -122,17 +117,17 @@
     <Compile Include="Consulta Saldos\ConsultaSaldos.Designer.cs">
       <DependentUpon>ConsultaSaldos.cs</DependentUpon>
     </Compile>
-    <Compile Include="Depositos\Form1.cs">
+    <Compile Include="Depositos\DepositoForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Depositos\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Depositos\DepositoForm.Designer.cs">
+      <DependentUpon>DepositoForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Facturacion\Form1.cs">
+    <Compile Include="Facturacion\FacturacionForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Facturacion\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Facturacion\FacturacionForm.Designer.cs">
+      <DependentUpon>FacturacionForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Home.cs">
       <SubType>Form</SubType>
@@ -172,9 +167,6 @@
     <EmbeddedResource Include="ABM Cuenta\ConsultaCuenta.resx">
       <DependentUpon>ConsultaCuenta.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ABM Cuenta\EdicionCuenta.resx">
-      <DependentUpon>EdicionCuenta.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="ABM de Usuario\AltaEdicion.resx">
       <DependentUpon>AltaEdicion.cs</DependentUpon>
     </EmbeddedResource>
@@ -186,6 +178,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Consulta Saldos\ConsultaSaldos.resx">
       <DependentUpon>ConsultaSaldos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Depositos\DepositoForm.resx">
+      <DependentUpon>DepositoForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Facturacion\FacturacionForm.resx">
+      <DependentUpon>FacturacionForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Home.resx">
       <DependentUpon>Home.cs</DependentUpon>

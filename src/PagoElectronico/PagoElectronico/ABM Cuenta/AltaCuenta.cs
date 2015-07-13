@@ -17,6 +17,7 @@ namespace PagoElectronico.ABM_Cuenta
         CuentaService cuentaService { get; set; }
         PaisService paisService { get; set; }
         TipoMonedaService tipoMonedaService { get; set; }
+        ClienteService clienteService { get; set; }
         long NroCuenta { get; set; }
         Usuario usuario = Session.Usuario;
         //Para probar hasta q este el login: 10002 and cliente_numero_doc=45622098
@@ -27,6 +28,7 @@ namespace PagoElectronico.ABM_Cuenta
             cuentaService = new CuentaService();
             paisService = new PaisService();
             tipoMonedaService = new TipoMonedaService();
+            clienteService = new ClienteService();
             InitializeComponent();
             this.NroCuenta = nroCuenta;
         }
@@ -43,6 +45,16 @@ namespace PagoElectronico.ABM_Cuenta
                 cmbMonedas.SelectedValue = cuenta.monedaTipo;
                 txtCuenta.Text = cuenta.numero.ToString();
                 this.Text = "Edición de Cuenta";
+            }
+            else
+            {
+                if (Session.Usuario.SelectedRol.Id == (int)Entities.Enums.Roles.Admin)
+                {
+                    lblCliente.Visible = true;
+                    cmbClientes.Visible = true;
+                    var clientes = clienteService.GetClientes();
+                    cmbClientes.DataSource = clientes;
+                }
             }
         }
 
@@ -79,7 +91,7 @@ namespace PagoElectronico.ABM_Cuenta
                 }
                 catch (Exception)
                 {
-                    MessageBox.Show("Error", "No se pudo crear la cuenta.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("No se pudo crear la cuenta", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else
@@ -89,6 +101,7 @@ namespace PagoElectronico.ABM_Cuenta
                 {
                     cuentaService.ModificaCuenta(numCuenta, tipoMoneda, tipoCuenta, codPais);
                     MessageBox.Show("Cuenta modificada exitosamente!", "Atencion", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    this.Hide();
                 }
                 catch (OperationCanceledException ex)
                 {

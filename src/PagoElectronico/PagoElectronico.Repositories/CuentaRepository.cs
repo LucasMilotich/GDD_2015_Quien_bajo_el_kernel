@@ -187,5 +187,22 @@ namespace PagoElectronico.Repositories
 
             return resultado;
         }
+
+        public int CerrarCuenta(long numCuenta)
+        {
+            int resultado;
+            using (var transaction = new TransactionScope())
+            {
+                SqlCommand command = DBConnection.CreateStoredProcedure("CerrarCuenta");
+                command.Parameters.AddWithValue("@an_nro_cuenta", numCuenta);
+
+                resultado = DBConnection.ExecuteNonQuery(command);
+                command.Dispose();
+
+                transaction.Complete();
+            }
+
+            return resultado;
+        }
     }
 }

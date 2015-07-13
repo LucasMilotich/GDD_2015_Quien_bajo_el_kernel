@@ -38,7 +38,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.txtUsername = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
+            this.chkRoles = new System.Windows.Forms.CheckedListBox();
             this.btnLimpiar = new System.Windows.Forms.Button();
             this.btnGuardar = new System.Windows.Forms.Button();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -129,7 +129,7 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.checkedListBox1);
+            this.groupBox2.Controls.Add(this.chkRoles);
             this.groupBox2.Location = new System.Drawing.Point(12, 179);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(541, 161);
@@ -137,13 +137,13 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Asignación de Roles";
             // 
-            // checkedListBox1
+            // chkRoles
             // 
-            this.checkedListBox1.FormattingEnabled = true;
-            this.checkedListBox1.Location = new System.Drawing.Point(24, 29);
-            this.checkedListBox1.Name = "checkedListBox1";
-            this.checkedListBox1.Size = new System.Drawing.Size(298, 109);
-            this.checkedListBox1.TabIndex = 0;
+            this.chkRoles.FormattingEnabled = true;
+            this.chkRoles.Location = new System.Drawing.Point(24, 29);
+            this.chkRoles.Name = "chkRoles";
+            this.chkRoles.Size = new System.Drawing.Size(298, 109);
+            this.chkRoles.TabIndex = 0;
             // 
             // btnLimpiar
             // 
@@ -171,7 +171,6 @@
             this.menuStrip1.Size = new System.Drawing.Size(565, 24);
             this.menuStrip1.TabIndex = 4;
             this.menuStrip1.Text = "menuStrip1";
-            this.menuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip1_ItemClicked);
             // 
             // AltaEdicion
             // 
@@ -207,7 +206,7 @@
         private System.Windows.Forms.TextBox txtPregunta;
         private System.Windows.Forms.TextBox txtPassword;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.CheckedListBox checkedListBox1;
+        private System.Windows.Forms.CheckedListBox chkRoles;
         private System.Windows.Forms.Button btnLimpiar;
         private System.Windows.Forms.Button btnGuardar;
         private System.Windows.Forms.MenuStrip menuStrip1;

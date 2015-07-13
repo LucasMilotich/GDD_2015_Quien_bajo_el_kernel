@@ -15,7 +15,9 @@ namespace PagoElectronico.Entities
 
         public long cuenta { get; set; }
 
-        public long cheque { get; set; }
+        public long codigoCheque { get; set; }
+
+        public Cheque cheque { get; set; }
 
     }
 }
