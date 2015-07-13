@@ -213,6 +213,7 @@ GO
 
 CREATE TABLE QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA_MODIFICACION_CUENTA(
 	id_modificacion	NUMERIC(18,0) NOT NULL,
+	cuenta	NUMERIC(18,0) NOT NULL,
 	descripcion varchar(255),
 	importe NUMERIC(18,2),
 	factura_numero NUMERIC(18,0) NOT NULL
@@ -583,7 +584,7 @@ BEGIN
     WHILE @@FETCH_STATUS = 0
     BEGIN
       UPDATE QUIEN_BAJO_EL_KERNEL.CUENTA
-      SET Saldo = Saldo - @montoImporte - @costo
+      SET Saldo = Saldo - @montoImporte 
       WHERE numero = @cuentaNumeroOrigen
 
       UPDATE QUIEN_BAJO_EL_KERNEL.CUENTA
