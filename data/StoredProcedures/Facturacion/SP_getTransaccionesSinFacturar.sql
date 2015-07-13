@@ -1,4 +1,4 @@
-CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.GetTiposMonedaByCuenta (@numeroDoc numeric (18),@tipoDoc numeric(18))
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.GetTransaccionesSinFacturar (@numeroDoc numeric (18),@tipoDoc numeric(18))
 AS
 BEGIN
 	SELECT codigo,costo, 'Transferencia' as tipoTransaccion
