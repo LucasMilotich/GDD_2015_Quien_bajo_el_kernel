@@ -18,6 +18,8 @@ namespace PagoElectronico.Entities
 
         public string apellido { get; set; }
 
+        public string nombreCompleto { get { return this.nombre + " " + this.apellido; } }
+
         public string domCalle { get; set; }
 
         public long domNro { get; set; }
@@ -32,8 +34,8 @@ namespace PagoElectronico.Entities
 
 
         public string localidad { get; set; }
- 
+
         public string username { get; set; }
-        
+
     }
 }
