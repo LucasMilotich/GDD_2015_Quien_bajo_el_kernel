@@ -26,7 +26,7 @@ namespace PagoElectronico.Repositories
             SqlCommand command = DBConnection.CreateStoredProcedure("INSERT_USUARIO");
 
             command.Parameters.AddWithValue("@username", entity.Username);
-            command.Parameters.AddWithValue("@password", entity.Password);
+            command.Parameters.AddWithValue("@password", entity.HashedPassword);
             command.Parameters.AddWithValue("@pregunta_secreta", entity.PreguntaSecreta);
             command.Parameters.AddWithValue("@respuesta_secreta", entity.RespuestaSecreta);
             command.Parameters.AddWithValue("@activo", entity.Activo);
@@ -88,5 +88,26 @@ namespace PagoElectronico.Repositories
 
             return usuario;
         }
+    
+        public int InsertRolesUsuario(Usuario usuario)
+        {
+            int resultado = -1;
+            
+            foreach (var item in usuario.Roles)
+
+	        {
+                SqlCommand command = DBConnection.CreateStoredProcedure("INSERT_USUARIO_ROLES");
+
+                command.Parameters.AddWithValue("@username", usuario.Username);
+                command.Parameters.AddWithValue("@id_rol", item.Id);
+     	        resultado =  DBConnection.ExecuteNonQuery(command);
+	        }
+            
+
+            return resultado;
+
+        }
+
+
     }
 }

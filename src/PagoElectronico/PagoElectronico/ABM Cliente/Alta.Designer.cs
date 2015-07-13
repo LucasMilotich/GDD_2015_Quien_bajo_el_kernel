@@ -30,15 +30,14 @@
 
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cmbPais = new System.Windows.Forms.ComboBox();
             this.cmbTipoDoc = new System.Windows.Forms.ComboBox();
             this.txtNumCalle = new System.Windows.Forms.TextBox();
             this.lblNumCalle = new System.Windows.Forms.Label();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.btnGuardar = new System.Windows.Forms.Button();
             this.btnLimpiar = new System.Windows.Forms.Button();
-            this.txtNacionalidad = new System.Windows.Forms.TextBox();
             this.lblFechaNac = new System.Windows.Forms.Label();
-            this.lblNacionalidad = new System.Windows.Forms.Label();
             this.txtPiso = new System.Windows.Forms.TextBox();
             this.txtDpto = new System.Windows.Forms.TextBox();
             this.txtLocalidad = new System.Windows.Forms.TextBox();
@@ -48,7 +47,6 @@
             this.label4 = new System.Windows.Forms.Label();
             this.txtCalle = new System.Windows.Forms.TextBox();
             this.txtMail = new System.Windows.Forms.TextBox();
-            this.txtPais = new System.Windows.Forms.TextBox();
             this.lblMail = new System.Windows.Forms.Label();
             this.lblPais = new System.Windows.Forms.Label();
             this.lblDni = new System.Windows.Forms.Label();
@@ -63,15 +61,14 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.cmbPais);
             this.groupBox1.Controls.Add(this.cmbTipoDoc);
             this.groupBox1.Controls.Add(this.txtNumCalle);
             this.groupBox1.Controls.Add(this.lblNumCalle);
             this.groupBox1.Controls.Add(this.dateTimePicker1);
             this.groupBox1.Controls.Add(this.btnGuardar);
             this.groupBox1.Controls.Add(this.btnLimpiar);
-            this.groupBox1.Controls.Add(this.txtNacionalidad);
             this.groupBox1.Controls.Add(this.lblFechaNac);
-            this.groupBox1.Controls.Add(this.lblNacionalidad);
             this.groupBox1.Controls.Add(this.txtPiso);
             this.groupBox1.Controls.Add(this.txtDpto);
             this.groupBox1.Controls.Add(this.txtLocalidad);
@@ -81,7 +78,6 @@
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.txtCalle);
             this.groupBox1.Controls.Add(this.txtMail);
-            this.groupBox1.Controls.Add(this.txtPais);
             this.groupBox1.Controls.Add(this.lblMail);
             this.groupBox1.Controls.Add(this.lblPais);
             this.groupBox1.Controls.Add(this.lblDni);
@@ -98,13 +94,27 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
+            // cmbPais
+            // 
+            this.cmbPais.DisplayMember = "descripcionPais";
+            this.cmbPais.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbPais.FormattingEnabled = true;
+            this.cmbPais.Location = new System.Drawing.Point(87, 135);
+            this.cmbPais.Name = "cmbPais";
+            this.cmbPais.Size = new System.Drawing.Size(100, 21);
+            this.cmbPais.TabIndex = 34;
+            this.cmbPais.ValueMember = "codigoPais";
+            // 
             // cmbTipoDoc
             // 
+            this.cmbTipoDoc.DisplayMember = "descripcion";
+            this.cmbTipoDoc.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbTipoDoc.FormattingEnabled = true;
             this.cmbTipoDoc.Location = new System.Drawing.Point(297, 32);
             this.cmbTipoDoc.Name = "cmbTipoDoc";
             this.cmbTipoDoc.Size = new System.Drawing.Size(100, 21);
             this.cmbTipoDoc.TabIndex = 33;
+            this.cmbTipoDoc.ValueMember = "codigo";
             this.cmbTipoDoc.SelectedIndexChanged += new System.EventHandler(this.cmbTipoDoc_SelectedIndexChanged);
             // 
             // txtNumCalle
@@ -151,13 +161,6 @@
             this.btnLimpiar.UseVisualStyleBackColor = true;
             this.btnLimpiar.Click += new System.EventHandler(this.button1_Click);
             // 
-            // txtNacionalidad
-            // 
-            this.txtNacionalidad.Location = new System.Drawing.Point(87, 297);
-            this.txtNacionalidad.Name = "txtNacionalidad";
-            this.txtNacionalidad.Size = new System.Drawing.Size(100, 20);
-            this.txtNacionalidad.TabIndex = 25;
-            // 
             // lblFechaNac
             // 
             this.lblFechaNac.AutoSize = true;
@@ -166,15 +169,6 @@
             this.lblFechaNac.Size = new System.Drawing.Size(76, 13);
             this.lblFechaNac.TabIndex = 23;
             this.lblFechaNac.Text = "Fecha de nac.";
-            // 
-            // lblNacionalidad
-            // 
-            this.lblNacionalidad.AutoSize = true;
-            this.lblNacionalidad.Location = new System.Drawing.Point(13, 299);
-            this.lblNacionalidad.Name = "lblNacionalidad";
-            this.lblNacionalidad.Size = new System.Drawing.Size(69, 13);
-            this.lblNacionalidad.TabIndex = 22;
-            this.lblNacionalidad.Text = "Nacionalidad";
             // 
             // txtPiso
             // 
@@ -246,13 +240,6 @@
             this.txtMail.Name = "txtMail";
             this.txtMail.Size = new System.Drawing.Size(100, 20);
             this.txtMail.TabIndex = 13;
-            // 
-            // txtPais
-            // 
-            this.txtPais.Location = new System.Drawing.Point(88, 136);
-            this.txtPais.Name = "txtPais";
-            this.txtPais.Size = new System.Drawing.Size(100, 20);
-            this.txtPais.TabIndex = 12;
             // 
             // lblMail
             // 
@@ -342,6 +329,7 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
+
     }
        
 
@@ -358,10 +346,7 @@
         private System.Windows.Forms.Label lblDni;
         private System.Windows.Forms.Label lblTipoDoc;
         private System.Windows.Forms.TextBox txtMail;
-        private System.Windows.Forms.TextBox txtPais;
-        private System.Windows.Forms.TextBox txtNacionalidad;
         private System.Windows.Forms.Label lblFechaNac;
-        private System.Windows.Forms.Label lblNacionalidad;
         private System.Windows.Forms.TextBox txtPiso;
         private System.Windows.Forms.TextBox txtDpto;
         private System.Windows.Forms.TextBox txtLocalidad;
@@ -376,5 +361,6 @@
         private System.Windows.Forms.TextBox txtNumCalle;
         private System.Windows.Forms.Label lblNumCalle;
         private System.Windows.Forms.ComboBox cmbTipoDoc;
+        private System.Windows.Forms.ComboBox cmbPais;
     }
 }

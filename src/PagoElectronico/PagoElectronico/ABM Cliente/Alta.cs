@@ -31,39 +31,45 @@ namespace PagoElectronico.ABM_Cliente
         private void btnGuardar_Click(object sender, EventArgs e)
         {
              Cliente cliente = new Cliente();
-           if (Validaciones.validarCampoString(this.txtNombre)
-                && Validaciones.validarCampoString(this.txtApellido)
-                && this.dateTimePicker1.Text != null
-                && this.cmbTipoDoc.SelectedValue != null
-                && Validaciones.validarCampoString(this.txtMail)
-                && Validaciones.validarCampoString(this.txtPais)
-                && Validaciones.validarCampoString(this.txtCalle)
-                && Validaciones.validarCampoString(this.txtNumCalle)
-                && Validaciones.validarCampoString(this.txtPiso)
-                && Validaciones.validarCampoString(this.txtLocalidad)
-                && Validaciones.validarCampoString(this.txtNacionalidad)
-                && Validaciones.validarCampoString(this.txtNroDoc))
-            {
+             if (Validaciones.validarCampoString(this.txtNombre)
+                  && Validaciones.validarCampoString(this.txtApellido)
+                  && this.dateTimePicker1.Text != null
+                  && this.cmbTipoDoc.SelectedValue != null
+                  && Validaciones.validarCampoString(this.txtMail)
+                  && cmbPais.SelectedValue != null
+                  && Validaciones.validarCampoString(this.txtCalle)
+                  && Validaciones.validarCampoNumericoEntero(this.txtNumCalle)
+                  && Validaciones.validarCampoNumericoEntero(this.txtPiso)
+                  && Validaciones.validarCampoString(this.txtLocalidad)
+                  && Validaciones.validarCampoNumericoEntero(this.txtNroDoc))
+             {
 
 
-                cliente.nombre = this.txtNombre.Text;
-                cliente.apellido = this.txtApellido.Text;
-                cliente.fechaNacimiento = Convert.ToDateTime(dateTimePicker1.Text);
-                cliente.tipoDocumento = Convert.ToInt32(this.cmbTipoDoc.SelectedValue);
-                cliente.numeroDocumento = Convert.ToInt32(this.txtNroDoc.Text);
-                cliente.mail = this.txtMail.Text;
-               // this.txtPais.Text;
-                cliente.domCalle = this.txtCalle.Text;
-                cliente.domNro = this.txtNumCalle.Text;
-                cliente.domPiso = this.txtPiso.Text;
-                cliente.localidad = this.txtLocalidad.Text;
-                cliente.nacionalidad = this.txtNacionalidad.Text;
+                 cliente.nombre = this.txtNombre.Text;
+                 cliente.apellido = this.txtApellido.Text;
+                 cliente.fechaNacimiento = Convert.ToDateTime(dateTimePicker1.Text);
+                 cliente.tipoDocumento = Convert.ToInt32(this.cmbTipoDoc.SelectedValue);
+                 cliente.numeroDocumento = Convert.ToInt32(this.txtNroDoc.Text);
+                 cliente.mail = this.txtMail.Text;
+                 cliente.paisCodigo = ((Pais)this.cmbPais.SelectedItem).codigoPais;
+                 cliente.domCalle = this.txtCalle.Text;
+                 cliente.domNro = Convert.ToInt32(this.txtNumCalle.Text);
+                 cliente.domDpto = this.txtDpto.Text;
+                 cliente.domPiso = Convert.ToInt32(this.txtPiso.Text);
+                 cliente.localidad = this.txtLocalidad.Text;
 
-                Show(new ABM_de_Usuario.AltaEdicion(cliente));
-                ClienteService cliServ = new ClienteService();
-                cliServ.createCliente(cliente);
+                 ClienteService cliServ = new ClienteService();
 
-            }
+                 var form = new ABM_de_Usuario.AltaEdicion(cliente,cliServ,this);
+                 form.Show();
+                 form.MdiParent = this.MdiParent;
+                
+                 
+                 
+                 
+
+             }
+             else MessageBox.Show("Error","Error",MessageBoxButtons.OK);
         }
 
         private bool validarCampos()
@@ -112,11 +118,8 @@ namespace PagoElectronico.ABM_Cliente
 
         private void Alta_Load(object sender, EventArgs e)
         {
-
-            foreach (var item in new TipoDocumentoService().GetAll())
-            {
-                this.cmbTipoDoc.Items.Add(item);
-            }
+            cmbPais.DataSource = new PaisService().GetAll();
+            cmbTipoDoc.DataSource = new TipoDocumentoService().GetAll();
         }
     }
 }

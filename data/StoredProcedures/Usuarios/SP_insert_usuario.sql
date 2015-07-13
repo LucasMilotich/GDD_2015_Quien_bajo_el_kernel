@@ -1,12 +1,12 @@
 
 CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.INSERT_USUARIO 
 (
-@username varchar(255)
-,@password varbinary(max)
-,@pregunta_secreta varchar(255)
-,@respuesta_secreta varchar(255)
-,@activo bit
-,@habilitado bit 
+@username varchar(255) = null
+,@password varbinary(max) =  null
+,@pregunta_secreta varchar(255) = null 
+,@respuesta_secreta varchar(255) = null 
+,@activo bit = null
+,@habilitado bit = null
 )
 AS 
 BEGIN
