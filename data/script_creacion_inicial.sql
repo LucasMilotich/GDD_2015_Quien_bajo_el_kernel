@@ -656,20 +656,20 @@ GO
 insert into QUIEN_BAJO_EL_KERNEL.TIPO_MONEDA (codigo,descripcion) values (1,'U$S')
 GO
 
-INSERT INTO QUIEN_BAJO_EL_KERNEL.TIPO_CUENTA(codigo, descripcion)
-		VALUES(1, 'Gratis')
+INSERT INTO QUIEN_BAJO_EL_KERNEL.TIPO_CUENTA(codigo, descripcion, duracion, costo)
+		VALUES(1, 'Gratis', 30, 0)
 GO
 		
-INSERT INTO QUIEN_BAJO_EL_KERNEL.TIPO_CUENTA(codigo, descripcion)
-		VALUES(2, 'Bronce')
+INSERT INTO QUIEN_BAJO_EL_KERNEL.TIPO_CUENTA(codigo, descripcion, duracion, costo)
+		VALUES(2, 'Bronce', 50, 30)
 GO
 	
-INSERT INTO QUIEN_BAJO_EL_KERNEL.TIPO_CUENTA(codigo, descripcion)
-		VALUES(3, 'Plata')
+INSERT INTO QUIEN_BAJO_EL_KERNEL.TIPO_CUENTA(codigo, descripcion, duracion, costo)
+		VALUES(3, 'Plata', 70, 50)
 GO
 		
-INSERT INTO QUIEN_BAJO_EL_KERNEL.TIPO_CUENTA(codigo, descripcion)
-		VALUES(4, 'Oro')	
+INSERT INTO QUIEN_BAJO_EL_KERNEL.TIPO_CUENTA(codigo, descripcion, duracion, costo)
+		VALUES(4, 'Oro', 90, 70)
 GO
 
 INSERT INTO QUIEN_BAJO_EL_KERNEL.FUNCIONALIDAD (descripcion) values ('ABM_ROL')
@@ -1043,6 +1043,14 @@ from QUIEN_BAJO_EL_KERNEL.ComisionesFacturadas c
 --where c.fecha >=@fechaDesde and c.fecha<=@fechaHasta
 group by c.cliente_numero_doc, c.cliente_tipo_doc,c.apellido, c.nombre
 order by CantidadComisiones desc
+END
+GO
+
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.GetClientes
+AS
+BEGIN
+	SELECT *
+	  FROM QUIEN_BAJO_EL_KERNEL.CLIENTE
 END
 GO
 
