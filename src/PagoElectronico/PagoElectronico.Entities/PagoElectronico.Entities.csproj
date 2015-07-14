@@ -53,6 +53,7 @@
     <Compile Include="Deposito.cs" />
     <Compile Include="Enums\Roles.cs" />
     <Compile Include="Enums\EstadosCuenta.cs" />
+    <Compile Include="Enums\TiposTransaccionEnum.cs" />
     <Compile Include="Exceptions\FormException.cs" />
     <Compile Include="Factura.cs" />
     <Compile Include="Funcionalidad.cs" />
@@ -67,6 +68,7 @@
     <Compile Include="TipoEstadoCuenta.cs" />
     <Compile Include="TipoMoneda.cs" />
     <Compile Include="TipoTransaccion.cs" />
+    <Compile Include="Transaccion.cs" />
     <Compile Include="Transacciones.cs" />
     <Compile Include="Transferencia.cs" />
     <Compile Include="Usuario.cs" />

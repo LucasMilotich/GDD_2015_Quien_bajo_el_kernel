@@ -5,10 +5,10 @@ using System.Text;
 
 namespace PagoElectronico.Entities
 {
-    public class TipoTransaccion
+    public class Transaccion
     {
-        public long ID { get; set; }
-        public string descripcion { get; set; }
+        public long codigo { get; set; }
         public double costo { get; set; }
+        public string tipo { get; set; }
     }
 }

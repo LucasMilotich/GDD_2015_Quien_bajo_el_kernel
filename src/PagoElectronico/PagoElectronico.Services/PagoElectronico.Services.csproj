@@ -60,6 +60,8 @@
     <Compile Include="RetiroService.cs" />
     <Compile Include="TipoDocumentoService.cs" />
     <Compile Include="TipoMonedaService.cs" />
+    <Compile Include="TipoTransaccionService.cs" />
+    <Compile Include="TransaccionService.cs" />
     <Compile Include="TransferenciaService.cs" />
     <Compile Include="UsuarioService.cs" />
     <Compile Include="RolService.cs" />

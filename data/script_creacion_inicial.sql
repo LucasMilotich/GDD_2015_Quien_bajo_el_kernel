@@ -220,6 +220,13 @@ CREATE TABLE QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA_MODIFICACION_CUENTA(
 )
 GO
 
+CREATE TABLE QUIEN_BAJO_EL_KERNEL.TIPO_TRANSACCION(
+	id_transaccion	NUMERIC(18,0) NOT NULL,
+	descripcion varchar(255),
+	costo	NUMERIC(18,2) NOT NULL
+)
+GO
+
 
 
 -----	 ****************************** PRIMARY KEYS ****************************** -----
@@ -330,6 +337,9 @@ ALTER TABLE QUIEN_BAJO_EL_KERNEL.EMISOR_TARJETA ADD CONSTRAINT PK_EMISOR
 	PRIMARY KEY CLUSTERED (id_emisor)
 GO
 
+ALTER TABLE QUIEN_BAJO_EL_KERNEL.TIPO_TRANSACCION ADD CONSTRAINT PK_TRANSACCION
+	PRIMARY KEY CLUSTERED (id_transaccion)
+GO
 -----	 ****************************** FOREIGN KEYS ****************************** -----
 
 
@@ -673,6 +683,15 @@ INSERT INTO QUIEN_BAJO_EL_KERNEL.TIPO_CUENTA(codigo, descripcion, duracion, cost
 		VALUES(4, 'Oro', 90, 70)
 GO
 
+
+INSERT INTO QUIEN_BAJO_EL_KERNEL.TIPO_TRANSACCION(id_transaccion,descripcion,costo) values (1, 'Apertura de cuenta', 1)
+GO
+INSERT INTO QUIEN_BAJO_EL_KERNEL.TIPO_TRANSACCION(id_transaccion,descripcion,costo) values (2, 'Modificacion de cuenta', 1)
+GO
+INSERT INTO QUIEN_BAJO_EL_KERNEL.TIPO_TRANSACCION(id_transaccion,descripcion,costo) values (3, 'Transferencia', 1)
+GO
+
+
 INSERT INTO QUIEN_BAJO_EL_KERNEL.FUNCIONALIDAD (descripcion) values ('ABM_ROL')
 GO
 
@@ -971,7 +990,7 @@ BEGIN
 SELECT * FROM QUIEN_BAJO_EL_KERNEL.ROL f 
 WHERE f.id = @id
 END
-
+GO
 ---------------		SP ConsultaSaldos	---------------
 
 CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.getUltimosCincoDepositosByCuenta(@cuenta varchar(255))
@@ -1351,6 +1370,7 @@ DECLARE @items_a_facturar	NUMERIC(18,0),
 		END
 	
 END
+GO
 
 CREATE PROCEDURE [QUIEN_BAJO_EL_KERNEL].[GetCuentaByNumero]
 @an_nro_cuenta	NUMERIC(18,0)
@@ -1387,29 +1407,57 @@ END
 GO
 
 ------------------------ Facturacion ---------------------------
-CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.GetTransaccionesSinFacturar (@numeroDoc numeric (18),@tipoDoc numeric(18))
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.GetTransferenciasSinFacturar (@tipoDoc numeric(18),@numeroDoc numeric (18))
 AS
 BEGIN
-	SELECT codigo,costo, 'Transferencia' as tipoTransaccion
+	SELECT codigo as Codigo,costo as Costo, 'Transferencia' as TipoTransaccion
 	FROM QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA t 
 	inner join QUIEN_BAJO_EL_KERNEL.CUENTA c on t.origen = c.numero
 	left join QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA_TRANSFERENCIAS i on t.codigo = i.transferencia
-	where i.factura_numero is null --and c.cliente_numero_doc=@numeroDoc and c.cliente_tipo_doc=@tipoDoc
-	
-	select numero as codigo,'unCosto' as costo ,'Apertura cuenta' as tipoTransaccion
-	FROM QUIEN_BAJO_EL_KERNEL.CUENTA c
-	left join QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA_ACTIVACION_CUENTA i on c.numero = i.cuenta
-	where i.factura_numero is null and estado_codigo=4 --and cliente_numero_doc=@numeroDoc and cliente_tipo_doc=@tipoDoc
-		
-	SELECT c.id_modificacion as codigo, 'unCosto' as costo, 'Modificacion cuenta ' as tipoTransaccion 
-	FROM QUIEN_BAJO_EL_KERNEL.CUENTA_MODIFICACION c
-	left join QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA_MODIFICACION_CUENTA i on c.cuenta = i.cuenta
-	inner join QUIEN_BAJO_EL_KERNEL.CUENTA c2 on c2.numero = c.cuenta
-	where i.factura_numero is null --and c2.cliente_numero_doc=@numeroDoc and c2.cliente_tipo_doc=@tipoDoc
+	where i.factura_numero is null and c.cliente_numero_doc=@numeroDoc and c.cliente_tipo_doc=@tipoDoc
+
 	
 END
 GO
 
+
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.GetAperturaCuentasSinFacturar (@tipoDoc numeric(18),@numeroDoc numeric (18))
+AS
+BEGIN
+	select numero as Codigo,'0' as Costo ,'Apertura cuenta' as TipoTransaccion
+	FROM QUIEN_BAJO_EL_KERNEL.CUENTA c
+	left join QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA_ACTIVACION_CUENTA i on c.numero = i.cuenta
+	where i.factura_numero is null and estado_codigo=4 and cliente_numero_doc=@numeroDoc and cliente_tipo_doc=@tipoDoc
+
+END
+GO
+
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.GetModifCuentasSinFacturar (@tipoDoc numeric(18),@numeroDoc numeric (18))
+AS
+BEGIN
+
+	SELECT c.id_modificacion as Codigo, '0' as Costo, 'Modificacion cuenta ' as TipoTransaccion 
+	FROM QUIEN_BAJO_EL_KERNEL.CUENTA_MODIFICACION c
+	left join QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA_MODIFICACION_CUENTA i on c.cuenta = i.cuenta
+	inner join QUIEN_BAJO_EL_KERNEL.CUENTA c2 on c2.numero = c.cuenta
+	where i.factura_numero is null and c2.cliente_numero_doc=@numeroDoc and c2.cliente_tipo_doc=@tipoDoc
+	
+END
+GO
+
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.GetTiposTransaccion 
+AS
+BEGIN
+	SELECT * 
+	FROM QUIEN_BAJO_EL_KERNEL.TIPO_TRANSACCION	
+END
+GO
+
+drop procedure QUIEN_BAJO_EL_KERNEL.GetTransferenciasSinFacturar
+drop procedure QUIEN_BAJO_EL_KERNEL.GetAperturaCuentasSinFacturar 
+drop procedure QUIEN_BAJO_EL_KERNEL.GetModifCuentasSinFacturar 
+select * from QUIEN_BAJO_EL_KERNEL.CLIENTE c where c.numero_documento=5806212
+select * from QUIEN_BAJO_EL_KERNEL.CUENTA where numero=1111111111111383
 ------------------------------- Clientes ----------------------------------
 
 CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.INSERT_CLIENTE 
@@ -1464,6 +1512,7 @@ insert into QUIEN_BAJO_EL_KERNEL.CLIENTE
 select scope_identity()
 
 END
+GO
 
 CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.GetClientes
 AS
@@ -1471,6 +1520,7 @@ BEGIN
 	SELECT *
 	  FROM QUIEN_BAJO_EL_KERNEL.CLIENTE
 END
+GO
 
 CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.getClienteByUsername(@username varchar(255))
 AS 

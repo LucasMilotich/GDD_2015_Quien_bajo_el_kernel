@@ -110,6 +110,7 @@
     <Compile Include="ABM Rol\Alta.Designer.cs">
       <DependentUpon>Alta.cs</DependentUpon>
     </Compile>
+    <Compile Include="Common\Utils.cs" />
     <Compile Include="Common\Validaciones.cs" />
     <Compile Include="Consulta Saldos\ConsultaSaldos.cs">
       <SubType>Form</SubType>
