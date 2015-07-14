@@ -1055,14 +1055,6 @@ order by CantidadComisiones desc
 END
 GO
 
-CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.GetClientes
-AS
-BEGIN
-	SELECT *
-	  FROM QUIEN_BAJO_EL_KERNEL.CLIENTE
-END
-GO
-
 --- 3.- Clientes con mayor cantidad de transacciones realizadas entre cuentas propias ---
 create view QUIEN_BAJO_EL_KERNEL.TransaccionesClientes as
 --modificacionDeCuenta
