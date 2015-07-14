@@ -31,6 +31,16 @@ namespace PagoElectronico.Services
             ClienteRepository repository = new ClienteRepository();
             return repository.GetClientes();
         }
+
+        public bool existeDocumento(int documento, int tipoDocumento)
+        {
+            ClienteRepository repo = new ClienteRepository();
+            return repo.existeDocumento( documento,  tipoDocumento);
+
+          
+
     }
+       
+        }
 
 }
