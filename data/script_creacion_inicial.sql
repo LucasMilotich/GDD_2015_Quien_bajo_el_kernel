@@ -1112,6 +1112,23 @@ END
 GO
 
 
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.SELECT_CLIENTE_BY_DNI 
+(
+@documento numeric(10,0) = null
+,@tipoDocumento numeric(18,0) = null
+)
+AS 
+BEGIN
+
+SELECT *
+FROM QUIEN_BAJO_EL_KERNEL.CLIENTE c
+WHERE 
+c.tipo_documento = @tipoDocumento
+and c.numero_documento = @documento
+
+END
+
+
 ---------------		SP Usuarios		---------------
 
 CREATE PROCEDURE [QUIEN_BAJO_EL_KERNEL].[GetUsuarioByUsernameAndPassword]
@@ -1282,6 +1299,24 @@ SELECT * FROM QUIEN_BAJO_EL_KERNEL.ROL f
 WHERE f.id = @id
 END
 GO
+
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.INSERT_USUARIO_ROLES
+(
+@username varchar(255) = null
+,@id_rol numeric(10,0) = null
+)
+AS 
+BEGIN
+
+insert into QUIEN_BAJO_EL_KERNEL.USUARIO_ROL 
+(username
+,id_rol
+)
+VALUES
+(@username
+,@id_rol)
+END
+
 ---------------		SP ConsultaSaldos	---------------
 
 CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.getUltimosCincoDepositosByCuenta(@cuenta varchar(255))

@@ -20,16 +20,16 @@ namespace PagoElectronico.ABM_de_Usuario
         private IUsuarioService UsuarioService { get; set; }
         private IRolService RolService { get; set; }
         private Cliente cliente;
-        private ClienteService cliServ;
+        private ClienteService cliServ = new ClienteService();
         ABM_Cliente.Alta form;
-        public AltaEdicion(Cliente cliente, ClienteService cliServ, ABM_Cliente.Alta form)
+
+        public AltaEdicion(Cliente cliente, ABM_Cliente.Alta form)
         {
 
             InitializeComponent();
             if (cliente != null)
             {
                 this.cliente = cliente;
-                this.cliServ = cliServ;
                 this.form = form;
             }
         }
@@ -46,9 +46,9 @@ namespace PagoElectronico.ABM_de_Usuario
         private void btnGuardar_Click(object sender, EventArgs e)
         {
             if (Validaciones.validarCampoString(this.txtUsername)
-                && Validaciones.validarCampoString(this.txtPassword)
-                && Validaciones.validarCampoString(this.txtPregunta)
-                && Validaciones.validarCampoString(txtRespuesta))
+                & Validaciones.validarCampoString(this.txtPassword)
+                & Validaciones.validarCampoString(this.txtPregunta)
+                & Validaciones.validarCampoString(this.txtRespuesta))
             {
                 Usuario usr = new Usuario();
                 usr.Username = this.txtUsername.Text;
@@ -60,7 +60,6 @@ namespace PagoElectronico.ABM_de_Usuario
                 {
                     usr.Roles.Add((Rol)item);
                 }
-             //   usr.Roles = .Cast<Rol>().ToList();
                 
                 usr.Activo = true;
                 usr.Habilitado = true;

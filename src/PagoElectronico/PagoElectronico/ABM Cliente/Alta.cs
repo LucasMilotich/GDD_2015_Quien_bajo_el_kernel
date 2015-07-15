@@ -16,123 +16,124 @@ namespace PagoElectronico.ABM_Cliente
 
     public partial class Alta : Form
     {
-        Validaciones validador = new Validaciones();
+        ClienteService cliServ = new ClienteService();
 
         public Alta()
         {
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        #region Eventos
+        /*************    Metodos de componentes       *************/
+
+        private void Alta_Load(object sender, EventArgs e)
         {
-            validarCampos();
+            cmbPais.DataSource = new PaisService().GetAll();
+            cmbTipoDoc.DataSource = new TipoDocumentoService().GetAll();
+        }
+
+        private void btnLimpiar_Click(object sender, EventArgs e)
+        {
+            this.txtApellido.Text = String.Empty;
+            this.txtNombre.Text = String.Empty;
+            this.txtMail.Text = String.Empty;
+            this.txtCalle.Text = String.Empty;
+            this.txtDpto.Text = String.Empty;
+            this.txtPiso.Text = String.Empty;
+            this.txtNumCalle.Text = String.Empty;
+            this.txtLocalidad.Text = String.Empty;
+            this.txtNroDoc.Text = String.Empty;
+            this.dateTimePicker1.Value = DateTime.Now;
+
+            this.txtApellido.BackColor = System.Drawing.Color.White;
+            this.txtNombre.BackColor = System.Drawing.Color.White;
+            this.txtMail.BackColor = System.Drawing.Color.White;
+            this.txtCalle.BackColor = System.Drawing.Color.White;
+            this.txtDpto.BackColor = System.Drawing.Color.White;
+            this.txtPiso.BackColor = System.Drawing.Color.White;
+            this.txtNumCalle.BackColor = System.Drawing.Color.White; ;
+            this.txtLocalidad.BackColor = System.Drawing.Color.White;
+            this.txtNroDoc.BackColor = System.Drawing.Color.White;
         }
 
         private void btnGuardar_Click(object sender, EventArgs e)
         {
-             Cliente cliente = new Cliente();
-             ClienteService cliServ = new ClienteService();
-
-             if (Validaciones.validarCampoString(this.txtNombre)
-                  && Validaciones.validarCampoString(this.txtApellido)
-                  && this.dateTimePicker1.Text != null
-                  && this.cmbTipoDoc.SelectedValue != null
-                  && Validaciones.validarCampoString(this.txtMail)
-                  && cmbPais.SelectedValue != null
-                  && Validaciones.validarCampoString(this.txtCalle)
-                  && Validaciones.validarCampoNumericoEntero(this.txtNumCalle)
-                  && Validaciones.validarCampoNumericoEntero(this.txtPiso)
-                  && Validaciones.validarCampoString(this.txtLocalidad)
-                  && Validaciones.validarFormatoDni(this.txtNroDoc)
-                  && !cliServ.existeDocumento(Convert.ToInt32(this.txtNroDoc.Text), (int)this.cmbTipoDoc.SelectedValue))
-             {
-
-
-
-                 cliente.nombre = this.txtNombre.Text;
-                 cliente.apellido = this.txtApellido.Text;
-                 cliente.fechaNacimiento = Convert.ToDateTime(dateTimePicker1.Text);
-                 cliente.tipoDocumento = Convert.ToInt32(this.cmbTipoDoc.SelectedValue);
-                 cliente.numeroDocumento = Convert.ToInt32(this.txtNroDoc.Text);
-                 cliente.mail = this.txtMail.Text;
-                 cliente.paisCodigo = ((Pais)this.cmbPais.SelectedItem).codigoPais;
-                 cliente.domCalle = this.txtCalle.Text;
-                 cliente.domNro = Convert.ToInt32(this.txtNumCalle.Text);
-                 cliente.domDpto = this.txtDpto.Text;
-                 cliente.domPiso = Convert.ToInt32(this.txtPiso.Text);
-                 cliente.localidad = this.txtLocalidad.Text;
-
-
-                 
-
-
-                 var form = new ABM_de_Usuario.AltaEdicion(cliente,cliServ,this);
-                 form.Show();
-                 form.MdiParent = this.MdiParent;
-                
-                 
-                 
-                 
-
-             }
-             else MessageBox.Show("Error","Error",MessageBoxButtons.OK);
-        }
-
-        private bool validarCampos()
-        {
-            /*
-            validador.validarCampoObligatorio(txtNombre);
-            validador.validarCampoObligatorio(txtApellido);
-            validarCampoObligatorio(txtMail);
-            validarCampoObligatorio(txtPais);
-            validarCampoObligatorio(txtCalle);
-            validarCampoObligatorio(txtLocalidad);
-            validarCampoObligatorio(txtNacionalidad);
-            validarCampoObligatorio(txtNroDoc);
-
-
-            validarCampoString(txtNombre);
-            validarCampoString(txtApellido);
-            validarCampoMail(txtMail);
-            validarCampoString(txtPais);
-            validarCampoString(txtCalle);
-            validarCampoString(txtLocalidad);
-            validarCampoString(txtNacionalidad);
-            validarCampoNumericoEntero(txtNroDoc);
-
-            if (!string.IsNullOrEmpty(txtPiso.Text))
+            if (Validaciones.validarCampoString(this.txtNombre)
+                & Validaciones.validarCampoString(this.txtApellido)               
+                & Validaciones.validarCampoMail(this.txtMail)
+                & Validaciones.validarCampoString(this.txtCalle)
+                & Validaciones.validarCampoAlfaNumerico(this.txtDpto)
+                & Validaciones.validarCampoNumericoEntero(this.txtNumCalle)
+                & Validaciones.validarCampoNumericoEntero(this.txtPiso)
+                & Validaciones.validarCampoString(this.txtLocalidad)
+                & Validaciones.validarCampoNumericoEntero(this.txtNroDoc)
+                & this.cmbPais.SelectedValue != null)
             {
-                validarCampoNumericoEntero(txtPiso);
+                try
+                {
+                    validarExisteDocumento();
+                    validarExisteMail();
+                    altaUsuario();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error en efectuar el alta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
-            if (!string.IsNullOrEmpty(txtDpto.Text  ))
+        }
+
+
+        #endregion
+
+        #region MetodosPrivados
+        /*************    Metodos privados       *************/
+
+        private void altaUsuario()
+        {
+            Cliente cliente = new Cliente();
+
+            cliente.nombre = this.txtNombre.Text;
+            cliente.apellido = this.txtApellido.Text;
+            cliente.mail = this.txtMail.Text;
+            cliente.domCalle = this.txtCalle.Text;
+            cliente.domDpto = this.txtDpto.Text;
+            cliente.localidad = this.txtLocalidad.Text;
+            cliente.domNro = Int64.Parse(this.txtNumCalle.Text);
+            cliente.domPiso = Int64.Parse(this.txtPiso.Text);
+            cliente.fechaNacimiento = dateTimePicker1.Value;
+            cliente.numeroDocumento = Int64.Parse(this.txtNroDoc.Text);
+            cliente.tipoDocumento = ((TipoDocumento)this.cmbTipoDoc.SelectedItem).codigo;
+            cliente.paisCodigo = ((Pais)this.cmbPais.SelectedItem).codigoPais;
+
+
+            var form = new ABM_de_Usuario.AltaEdicion(cliente, this);
+            form.Show();
+            form.MdiParent = this.MdiParent;
+        }
+        
+        #endregion
+
+        #region ValidacionesPrivadas
+        /*************   Validaciones privadas      *************/
+        private void validarExisteDocumento()
+        {
+            long numeroDocu = Int64.Parse(this.txtNroDoc.Text);
+            long tipoDocu = ((TipoDocumento)this.cmbTipoDoc.SelectedItem).codigo;
+
+            if (cliServ.existeDocumento(numeroDocu, tipoDocu))
             {
-                validarCampoNumericoEntero(txtDpto);
+                throw new Exception("El documento ingresado ya pertenece para un Cliente !");
             }
-            */
-            return true;
-
-            }
-        
-    
-
-        
-
-        private void cmbTipoDoc_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
         }
 
-        private void groupBox1_Enter(object sensder, EventArgs e)
+        private void validarExisteMail()
         {
-
+            throw new NotImplementedException();
         }
 
-        private void Alta_Load(object sender, EventArgs e)
-        {
+        #endregion
 
-            cmbPais.DataSource = new PaisService().GetAll();
-            cmbTipoDoc.DataSource = new TipoDocumentoService().GetAll();
-        }
+
     }
 }
 

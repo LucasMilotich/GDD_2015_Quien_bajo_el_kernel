@@ -40,11 +40,11 @@
             this.comboTipoMoneda = new System.Windows.Forms.ComboBox();
             this.lblTipoMoneda = new System.Windows.Forms.Label();
             this.comboCuentaOrigen = new System.Windows.Forms.ComboBox();
+            this.lblImporte = new System.Windows.Forms.Label();
+            this.txtImporte = new System.Windows.Forms.TextBox();
             this.lblCuenta = new System.Windows.Forms.Label();
             this.btnDepositar = new System.Windows.Forms.Button();
             this.btnLimpiar = new System.Windows.Forms.Button();
-            this.txtImporte = new System.Windows.Forms.TextBox();
-            this.lblImporte = new System.Windows.Forms.Label();
             this.groupBoxTransferencia.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -74,9 +74,10 @@
             // dateTimePicker1
             // 
             this.dateTimePicker1.Enabled = false;
+            this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dateTimePicker1.Location = new System.Drawing.Point(101, 96);
             this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(193, 20);
+            this.dateTimePicker1.Size = new System.Drawing.Size(145, 20);
             this.dateTimePicker1.TabIndex = 29;
             // 
             // comboTarjeta
@@ -183,6 +184,23 @@
             this.comboCuentaOrigen.TabIndex = 1;
             this.comboCuentaOrigen.SelectedIndexChanged += new System.EventHandler(this.comboCuentaOrigen_SelectedIndexChanged);
             // 
+            // lblImporte
+            // 
+            this.lblImporte.AutoSize = true;
+            this.lblImporte.Location = new System.Drawing.Point(6, 129);
+            this.lblImporte.Name = "lblImporte";
+            this.lblImporte.Size = new System.Drawing.Size(42, 13);
+            this.lblImporte.TabIndex = 12;
+            this.lblImporte.Text = "Importe";
+            // 
+            // txtImporte
+            // 
+            this.txtImporte.Location = new System.Drawing.Point(101, 122);
+            this.txtImporte.Name = "txtImporte";
+            this.txtImporte.Size = new System.Drawing.Size(145, 20);
+            this.txtImporte.TabIndex = 4;
+            this.txtImporte.TextChanged += new System.EventHandler(this.txtImporte_TextChanged);
+            // 
             // lblCuenta
             // 
             this.lblCuenta.AutoSize = true;
@@ -211,23 +229,6 @@
             this.btnLimpiar.Text = "Limpiar";
             this.btnLimpiar.UseVisualStyleBackColor = true;
             this.btnLimpiar.Click += new System.EventHandler(this.btnLimpiar_Click);
-            // 
-            // txtImporte
-            // 
-            this.txtImporte.Location = new System.Drawing.Point(101, 122);
-            this.txtImporte.Name = "txtImporte";
-            this.txtImporte.Size = new System.Drawing.Size(145, 20);
-            this.txtImporte.TabIndex = 4;
-            this.txtImporte.TextChanged += new System.EventHandler(this.txtImporte_TextChanged);
-            // 
-            // lblImporte
-            // 
-            this.lblImporte.AutoSize = true;
-            this.lblImporte.Location = new System.Drawing.Point(6, 129);
-            this.lblImporte.Name = "lblImporte";
-            this.lblImporte.Size = new System.Drawing.Size(42, 13);
-            this.lblImporte.TabIndex = 12;
-            this.lblImporte.Text = "Importe";
             // 
             // DepositoForm
             // 

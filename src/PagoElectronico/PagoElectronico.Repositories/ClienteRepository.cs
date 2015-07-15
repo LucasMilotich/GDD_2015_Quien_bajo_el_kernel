@@ -105,7 +105,7 @@ namespace PagoElectronico.Repositories
             return clientes;
         }
     
-        public bool existeDocumento( int documento, int  tipoDocumento){
+        public bool existeDocumento( long documento, long  tipoDocumento){
 
             SqlCommand command = DBConnection.CreateStoredProcedure("SELECT_CLIENTE_BY_DNI ");
             command.Parameters.AddWithValue("@documento", documento);
