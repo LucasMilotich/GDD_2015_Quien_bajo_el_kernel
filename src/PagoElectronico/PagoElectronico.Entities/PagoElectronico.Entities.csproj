@@ -69,7 +69,6 @@
     <Compile Include="TipoMoneda.cs" />
     <Compile Include="TipoTransaccion.cs" />
     <Compile Include="Transaccion.cs" />
-    <Compile Include="Transacciones.cs" />
     <Compile Include="Transferencia.cs" />
     <Compile Include="Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

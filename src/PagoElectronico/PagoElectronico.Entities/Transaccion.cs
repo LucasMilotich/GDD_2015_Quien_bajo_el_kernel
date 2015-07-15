@@ -8,7 +8,8 @@ namespace PagoElectronico.Entities
     public class Transaccion
     {
         public long codigo { get; set; }
+        public long cuenta { get; set; }
         public double costo { get; set; }
-        public string tipo { get; set; }
+        public int tipo { get; set; }
     }
 }
