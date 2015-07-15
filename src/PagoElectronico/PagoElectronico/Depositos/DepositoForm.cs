@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using PagoElectronico.Entities;
 using PagoElectronico.Common;
 using PagoElectronico.Services;
+using System.Configuration;
 
 namespace PagoElectronico.Depositos
 {
@@ -23,9 +24,11 @@ namespace PagoElectronico.Depositos
         TarjetaService tarjetaService = new TarjetaService();
         DepositoService depositoService = new DepositoService();
 
-        List<long> listaCuentas;
+        List<Cuenta> listaCuentas;
         List<TipoMoneda> listaTiposMoneda;
         List<Tarjeta> listaTC;
+
+        DateTime FECHA_ACTUAL = Convert.ToDateTime(ConfigurationManager.AppSettings["Fecha"]);
 
         public DepositoForm()
         {
@@ -40,7 +43,7 @@ namespace PagoElectronico.Depositos
             try
             {
                 clienteLogueado = Utils.obtenerCliente(usuarioLogueado);
-                dateTimePicker1.Value = DateTime.Today.AddDays(-1);
+                dateTimePicker1.Value = FECHA_ACTUAL;
                 cargarComboCuentas();
                 cargarComboTipoMoneda();
                 cargarComboTC();
@@ -88,10 +91,11 @@ namespace PagoElectronico.Depositos
                 {
                     validarImportePositivo();
                     validarCuentaHabilitada();
+                    validarVencimientoTC();
 
                     Deposito deposito = new Deposito();
-                    deposito.fecha = DateTime.Now;
-                    deposito.importe = Int64.Parse(txtImporte.Text);
+                    deposito.fecha = FECHA_ACTUAL;
+                    deposito.importe = Double.Parse(txtImporte.Text);
                     deposito.cuentaNumero = Int64.Parse(comboCuentaOrigen.Text);
                     deposito.monedaTipo = ((TipoMoneda)comboTipoMoneda.SelectedItem).codigo;
                     deposito.tarjetaNumero = ((Tarjeta)comboTarjeta.SelectedItem).tarjetaNumero;
@@ -101,13 +105,14 @@ namespace PagoElectronico.Depositos
                     limpiarDatos();
 
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-
+                    MessageBox.Show( ex.Message , "Error en efectuar el deposito", MessageBoxButtons.OK, MessageBoxIcon.Error);                   
                 }
             }
 
         }
+
 
         private void recalcularSaldoPosterior()
         {
@@ -126,7 +131,7 @@ namespace PagoElectronico.Depositos
                     saldoActual = Convert.ToDouble(lblSaldoActual.Text);
                     importe = Convert.ToDouble(txtImporte.Text);
 
-                    saldoPosterior = saldoActual - importe;
+                    saldoPosterior = saldoActual + importe;
                     lblSaldoPosterior.Text = saldoPosterior.ToString();
 
                 }
@@ -162,7 +167,7 @@ namespace PagoElectronico.Depositos
 
         private void cargarComboCuentas()
         {
-            listaCuentas = (List<long>)cuentaService.getByCliente(clienteLogueado.tipoDocumento, clienteLogueado.numeroDocumento);
+            listaCuentas = (List<Cuenta>)cuentaService.getByCliente(clienteLogueado.tipoDocumento, clienteLogueado.numeroDocumento);
             if (listaCuentas.Count > 0)
             {
                 comboCuentaOrigen.DataSource = listaCuentas;
@@ -196,7 +201,7 @@ namespace PagoElectronico.Depositos
 
         private void validarImportePositivo()
         {
-            if (Int64.Parse(txtImporte.Text) < 1)
+            if (Double.Parse(txtImporte.Text) < 1)
             {
                 throw new Exception("El importe debe ser mayor o igual a 1");
             }
@@ -206,8 +211,18 @@ namespace PagoElectronico.Depositos
         {
             if (cuentaService.getEstado(Int64.Parse(comboCuentaOrigen.Text)) != (Int32)Entities.Enums.EstadosCuenta.Habilitada)
             {
-
                 throw new OperationCanceledException("La cuenta no se encuentra habilitada");
+            }
+        }
+
+
+        private void validarVencimientoTC()
+        {
+            Tarjeta tarjetaSeleccionada = ((Tarjeta)comboTarjeta.SelectedItem);
+
+            if (DateTime.Compare(tarjetaSeleccionada.fechaVencimiento, FECHA_ACTUAL) <= 0)
+            {
+                throw new OperationCanceledException("La tarjeta seleccionada se encuentra vencida");
             }
         }
        

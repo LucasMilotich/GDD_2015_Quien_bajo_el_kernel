@@ -579,7 +579,6 @@ AFTER INSERT
 AS
 BEGIN
   DECLARE @montoImporte numeric(18, 2),
-		  @costo numeric(18, 2),
           @cuentaNumeroOrigen numeric(18),
           @cuentaNumeroDestino numeric(18)
   IF ((SELECT
@@ -590,13 +589,12 @@ BEGIN
     DECLARE unCursor CURSOR FOR
     SELECT
       importe,
-      costo,
       origen,
       destino
     FROM inserted
 
     OPEN unCursor
-    FETCH NEXT FROM unCursor INTO @montoImporte,@costo, @cuentaNumeroOrigen, @cuentaNumeroDestino
+    FETCH NEXT FROM unCursor INTO @montoImporte, @cuentaNumeroOrigen, @cuentaNumeroDestino
     WHILE @@FETCH_STATUS = 0
     BEGIN
       UPDATE QUIEN_BAJO_EL_KERNEL.CUENTA
@@ -606,7 +604,7 @@ BEGIN
       UPDATE QUIEN_BAJO_EL_KERNEL.CUENTA
       SET Saldo = Saldo + @montoImporte
       WHERE numero = @cuentaNumeroDestino
-      FETCH NEXT FROM unCursor INTO @montoImporte,@costo, @cuentaNumeroOrigen, @cuentaNumeroDestino
+      FETCH NEXT FROM unCursor INTO @montoImporte, @cuentaNumeroOrigen, @cuentaNumeroDestino
     END
 
     CLOSE unCursor
@@ -616,13 +614,12 @@ BEGIN
   BEGIN
     SELECT
       @montoImporte = importe,
-      @costo = costo,
       @cuentaNumeroOrigen = origen,
       @cuentaNumeroDestino = destino      
     FROM inserted
 
     UPDATE QUIEN_BAJO_EL_KERNEL.CUENTA
-    SET Saldo = Saldo - @montoImporte - @costo
+    SET Saldo = Saldo - @montoImporte
     WHERE numero = @cuentaNumeroOrigen
 
     UPDATE QUIEN_BAJO_EL_KERNEL.CUENTA
@@ -878,22 +875,7 @@ GO
 CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.GetMaxNroCuenta
 AS
 BEGIN
-
 	SELECT MAX(c.numero)+1 FROM QUIEN_BAJO_EL_KERNEL.CUENTA c;
-END
-GO
-
-CREATE PROCEDURE [QUIEN_BAJO_EL_KERNEL].[GetPaises]
-AS
-BEGIN
-	SELECT * FROM QUIEN_BAJO_EL_KERNEL.PAIS p ORDER BY p.descripcion_pais ASC;
-END
-GO
-
-CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.GetTipoMoneda
-AS
-BEGIN
-	SELECT * FROM QUIEN_BAJO_EL_KERNEL.TIPO_MONEDA
 END
 GO
 
@@ -921,348 +903,6 @@ BEGIN
 END
 GO
 
----------------		SP Funcionalidad		---------------
-
-CREATE PROCEDURE [QUIEN_BAJO_EL_KERNEL].[GetFuncionalidadesByRol]
-@rolId numeric(10,0)
-AS
-BEGIN
-	SET NOCOUNT ON;
-
-	SELECT
-		f.*
-	FROM [QUIEN_BAJO_EL_KERNEL].FUNCIONALIDAD f
-	INNER JOIN [QUIEN_BAJO_EL_KERNEL].FUNCIONALIDAD_ROL fr ON fr.id_funcionalidad = f.id_funcionalidad
-	WHERE
-		fr.id_rol = @rolId
-END
-GO
-
-CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.SELECT_FUNCIONALIDAD
-AS
-BEGIN
-	SELECT * FROM QUIEN_BAJO_EL_KERNEL.FUNCIONALIDAD f
-END
-GO
-
----------------		SP Rol		---------------
-CREATE PROCEDURE [QUIEN_BAJO_EL_KERNEL].[GetRolesByUsername]
-@username nvarchar(255)
-AS
-BEGIN
-	SET NOCOUNT ON;
-
-	SELECT
-		r.*
-	FROM [QUIEN_BAJO_EL_KERNEL].Rol r
-	INNER JOIN [QUIEN_BAJO_EL_KERNEL].USUARIO_ROL ur ON ur.id_rol = r.id
-	WHERE
-		ur.username = @username AND
-		r.activo = 1
-END
-GO
-
-CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.INSERT_ROL_FUNCIONALIDAD (@id_rol numeric(10,0), @id_funcionalidad numeric(10,0))
-AS
-BEGIN
-insert into QUIEN_BAJO_EL_KERNEL.FUNCIONALIDAD_ROL (id_rol,id_funcionalidad) values (@id_rol,@id_funcionalidad)
-END
-GO
-
-CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.INSERT_ROL (@nombre varchar(255), @activo BIT)
-AS
-BEGIN
-insert into QUIEN_BAJO_EL_KERNEL.ROL (nombre,activo) values (@nombre,@activo)
- select scope_identity()
-END
-GO
-
-CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.SELECT_ROL
-(@nombre varchar(255) = null ,
-@activo BIT  = null)
-AS
-BEGIN
-SELECT * FROM QUIEN_BAJO_EL_KERNEL.ROL f
-WHERE (@nombre is null or f.nombre like '%' + @nombre + '%') AND
-	  (@activo is null or f.activo = @activo)
-END
-GO
-
-CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.SELECT_ROL_BY_ID
-(@id numeric(10,0))
-AS 
-BEGIN
-SELECT * FROM QUIEN_BAJO_EL_KERNEL.ROL f 
-WHERE f.id = @id
-END
-GO
----------------		SP ConsultaSaldos	---------------
-
-CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.getUltimosCincoDepositosByCuenta(@cuenta varchar(255))
-AS
-BEGIN
-select top 5 * from [GD1C2015].[QUIEN_BAJO_EL_KERNEL].DEPOSITO  where cuenta_numero=@cuenta  order by fecha desc
-END
-GO
-
-
-CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.getUltimosCincoRetirosByCuenta(@cuenta varchar(255))
-AS
-BEGIN
-select top 5 * from [GD1C2015].[QUIEN_BAJO_EL_KERNEL].RETIRO  where cuenta= @cuenta order by fecha desc
-END
-GO
-
-
-CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.getUltimasDiezTransferenciasByCuenta(@cuenta varchar(255))
-AS 
-BEGIN
-select top 10 *  from [GD1C2015].[QUIEN_BAJO_EL_KERNEL].TRANSFERENCIA  where origen= @cuenta or destino= @cuenta  order by fecha desc
-END
-GO
-
-
-CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.GetTiposMonedaByCuenta (@cuenta varchar(255))
-AS
-BEGIN
-	SELECT c2.codigo,c2.descripcion FROM QUIEN_BAJO_EL_KERNEL.CUENTA c1
-	inner join QUIEN_BAJO_EL_KERNEL.TIPO_MONEDA c2 on c1.moneda_tipo= c2.codigo
-	where numero=@cuenta
-END
-GO
-
-CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.insertTransferencia (@origen numeric(18,0), @destino numeric(18,0), @importe numeric(18,2), @costo numeric(18,2), @moneda_tipo numeric(1,0))
-AS 
-BEGIN
-insert into [QUIEN_BAJO_EL_KERNEL].TRANSFERENCIA (origen, destino,fecha ,importe, costo, moneda_tipo) values 
-(@origen, @destino, GETDATE(), @importe, @costo, @moneda_tipo)
-END
-GO
-
-
----------------		SP Listados	---------------
-
---- 1.-Clientes que alguna de sus cuentas fueron inhabilitadas por no pagar los costos de transacción ---
-
---- 2.- Cliente con mayor cantidad de comisiones facturadas en todas sus cuentas --
-
-create view QUIEN_BAJO_EL_KERNEL.ComisionesFacturadas as
--- Transferencias
-select cl.apellido, cl.nombre, f.cliente_numero_doc, f.cliente_tipo_doc , f.fecha
-from QUIEN_BAJO_EL_KERNEL.FACTURA f
-inner join QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA_TRANSFERENCIAS i on f.numero=i.factura_numero
-inner join QUIEN_BAJO_EL_KERNEL.CLIENTE cl on f.cliente_numero_doc=cl.numero_documento and f.cliente_tipo_doc= cl.tipo_documento
-UNION ALL
--- Activacion cuenta
-select cl.apellido, cl.nombre, f.cliente_numero_doc, f.cliente_tipo_doc  , f.fecha as CantidadComisiones
-from QUIEN_BAJO_EL_KERNEL.FACTURA f
-inner join QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA_ACTIVACION_CUENTA i on f.numero=i.factura_numero
-inner join QUIEN_BAJO_EL_KERNEL.CLIENTE cl on f.cliente_numero_doc=cl.numero_documento and f.cliente_tipo_doc= cl.tipo_documento
-
-UNION ALL
--- Modificacion cuenta
-select cl.apellido, cl.nombre, f.cliente_numero_doc, f.cliente_tipo_doc, f.fecha as CantidadComisiones
-from QUIEN_BAJO_EL_KERNEL.FACTURA f
-inner join QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA_MODIFICACION_CUENTA i on f.numero=i.factura_numero
-inner join QUIEN_BAJO_EL_KERNEL.CLIENTE cl on f.cliente_numero_doc=cl.numero_documento and f.cliente_tipo_doc= cl.tipo_documento
-GO
-
-
-CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.ClientesComisionesFacturadas (@fechaDesde date, @fechaHasta date)
-AS
-BEGIN
-select top 5 c.apellido, c.nombre,c.cliente_numero_doc, c.cliente_tipo_doc, COUNT(*) as CantidadComisiones
-from QUIEN_BAJO_EL_KERNEL.ComisionesFacturadas c
---where c.fecha >=@fechaDesde and c.fecha<=@fechaHasta
-group by c.cliente_numero_doc, c.cliente_tipo_doc,c.apellido, c.nombre
-order by CantidadComisiones desc
-END
-GO
-
---- 3.- Clientes con mayor cantidad de transacciones realizadas entre cuentas propias ---
-create view QUIEN_BAJO_EL_KERNEL.TransaccionesClientes as
---modificacionDeCuenta
-select c3.tipo_documento,c3.numero_documento,c3.apellido,c3.nombre,c2.fecha, COUNT(numero) cantTransacciones from QUIEN_BAJO_EL_KERNEL.CUENTA c1
-inner join QUIEN_BAJO_EL_KERNEL.CUENTA_MODIFICACION c2 on c1.numero=c2.cuenta
-inner join QUIEN_BAJO_EL_KERNEL.CLIENTE c3 on c3.tipo_documento =c1.cliente_tipo_doc and c3.numero_documento=c1.cliente_numero_doc
-group by c3.tipo_documento,c3.numero_documento,c3.apellido,c3.nombre,c2.fecha
-
-UNION ALL
-
--- apertura cuentas
-select c3.tipo_documento,c3.numero_documento,c3.apellido,c3.nombre, c1.fecha_creacion,count (numero)as  cantTransacciones from QUIEN_BAJO_EL_KERNEL.CUENTA c1
-inner join QUIEN_BAJO_EL_KERNEL.CLIENTE c3 on c3.tipo_documento =c1.cliente_tipo_doc and c3.numero_documento=c1.cliente_numero_doc
-group by c3.tipo_documento,c3.numero_documento,c3.apellido,c3.nombre, c1.fecha_creacion
-
-UNION ALL
-
--- transferencias entre cuentas propias
-select t4.tipo_documento, t4.numero_documento, t4.apellido, t4.nombre, t1.fecha, COUNT(*) as cantTransacciones from QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA t1
-inner join QUIEN_BAJO_EL_KERNEL.CUENTA t2 on t2.numero = t1.origen
-inner join QUIEN_BAJO_EL_KERNEL.CUENTA t3 on t3.numero = t1.destino
-inner join QUIEN_BAJO_EL_KERNEL.CLIENTE t4 on t3.cliente_tipo_doc =t4.tipo_documento and t3.cliente_numero_doc=t4.numero_documento
-where t3.cliente_tipo_doc = t2.cliente_tipo_doc and t3.cliente_numero_doc=t2.cliente_numero_doc
-group by t4.tipo_documento, t4.numero_documento, t4.apellido, t4.nombre, t1.fecha
-GO
-
-CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.ClientesConMayorTransacciones (@fechaDesde date, @fechaHasta date)
-AS
-BEGIN
-select  top 5 tipo_documento,numero_documento,apellido,nombre, SUM(cantTransacciones) as cantTrancciones from  QUIEN_BAJO_EL_KERNEL.TransaccionesClientes
-where fecha>=@fechaDesde and fecha <= @fechaHasta
-group by tipo_documento,numero_documento,apellido,nombre
-order by cantTrancciones desc
-END
-GO
-
---- 4.- Países con mayor cantidad de movimientos tanto ingresos como egresos ---
-
-create view QUIEN_BAJO_EL_KERNEL.MovimientosPaises as
-select c2.pais_codigo,c1.fecha,COUNT(c2.numero) as cantMovimientos  from QUIEN_BAJO_EL_KERNEL.DEPOSITO  c1
-inner join QUIEN_BAJO_EL_KERNEL.CUENTA c2 on c1.cuenta_numero=c2.numero
-group by pais_codigo,c1.fecha
-UNION ALL
-select c2.pais_codigo,c1.fecha,COUNT(c2.numero) as cantMovimientos from QUIEN_BAJO_EL_KERNEL.RETIRO c1
-inner join QUIEN_BAJO_EL_KERNEL.CUENTA c2 on c1.cuenta=c2.numero
-group by pais_codigo,c1.fecha
-UNION ALL
-select c2.pais_codigo,c1.fecha,count(c2.numero) as cantMovimientos from QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA c1
-inner join QUIEN_BAJO_EL_KERNEL.CUENTA c2 on c1.origen=c2.numero
-where c1.origen<>c1.destino
-group by pais_codigo,c1.fecha
-UNION ALL
-select c2.pais_codigo,c1.fecha,count(c2.numero) as cantMovimientos from QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA c1
-inner join QUIEN_BAJO_EL_KERNEL.CUENTA c2 on c1.destino=c2.numero
-where c1.origen<>c1.destino
-group by pais_codigo,c1.fecha
-UNION ALL
-select c2.pais_codigo,c1.fecha,count(c2.numero) as cantMovimientos from QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA c1
-inner join QUIEN_BAJO_EL_KERNEL.CUENTA c2 on c1.destino=c2.numero
-where c1.origen=c1.destino
-group by pais_codigo,c1.fecha
-GO
-
-CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.PaisesConMayorIngresosEgresos (@fechaDesde date, @fechaHasta date)
-AS
-BEGIN
-select top 5 pais_codigo, SUM(cantMovimientos) as cantMovimientos from QUIEN_BAJO_EL_KERNEL.MovimientosPaises
-where fecha>=@fechaDesde and fecha <= @fechaHasta
-group by pais_codigo
-order by cantMovimientos desc
-END
-GO
-
---- 5.- Total facturado para los distintos tipos de cuentas ---
-
-
-
-
-
-------------------------------------------------------------------
-
-
----------------		SP XXX	---------------
-
-
-
------	 ****************************** EXEC PROCS ****************************** -----
-
-/*exec QUIEN_BAJO_EL_KERNEL.completar_transacciones
-GO
-*/
-
----------------		SP Usuarios		---------------
-
-CREATE PROCEDURE [QUIEN_BAJO_EL_KERNEL].[GetUsuarioByUsernameAndPassword]
-@username nvarchar(255),
-@password varbinary(max)
-AS
-BEGIN
-	SET NOCOUNT ON;
-
-	SELECT
-		u.*
-	FROM [QUIEN_BAJO_EL_KERNEL].Usuario u
-	WHERE
-		u.username = @username AND
-		u.password = @password AND
-		u.activo = 1
-END
-GO
-
-CREATE PROCEDURE [QUIEN_BAJO_EL_KERNEL].[DeleteUsuarioLog]
-@username nvarchar(255)
-AS
-BEGIN
-	SET NOCOUNT ON;
-	
-	DELETE FROM [QUIEN_BAJO_EL_KERNEL].USUARIO_LOG
-	WHERE username = username AND login_correcto = 0
-	
-END
-GO
-
-CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.INSERT_USUARIO 
-(
-@username varchar(255)
-,@password varbinary(max)
-,@pregunta_secreta varchar(255)
-,@respuesta_secreta varchar(255)
-,@activo bit
-,@habilitado bit 
-)
-AS 
-BEGIN
-
-insert into QUIEN_BAJO_EL_KERNEL.USUARIO 
-(username
-,password
-,pregunta_secreta
-,respuesta_secreta
-,activo
-,habilitado)
-VALUES
-(@username
-,@password
-,@pregunta_secreta
-,@respuesta_secreta
-,@activo
-,@habilitado)
-
-
-
-END
-GO
-
-CREATE PROCEDURE [QUIEN_BAJO_EL_KERNEL].[InsertUsuarioLog]
-@username nvarchar(255),
-@login_correcto bit
-AS
-BEGIN
-	SET NOCOUNT ON;
-	
-	IF (EXISTS (SELECT * FROM [QUIEN_BAJO_EL_KERNEL].USUARIO WHERE username = @username))
-	BEGIN
-		INSERT INTO [QUIEN_BAJO_EL_KERNEL].USUARIO_LOG
-		(
-			username,
-			fecha,
-			login_correcto
-		)
-		VALUES
-		(
-			@username,
-			GETDATE(),
-			@login_correcto
-		)
-		
-		IF ((SELECT COUNT(*) FROM [QUIEN_BAJO_EL_KERNEL].USUARIO_LOG WHERE username = @username AND login_correcto = 0) >= 3 AND @login_correcto = 0)
-		BEGIN
-			UPDATE [QUIEN_BAJO_EL_KERNEL].USUARIO SET habilitado = 0 WHERE username = @username
-		END
-	END
-END
-GO
 
 CREATE PROCEDURE [QUIEN_BAJO_EL_KERNEL].[GetTiposEstadoCuenta]
 AS
@@ -1399,79 +1039,6 @@ BEGIN
 END
 GO
 
-------------------------- Retiro ----------------------------
-CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.Insert_retiro(@fecha datetime , @importe numeric(18,2),
-													 @cuenta numeric(18,0), @cheque numeric(18,0))
-AS 
-BEGIN
-
-insert into QUIEN_BAJO_EL_KERNEL.Retiro (fecha,importe,cuenta,cheque)
-values
-(@fecha,@importe,@cuenta,@cheque)
-END
-GO
-
-------------------------- Deposito ----------------------------
-CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.Insert_deposito	(@fecha datetime , @importe numeric(18,2),
-														 @cuenta_numero numeric(18,0), @moneda_tipo numeric(1,0),
-														 @tarjeta_numero varchar(16)	)	
-AS 
-BEGIN
-
-insert into QUIEN_BAJO_EL_KERNEL.deposito (fecha,importe,cuenta_numero,moneda_tipo,tarjeta_numero)
-values
-(@fecha,@importe,@cuenta_numero, @moneda_tipo,@tarjeta_numero)
-END
-GO
-
-
------------------------- Facturacion ---------------------------
-CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.GetTransferenciasSinFacturar (@tipoDoc numeric(18),@numeroDoc numeric (18))
-AS
-BEGIN
-	SELECT t.codigo as Codigo,t.origen as Cuenta ,tt.costo as Costo, 3 as TipoTransaccion
-	FROM QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA t 
-	inner join QUIEN_BAJO_EL_KERNEL.CUENTA c on t.origen = c.numero
-	inner join QUIEN_BAJO_EL_KERNEL.TIPO_CUENTA tt on tt.codigo = c.tipo_cuenta
-	left join QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA_TRANSFERENCIAS i on t.codigo = i.transferencia
-	where i.factura_numero is null and c.cliente_numero_doc=@numeroDoc and c.cliente_tipo_doc=@tipoDoc
-
-	
-END
-GO
-
-CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.GetAperturaCuentasSinFacturar (@tipoDoc numeric(18),@numeroDoc numeric (18))
-AS
-BEGIN
-	select numero as Cuenta,tt.costo as Costo , 1 as TipoTransaccion
-	FROM QUIEN_BAJO_EL_KERNEL.CUENTA c
-	inner join QUIEN_BAJO_EL_KERNEL.TIPO_CUENTA tt on tt.codigo = c.tipo_cuenta
-	left join QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA_ACTIVACION_CUENTA i on c.numero = i.cuenta
-	where i.factura_numero is null and estado_codigo=1 and cliente_numero_doc=@numeroDoc and cliente_tipo_doc=@tipoDoc
-
-END
-GO
-
-CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.GetModifCuentasSinFacturar (@tipoDoc numeric(18),@numeroDoc numeric (18))
-AS
-BEGIN
-	SELECT c.id_modificacion as Codigo, c.cuenta as Cuenta ,tt.costo as Costo, 2 as TipoTransaccion 
-	FROM QUIEN_BAJO_EL_KERNEL.CUENTA_MODIFICACION c
-	left join QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA_MODIFICACION_CUENTA i on c.cuenta = i.cuenta
-	inner join QUIEN_BAJO_EL_KERNEL.CUENTA c2 on c2.numero = c.cuenta
-	inner join QUIEN_BAJO_EL_KERNEL.TIPO_CUENTA tt on tt.codigo = c2.tipo_cuenta
-	where i.factura_numero is null and c2.cliente_numero_doc=@numeroDoc and c2.cliente_tipo_doc=@tipoDoc
-	
-END
-GO
-
-CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.GetTiposTransaccion 
-AS
-BEGIN
-	SELECT * 
-	FROM QUIEN_BAJO_EL_KERNEL.TIPO_TRANSACCION	
-END
-GO
 
 ------------------------------- Clientes ----------------------------------
 
@@ -1544,6 +1111,314 @@ select * from [GD1C2015].[QUIEN_BAJO_EL_KERNEL].CLIENTE  where username= @userna
 END
 GO
 
+
+---------------		SP Usuarios		---------------
+
+CREATE PROCEDURE [QUIEN_BAJO_EL_KERNEL].[GetUsuarioByUsernameAndPassword]
+@username nvarchar(255),
+@password varbinary(max)
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	SELECT
+		u.*
+	FROM [QUIEN_BAJO_EL_KERNEL].Usuario u
+	WHERE
+		u.username = @username AND
+		u.password = @password AND
+		u.activo = 1
+END
+GO
+
+CREATE PROCEDURE [QUIEN_BAJO_EL_KERNEL].[DeleteUsuarioLog]
+@username nvarchar(255)
+AS
+BEGIN
+	SET NOCOUNT ON;
+	
+	DELETE FROM [QUIEN_BAJO_EL_KERNEL].USUARIO_LOG
+	WHERE username = username AND login_correcto = 0
+	
+END
+GO
+
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.INSERT_USUARIO 
+(
+@username varchar(255)
+,@password varbinary(max)
+,@pregunta_secreta varchar(255)
+,@respuesta_secreta varchar(255)
+,@activo bit
+,@habilitado bit 
+)
+AS 
+BEGIN
+
+insert into QUIEN_BAJO_EL_KERNEL.USUARIO 
+(username
+,password
+,pregunta_secreta
+,respuesta_secreta
+,activo
+,habilitado)
+VALUES
+(@username
+,@password
+,@pregunta_secreta
+,@respuesta_secreta
+,@activo
+,@habilitado)
+
+END
+GO
+
+
+
+
+CREATE PROCEDURE [QUIEN_BAJO_EL_KERNEL].[InsertUsuarioLog]
+@username nvarchar(255),
+@login_correcto bit
+AS
+BEGIN
+	SET NOCOUNT ON;
+	
+	IF (EXISTS (SELECT * FROM [QUIEN_BAJO_EL_KERNEL].USUARIO WHERE username = @username))
+	BEGIN
+		INSERT INTO [QUIEN_BAJO_EL_KERNEL].USUARIO_LOG
+		(
+			username,
+			fecha,
+			login_correcto
+		)
+		VALUES
+		(
+			@username,
+			GETDATE(),
+			@login_correcto
+		)
+		
+		IF ((SELECT COUNT(*) FROM [QUIEN_BAJO_EL_KERNEL].USUARIO_LOG WHERE username = @username AND login_correcto = 0) >= 3 AND @login_correcto = 0)
+		BEGIN
+			UPDATE [QUIEN_BAJO_EL_KERNEL].USUARIO SET habilitado = 0 WHERE username = @username
+		END
+	END
+END
+GO
+
+
+---------------		SP Funcionalidad		---------------
+
+CREATE PROCEDURE [QUIEN_BAJO_EL_KERNEL].[GetFuncionalidadesByRol]
+@rolId numeric(10,0)
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	SELECT
+		f.*
+	FROM [QUIEN_BAJO_EL_KERNEL].FUNCIONALIDAD f
+	INNER JOIN [QUIEN_BAJO_EL_KERNEL].FUNCIONALIDAD_ROL fr ON fr.id_funcionalidad = f.id_funcionalidad
+	WHERE
+		fr.id_rol = @rolId
+END
+GO
+
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.SELECT_FUNCIONALIDAD
+AS
+BEGIN
+	SELECT * FROM QUIEN_BAJO_EL_KERNEL.FUNCIONALIDAD f
+END
+GO
+
+---------------		SP Rol		---------------
+CREATE PROCEDURE [QUIEN_BAJO_EL_KERNEL].[GetRolesByUsername]
+@username nvarchar(255)
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	SELECT
+		r.*
+	FROM [QUIEN_BAJO_EL_KERNEL].Rol r
+	INNER JOIN [QUIEN_BAJO_EL_KERNEL].USUARIO_ROL ur ON ur.id_rol = r.id
+	WHERE
+		ur.username = @username AND
+		r.activo = 1
+END
+GO
+
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.INSERT_ROL_FUNCIONALIDAD (@id_rol numeric(10,0), @id_funcionalidad numeric(10,0))
+AS
+BEGIN
+insert into QUIEN_BAJO_EL_KERNEL.FUNCIONALIDAD_ROL (id_rol,id_funcionalidad) values (@id_rol,@id_funcionalidad)
+END
+GO
+
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.INSERT_ROL (@nombre varchar(255), @activo BIT)
+AS
+BEGIN
+insert into QUIEN_BAJO_EL_KERNEL.ROL (nombre,activo) values (@nombre,@activo)
+ select scope_identity()
+END
+GO
+
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.SELECT_ROL
+(@nombre varchar(255) = null ,
+@activo BIT  = null)
+AS
+BEGIN
+SELECT * FROM QUIEN_BAJO_EL_KERNEL.ROL f
+WHERE (@nombre is null or f.nombre like '%' + @nombre + '%') AND
+	  (@activo is null or f.activo = @activo)
+END
+GO
+
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.SELECT_ROL_BY_ID
+(@id numeric(10,0))
+AS 
+BEGIN
+SELECT * FROM QUIEN_BAJO_EL_KERNEL.ROL f 
+WHERE f.id = @id
+END
+GO
+---------------		SP ConsultaSaldos	---------------
+
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.getUltimosCincoDepositosByCuenta(@cuenta varchar(255))
+AS
+BEGIN
+select top 5 * from [GD1C2015].[QUIEN_BAJO_EL_KERNEL].DEPOSITO  where cuenta_numero=@cuenta  order by fecha desc
+END
+GO
+
+
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.getUltimosCincoRetirosByCuenta(@cuenta varchar(255))
+AS
+BEGIN
+select top 5 * from [GD1C2015].[QUIEN_BAJO_EL_KERNEL].RETIRO  where cuenta= @cuenta order by fecha desc
+END
+GO
+
+
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.getUltimasDiezTransferenciasByCuenta(@cuenta varchar(255))
+AS 
+BEGIN
+select top 10 *  from [GD1C2015].[QUIEN_BAJO_EL_KERNEL].TRANSFERENCIA  where origen= @cuenta or destino= @cuenta  order by fecha desc
+END
+GO
+
+
+------------------------- Retiro ----------------------------
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.Insert_retiro(@fecha datetime , @importe numeric(18,2),
+													 @cuenta numeric(18,0), @cheque numeric(18,0))
+AS 
+BEGIN
+
+insert into QUIEN_BAJO_EL_KERNEL.Retiro (fecha,importe,cuenta,cheque)
+values
+(@fecha,@importe,@cuenta,@cheque)
+END
+GO
+
+------------------------- Deposito ----------------------------
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.Insert_deposito	(@fecha datetime , @importe numeric(18,2),
+														 @cuenta_numero numeric(18,0), @moneda_tipo numeric(1,0),
+														 @tarjeta_numero varchar(16)	)	
+AS 
+BEGIN
+
+insert into QUIEN_BAJO_EL_KERNEL.deposito (fecha,importe,cuenta_numero,moneda_tipo,tarjeta_numero)
+values
+(@fecha,@importe,@cuenta_numero, @moneda_tipo,@tarjeta_numero)
+END
+GO
+
+------------------------- Transferencia ----------------------------
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.insertTransferencia (@origen numeric(18,0), @destino numeric(18,0),@fecha as datetime, @importe numeric(18,2), @costo numeric(18,2), @moneda_tipo numeric(1,0))
+AS 
+BEGIN
+insert into [QUIEN_BAJO_EL_KERNEL].TRANSFERENCIA (origen, destino,fecha ,importe, costo, moneda_tipo) values 
+(@origen, @destino, @fecha, @importe, @costo, @moneda_tipo)
+END
+GO
+
+------------------------ Facturacion ---------------------------
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.GetTransferenciasSinFacturar (@tipoDoc numeric(18),@numeroDoc numeric (18))
+AS
+BEGIN
+	SELECT t.codigo as Codigo,t.origen as Cuenta ,tt.costo as Costo, 3 as TipoTransaccion
+	FROM QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA t 
+	inner join QUIEN_BAJO_EL_KERNEL.CUENTA c on t.origen = c.numero
+	inner join QUIEN_BAJO_EL_KERNEL.TIPO_CUENTA tt on tt.codigo = c.tipo_cuenta
+	left join QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA_TRANSFERENCIAS i on t.codigo = i.transferencia
+	where i.factura_numero is null and c.cliente_numero_doc=@numeroDoc and c.cliente_tipo_doc=@tipoDoc
+
+	
+END
+GO
+
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.GetAperturaCuentasSinFacturar (@tipoDoc numeric(18),@numeroDoc numeric (18))
+AS
+BEGIN
+	select numero as Cuenta,tt.costo as Costo , 1 as TipoTransaccion
+	FROM QUIEN_BAJO_EL_KERNEL.CUENTA c
+	inner join QUIEN_BAJO_EL_KERNEL.TIPO_CUENTA tt on tt.codigo = c.tipo_cuenta
+	left join QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA_ACTIVACION_CUENTA i on c.numero = i.cuenta
+	where i.factura_numero is null and estado_codigo=1 and cliente_numero_doc=@numeroDoc and cliente_tipo_doc=@tipoDoc
+
+END
+GO
+
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.GetModifCuentasSinFacturar (@tipoDoc numeric(18),@numeroDoc numeric (18))
+AS
+BEGIN
+	SELECT c.id_modificacion as Codigo, c.cuenta as Cuenta ,tt.costo as Costo, 2 as TipoTransaccion 
+	FROM QUIEN_BAJO_EL_KERNEL.CUENTA_MODIFICACION c
+	left join QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA_MODIFICACION_CUENTA i on c.cuenta = i.cuenta
+	inner join QUIEN_BAJO_EL_KERNEL.CUENTA c2 on c2.numero = c.cuenta
+	inner join QUIEN_BAJO_EL_KERNEL.TIPO_CUENTA tt on tt.codigo = c2.tipo_cuenta
+	where i.factura_numero is null and c2.cliente_numero_doc=@numeroDoc and c2.cliente_tipo_doc=@tipoDoc
+	
+END
+GO
+
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.GetTiposTransaccion 
+AS
+BEGIN
+	SELECT * 
+	FROM QUIEN_BAJO_EL_KERNEL.TIPO_TRANSACCION	
+END
+GO
+
+
+
+-------------------------------  Paises  ----------------------------------
+
+CREATE PROCEDURE [QUIEN_BAJO_EL_KERNEL].[GetPaises]
+AS
+BEGIN
+	SELECT * FROM QUIEN_BAJO_EL_KERNEL.PAIS p ORDER BY p.descripcion_pais ASC;
+END
+GO
+
+------------------------------- Tipos Moneda ----------------------------------
+
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.GetTiposMonedaByCuenta (@cuenta varchar(255))
+AS
+BEGIN
+	SELECT c2.codigo,c2.descripcion FROM QUIEN_BAJO_EL_KERNEL.CUENTA c1
+	inner join QUIEN_BAJO_EL_KERNEL.TIPO_MONEDA c2 on c1.moneda_tipo= c2.codigo
+	where numero=@cuenta
+END
+GO
+
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.GetTipoMoneda
+AS
+BEGIN
+	SELECT * FROM QUIEN_BAJO_EL_KERNEL.TIPO_MONEDA
+END
+GO
+
 ---------------------- Cheque -------------------------------
 CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.Insert_cheque(@numero numeric(18), @fecha datetime , @importe numeric(18,2),
 													 @codigo_banco numeric(18,0), @moneda_tipo numeric(1,0), 
@@ -1574,6 +1449,136 @@ BEGIN
 	SELECT * FROM QUIEN_BAJO_EL_KERNEL.BANCO
 END
 GO
+
+
+
+---------------		SP Listados	---------------
+
+--- 1.-Clientes que alguna de sus cuentas fueron inhabilitadas por no pagar los costos de transacción ---
+
+--- 2.- Cliente con mayor cantidad de comisiones facturadas en todas sus cuentas --
+
+create view QUIEN_BAJO_EL_KERNEL.ComisionesFacturadas as
+-- Transferencias
+select cl.apellido, cl.nombre, f.cliente_numero_doc, f.cliente_tipo_doc , f.fecha
+from QUIEN_BAJO_EL_KERNEL.FACTURA f
+inner join QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA_TRANSFERENCIAS i on f.numero=i.factura_numero
+inner join QUIEN_BAJO_EL_KERNEL.CLIENTE cl on f.cliente_numero_doc=cl.numero_documento and f.cliente_tipo_doc= cl.tipo_documento
+UNION ALL
+-- Activacion cuenta
+select cl.apellido, cl.nombre, f.cliente_numero_doc, f.cliente_tipo_doc  , f.fecha as CantidadComisiones
+from QUIEN_BAJO_EL_KERNEL.FACTURA f
+inner join QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA_ACTIVACION_CUENTA i on f.numero=i.factura_numero
+inner join QUIEN_BAJO_EL_KERNEL.CLIENTE cl on f.cliente_numero_doc=cl.numero_documento and f.cliente_tipo_doc= cl.tipo_documento
+
+UNION ALL
+-- Modificacion cuenta
+select cl.apellido, cl.nombre, f.cliente_numero_doc, f.cliente_tipo_doc, f.fecha as CantidadComisiones
+from QUIEN_BAJO_EL_KERNEL.FACTURA f
+inner join QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA_MODIFICACION_CUENTA i on f.numero=i.factura_numero
+inner join QUIEN_BAJO_EL_KERNEL.CLIENTE cl on f.cliente_numero_doc=cl.numero_documento and f.cliente_tipo_doc= cl.tipo_documento
+GO
+
+
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.ClientesComisionesFacturadas (@fechaDesde date, @fechaHasta date)
+AS
+BEGIN
+select top 5 c.apellido, c.nombre,c.cliente_numero_doc, c.cliente_tipo_doc, COUNT(*) as CantidadComisiones
+from QUIEN_BAJO_EL_KERNEL.ComisionesFacturadas c
+--where c.fecha >=@fechaDesde and c.fecha<=@fechaHasta
+group by c.cliente_numero_doc, c.cliente_tipo_doc,c.apellido, c.nombre
+order by CantidadComisiones desc
+END
+GO
+
+--- 3.- Clientes con mayor cantidad de transacciones realizadas entre cuentas propias ---
+create view QUIEN_BAJO_EL_KERNEL.TransaccionesClientes as
+--modificacionDeCuenta
+select c3.tipo_documento,c3.numero_documento,c3.apellido,c3.nombre,c2.fecha, COUNT(numero) cantTransacciones from QUIEN_BAJO_EL_KERNEL.CUENTA c1
+inner join QUIEN_BAJO_EL_KERNEL.CUENTA_MODIFICACION c2 on c1.numero=c2.cuenta
+inner join QUIEN_BAJO_EL_KERNEL.CLIENTE c3 on c3.tipo_documento =c1.cliente_tipo_doc and c3.numero_documento=c1.cliente_numero_doc
+group by c3.tipo_documento,c3.numero_documento,c3.apellido,c3.nombre,c2.fecha
+
+UNION ALL
+
+-- apertura cuentas
+select c3.tipo_documento,c3.numero_documento,c3.apellido,c3.nombre, c1.fecha_creacion,count (numero)as  cantTransacciones from QUIEN_BAJO_EL_KERNEL.CUENTA c1
+inner join QUIEN_BAJO_EL_KERNEL.CLIENTE c3 on c3.tipo_documento =c1.cliente_tipo_doc and c3.numero_documento=c1.cliente_numero_doc
+group by c3.tipo_documento,c3.numero_documento,c3.apellido,c3.nombre, c1.fecha_creacion
+
+UNION ALL
+
+-- transferencias entre cuentas propias
+select t4.tipo_documento, t4.numero_documento, t4.apellido, t4.nombre, t1.fecha, COUNT(*) as cantTransacciones from QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA t1
+inner join QUIEN_BAJO_EL_KERNEL.CUENTA t2 on t2.numero = t1.origen
+inner join QUIEN_BAJO_EL_KERNEL.CUENTA t3 on t3.numero = t1.destino
+inner join QUIEN_BAJO_EL_KERNEL.CLIENTE t4 on t3.cliente_tipo_doc =t4.tipo_documento and t3.cliente_numero_doc=t4.numero_documento
+where t3.cliente_tipo_doc = t2.cliente_tipo_doc and t3.cliente_numero_doc=t2.cliente_numero_doc
+group by t4.tipo_documento, t4.numero_documento, t4.apellido, t4.nombre, t1.fecha
+GO
+
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.ClientesConMayorTransacciones (@fechaDesde date, @fechaHasta date)
+AS
+BEGIN
+select  top 5 tipo_documento,numero_documento,apellido,nombre, SUM(cantTransacciones) as cantTrancciones from  QUIEN_BAJO_EL_KERNEL.TransaccionesClientes
+where fecha>=@fechaDesde and fecha <= @fechaHasta
+group by tipo_documento,numero_documento,apellido,nombre
+order by cantTrancciones desc
+END
+GO
+
+--- 4.- Países con mayor cantidad de movimientos tanto ingresos como egresos ---
+
+create view QUIEN_BAJO_EL_KERNEL.MovimientosPaises as
+select c2.pais_codigo,c1.fecha,COUNT(c2.numero) as cantMovimientos  from QUIEN_BAJO_EL_KERNEL.DEPOSITO  c1
+inner join QUIEN_BAJO_EL_KERNEL.CUENTA c2 on c1.cuenta_numero=c2.numero
+group by pais_codigo,c1.fecha
+UNION ALL
+select c2.pais_codigo,c1.fecha,COUNT(c2.numero) as cantMovimientos from QUIEN_BAJO_EL_KERNEL.RETIRO c1
+inner join QUIEN_BAJO_EL_KERNEL.CUENTA c2 on c1.cuenta=c2.numero
+group by pais_codigo,c1.fecha
+UNION ALL
+select c2.pais_codigo,c1.fecha,count(c2.numero) as cantMovimientos from QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA c1
+inner join QUIEN_BAJO_EL_KERNEL.CUENTA c2 on c1.origen=c2.numero
+where c1.origen<>c1.destino
+group by pais_codigo,c1.fecha
+UNION ALL
+select c2.pais_codigo,c1.fecha,count(c2.numero) as cantMovimientos from QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA c1
+inner join QUIEN_BAJO_EL_KERNEL.CUENTA c2 on c1.destino=c2.numero
+where c1.origen<>c1.destino
+group by pais_codigo,c1.fecha
+UNION ALL
+select c2.pais_codigo,c1.fecha,count(c2.numero) as cantMovimientos from QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA c1
+inner join QUIEN_BAJO_EL_KERNEL.CUENTA c2 on c1.destino=c2.numero
+where c1.origen=c1.destino
+group by pais_codigo,c1.fecha
+GO
+
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.PaisesConMayorIngresosEgresos (@fechaDesde date, @fechaHasta date)
+AS
+BEGIN
+select top 5 pais_codigo, SUM(cantMovimientos) as cantMovimientos from QUIEN_BAJO_EL_KERNEL.MovimientosPaises
+where fecha>=@fechaDesde and fecha <= @fechaHasta
+group by pais_codigo
+order by cantMovimientos desc
+END
+GO
+
+--- 5.- Total facturado para los distintos tipos de cuentas ---
+
+
+
+
+
+------------------------------------------------------------------
+
+-----	 ****************************** EXEC PROCS ****************************** -----
+
+/*exec QUIEN_BAJO_EL_KERNEL.completar_transacciones
+GO
+*/
+
+
 
 
 
@@ -1681,8 +1686,7 @@ BEGIN
 	
 	IF @tipo_nuevo <> 1
 		INSERT INTO QUIEN_BAJO_EL_KERNEL.CUENTA_MODIFICACION(cuenta, fecha,nuevo_tipo_cuenta)
-			 VALUES (@nro_cuenta, GETDATE(), @tipo_nuevo)
-			 
+			 VALUES (@nro_cuenta, GETDATE(), @tipo_nuevo)	 
 	
 END
 GO

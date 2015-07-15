@@ -24,12 +24,17 @@ namespace PagoElectronico.Consulta_Saldos
         public ConsultaSaldos()
         {
             InitializeComponent();
-            DataGridViewListado.ReadOnly = true;
-            ocultarComponentes();
         }
 
 
         /*************    Metodos de componentes       *************/
+
+        private void ConsultaSaldos_Load(object sender, EventArgs e)
+        {
+            DataGridViewListado.ReadOnly = true;
+            ocultarComponentes();
+        }
+
         private void btnBuscar_Click(object sender, EventArgs e)
         {
             bool validator = Validaciones.validarCampoNumericoEntero(txtCuenta) && Validaciones.validarCampoVacio(txtCuenta);
@@ -60,28 +65,28 @@ namespace PagoElectronico.Consulta_Saldos
         {
             if (rbDepositos.Checked)
             {
-               DataGridViewListado.DataSource = depositoService.getUltimosCincoDepositosByCuenta(txtCuenta.Text);      
+                DataGridViewListado.DataSource = depositoService.getUltimosCincoDepositosByCuenta(txtCuenta.Text);
             }
             if (rbRetiros.Checked)
             {
-                DataGridViewListado.DataSource = retiroService.getUltimosCincoRetirosByCuenta(txtCuenta.Text);             
+                DataGridViewListado.DataSource = retiroService.getUltimosCincoRetirosByCuenta(txtCuenta.Text);
             }
             if (rbTransferencias.Checked)
             {
-                DataGridViewListado.DataSource = transferenciaService.getUltimasDiezTransferenciasByCuenta(txtCuenta.Text);             
-            }            
+                DataGridViewListado.DataSource = transferenciaService.getUltimasDiezTransferenciasByCuenta(txtCuenta.Text);
+            }
         }
 
         private void obtenerSaldo()
-        {           
-                long cuenta = Convert.ToInt64(txtCuenta.Text.ToString());
-                lblSaldo.Text = cuentaService.getSaldo(cuenta).ToString();
-                if (String.Equals("0",lblSaldo.Text.ToString()))
-                {
-                    throw new Exception("No se encontro la cuenta buscada");
-                }
-                mostrarComponentes();             
-       
+        {
+            long cuenta = Convert.ToInt64(txtCuenta.Text.ToString());
+            lblSaldo.Text = cuentaService.getSaldo(cuenta).ToString();
+            if (String.Equals("0", lblSaldo.Text.ToString()))
+            {
+                throw new Exception("No se encontro la cuenta buscada");
+            }
+            mostrarComponentes();
+
         }
 
         private void mostrarComponentes()
@@ -101,6 +106,7 @@ namespace PagoElectronico.Consulta_Saldos
             lblSaldo.Visible = false;
 
         }
+
 
 
     }

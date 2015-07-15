@@ -229,6 +229,7 @@
             // comboCuentaOrigen
             // 
             this.comboCuentaOrigen.Cursor = System.Windows.Forms.Cursors.Default;
+            this.comboCuentaOrigen.DisplayMember = "numero";
             this.comboCuentaOrigen.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboCuentaOrigen.FormattingEnabled = true;
             this.comboCuentaOrigen.Location = new System.Drawing.Point(87, 19);

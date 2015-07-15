@@ -10,7 +10,7 @@ namespace PagoElectronico.Services
 {
     public class CuentaService
     {
-        public IEnumerable<long> getByCliente(long tipoDocCliente, long nroDocCliente)
+        public IEnumerable<Cuenta> getByCliente(long tipoDocCliente, long nroDocCliente)
         {
             CuentaRepository repository = new CuentaRepository();
             return repository.getByCliente(tipoDocCliente, nroDocCliente);
