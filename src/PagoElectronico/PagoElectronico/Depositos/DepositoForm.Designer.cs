@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.groupBoxTransferencia = new System.Windows.Forms.GroupBox();
+            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.comboTarjeta = new System.Windows.Forms.ComboBox();
             this.lblTC = new System.Windows.Forms.Label();
             this.lblFechaDeposito = new System.Windows.Forms.Label();
@@ -44,7 +45,6 @@
             this.lblCuenta = new System.Windows.Forms.Label();
             this.btnDepositar = new System.Windows.Forms.Button();
             this.btnLimpiar = new System.Windows.Forms.Button();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.groupBoxTransferencia.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -70,6 +70,14 @@
             this.groupBoxTransferencia.TabIndex = 6;
             this.groupBoxTransferencia.TabStop = false;
             this.groupBoxTransferencia.Text = "Deposito";
+            // 
+            // dateTimePicker1
+            // 
+            this.dateTimePicker1.Enabled = false;
+            this.dateTimePicker1.Location = new System.Drawing.Point(103, 126);
+            this.dateTimePicker1.Name = "dateTimePicker1";
+            this.dateTimePicker1.Size = new System.Drawing.Size(119, 20);
+            this.dateTimePicker1.TabIndex = 29;
             // 
             // comboTarjeta
             // 
@@ -220,19 +228,11 @@
             this.btnLimpiar.UseVisualStyleBackColor = true;
             this.btnLimpiar.Click += new System.EventHandler(this.btnLimpiar_Click);
             // 
-            // dateTimePicker1
-            // 
-            this.dateTimePicker1.Enabled = false;
-            this.dateTimePicker1.Location = new System.Drawing.Point(103, 126);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(119, 20);
-            this.dateTimePicker1.TabIndex = 29;
-            // 
             // DepositoForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(550, 413);
+            this.ClientSize = new System.Drawing.Size(517, 347);
             this.Controls.Add(this.btnDepositar);
             this.Controls.Add(this.btnLimpiar);
             this.Controls.Add(this.groupBoxTransferencia);

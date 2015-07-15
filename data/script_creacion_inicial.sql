@@ -1473,11 +1473,6 @@ BEGIN
 END
 GO
 
-drop procedure QUIEN_BAJO_EL_KERNEL.GetTransferenciasSinFacturar
-drop procedure QUIEN_BAJO_EL_KERNEL.GetAperturaCuentasSinFacturar 
-drop procedure QUIEN_BAJO_EL_KERNEL.GetModifCuentasSinFacturar 
-select * from QUIEN_BAJO_EL_KERNEL.CLIENTE c where c.numero_documento=5806212
-select * from QUIEN_BAJO_EL_KERNEL.CUENTA where numero=1111111111111383
 ------------------------------- Clientes ----------------------------------
 
 CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.INSERT_CLIENTE 
@@ -1529,7 +1524,7 @@ insert into QUIEN_BAJO_EL_KERNEL.CLIENTE
  ,@localidad
  ,@username)
 
---select scope_identity()
+select scope_identity()
 
 END
 GO
