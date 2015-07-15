@@ -129,7 +129,9 @@ CREATE TABLE QUIEN_BAJO_EL_KERNEL.TARJETA (
 	fecha_emision datetime NULL,
 	fecha_vencimiento datetime NULL,
 	codigo_seguridad varchar(3) NULL,
-	cod_emisor int NOT NULL
+	cod_emisor int NOT NULL,
+	cliente_tipo_doc numeric(18) NULL,
+	cliente_numero_doc numeric(10) NULL	
 )
 GO
 
@@ -475,6 +477,10 @@ GO
 ALTER TABLE QUIEN_BAJO_EL_KERNEL.CUENTA_MODIFICACION ADD CONSTRAINT FK_MODIF_TIPO_CUENTA
 	FOREIGN KEY (nuevo_tipo_cuenta) REFERENCES QUIEN_BAJO_EL_KERNEL.TIPO_ESTADO_CUENTA (codigo)
 GO
+
+ALTER TABLE QUIEN_BAJO_EL_KERNEL.TARJETA ADD CONSTRAINT FK_CUENTA_TARJETA_CLIENTE
+	FOREIGN KEY (cliente_tipo_doc, cliente_numero_doc) REFERENCES QUIEN_BAJO_EL_KERNEL.CLIENTE (tipo_documento, numero_documento)
+GO
 -----	 ****************************** TRIGGERS necesarios pre-migracion ****************************** -----
 
 CREATE TRIGGER QUIEN_BAJO_EL_KERNEL.DepositoActualizarSaldo
@@ -788,7 +794,7 @@ INSERT INTO QUIEN_BAJO_EL_KERNEL.EMISOR_TARJETA (emisor_descripcion)
 GO
 
 insert into QUIEN_BAJO_EL_KERNEL.TARJETA (tarjeta_numero, fecha_emision,fecha_vencimiento,
-					 codigo_seguridad, cod_emisor)
+					 codigo_seguridad, cod_emisor, cliente_tipo_doc,cliente_numero_doc)
 			  (select distinct tarjeta_numero,
 							   tarjeta_fecha_emision,
 							   tarjeta_fecha_vencimiento,
@@ -797,7 +803,10 @@ insert into QUIEN_BAJO_EL_KERNEL.TARJETA (tarjeta_numero, fecha_emision,fecha_ve
 								WHEN 'Master Card' THEN 1
 								WHEN 'American Express' THEN 2
 								WHEN 'Visa' THEN 3
-							   END
+							   END,
+							   Cli_Tipo_Doc_Cod,
+							   Cli_Nro_Doc
+							   
 				from gd_esquema.Maestra
 			   where Tarjeta_Numero is not null)
 GO
@@ -1402,6 +1411,19 @@ values
 END
 GO
 
+------------------------- Deposito ----------------------------
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.Insert_deposito	(@fecha datetime , @importe numeric(18,2),
+														 @cuenta_numero numeric(18,0), @moneda_tipo numeric(1,0),
+														 @tarjeta_numero varchar(16)	)	
+AS 
+BEGIN
+
+insert into QUIEN_BAJO_EL_KERNEL.deposito (fecha,importe,cuenta_numero,moneda_tipo,tarjeta_numero)
+values
+(@fecha,@importe,@cuenta_numero, @moneda_tipo,@tarjeta_numero)
+END
+GO
+
 
 ------------------------ Facturacion ---------------------------
 CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.GetTransferenciasSinFacturar (@tipoDoc numeric(18),@numeroDoc numeric (18))
@@ -1507,7 +1529,7 @@ insert into QUIEN_BAJO_EL_KERNEL.CLIENTE
  ,@localidad
  ,@username)
 
-select scope_identity()
+--select scope_identity()
 
 END
 GO
@@ -1537,6 +1559,16 @@ BEGIN
 insert into QUIEN_BAJO_EL_KERNEL.CHEQUE (numero,fecha,importe,codigo_banco,moneda_tipo,nombre_destinatario)
 values
 (@numero,@fecha,@importe,@codigo_banco,@moneda_tipo,@nombre_destinatario)
+END
+GO
+
+---------------------- TARJETA -------------------------------
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.GetAllByCliente (@tipoDoc numeric(18),@numeroDoc numeric (18))
+AS
+BEGIN
+	select *
+	FROM QUIEN_BAJO_EL_KERNEL.TARJETA t
+	where t.cliente_numero_doc=@numeroDoc and t.cliente_tipo_doc=@tipoDoc
 END
 GO
 
@@ -1604,6 +1636,35 @@ SELECT
 
 INSERT INTO QUIEN_BAJO_EL_KERNEL.Retiro (codigo,fecha, importe, cuenta, cheque)
 VALUES (@codigo,@fecha, @importe, @cuenta, @cheque)
+
+END
+GO
+
+
+CREATE TRIGGER QUIEN_BAJO_EL_KERNEL.DepositosManejoID
+ON QUIEN_BAJO_EL_KERNEL.DEPOSITO
+INSTEAD OF INSERT
+AS
+BEGIN
+DECLARE   @codigo numeric(18, 0),
+          @fecha datetime,
+          @importe numeric(18, 2),
+          @cuenta numeric(18, 0),
+          @monedaTipo numeric(1, 0),
+          @tarjetaNum varchar(16)
+          
+select @codigo=MAX(deposito_codigo)+1 from QUIEN_BAJO_EL_KERNEL.Deposito
+ 
+SELECT
+    @fecha = fecha,
+    @importe = importe,
+    @cuenta = cuenta_numero,
+    @monedaTipo = moneda_tipo,
+    @tarjetaNum = tarjeta_numero
+  FROM inserted
+
+INSERT INTO QUIEN_BAJO_EL_KERNEL.Deposito (deposito_codigo,fecha, importe,cuenta_numero, moneda_tipo, tarjeta_numero)
+VALUES (@codigo,@fecha, @importe, @cuenta, @monedaTipo,@tarjetaNum)
 
 END
 GO

@@ -16,6 +16,10 @@ namespace PagoElectronico.Retiros
 {
     public partial class Retiro : Form
     {
+
+        Cliente clienteLogueado;
+        Usuario usuarioLogueado = Session.Usuario;
+
         ClienteService clienteService = new ClienteService();
         CuentaService cuentaService = new CuentaService();
         TipoMonedaService tipoMonedaService = new TipoMonedaService();
@@ -28,8 +32,6 @@ namespace PagoElectronico.Retiros
         List<TipoDocumento> listaTiposDocumentos;
         List<Banco> listaBancos;
 
-        Cliente clienteLogueado;
-        Usuario usuarioLogueado = Session.Usuario;
 
         // ver el caso de un admin q no tenga cuentas, explota
         // un admin puede hacer retiro o trans de cualquier cuenta ??
@@ -154,11 +156,11 @@ namespace PagoElectronico.Retiros
 
                 if (txtImporte.Text.Length == 0)
                 {
-                    ocultarComponentes();
+                    mostrarComponentes(false);
                 }
                 else
                 {
-                    mostrarComponentes();
+                    mostrarComponentes(true);
 
                     saldoActual = Convert.ToDouble(lblSaldoActual.Text);
                     importe = Convert.ToDouble(txtImporte.Text);
@@ -198,7 +200,7 @@ namespace PagoElectronico.Retiros
             }
             else
             {
-                MessageBox.Show("No posees cuentas para realizar transferencias", "Atencion !", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw new Exception("No posees cuentas para realizar retiros");
 
             }
 
@@ -227,16 +229,10 @@ namespace PagoElectronico.Retiros
             comboBanco.SelectedIndex = 0;
         }
 
-        private void ocultarComponentes()
+        private void mostrarComponentes(Boolean validate)
         {
-            lblSaldoPosterior.Visible = false;
-            lblSaldoPosteriorRO.Visible = false;
-        }
-
-        private void mostrarComponentes()
-        {
-            lblSaldoPosterior.Visible = true;
-            lblSaldoPosteriorRO.Visible = true;
+            lblSaldoPosterior.Visible = validate;
+            lblSaldoPosteriorRO.Visible = validate;
         }
 
         #endregion

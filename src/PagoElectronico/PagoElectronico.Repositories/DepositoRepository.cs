@@ -54,7 +54,15 @@ namespace PagoElectronico.Repositories
 
         public override int Insert(Deposito entity)
         {
-            throw new NotImplementedException();
+            SqlCommand command = DBConnection.CreateStoredProcedure("Insert_Deposito");
+
+            command.Parameters.AddWithValue("@fecha", entity.fecha);
+            command.Parameters.AddWithValue("@importe", entity.importe);
+            command.Parameters.AddWithValue("@cuenta_numero", entity.cuentaNumero);
+            command.Parameters.AddWithValue("@moneda_tipo", entity.monedaTipo);
+            command.Parameters.AddWithValue("@tarjeta_numero", entity.tarjetaNumero);
+
+            return DBConnection.ExecuteNonQuery(command);
         }
 
         public override void Update(Deposito entity)

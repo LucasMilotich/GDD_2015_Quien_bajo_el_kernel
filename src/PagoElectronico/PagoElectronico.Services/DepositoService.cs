@@ -15,5 +15,11 @@ namespace PagoElectronico.Services
             return depositoRepo.getUltimosCincoDepositosByCuenta(cuenta);
         }
 
+        public int Insert(Deposito entity)
+        {
+            DepositoRepository repo = new DepositoRepository();
+            return repo.Insert(entity);
+        }
+
     }
 }
