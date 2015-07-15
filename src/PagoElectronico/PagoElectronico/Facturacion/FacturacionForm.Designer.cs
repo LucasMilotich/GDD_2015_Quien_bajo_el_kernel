@@ -37,16 +37,21 @@
             this.lblNombre = new System.Windows.Forms.Label();
             this.txtNombre = new System.Windows.Forms.TextBox();
             this.lblTransaccion = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.comboTipoTransaccion = new System.Windows.Forms.ComboBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.grdTransacciones = new System.Windows.Forms.DataGridView();
+            this.btnLimpiarLista = new System.Windows.Forms.Button();
+            this.chkSeleccionarTodos = new System.Windows.Forms.CheckBox();
             this.btnFacturar = new System.Windows.Forms.Button();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.btnAgregar = new System.Windows.Forms.Button();
-            this.dataGridView2 = new System.Windows.Forms.DataGridView();
+            this.Seleccionar = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.NroCuenta = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Tipo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Costo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Suscripcion = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.grdTransacciones)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -134,23 +139,27 @@
             this.lblTransaccion.TabIndex = 39;
             this.lblTransaccion.Text = "Transaccion";
             // 
-            // comboBox1
+            // comboTipoTransaccion
             // 
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(78, 17);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(100, 21);
-            this.comboBox1.TabIndex = 38;
+            this.comboTipoTransaccion.DisplayMember = "descripcion";
+            this.comboTipoTransaccion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboTipoTransaccion.Enabled = false;
+            this.comboTipoTransaccion.FormattingEnabled = true;
+            this.comboTipoTransaccion.Location = new System.Drawing.Point(78, 17);
+            this.comboTipoTransaccion.Name = "comboTipoTransaccion";
+            this.comboTipoTransaccion.Size = new System.Drawing.Size(175, 21);
+            this.comboTipoTransaccion.TabIndex = 38;
+            this.comboTipoTransaccion.SelectedIndexChanged += new System.EventHandler(this.comboTipoTransaccion_SelectedIndexChanged);
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.grdTransacciones);
+            this.groupBox2.Controls.Add(this.btnLimpiarLista);
+            this.groupBox2.Controls.Add(this.chkSeleccionarTodos);
             this.groupBox2.Controls.Add(this.lblTransaccion);
-            this.groupBox2.Controls.Add(this.comboBox1);
+            this.groupBox2.Controls.Add(this.comboTipoTransaccion);
             this.groupBox2.Controls.Add(this.btnFacturar);
-            this.groupBox2.Controls.Add(this.dataGridView1);
             this.groupBox2.Controls.Add(this.btnAgregar);
-            this.groupBox2.Controls.Add(this.dataGridView2);
             this.groupBox2.Location = new System.Drawing.Point(12, 160);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(548, 335);
@@ -158,39 +167,94 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Filtros";
             // 
+            // grdTransacciones
+            // 
+            this.grdTransacciones.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.grdTransacciones.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Seleccionar,
+            this.NroCuenta,
+            this.Tipo,
+            this.Costo,
+            this.Suscripcion});
+            this.grdTransacciones.Location = new System.Drawing.Point(9, 69);
+            this.grdTransacciones.MultiSelect = false;
+            this.grdTransacciones.Name = "grdTransacciones";
+            this.grdTransacciones.Size = new System.Drawing.Size(474, 135);
+            this.grdTransacciones.TabIndex = 42;
+            // 
+            // btnLimpiarLista
+            // 
+            this.btnLimpiarLista.Location = new System.Drawing.Point(427, 16);
+            this.btnLimpiarLista.Name = "btnLimpiarLista";
+            this.btnLimpiarLista.Size = new System.Drawing.Size(97, 21);
+            this.btnLimpiarLista.TabIndex = 41;
+            this.btnLimpiarLista.Text = "Limpiar lista";
+            this.btnLimpiarLista.UseVisualStyleBackColor = true;
+            this.btnLimpiarLista.Click += new System.EventHandler(this.btnLimpiarLista_Click);
+            // 
+            // chkSeleccionarTodos
+            // 
+            this.chkSeleccionarTodos.AutoSize = true;
+            this.chkSeleccionarTodos.Checked = true;
+            this.chkSeleccionarTodos.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkSeleccionarTodos.Location = new System.Drawing.Point(259, 21);
+            this.chkSeleccionarTodos.Name = "chkSeleccionarTodos";
+            this.chkSeleccionarTodos.Size = new System.Drawing.Size(141, 17);
+            this.chkSeleccionarTodos.TabIndex = 40;
+            this.chkSeleccionarTodos.Text = "Todas las transacciones";
+            this.chkSeleccionarTodos.UseVisualStyleBackColor = true;
+            this.chkSeleccionarTodos.CheckedChanged += new System.EventHandler(this.chkSeleccionarTodos_CheckedChanged);
+            // 
             // btnFacturar
             // 
-            this.btnFacturar.Location = new System.Drawing.Point(405, 194);
+            this.btnFacturar.Location = new System.Drawing.Point(55, 240);
             this.btnFacturar.Name = "btnFacturar";
-            this.btnFacturar.Size = new System.Drawing.Size(137, 57);
+            this.btnFacturar.Size = new System.Drawing.Size(298, 43);
             this.btnFacturar.TabIndex = 38;
             this.btnFacturar.Text = "Facturar";
             this.btnFacturar.UseVisualStyleBackColor = true;
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(9, 44);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(390, 129);
-            this.dataGridView1.TabIndex = 35;
+            this.btnFacturar.Click += new System.EventHandler(this.btnFacturar_Click);
             // 
             // btnAgregar
             // 
-            this.btnAgregar.Location = new System.Drawing.Point(405, 44);
+            this.btnAgregar.Location = new System.Drawing.Point(400, 240);
             this.btnAgregar.Name = "btnAgregar";
-            this.btnAgregar.Size = new System.Drawing.Size(137, 59);
+            this.btnAgregar.Size = new System.Drawing.Size(105, 42);
             this.btnAgregar.TabIndex = 37;
             this.btnAgregar.Text = "Agregar item a la lista";
             this.btnAgregar.UseVisualStyleBackColor = true;
+            this.btnAgregar.Click += new System.EventHandler(this.btnAgregar_Click);
             // 
-            // dataGridView2
+            // Seleccionar
             // 
-            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView2.Location = new System.Drawing.Point(9, 194);
-            this.dataGridView2.Name = "dataGridView2";
-            this.dataGridView2.Size = new System.Drawing.Size(390, 135);
-            this.dataGridView2.TabIndex = 36;
+            this.Seleccionar.FalseValue = "0";
+            this.Seleccionar.HeaderText = "";
+            this.Seleccionar.Name = "Seleccionar";
+            this.Seleccionar.TrueValue = "1";
+            this.Seleccionar.Width = 30;
+            // 
+            // NroCuenta
+            // 
+            this.NroCuenta.HeaderText = "Nro. Cuenta";
+            this.NroCuenta.Name = "NroCuenta";
+            this.NroCuenta.ReadOnly = true;
+            // 
+            // Tipo
+            // 
+            this.Tipo.HeaderText = "Tipo de Transacción";
+            this.Tipo.Name = "Tipo";
+            this.Tipo.ReadOnly = true;
+            // 
+            // Costo
+            // 
+            this.Costo.HeaderText = "Costo";
+            this.Costo.Name = "Costo";
+            this.Costo.ReadOnly = true;
+            // 
+            // Suscripcion
+            // 
+            this.Suscripcion.HeaderText = "Suscripción";
+            this.Suscripcion.Name = "Suscripcion";
             // 
             // FacturacionForm
             // 
@@ -201,12 +265,12 @@
             this.Controls.Add(this.groupBox1);
             this.Name = "FacturacionForm";
             this.Text = "Facturacion";
+            this.Load += new System.EventHandler(this.FacturacionForm_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.grdTransacciones)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -222,12 +286,18 @@
         private System.Windows.Forms.Label lblNombre;
         private System.Windows.Forms.TextBox txtNombre;
         private System.Windows.Forms.Label lblTransaccion;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox comboTipoTransaccion;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button btnFacturar;
-        private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button btnAgregar;
-        private System.Windows.Forms.DataGridView dataGridView2;
+        private System.Windows.Forms.CheckBox chkSeleccionarTodos;
+        private System.Windows.Forms.Button btnLimpiarLista;
+        private System.Windows.Forms.DataGridView grdTransacciones;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn Seleccionar;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NroCuenta;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Tipo;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Costo;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Suscripcion;
 
     }
 }

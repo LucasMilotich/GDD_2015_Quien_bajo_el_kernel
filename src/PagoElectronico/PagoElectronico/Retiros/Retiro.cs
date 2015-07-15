@@ -16,8 +16,8 @@ namespace PagoElectronico.Retiros
 {
     public partial class Retiro : Form
     {
-        CuentaService cuentaService = new CuentaService();
         ClienteService clienteService = new ClienteService();
+        CuentaService cuentaService = new CuentaService();
         TipoMonedaService tipoMonedaService = new TipoMonedaService();
         TipoDocumentoService tipoDocumentoService = new TipoDocumentoService();
         BancoService bancoService = new BancoService();
@@ -37,11 +37,7 @@ namespace PagoElectronico.Retiros
         public Retiro()
         {
             InitializeComponent();
-            obtenerCliente();
-            cargarComboCuentas();
-            cargarComboTipoDoc();
-            cargarComboTipoMoneda();
-            cargarComboBanco();
+   
         }
 
         #region Eventos
@@ -71,6 +67,19 @@ namespace PagoElectronico.Retiros
 
         private void Retiro_Load(object sender, EventArgs e)
         {
+            try
+            {
+                clienteLogueado = Utils.obtenerCliente(usuarioLogueado);
+                cargarComboCuentas();
+                cargarComboTipoDoc();
+                cargarComboTipoMoneda();
+                cargarComboBanco();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                
+            }
 
         }
 
@@ -78,18 +87,7 @@ namespace PagoElectronico.Retiros
 
         #region MetodosPrivados
         /*************    Metodos privados       *************/
-        private void obtenerCliente()
-        {
-            try
-            {
-                clienteLogueado = clienteService.getClienteByUsername(usuarioLogueado.Username);
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("El usuario actual no posee cuentas asociadas ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-        
+              
         private void realizarRetiro()
         {
             Boolean validador;

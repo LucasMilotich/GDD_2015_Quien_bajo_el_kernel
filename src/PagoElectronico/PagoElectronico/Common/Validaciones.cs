@@ -127,5 +127,34 @@ namespace PagoElectronico.Common
             }
         }
 
+        public static bool validarFormatoDni(TextBox textBox)
+        {
+            Int64 num;
+            if (!Int64.TryParse(textBox.Text, out num) &&  textBox.Text.Length > 10)
+            {
+                textBox.BackColor = System.Drawing.Color.LightCoral;
+                return false;
+            }
+            else
+            {   
+
+                textBox.BackColor = System.Drawing.Color.White;
+                return true;
+            }
+            /*
+            Regex expRegular = new Regex("^[0-9]*$");
+            if (!expRegular.IsMatch(textBox.Text))
+            {
+                textBox.BackColor = System.Drawing.Color.LightCoral;
+                return false;
+            }
+            else
+            {
+                textBox.BackColor = System.Drawing.Color.White;
+                return true;
+            }
+            */
+        }
+
     }
 }

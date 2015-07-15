@@ -69,6 +69,8 @@
     </Compile>
     <Compile Include="TipoDocumentoRepository.cs" />
     <Compile Include="TipoMonedaRepository.cs" />
+    <Compile Include="TipoTransaccionRepository.cs" />
+    <Compile Include="TransaccionRepository.cs" />
     <Compile Include="TransferenciaRepository.cs" />
     <Compile Include="UsuarioRepository.cs" />
   </ItemGroup>

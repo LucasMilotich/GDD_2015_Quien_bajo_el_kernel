@@ -31,6 +31,8 @@ namespace PagoElectronico.ABM_Cliente
         private void btnGuardar_Click(object sender, EventArgs e)
         {
              Cliente cliente = new Cliente();
+             ClienteService cliServ = new ClienteService();
+
              if (Validaciones.validarCampoString(this.txtNombre)
                   && Validaciones.validarCampoString(this.txtApellido)
                   && this.dateTimePicker1.Text != null
@@ -41,7 +43,8 @@ namespace PagoElectronico.ABM_Cliente
                   && Validaciones.validarCampoNumericoEntero(this.txtNumCalle)
                   && Validaciones.validarCampoNumericoEntero(this.txtPiso)
                   && Validaciones.validarCampoString(this.txtLocalidad)
-                  && Validaciones.validarCampoNumericoEntero(this.txtNroDoc))
+                  && Validaciones.validarFormatoDni(this.txtNroDoc)
+                  && !cliServ.existeDocumento(Convert.ToInt32(this.txtNroDoc.Text), (int)this.cmbTipoDoc.SelectedValue))
              {
 
 
@@ -60,7 +63,7 @@ namespace PagoElectronico.ABM_Cliente
                  cliente.localidad = this.txtLocalidad.Text;
 
 
-                 ClienteService cliServ = new ClienteService();
+                 
 
 
                  var form = new ABM_de_Usuario.AltaEdicion(cliente,cliServ,this);
