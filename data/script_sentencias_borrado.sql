@@ -220,4 +220,4 @@ IF  EXISTS (SELECT * FROM sys.schemas WHERE name = N'QUIEN_BAJO_EL_KERNEL')
 DROP SCHEMA [QUIEN_BAJO_EL_KERNEL]
 GO
 
-DROP VIEW [QUIEN_BAJO_EL_KERNEL].[facturas_transferencias];GODROP VIEW [QUIEN_BAJO_EL_KERNEL].[ComisionesFacturadas];GO
+DROP VIEW [QUIEN_BAJO_EL_KERNEL].[facturas_transferencias];DROP VIEW [QUIEN_BAJO_EL_KERNEL].[ComisionesFacturadas];

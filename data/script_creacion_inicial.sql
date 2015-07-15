@@ -756,10 +756,6 @@ INSERT INTO [QUIEN_BAJO_EL_KERNEL].[Usuario]
 	from gd_esquema.Maestra	   )
 GO
 
-INSERT INTO [QUIEN_BAJO_EL_KERNEL].USUARIO_ROL (id_rol,username) (select distinct  1,username
-	from QUIEN_BAJO_EL_KERNEL.USUARIO where username<>'admin'	   )
-GO
-
 INSERT INTO [QUIEN_BAJO_EL_KERNEL].USUARIO_ROL (id_rol,username) (select distinct  2,username
 	from QUIEN_BAJO_EL_KERNEL.USUARIO where username<>'admin'	   )
 GO
@@ -1410,9 +1406,10 @@ GO
 CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.GetTransferenciasSinFacturar (@tipoDoc numeric(18),@numeroDoc numeric (18))
 AS
 BEGIN
-	SELECT codigo as Codigo,costo as Costo, 'Transferencia' as TipoTransaccion
+	SELECT codigo as Codigo,tt.costo as Costo, 3 as TipoTransaccion
 	FROM QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA t 
 	inner join QUIEN_BAJO_EL_KERNEL.CUENTA c on t.origen = c.numero
+	inner join QUIEN_BAJO_EL_KERNEL.TIPO_CUENTA tt on tt.codigo = c.tipo_cuenta
 	left join QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA_TRANSFERENCIAS i on t.codigo = i.transferencia
 	where i.factura_numero is null and c.cliente_numero_doc=@numeroDoc and c.cliente_tipo_doc=@tipoDoc
 
@@ -1420,12 +1417,12 @@ BEGIN
 END
 GO
 
-
 CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.GetAperturaCuentasSinFacturar (@tipoDoc numeric(18),@numeroDoc numeric (18))
 AS
 BEGIN
-	select numero as Codigo,'0' as Costo ,'Apertura cuenta' as TipoTransaccion
+	select numero as Codigo,tt.costo as Costo , 1 as TipoTransaccion
 	FROM QUIEN_BAJO_EL_KERNEL.CUENTA c
+	inner join QUIEN_BAJO_EL_KERNEL.TIPO_CUENTA tt on tt.codigo = c.tipo_cuenta
 	left join QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA_ACTIVACION_CUENTA i on c.numero = i.cuenta
 	where i.factura_numero is null and estado_codigo=4 and cliente_numero_doc=@numeroDoc and cliente_tipo_doc=@tipoDoc
 
@@ -1436,10 +1433,11 @@ CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.GetModifCuentasSinFacturar (@tipoDoc numer
 AS
 BEGIN
 
-	SELECT c.id_modificacion as Codigo, '0' as Costo, 'Modificacion cuenta ' as TipoTransaccion 
+	SELECT c.id_modificacion as Codigo, tt.costo as Costo, 2 as TipoTransaccion 
 	FROM QUIEN_BAJO_EL_KERNEL.CUENTA_MODIFICACION c
 	left join QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA_MODIFICACION_CUENTA i on c.cuenta = i.cuenta
 	inner join QUIEN_BAJO_EL_KERNEL.CUENTA c2 on c2.numero = c.cuenta
+	inner join QUIEN_BAJO_EL_KERNEL.TIPO_CUENTA tt on tt.codigo = c2.tipo_cuenta
 	where i.factura_numero is null and c2.cliente_numero_doc=@numeroDoc and c2.cliente_tipo_doc=@tipoDoc
 	
 END
