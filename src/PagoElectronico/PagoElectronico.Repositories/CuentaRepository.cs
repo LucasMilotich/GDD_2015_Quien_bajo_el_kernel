@@ -128,13 +128,15 @@ namespace PagoElectronico.Repositories
             return DBConnection.ExecuteScalarLong(command);
         }
 
-        public DataTable GetCuentas(long? pais, int? tipoEstado, int? moneda, int? tipoCuenta)
+        public DataTable GetCuentas(long? pais, int? tipoEstado, int? moneda, int? tipoCuenta, long? nroDoc, long? tipoDoc)
         {
             SqlCommand command = DBConnection.CreateStoredProcedure("GetCuentas");
             command.Parameters.AddWithValue("@an_pais", pais);
             command.Parameters.AddWithValue("@an_estado", tipoEstado);
             command.Parameters.AddWithValue("@an_moneda", moneda);
             command.Parameters.AddWithValue("@an_tipo_cuenta", tipoCuenta);
+            command.Parameters.AddWithValue("@an_doc", nroDoc);
+            command.Parameters.AddWithValue("@an_tipo_doc", tipoDoc);
             return DBConnection.EjecutarStoredProcedureSelect(command);
            
         }

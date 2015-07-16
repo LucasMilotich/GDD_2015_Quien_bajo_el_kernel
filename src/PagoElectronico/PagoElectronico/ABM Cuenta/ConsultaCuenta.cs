@@ -17,6 +17,7 @@ namespace PagoElectronico.ABM_Cuenta
         PaisService paisService { get; set; }
         TipoMonedaService tipoMonedaService { get; set; }
         TipoEstadoCuentaService tipoEstadoService { get; set; }
+        ClienteService clienteService { get; set; }
         Usuario usuario = Session.Usuario;
 
         public ConsultaCuenta()
@@ -25,6 +26,7 @@ namespace PagoElectronico.ABM_Cuenta
             paisService = new PaisService();
             tipoMonedaService = new TipoMonedaService();
             tipoEstadoService = new TipoEstadoCuentaService();
+            clienteService = new ClienteService();
             InitializeComponent();
         }
 
@@ -57,18 +59,37 @@ namespace PagoElectronico.ABM_Cuenta
         private void ConsultaCuenta_Load(object sender, EventArgs e)
         {
             cargarCampos();
-
         }
 
         private void btnBuscar_Click(object sender, EventArgs e)
+        {
+            this.realizarBusqueda();
+        }
+
+        private void realizarBusqueda()
         {
             int? moneda = (int)cmbMoneda.SelectedValue <= 0 ? (int?)null : (int)cmbMoneda.SelectedValue;
             long? pais = (long)cmbPaises.SelectedValue <= 0 ? (long?)null : (long)cmbPaises.SelectedValue;
             int? estado = (int)cmbEstado.SelectedValue <= 0 ? (int?)null : (int)cmbEstado.SelectedValue;
             int? tipoCuenta = (int)cmbTipoCuenta.SelectedValue <= 0 ? (int?)null : (int)cmbTipoCuenta.SelectedValue;
+            long? nroDocCliente, tipoDocCliente;
+
+            if (Session.Usuario.SelectedRol.Id == (int)Entities.Enums.Roles.Admin)
+            {
+                nroDocCliente = (long?)null;
+                tipoDocCliente = (long?)null;
+            }
+            else
+            {
+                Cliente cliente = new Cliente();
+                cliente = clienteService.getClienteByUsername(usuario.Username);
+                nroDocCliente = cliente.numeroDocumento;
+                tipoDocCliente = cliente.tipoDocumento;
+            }
+
 
             dgvCuentas.AutoGenerateColumns = false;
-            dgvCuentas.DataSource = cuentaService.GetCuentas(pais, estado, moneda, tipoCuenta);
+            dgvCuentas.DataSource = cuentaService.GetCuentas(pais, estado, moneda, tipoCuenta, nroDocCliente, tipoDocCliente);
         }
 
         private void btnLimpiar_Click(object sender, EventArgs e)
@@ -119,6 +140,8 @@ namespace PagoElectronico.ABM_Cuenta
                 } 
 
             }
+
+            this.realizarBusqueda();
         }
     }
 }
