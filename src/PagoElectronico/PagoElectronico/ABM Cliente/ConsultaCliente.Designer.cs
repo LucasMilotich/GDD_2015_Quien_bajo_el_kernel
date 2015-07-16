@@ -78,7 +78,7 @@
             this.groupBox1.Controls.Add(this.btnLimpiar);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(694, 477);
+            this.groupBox1.Size = new System.Drawing.Size(683, 477);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Consultas clientes";
@@ -90,7 +90,7 @@
             this.cmbTipoDoc.FormattingEnabled = true;
             this.cmbTipoDoc.Location = new System.Drawing.Point(33, 133);
             this.cmbTipoDoc.Name = "cmbTipoDoc";
-            this.cmbTipoDoc.Size = new System.Drawing.Size(202, 21);
+            this.cmbTipoDoc.Size = new System.Drawing.Size(231, 21);
             this.cmbTipoDoc.TabIndex = 31;
             this.cmbTipoDoc.ValueMember = "codigo";
             // 
@@ -98,7 +98,7 @@
             // 
             this.txtMail.Location = new System.Drawing.Point(33, 92);
             this.txtMail.Name = "txtMail";
-            this.txtMail.Size = new System.Drawing.Size(202, 20);
+            this.txtMail.Size = new System.Drawing.Size(231, 20);
             this.txtMail.TabIndex = 28;
             // 
             // lblMail
@@ -113,7 +113,7 @@
             // lblDni
             // 
             this.lblDni.AutoSize = true;
-            this.lblDni.Location = new System.Drawing.Point(241, 118);
+            this.lblDni.Location = new System.Drawing.Point(270, 118);
             this.lblDni.Name = "lblDni";
             this.lblDni.Size = new System.Drawing.Size(66, 13);
             this.lblDni.TabIndex = 32;
@@ -130,16 +130,16 @@
             // 
             // txtNroDoc
             // 
-            this.txtNroDoc.Location = new System.Drawing.Point(241, 134);
+            this.txtNroDoc.Location = new System.Drawing.Point(270, 134);
             this.txtNroDoc.Name = "txtNroDoc";
-            this.txtNroDoc.Size = new System.Drawing.Size(184, 20);
+            this.txtNroDoc.Size = new System.Drawing.Size(213, 20);
             this.txtNroDoc.TabIndex = 33;
             // 
             // txtApellido
             // 
             this.txtApellido.Location = new System.Drawing.Point(33, 53);
             this.txtApellido.Name = "txtApellido";
-            this.txtApellido.Size = new System.Drawing.Size(202, 20);
+            this.txtApellido.Size = new System.Drawing.Size(231, 20);
             this.txtApellido.TabIndex = 25;
             // 
             // lblApellido
@@ -154,15 +154,15 @@
             // txtNombre
             // 
             this.txtNombre.BackColor = System.Drawing.Color.Snow;
-            this.txtNombre.Location = new System.Drawing.Point(241, 52);
+            this.txtNombre.Location = new System.Drawing.Point(270, 52);
             this.txtNombre.Name = "txtNombre";
-            this.txtNombre.Size = new System.Drawing.Size(184, 20);
+            this.txtNombre.Size = new System.Drawing.Size(213, 20);
             this.txtNombre.TabIndex = 27;
             // 
             // lblNombre
             // 
             this.lblNombre.AutoSize = true;
-            this.lblNombre.Location = new System.Drawing.Point(238, 36);
+            this.lblNombre.Location = new System.Drawing.Point(267, 36);
             this.lblNombre.Name = "lblNombre";
             this.lblNombre.Size = new System.Drawing.Size(44, 13);
             this.lblNombre.TabIndex = 24;
@@ -193,7 +193,7 @@
             this.dgvClientes.Location = new System.Drawing.Point(31, 176);
             this.dgvClientes.Name = "dgvClientes";
             this.dgvClientes.ReadOnly = true;
-            this.dgvClientes.Size = new System.Drawing.Size(541, 269);
+            this.dgvClientes.Size = new System.Drawing.Size(646, 295);
             this.dgvClientes.TabIndex = 22;
             this.dgvClientes.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvClientes_CellContentClick);
             // 
@@ -309,9 +309,9 @@
             // 
             // btnBuscar
             // 
-            this.btnBuscar.Location = new System.Drawing.Point(437, 118);
+            this.btnBuscar.Location = new System.Drawing.Point(532, 108);
             this.btnBuscar.Name = "btnBuscar";
-            this.btnBuscar.Size = new System.Drawing.Size(115, 27);
+            this.btnBuscar.Size = new System.Drawing.Size(145, 46);
             this.btnBuscar.TabIndex = 21;
             this.btnBuscar.Text = "Buscar";
             this.btnBuscar.UseVisualStyleBackColor = true;
@@ -319,9 +319,9 @@
             // 
             // btnLimpiar
             // 
-            this.btnLimpiar.Location = new System.Drawing.Point(437, 51);
+            this.btnLimpiar.Location = new System.Drawing.Point(532, 52);
             this.btnLimpiar.Name = "btnLimpiar";
-            this.btnLimpiar.Size = new System.Drawing.Size(115, 27);
+            this.btnLimpiar.Size = new System.Drawing.Size(145, 45);
             this.btnLimpiar.TabIndex = 20;
             this.btnLimpiar.Text = "Limpiar";
             this.btnLimpiar.UseVisualStyleBackColor = true;

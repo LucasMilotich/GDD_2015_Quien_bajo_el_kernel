@@ -57,7 +57,6 @@ namespace PagoElectronico.ABM_Cliente
             if (validador)
             {
                 dgvClientes.AutoGenerateColumns = false;
-               // dgvClientes.DataSource = clienteService.GetClientes();
                 dgvClientes.DataSource = clienteService.getClientesByFiltros(txtApellido.Text, txtNombre.Text, txtMail.Text, tipoDoc, nroDoc);
             }
 
@@ -73,7 +72,7 @@ namespace PagoElectronico.ABM_Cliente
 
         private void dgvClientes_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-           /* 
+            
             if (e.ColumnIndex == 0)
             {
                 var row = dgvClientes.Rows[e.RowIndex];
@@ -83,7 +82,7 @@ namespace PagoElectronico.ABM_Cliente
                 form.MdiParent = this.MdiParent;
             }
             else if (e.ColumnIndex == 1)
-            {
+            {/*
 
                 if (MessageBox.Show("Desea cerrar la cuenta seleccionada? La misma no podrá volver a activarse", "Atención!", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
                 {
