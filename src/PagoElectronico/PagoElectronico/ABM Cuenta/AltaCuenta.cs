@@ -21,7 +21,8 @@ namespace PagoElectronico.ABM_Cuenta
         long NroCuenta { get; set; }
         Usuario usuario = Session.Usuario;
         //Para probar hasta q este el login: 10002 and cliente_numero_doc=45622098
-        long tipoDocCliente = 10002, nroDocCliente = 45622098;
+        Cliente cliente;
+        long tipoDocCliente, nroDocCliente;
 
         public AltaCuenta(long nroCuenta)
         {
@@ -29,6 +30,7 @@ namespace PagoElectronico.ABM_Cuenta
             paisService = new PaisService();
             tipoMonedaService = new TipoMonedaService();
             clienteService = new ClienteService();
+            cliente = new Cliente();
             InitializeComponent();
             this.NroCuenta = nroCuenta;
         }
@@ -74,8 +76,18 @@ namespace PagoElectronico.ABM_Cuenta
             int codPais = Convert.ToInt32(cmbPaises.SelectedValue.ToString());
             int tipoMoneda = Convert.ToInt32(cmbMonedas.SelectedValue.ToString());
             int tipoCuenta = Convert.ToInt32(cmbTiposCuenta.SelectedValue.ToString());
-            //Aca iria el get del tipoDocCliente
-            //y aca el del nroDocCliente
+            
+            if (Session.Usuario.SelectedRol.Id == (int)Entities.Enums.Roles.Admin)
+            {
+                tipoDocCliente = ((Cliente)cmbClientes.SelectedItem).tipoDocumento;
+                nroDocCliente = ((Cliente)cmbClientes.SelectedItem).numeroDocumento;
+            }
+            else
+            {
+                cliente = clienteService.getClienteByUsername(usuario.Username);
+                tipoDocCliente = cliente.tipoDocumento;
+                nroDocCliente = cliente.numeroDocumento;
+            }
 
             if (txtCuenta.Text == "")
             {

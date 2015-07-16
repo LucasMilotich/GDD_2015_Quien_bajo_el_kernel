@@ -2,7 +2,9 @@ CREATE PROCEDURE [QUIEN_BAJO_EL_KERNEL].[GetCuentas]
 @an_pais		NUMERIC(18,0) = NULL,
 @an_estado		NUMERIC(1,0) = NULL,
 @an_moneda		NUMERIC(1,0) = NULL,
-@an_tipo_cuenta	NUMERIC(1,0) = NULL
+@an_tipo_cuenta	NUMERIC(1,0) = NULL,
+@an_doc			NUMERIC(10,0) = NULL,
+@an_tipo_doc	NUMERIC(18,0) = NULL
 AS
 BEGIN
 	SELECT numero as Numero,
@@ -23,6 +25,9 @@ BEGIN
 	   AND (@an_estado is null or c.estado_codigo = @an_estado) 
 	   AND (@an_moneda is null or c.moneda_tipo = @an_moneda) 
 	   AND (@an_tipo_cuenta is null or c.tipo_cuenta = @an_tipo_cuenta)
+	   AND (@an_doc is null or c.cliente_numero_doc = @an_doc)
+	   AND (@an_tipo_doc is null or c.cliente_tipo_doc = @an_tipo_doc)
+	   AND c.fecha_cierre IS NULL
 		   
 END
 GO

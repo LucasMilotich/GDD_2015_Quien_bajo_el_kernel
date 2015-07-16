@@ -53,10 +53,10 @@ namespace PagoElectronico.Services
 
         }
 
-        public DataTable GetCuentas(long? pais, int? tipoEstado, int? moneda, int? tipoCuenta)
+        public DataTable GetCuentas(long? pais, int? tipoEstado, int? moneda, int? tipoCuenta, long? nroDoc, long? tipoDoc)
         {
             CuentaRepository repository = new CuentaRepository();
-            return repository.GetCuentas( pais, tipoEstado, moneda, tipoCuenta);
+            return repository.GetCuentas( pais, tipoEstado, moneda, tipoCuenta, nroDoc, tipoDoc);
         }
 
         public Cuenta GetCuentaByNumero(long nroCuenta)
