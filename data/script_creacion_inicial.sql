@@ -887,7 +887,6 @@ END
 GO
 
 CREATE PROCEDURE [QUIEN_BAJO_EL_KERNEL].[InsertaCuenta]
-@an_num_cuenta			NUMERIC(18,0),
 @an_cod_pais			NUMERIC(18,0),
 @an_moneda_tipo			NUMERIC(1,0),
 @an_cuenta_tipo			NUMERIC(1,0),
@@ -895,10 +894,30 @@ CREATE PROCEDURE [QUIEN_BAJO_EL_KERNEL].[InsertaCuenta]
 @an_cliente_tipo_doc	NUMERIC(18,0)
 AS
 BEGIN
+DECLARE @an_num_cuenta	NUMERIC(18,0)
 	SET NOCOUNT ON;
+	
+	SELECT @an_num_cuenta = MAX(numero) + 1
+	  FROM QUIEN_BAJO_EL_KERNEL.CUENTA c
 
-	INSERT INTO QUIEN_BAJO_EL_KERNEL.CUENTA([numero],[pais_codigo],[moneda_tipo],[tipo_cuenta],[cliente_numero_doc],[cliente_tipo_doc])
-		 VALUES (@an_num_cuenta, @an_cod_pais, @an_moneda_tipo, @an_cuenta_tipo, @an_cliente_doc, @an_cliente_tipo_doc)
+	INSERT INTO QUIEN_BAJO_EL_KERNEL.CUENTA([numero],
+											[pais_codigo],
+											[moneda_tipo],
+											[tipo_cuenta],
+											[cliente_numero_doc],
+											[cliente_tipo_doc],
+											[fecha_creacion],
+											[saldo],
+											[estado_codigo])
+									 VALUES (@an_num_cuenta,
+											 @an_cod_pais,
+											 @an_moneda_tipo, 
+											 @an_cuenta_tipo, 
+											 @an_cliente_doc, 
+											 @an_cliente_tipo_doc,
+											 GETDATE(),
+											 0,--Saldo
+											 1)--Pendiente de activacion
 
 END
 GO
@@ -933,7 +952,9 @@ CREATE PROCEDURE [QUIEN_BAJO_EL_KERNEL].[GetCuentas]
 @an_pais		NUMERIC(18,0) = NULL,
 @an_estado		NUMERIC(1,0) = NULL,
 @an_moneda		NUMERIC(1,0) = NULL,
-@an_tipo_cuenta	NUMERIC(1,0) = NULL
+@an_tipo_cuenta	NUMERIC(1,0) = NULL,
+@an_doc			NUMERIC(10,0) = NULL,
+@an_tipo_doc	NUMERIC(18,0) = NULL
 AS
 BEGIN
 	SELECT numero as Numero,
@@ -954,6 +975,9 @@ BEGIN
 	   AND (@an_estado is null or c.estado_codigo = @an_estado) 
 	   AND (@an_moneda is null or c.moneda_tipo = @an_moneda) 
 	   AND (@an_tipo_cuenta is null or c.tipo_cuenta = @an_tipo_cuenta)
+	   AND (@an_doc is null or c.cliente_numero_doc = @an_doc)
+	   AND (@an_tipo_doc is null or c.cliente_tipo_doc = @an_tipo_doc)
+	   AND c.fecha_cierre IS NULL
 		   
 END
 GO
@@ -1026,7 +1050,8 @@ BEGIN
 		   c.pais_codigo,
 		   c.tipo_cuenta,
 		   c.cliente_numero_doc,
-		   c.cliente_tipo_doc
+		   c.cliente_tipo_doc,
+		   c.saldo
 	  FROM QUIEN_BAJO_EL_KERNEL.CUENTA c
 	 WHERE c.numero = @an_nro_cuenta
 END
