@@ -108,7 +108,7 @@ namespace PagoElectronico
 
         private void altaToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            showForm(new ABM_Cliente.Alta());
+            showForm(new ABM_Cliente.AltaCliente());
         }
 
         private void listadoCuentasToolStripMenuItem_Click(object sender, EventArgs e)

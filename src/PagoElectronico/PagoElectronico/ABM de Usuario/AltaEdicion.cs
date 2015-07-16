@@ -20,11 +20,11 @@ namespace PagoElectronico.ABM_de_Usuario
         private Cliente cliente;
         private ClienteService cliService = new ClienteService();
         private UsuarioService usrService = new UsuarioService();
-        ABM_Cliente.Alta form;
+        ABM_Cliente.AltaCliente form;
 
 
 
-        public AltaEdicion(Cliente cliente, ABM_Cliente.Alta form)
+        public AltaEdicion(Cliente cliente, ABM_Cliente.AltaCliente form)
         {
             InitializeComponent();
             if (cliente != null)

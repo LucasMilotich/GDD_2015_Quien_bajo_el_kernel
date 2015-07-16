@@ -21,12 +21,15 @@ namespace PagoElectronico.ABM_Cliente
         public ConsultaCliente()
         {
             InitializeComponent();
-
         }
+
+        #region Eventos
+        /*************    Metodos de componentes       *************/
 
         private void ConsultaCliente_Load(object sender, EventArgs e)
         {
             cargarComboTipoDoc();
+            dgvClientes.DataSource = null;
         }
 
         private void btnLimpiar_Click(object sender, EventArgs e)
@@ -44,6 +47,94 @@ namespace PagoElectronico.ABM_Cliente
 
         private void btnBuscar_Click(object sender, EventArgs e)
         {
+            realizarBusqueda();
+
+        }
+
+        void form_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.Visible = true;
+        }
+
+        //Handler for the event from formAltaCuenta
+        void handleUpdateEvent(object sender, EventArgs e)
+        {
+            realizarBusqueda();
+        }
+
+        private void dgvClientes_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+            if (e.ColumnIndex == 0)
+            {
+                var row = dgvClientes.Rows[e.RowIndex];
+                var cellTipoDoc = row.Cells["tipoDocumento"];
+                var cellNroDoc = row.Cells["numeroDocumento"];
+                var formAltaCliente = new AltaCliente(Convert.ToInt64(cellTipoDoc.Value), Convert.ToInt64(cellNroDoc.Value));
+                //Register the update event
+                formAltaCliente.updateEvent += new EventHandler(handleUpdateEvent);
+                //Register form closed event
+                formAltaCliente.FormClosed += new FormClosedEventHandler(form_FormClosed);
+                this.Visible = false;
+                formAltaCliente.Show();
+                formAltaCliente.MdiParent = this.MdiParent;
+            }
+            else if (e.ColumnIndex == 1)
+            {
+                if (MessageBox.Show("Desea cambiar la habilitacion del cliente seleccionado?", "Atención!", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
+                {
+                    var row = dgvClientes.Rows[e.RowIndex];
+                    var cellTipoDoc = row.Cells["tipoDocumento"];
+                    var cellNroDoc = row.Cells["numeroDocumento"];
+                    try
+                    {
+                        if (Convert.ToBoolean(row.Cells["habilitado"].Value))
+                        {
+                            clienteService.inhabilitarCliente(Convert.ToInt64(cellTipoDoc.Value), Convert.ToInt64(cellNroDoc.Value));
+                            MessageBox.Show("El cliente ha sido inhabilitado correctamente.", "Cliente inhabilitado correctamente", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            realizarBusqueda();                                                     
+                        }
+                        else
+                        {
+                            clienteService.habilitarCliente(Convert.ToInt64(cellTipoDoc.Value), Convert.ToInt64(cellNroDoc.Value));
+                            MessageBox.Show("El cliente ha sido habilitado correctamente.", "Cliente inhabilitado correctamente", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            realizarBusqueda(); 
+                        }                    
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("Error al inhabilitar al cliente.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+
+            }
+            else if (e.ColumnIndex == 2)
+            {
+                /*
+                var row = dgvClientes.Rows[e.RowIndex];
+                var cellTipoDoc = row.Cells["tipoDocumento"];
+                var cellNroDoc = row.Cells["numeroDocumento"];
+                var formAltaCliente = new AltaCliente(Convert.ToInt64(cellTipoDoc.Value), Convert.ToInt64(cellNroDoc.Value));
+                //Register the update event
+                formAltaCliente.updateEvent += new EventHandler(handleUpdateEvent);
+                //Register form closed event
+                formAltaCliente.FormClosed += new FormClosedEventHandler(form_FormClosed);
+                this.Visible = false;
+                formAltaCliente.Show();
+                formAltaCliente.MdiParent = this.MdiParent;
+                 */
+            }
+
+        }
+
+
+        #endregion
+
+        #region MetodosPrivados
+        /*************    Metodos Privados       *************/
+
+        private void realizarBusqueda()
+        {
             bool validador = true;
 
             long? tipoDoc = (long)cmbTipoDoc.SelectedValue <= 0 ? (long?)null : (long)cmbTipoDoc.SelectedValue;
@@ -59,9 +150,7 @@ namespace PagoElectronico.ABM_Cliente
                 dgvClientes.AutoGenerateColumns = false;
                 dgvClientes.DataSource = clienteService.getClientesByFiltros(txtApellido.Text, txtNombre.Text, txtMail.Text, tipoDoc, nroDoc);
             }
-
         }
-
 
         private void cargarComboTipoDoc()
         {
@@ -70,52 +159,6 @@ namespace PagoElectronico.ABM_Cliente
             cmbTipoDoc.SelectedIndex = 0;
         }
 
-        private void dgvClientes_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            
-            if (e.ColumnIndex == 0)
-            {
-                var row = dgvClientes.Rows[e.RowIndex];
-                var cell = row.Cells["Numero"];
-                var form = new AltaCuenta(Convert.ToInt64(cell.Value));
-                form.Show();
-                form.MdiParent = this.MdiParent;
-            }
-            else if (e.ColumnIndex == 1)
-            {/*
-
-                if (MessageBox.Show("Desea cerrar la cuenta seleccionada? La misma no podrá volver a activarse", "Atención!", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
-                {
-                    var row = dgvCuentas.Rows[e.RowIndex];
-                    var cell = row.Cells["Numero"];
-                    try
-                    {
-                        int resp = cuentaService.CerrarCuenta(Convert.ToInt64(cell.Value));
-                        if (resp == -1)
-                        {
-                            MessageBox.Show("La cuenta no se podrá cerrar mientras haya transacciones pendientes de pago", "Atención!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                        }
-                        else
-                        {
-                            MessageBox.Show("Cuenta cerrada!", "Atención!", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        }
-                    }
-                    catch (OperationCanceledException ex)
-                    {
-                        MessageBox.Show(ex.Message.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                    catch (Exception)
-                    {
-                        MessageBox.Show("Error al cerrar la cuenta.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                }
-
-            }*/
-        }
-
-
-
-
-
+        #endregion
     }
 }

@@ -767,11 +767,11 @@ GO
 insert into QUIEN_BAJO_EL_KERNEL.CLIENTE (tipo_documento,numero_documento,
 					 pais_codigo,nombre,apellido,dom_calle,
 					 dom_nro,dom_piso,dom_dpto,fecha_nacimiento,
-					 mail, username)
+					 mail, username,habilitado)
 			       (select distinct  cli_tipo_doc_cod,cli_nro_doc,cli_pais_codigo,
 						   cli_nombre,cli_apellido,cli_dom_calle,
 						   cli_dom_nro,cli_dom_piso,cli_dom_depto,
-						   cli_fecha_nac,cli_mail, cli_nro_doc
+						   cli_fecha_nac,cli_mail, cli_nro_doc,1
 					from gd_esquema.Maestra
 				   )
 GO
@@ -1083,6 +1083,7 @@ CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.INSERT_CLIENTE
  ,@mail varchar(255)
  ,@localidad varchar(255)
  ,@username varchar(255)
+ ,@habilitado bit
  )
 
 AS 
@@ -1101,7 +1102,8 @@ insert into QUIEN_BAJO_EL_KERNEL.CLIENTE
  ,fecha_nacimiento
  ,mail
  ,localidad
- ,username)
+ ,username
+ ,habilitado)
  VALUES
  (@tipoDocCod
  ,@dni
@@ -1115,9 +1117,48 @@ insert into QUIEN_BAJO_EL_KERNEL.CLIENTE
  ,@fechaNac
  ,@mail
  ,@localidad
- ,@username)
+ ,@username
+ ,@habilitado)
 
 select scope_identity()
+
+END
+GO
+
+
+create PROCEDURE QUIEN_BAJO_EL_KERNEL.UPDATE_CLIENTE 
+(
+  @tipoDocCod numeric(18,0)
+ ,@dni numeric(10,0)
+ ,@paisCod numeric(18,0)
+ ,@apellido  varchar(255)
+ ,@nombre varchar(255)
+ ,@dom_calle varchar(255)
+ ,@dom_nro numeric(18,0)
+ ,@dom_piso numeric(18,0)
+ ,@dom_dpto varchar(255)
+ ,@fechaNac datetime
+ ,@mail varchar(255)
+ ,@localidad varchar(255)
+ ,@habilitado bit
+ )
+
+AS 
+BEGIN
+
+update QUIEN_BAJO_EL_KERNEL.CLIENTE
+SET  pais_codigo = @paisCod
+	,nombre = @apellido
+	,apellido = @nombre
+	,dom_calle = @dom_calle
+	,dom_nro =  @dom_nro
+	,dom_piso = @dom_piso
+	,dom_dpto = @dom_dpto
+	,fecha_nacimiento = @fechaNac
+	,mail = @mail
+	,localidad =  @localidad 
+	,habilitado= @habilitado
+WHERE tipo_documento =@tipoDocCod and numero_documento = @dni
 
 END
 GO
@@ -1181,16 +1222,43 @@ select	c.tipo_documento as tipoDocumento,
 		c.fecha_nacimiento as fechaNacimiento,
 		c.mail,
 		c.localidad,
-		c.username
+		c.username,
+		c.habilitado
+		
 from QUIEN_BAJO_EL_KERNEL.CLIENTE c
 WHERE	(@apellido is null or c.apellido = @apellido) 
 	AND (@nombre is null or c.nombre = @nombre) 
  	AND (@mail is null or c.mail = @mail) 
 	AND (@tipoDoc is null or c.tipo_documento = @tipoDoc)
 	AND (@nroDoc is null or c.numero_documento = @nroDoc)
+	--AND c.habilitado=1
 	
 END
  GO
+
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.HABILITAR_CLIENTE (@documento numeric(10,0) = null
+															,@tipoDocumento numeric(18,0) = null)
+AS 
+BEGIN
+
+UPDATE QUIEN_BAJO_EL_KERNEL.CLIENTE
+SET habilitado=1
+WHERE tipo_documento = @tipoDocumento and numero_documento = @documento
+
+END
+GO
+
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.INHABILITAR_CLIENTE (@documento numeric(10,0) = null
+															,@tipoDocumento numeric(18,0) = null)
+AS 
+BEGIN
+
+UPDATE QUIEN_BAJO_EL_KERNEL.CLIENTE
+SET habilitado=0
+WHERE tipo_documento = @tipoDocumento and numero_documento = @documento
+
+END
+GO
 
 ---------------		SP Usuarios		---------------
 
@@ -1295,7 +1363,7 @@ FROM QUIEN_BAJO_EL_KERNEL.CLIENTE c
 WHERE c.username=@username
 
 END
-
+GO
 ---------------		SP Funcionalidad		---------------
 
 CREATE PROCEDURE [QUIEN_BAJO_EL_KERNEL].[GetFuncionalidadesByRol]
@@ -1388,7 +1456,7 @@ VALUES
 (@username
 ,@id_rol)
 END
-
+GO
 ---------------		SP ConsultaSaldos	---------------
 
 CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.getUltimosCincoDepositosByCuenta(@cuenta varchar(255))

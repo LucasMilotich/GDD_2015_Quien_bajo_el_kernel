@@ -40,10 +40,14 @@
             this.txtNombre = new System.Windows.Forms.TextBox();
             this.lblNombre = new System.Windows.Forms.Label();
             this.dgvClientes = new System.Windows.Forms.DataGridView();
+            this.btnBuscar = new System.Windows.Forms.Button();
+            this.btnLimpiar = new System.Windows.Forms.Button();
             this.edicion = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.cerrar = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.tipoDocCliente = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.nroDocumento = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.habilitar = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.AdministrarTarjetas = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.Habilitado = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tipoDocumento = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.numeroDocumento = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pais = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.nombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.apellido = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -55,8 +59,6 @@
             this.mail = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.localidad = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.username = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.btnBuscar = new System.Windows.Forms.Button();
-            this.btnLimpiar = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvClientes)).BeginInit();
             this.SuspendLayout();
@@ -91,7 +93,7 @@
             this.cmbTipoDoc.Location = new System.Drawing.Point(33, 133);
             this.cmbTipoDoc.Name = "cmbTipoDoc";
             this.cmbTipoDoc.Size = new System.Drawing.Size(231, 21);
-            this.cmbTipoDoc.TabIndex = 31;
+            this.cmbTipoDoc.TabIndex = 4;
             this.cmbTipoDoc.ValueMember = "codigo";
             // 
             // txtMail
@@ -99,7 +101,7 @@
             this.txtMail.Location = new System.Drawing.Point(33, 92);
             this.txtMail.Name = "txtMail";
             this.txtMail.Size = new System.Drawing.Size(231, 20);
-            this.txtMail.TabIndex = 28;
+            this.txtMail.TabIndex = 3;
             // 
             // lblMail
             // 
@@ -133,14 +135,14 @@
             this.txtNroDoc.Location = new System.Drawing.Point(270, 134);
             this.txtNroDoc.Name = "txtNroDoc";
             this.txtNroDoc.Size = new System.Drawing.Size(213, 20);
-            this.txtNroDoc.TabIndex = 33;
+            this.txtNroDoc.TabIndex = 5;
             // 
             // txtApellido
             // 
             this.txtApellido.Location = new System.Drawing.Point(33, 53);
             this.txtApellido.Name = "txtApellido";
             this.txtApellido.Size = new System.Drawing.Size(231, 20);
-            this.txtApellido.TabIndex = 25;
+            this.txtApellido.TabIndex = 1;
             // 
             // lblApellido
             // 
@@ -157,7 +159,7 @@
             this.txtNombre.Location = new System.Drawing.Point(270, 52);
             this.txtNombre.Name = "txtNombre";
             this.txtNombre.Size = new System.Drawing.Size(213, 20);
-            this.txtNombre.TabIndex = 27;
+            this.txtNombre.TabIndex = 2;
             // 
             // lblNombre
             // 
@@ -176,9 +178,11 @@
             this.dgvClientes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvClientes.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.edicion,
-            this.cerrar,
-            this.tipoDocCliente,
-            this.nroDocumento,
+            this.habilitar,
+            this.AdministrarTarjetas,
+            this.Habilitado,
+            this.tipoDocumento,
+            this.numeroDocumento,
             this.pais,
             this.nombre,
             this.apellido,
@@ -197,6 +201,26 @@
             this.dgvClientes.TabIndex = 22;
             this.dgvClientes.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvClientes_CellContentClick);
             // 
+            // btnBuscar
+            // 
+            this.btnBuscar.Location = new System.Drawing.Point(523, 92);
+            this.btnBuscar.Name = "btnBuscar";
+            this.btnBuscar.Size = new System.Drawing.Size(154, 69);
+            this.btnBuscar.TabIndex = 6;
+            this.btnBuscar.Text = "Buscar";
+            this.btnBuscar.UseVisualStyleBackColor = true;
+            this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
+            // 
+            // btnLimpiar
+            // 
+            this.btnLimpiar.Location = new System.Drawing.Point(585, 46);
+            this.btnLimpiar.Name = "btnLimpiar";
+            this.btnLimpiar.Size = new System.Drawing.Size(92, 26);
+            this.btnLimpiar.TabIndex = 8;
+            this.btnLimpiar.Text = "Limpiar campos";
+            this.btnLimpiar.UseVisualStyleBackColor = true;
+            this.btnLimpiar.Click += new System.EventHandler(this.btnLimpiar_Click);
+            // 
             // edicion
             // 
             this.edicion.HeaderText = "Editar";
@@ -206,29 +230,46 @@
             this.edicion.UseColumnTextForButtonValue = true;
             this.edicion.Width = 50;
             // 
-            // cerrar
+            // habilitar
             // 
-            this.cerrar.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.cerrar.HeaderText = "Cerrar";
-            this.cerrar.Name = "cerrar";
-            this.cerrar.ReadOnly = true;
-            this.cerrar.Text = "Cerrar";
-            this.cerrar.UseColumnTextForButtonValue = true;
-            this.cerrar.Width = 41;
+            this.habilitar.DataPropertyName = "habilitar";
+            this.habilitar.HeaderText = "Habilitar";
+            this.habilitar.Name = "habilitar";
+            this.habilitar.ReadOnly = true;
+            this.habilitar.Text = "Habilitar / Inhabilitar";
+            this.habilitar.UseColumnTextForButtonValue = true;
+            this.habilitar.Width = 110;
             // 
-            // tipoDocCliente
+            // AdministrarTarjetas
             // 
-            this.tipoDocCliente.DataPropertyName = "TipoDocumento";
-            this.tipoDocCliente.HeaderText = "Tipo Documento";
-            this.tipoDocCliente.Name = "tipoDocCliente";
-            this.tipoDocCliente.ReadOnly = true;
+            this.AdministrarTarjetas.DataPropertyName = "AdministrarTarjetas";
+            this.AdministrarTarjetas.HeaderText = "AdministrarTarjetas";
+            this.AdministrarTarjetas.Name = "AdministrarTarjetas";
+            this.AdministrarTarjetas.ReadOnly = true;
+            this.AdministrarTarjetas.Text = "Administrar";
+            this.AdministrarTarjetas.UseColumnTextForButtonValue = true;
             // 
-            // nroDocumento
+            // Habilitado
             // 
-            this.nroDocumento.DataPropertyName = "numeroDocumento";
-            this.nroDocumento.HeaderText = "Nro. Documento";
-            this.nroDocumento.Name = "nroDocumento";
-            this.nroDocumento.ReadOnly = true;
+            this.Habilitado.DataPropertyName = "habilitado";
+            this.Habilitado.HeaderText = "Habilitado";
+            this.Habilitado.Name = "Habilitado";
+            this.Habilitado.ReadOnly = true;
+            this.Habilitado.Width = 55;
+            // 
+            // tipoDocumento
+            // 
+            this.tipoDocumento.DataPropertyName = "TipoDocumento";
+            this.tipoDocumento.HeaderText = "Tipo Documento";
+            this.tipoDocumento.Name = "tipoDocumento";
+            this.tipoDocumento.ReadOnly = true;
+            // 
+            // numeroDocumento
+            // 
+            this.numeroDocumento.DataPropertyName = "numeroDocumento";
+            this.numeroDocumento.HeaderText = "Nro. Documento";
+            this.numeroDocumento.Name = "numeroDocumento";
+            this.numeroDocumento.ReadOnly = true;
             // 
             // pais
             // 
@@ -307,26 +348,6 @@
             this.username.Name = "username";
             this.username.ReadOnly = true;
             // 
-            // btnBuscar
-            // 
-            this.btnBuscar.Location = new System.Drawing.Point(532, 108);
-            this.btnBuscar.Name = "btnBuscar";
-            this.btnBuscar.Size = new System.Drawing.Size(145, 46);
-            this.btnBuscar.TabIndex = 21;
-            this.btnBuscar.Text = "Buscar";
-            this.btnBuscar.UseVisualStyleBackColor = true;
-            this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
-            // 
-            // btnLimpiar
-            // 
-            this.btnLimpiar.Location = new System.Drawing.Point(532, 52);
-            this.btnLimpiar.Name = "btnLimpiar";
-            this.btnLimpiar.Size = new System.Drawing.Size(145, 45);
-            this.btnLimpiar.TabIndex = 20;
-            this.btnLimpiar.Text = "Limpiar";
-            this.btnLimpiar.UseVisualStyleBackColor = true;
-            this.btnLimpiar.Click += new System.EventHandler(this.btnLimpiar_Click);
-            // 
             // ConsultaCliente
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -349,10 +370,22 @@
         private System.Windows.Forms.DataGridView dgvClientes;
         private System.Windows.Forms.Button btnBuscar;
         private System.Windows.Forms.Button btnLimpiar;
+        private System.Windows.Forms.TextBox txtApellido;
+        private System.Windows.Forms.Label lblApellido;
+        private System.Windows.Forms.TextBox txtNombre;
+        private System.Windows.Forms.Label lblNombre;
+        private System.Windows.Forms.ComboBox cmbTipoDoc;
+        private System.Windows.Forms.TextBox txtMail;
+        private System.Windows.Forms.Label lblMail;
+        private System.Windows.Forms.Label lblDni;
+        private System.Windows.Forms.Label lblTipoDoc;
+        private System.Windows.Forms.TextBox txtNroDoc;
         private System.Windows.Forms.DataGridViewButtonColumn edicion;
-        private System.Windows.Forms.DataGridViewButtonColumn cerrar;
-        private System.Windows.Forms.DataGridViewTextBoxColumn tipoDocCliente;
-        private System.Windows.Forms.DataGridViewTextBoxColumn nroDocumento;
+        private System.Windows.Forms.DataGridViewButtonColumn habilitar;
+        private System.Windows.Forms.DataGridViewButtonColumn AdministrarTarjetas;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Habilitado;
+        private System.Windows.Forms.DataGridViewTextBoxColumn tipoDocumento;
+        private System.Windows.Forms.DataGridViewTextBoxColumn numeroDocumento;
         private System.Windows.Forms.DataGridViewTextBoxColumn pais;
         private System.Windows.Forms.DataGridViewTextBoxColumn nombre;
         private System.Windows.Forms.DataGridViewTextBoxColumn apellido;
@@ -364,16 +397,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn mail;
         private System.Windows.Forms.DataGridViewTextBoxColumn localidad;
         private System.Windows.Forms.DataGridViewTextBoxColumn username;
-        private System.Windows.Forms.TextBox txtApellido;
-        private System.Windows.Forms.Label lblApellido;
-        private System.Windows.Forms.TextBox txtNombre;
-        private System.Windows.Forms.Label lblNombre;
-        private System.Windows.Forms.ComboBox cmbTipoDoc;
-        private System.Windows.Forms.TextBox txtMail;
-        private System.Windows.Forms.Label lblMail;
-        private System.Windows.Forms.Label lblDni;
-        private System.Windows.Forms.Label lblTipoDoc;
-        private System.Windows.Forms.TextBox txtNroDoc;
 
     }
 }

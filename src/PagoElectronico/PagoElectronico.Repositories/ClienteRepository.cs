@@ -10,69 +10,11 @@ namespace PagoElectronico.Repositories
 {
     public class ClienteRepository : BaseRepository<Cliente>
     {
-
-        public Cliente getClienteByUsername(String usuario)
-        {
-            SqlCommand command = DBConnection.CreateStoredProcedure("getClienteByUsername");
-            command.Parameters.AddWithValue("@username", usuario);
-
-            Cliente cliente = materializarCliente(DBConnection.EjecutarStoredProcedureSelect(command).Rows[0]);
-            return cliente;
-        }
-        
-        public override IEnumerable<Cliente> GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Cliente Get(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override int Insert(Cliente entity)
-
-        {
-
-            SqlCommand command = DBConnection.CreateStoredProcedure("INSERT_CLIENTE");
-
-            command.Parameters.AddWithValue("@nombre", entity.nombre);
-            command.Parameters.AddWithValue("@apellido", entity.apellido);
-            command.Parameters.AddWithValue("@mail", entity.mail);
-            command.Parameters.AddWithValue("@paisCod", entity.paisCodigo);
-            command.Parameters.AddWithValue("@dom_calle", entity.domCalle);
-            command.Parameters.AddWithValue("@dom_nro", entity.domNro);
-            command.Parameters.AddWithValue("@dom_piso", entity.domPiso);
-            command.Parameters.AddWithValue("@dom_dpto", entity.domDpto);
-            command.Parameters.AddWithValue("@localidad", entity.localidad);
-            command.Parameters.AddWithValue("@tipoDocCod", entity.tipoDocumento);
-            command.Parameters.AddWithValue("@dni", entity.numeroDocumento);
-            command.Parameters.AddWithValue("@username", entity.username);
-            command.Parameters.AddWithValue("@fechaNac", entity.fechaNacimiento);
-           
-
-
-        
-
-         
-            return DBConnection.ExecuteNonQuery(command);
-        }
-
-        public override void Update(Cliente entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void Delete(Cliente entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Cliente materializarCliente (DataRow dataRow)
+        public Cliente materializarCliente(DataRow dataRow)
         {
             Cliente cliente = new Cliente();
             cliente.tipoDocumento = Int64.Parse(dataRow["tipo_documento"].ToString());
-            cliente.numeroDocumento= Int64.Parse(dataRow["numero_documento"].ToString());
+            cliente.numeroDocumento = Int64.Parse(dataRow["numero_documento"].ToString());
             cliente.paisCodigo = Int64.Parse(dataRow["pais_codigo"].ToString());
             cliente.nombre = dataRow["nombre"].ToString();
             cliente.apellido = dataRow["apellido"].ToString();
@@ -84,11 +26,40 @@ namespace PagoElectronico.Repositories
             cliente.mail = dataRow["mail"].ToString();
             cliente.localidad = dataRow["localidad"].ToString();
             cliente.username = dataRow["username"].ToString();
+            cliente.habilitado = Boolean.Parse(dataRow["habilitado"].ToString());
 
             return cliente;
 
         }
 
+        public override Cliente Get(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Cliente getClienteByDNI(long tipoDoc, long nroDoc)
+        {
+            SqlCommand command = DBConnection.CreateStoredProcedure("SELECT_CLIENTE_BY_DNI ");
+            command.Parameters.AddWithValue("@documento", nroDoc);
+            command.Parameters.AddWithValue("@tipoDocumento", tipoDoc);
+
+            Cliente cliente = materializarCliente(DBConnection.EjecutarStoredProcedureSelect(command).Rows[0]);
+            return cliente;
+        }
+
+        public Cliente getClienteByUsername(String usuario)
+        {
+            SqlCommand command = DBConnection.CreateStoredProcedure("getClienteByUsername");
+            command.Parameters.AddWithValue("@username", usuario);
+
+            Cliente cliente = materializarCliente(DBConnection.EjecutarStoredProcedureSelect(command).Rows[0]);
+            return cliente;
+        }
+
+        public override IEnumerable<Cliente> GetAll()
+        {
+            throw new NotImplementedException();
+        }
 
         public IEnumerable<Cliente> GetClientes()
         {
@@ -105,9 +76,9 @@ namespace PagoElectronico.Repositories
             return clientes;
         }
 
-        public DataTable getClientesByFiltros(String apellido, String nombre, String mail, long? tipoDoc, long? nroDoc) 
+        public DataTable getClientesByFiltros(String apellido, String nombre, String mail, long? tipoDoc, long? nroDoc)
         {
-           
+
             SqlCommand command = DBConnection.CreateStoredProcedure("getClientesByFiltros");
             command.Parameters.AddWithValue("@apellido", String.IsNullOrEmpty(apellido) ? null : apellido);
             command.Parameters.AddWithValue("@nombre", String.IsNullOrEmpty(nombre) ? null : nombre);
@@ -118,18 +89,65 @@ namespace PagoElectronico.Repositories
 
         }
     
-        public bool existeDocumento( long documento, long  tipoDocumento){
+        public override int Insert(Cliente entity)
+        {
+            SqlCommand command = DBConnection.CreateStoredProcedure("INSERT_CLIENTE");
 
+            command.Parameters.AddWithValue("@nombre", entity.nombre);
+            command.Parameters.AddWithValue("@apellido", entity.apellido);
+            command.Parameters.AddWithValue("@mail", entity.mail);
+            command.Parameters.AddWithValue("@paisCod", entity.paisCodigo);
+            command.Parameters.AddWithValue("@dom_calle", entity.domCalle);
+            command.Parameters.AddWithValue("@dom_nro", entity.domNro);
+            command.Parameters.AddWithValue("@dom_piso", entity.domPiso);
+            command.Parameters.AddWithValue("@dom_dpto", entity.domDpto);
+            command.Parameters.AddWithValue("@localidad", entity.localidad);
+            command.Parameters.AddWithValue("@tipoDocCod", entity.tipoDocumento);
+            command.Parameters.AddWithValue("@dni", entity.numeroDocumento);
+            command.Parameters.AddWithValue("@username", entity.username);
+            command.Parameters.AddWithValue("@fechaNac", entity.fechaNacimiento);
+            command.Parameters.AddWithValue("@habilitado", entity.habilitado);
+
+            return DBConnection.ExecuteNonQuery(command);
+        }
+
+        public override void Update(Cliente entity)
+        {
+            SqlCommand command = DBConnection.CreateStoredProcedure("UPDATE_CLIENTE");
+            command.Parameters.AddWithValue("@nombre", entity.nombre);
+            command.Parameters.AddWithValue("@apellido", entity.apellido);
+            command.Parameters.AddWithValue("@mail", entity.mail);
+            command.Parameters.AddWithValue("@paisCod", entity.paisCodigo);
+            command.Parameters.AddWithValue("@dom_calle", entity.domCalle);
+            command.Parameters.AddWithValue("@dom_nro", entity.domNro);
+            command.Parameters.AddWithValue("@dom_piso", entity.domPiso);
+            command.Parameters.AddWithValue("@dom_dpto", entity.domDpto);
+            command.Parameters.AddWithValue("@localidad", entity.localidad);
+            command.Parameters.AddWithValue("@tipoDocCod", entity.tipoDocumento);
+            command.Parameters.AddWithValue("@dni", entity.numeroDocumento);
+            //    command.Parameters.AddWithValue("@username", entity.username);
+            command.Parameters.AddWithValue("@fechaNac", entity.fechaNacimiento);
+            command.Parameters.AddWithValue("@habilitado", entity.habilitado);
+
+            DBConnection.ExecuteNonQuery(command);
+        }
+
+        public override void Delete(Cliente entity)
+        {
+            throw new NotImplementedException();
+        }
+  
+        public bool existeDocumento(long documento, long tipoDocumento)
+        {
             SqlCommand command = DBConnection.CreateStoredProcedure("SELECT_CLIENTE_BY_DNI ");
             command.Parameters.AddWithValue("@documento", documento);
             command.Parameters.AddWithValue("@tipoDocumento", tipoDocumento);
             if (DBConnection.EjecutarStoredProcedureSelect(command).Rows.Count > 0)
                 return true;
-            else 
-                return false;        
+            else
+                return false;
         }
 
-        
         public bool existeMail(string mail)
         {
             SqlCommand command = DBConnection.CreateStoredProcedure("getUsersByMail ");
@@ -137,9 +155,44 @@ namespace PagoElectronico.Repositories
             if (DBConnection.EjecutarStoredProcedureSelect(command).Rows.Count > 0)
                 return true;
             else
-                return false;        
+                return false;
         }
 
+        public bool existeMailParaOtroCliente(string mail, Cliente cliente)
+        {
+            SqlCommand command = DBConnection.CreateStoredProcedure("getUsersByMail ");
+            command.Parameters.AddWithValue("@mail", mail);
 
+            DataRowCollection collection = DBConnection.EjecutarStoredProcedureSelect(command).Rows;
+
+            if (collection.Count > 0)
+            {
+                Cliente clienteDB = materializarCliente(collection[0]);
+                if (clienteDB.mail == cliente.mail)
+                    return false;
+                else
+                    return true;
+            }
+            else
+                return false;
+        }
+
+        public void habilitarCliente(long tipoDoc, long nroDoc)
+        {
+            SqlCommand command = DBConnection.CreateStoredProcedure("HABILITAR_CLIENTE");
+            command.Parameters.AddWithValue("@documento", nroDoc);
+            command.Parameters.AddWithValue("@tipoDocumento", tipoDoc);
+            DBConnection.ExecuteNonQuery(command);
+        }
+
+        public void inhabilitarCliente(long tipoDoc, long nroDoc)
+        {
+            SqlCommand command = DBConnection.CreateStoredProcedure("INHABILITAR_CLIENTE");
+            command.Parameters.AddWithValue("@documento", nroDoc);
+            command.Parameters.AddWithValue("@tipoDocumento", tipoDoc);
+            DBConnection.ExecuteNonQuery(command);
+        }
+
+     
     }
 }
