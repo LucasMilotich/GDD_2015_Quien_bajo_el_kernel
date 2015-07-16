@@ -58,7 +58,7 @@
             this.groupBox1.Controls.Add(this.txtUsername);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(541, 161);
+            this.groupBox1.Size = new System.Drawing.Size(374, 161);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Usuario";
@@ -67,7 +67,7 @@
             // 
             this.txtRespuesta.Location = new System.Drawing.Point(123, 113);
             this.txtRespuesta.Name = "txtRespuesta";
-            this.txtRespuesta.Size = new System.Drawing.Size(412, 20);
+            this.txtRespuesta.Size = new System.Drawing.Size(169, 20);
             this.txtRespuesta.TabIndex = 7;
             // 
             // label4
@@ -83,14 +83,15 @@
             // 
             this.txtPregunta.Location = new System.Drawing.Point(123, 83);
             this.txtPregunta.Name = "txtPregunta";
-            this.txtPregunta.Size = new System.Drawing.Size(412, 20);
+            this.txtPregunta.Size = new System.Drawing.Size(169, 20);
             this.txtPregunta.TabIndex = 5;
             // 
             // txtPassword
             // 
             this.txtPassword.Location = new System.Drawing.Point(123, 53);
             this.txtPassword.Name = "txtPassword";
-            this.txtPassword.Size = new System.Drawing.Size(152, 20);
+            this.txtPassword.PasswordChar = '*';
+            this.txtPassword.Size = new System.Drawing.Size(169, 20);
             this.txtPassword.TabIndex = 4;
             // 
             // label3
@@ -124,7 +125,7 @@
             // 
             this.txtUsername.Location = new System.Drawing.Point(123, 22);
             this.txtUsername.Name = "txtUsername";
-            this.txtUsername.Size = new System.Drawing.Size(152, 20);
+            this.txtUsername.Size = new System.Drawing.Size(169, 20);
             this.txtUsername.TabIndex = 0;
             // 
             // groupBox2
@@ -132,7 +133,7 @@
             this.groupBox2.Controls.Add(this.chkRoles);
             this.groupBox2.Location = new System.Drawing.Point(12, 179);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(541, 161);
+            this.groupBox2.Size = new System.Drawing.Size(374, 161);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Asignación de Roles";
@@ -147,18 +148,19 @@
             // 
             // btnLimpiar
             // 
-            this.btnLimpiar.Location = new System.Drawing.Point(36, 366);
+            this.btnLimpiar.Location = new System.Drawing.Point(204, 346);
             this.btnLimpiar.Name = "btnLimpiar";
-            this.btnLimpiar.Size = new System.Drawing.Size(75, 23);
+            this.btnLimpiar.Size = new System.Drawing.Size(130, 52);
             this.btnLimpiar.TabIndex = 2;
             this.btnLimpiar.Text = "Limpiar";
             this.btnLimpiar.UseVisualStyleBackColor = true;
+            this.btnLimpiar.Click += new System.EventHandler(this.btnLimpiar_Click);
             // 
             // btnGuardar
             // 
-            this.btnGuardar.Location = new System.Drawing.Point(452, 366);
+            this.btnGuardar.Location = new System.Drawing.Point(35, 346);
             this.btnGuardar.Name = "btnGuardar";
-            this.btnGuardar.Size = new System.Drawing.Size(75, 23);
+            this.btnGuardar.Size = new System.Drawing.Size(131, 52);
             this.btnGuardar.TabIndex = 3;
             this.btnGuardar.Text = "Guardar";
             this.btnGuardar.UseVisualStyleBackColor = true;
@@ -168,7 +170,7 @@
             // 
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(565, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(413, 24);
             this.menuStrip1.TabIndex = 4;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -176,7 +178,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(565, 410);
+            this.ClientSize = new System.Drawing.Size(413, 410);
             this.Controls.Add(this.btnGuardar);
             this.Controls.Add(this.btnLimpiar);
             this.Controls.Add(this.groupBox2);

@@ -98,7 +98,7 @@ namespace PagoElectronico
 
         private void listadoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            showForm(new ABM_Cliente.Listado());
+            showForm(new ABM_Cliente.ConsultaCliente());
         }
 
         private void retiroToolStripMenuItem_Click(object sender, EventArgs e)

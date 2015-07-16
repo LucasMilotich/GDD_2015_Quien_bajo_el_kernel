@@ -104,6 +104,19 @@ namespace PagoElectronico.Repositories
 
             return clientes;
         }
+
+        public DataTable getClientesByFiltros(String apellido, String nombre, String mail, long? tipoDoc, long? nroDoc) 
+        {
+           
+            SqlCommand command = DBConnection.CreateStoredProcedure("getClientesByFiltros");
+            command.Parameters.AddWithValue("@apellido", String.IsNullOrEmpty(apellido) ? null : apellido);
+            command.Parameters.AddWithValue("@nombre", String.IsNullOrEmpty(nombre) ? null : nombre);
+            command.Parameters.AddWithValue("@mail", String.IsNullOrEmpty(mail) ? null : mail);
+            command.Parameters.AddWithValue("@tipoDoc", tipoDoc);
+            command.Parameters.AddWithValue("@nroDoc", nroDoc);
+            return DBConnection.EjecutarStoredProcedureSelect(command);
+
+        }
     
         public bool existeDocumento( long documento, long  tipoDocumento){
 
@@ -113,12 +126,20 @@ namespace PagoElectronico.Repositories
             if (DBConnection.EjecutarStoredProcedureSelect(command).Rows.Count > 0)
                 return true;
             else 
-                return false;
-
-          
+                return false;        
+        }
 
         
+        public bool existeMail(string mail)
+        {
+            SqlCommand command = DBConnection.CreateStoredProcedure("getUsersByMail ");
+            command.Parameters.AddWithValue("@mail", mail);
+            if (DBConnection.EjecutarStoredProcedureSelect(command).Rows.Count > 0)
+                return true;
+            else
+                return false;        
         }
-    
+
+
     }
 }

@@ -158,7 +158,8 @@ CREATE TABLE QUIEN_BAJO_EL_KERNEL.CLIENTE (
 	fecha_nacimiento datetime NULL,
 	mail varchar(255) NULL,
 	localidad varchar(255) NULL,
-	username varchar(255) NOT NULL
+	username varchar(255) NOT NULL,
+	habilitado bit NOT NULL
 )
 GO
 
@@ -1112,22 +1113,59 @@ END
 GO
 
 
-CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.SELECT_CLIENTE_BY_DNI 
-(
-@documento numeric(10,0) = null
-,@tipoDocumento numeric(18,0) = null
-)
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.SELECT_CLIENTE_BY_DNI (@documento numeric(10,0) = null
+															,@tipoDocumento numeric(18,0) = null)
 AS 
 BEGIN
 
 SELECT *
 FROM QUIEN_BAJO_EL_KERNEL.CLIENTE c
-WHERE 
-c.tipo_documento = @tipoDocumento
-and c.numero_documento = @documento
+WHERE c.tipo_documento = @tipoDocumento and c.numero_documento = @documento
 
 END
+GO
 
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.getUsersByMail (@mail varchar(255))
+AS 
+BEGIN
+
+SELECT *
+FROM QUIEN_BAJO_EL_KERNEL.CLIENTE c
+WHERE c.mail = @mail
+
+END
+ GO
+ 
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.getClientesByFiltros  (	@apellido varchar(255)= NULL,
+																@nombre varchar(255)= NULL,
+																@mail varchar(255)= NULL,
+																@tipoDoc numeric(18)= NULL,
+																@nroDoc numeric(10)= NULL )
+AS 
+BEGIN
+
+select	c.tipo_documento as tipoDocumento,
+		c.numero_documento as numeroDocumento,
+		c.pais_codigo as paisCodigo,
+		c.nombre,
+		c.apellido,
+		c.dom_calle as domCalle,
+		c.dom_dpto as domDpto,
+		c.dom_nro as domNro,
+		c.dom_piso as domPiso,
+		c.fecha_nacimiento as fechaNacimiento,
+		c.mail,
+		c.localidad,
+		c.username
+from QUIEN_BAJO_EL_KERNEL.CLIENTE c
+WHERE	(@apellido is null or c.apellido = @apellido) 
+	AND (@nombre is null or c.nombre = @nombre) 
+ 	AND (@mail is null or c.mail = @mail) 
+	AND (@tipoDoc is null or c.tipo_documento = @tipoDoc)
+	AND (@nroDoc is null or c.numero_documento = @nroDoc)
+	
+END
+ GO
 
 ---------------		SP Usuarios		---------------
 
@@ -1223,6 +1261,15 @@ BEGIN
 END
 GO
 
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.getUserByUsername (@username varchar(255))
+AS 
+BEGIN
+
+SELECT *
+FROM QUIEN_BAJO_EL_KERNEL.CLIENTE c
+WHERE c.username=@username
+
+END
 
 ---------------		SP Funcionalidad		---------------
 

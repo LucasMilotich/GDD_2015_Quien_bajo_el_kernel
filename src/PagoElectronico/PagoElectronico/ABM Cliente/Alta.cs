@@ -128,7 +128,10 @@ namespace PagoElectronico.ABM_Cliente
 
         private void validarExisteMail()
         {
-            throw new NotImplementedException();
+            if (cliServ.existeMail(txtMail.Text))
+            {
+                throw new Exception("El mail ingresado ya pertenece para un Cliente !");
+            }
         }
 
         #endregion

@@ -109,6 +109,16 @@ namespace PagoElectronico.Repositories
 
         }
 
+        public bool existeUsername(string username)
+        {
+            SqlCommand command = DBConnection.CreateStoredProcedure("getUserByUsername");
+            command.Parameters.AddWithValue("@username", username);
+            if (DBConnection.EjecutarStoredProcedureSelect(command).Rows.Count > 0)
+                return true;
+            else
+                return false;
+        }
+
 
     }
 }
