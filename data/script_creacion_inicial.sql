@@ -1585,7 +1585,7 @@ BEGIN
 	inner join QUIEN_BAJO_EL_KERNEL.CUENTA c2 on c2.numero = c.cuenta
 	inner join QUIEN_BAJO_EL_KERNEL.TIPO_CUENTA tt on tt.codigo = c2.tipo_cuenta
 	where i.factura_numero is null and c2.cliente_numero_doc=@numeroDoc and c2.cliente_tipo_doc=@tipoDoc
-		and c.nuevo_tipo_cuenta <> 1
+		and c.nuevo_tipo_cuenta <> 1 and c.habilitado = 1
 	
 END
 GO
@@ -1593,7 +1593,7 @@ GO
 CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.GetCountTransacciones (@cuenta numeric(18))
 AS
 BEGIN
-	select COUNT(*) from dbo.TransaccionesSinFacturar t
+	select COUNT(*) from QUIEN_BAJO_EL_KERNEL.TransaccionesSinFacturar t
 	where t.Cuenta = @cuenta
 END
 GO
@@ -1602,7 +1602,7 @@ CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.ValidarCantidadTransacciones (@cuenta nume
 AS
 BEGIN
 	declare @cantidad int;
-	select @cantidad=COUNT(*) from dbo.TransaccionesSinFacturar t
+	select @cantidad=COUNT(*) from QUIEN_BAJO_EL_KERNEL.TransaccionesSinFacturar t
 	where t.Cuenta = @cuenta
 	
 	if (@cantidad <= 5)
@@ -1614,7 +1614,7 @@ BEGIN
 END
 GO
 
-Create View TransaccionesSinFacturar
+Create View QUIEN_BAJO_EL_KERNEL.TransaccionesSinFacturar
 as
 	(SELECT t.origen as Cuenta
 	FROM QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA t 
@@ -1637,7 +1637,7 @@ as
 	left join QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA_MODIFICACION_CUENTA i on c.id_modificacion = i.id_modificacion
 	inner join QUIEN_BAJO_EL_KERNEL.CUENTA c2 on c2.numero = c.cuenta
 	inner join QUIEN_BAJO_EL_KERNEL.TIPO_CUENTA tt on tt.codigo = c2.tipo_cuenta
-	where i.factura_numero is null c.habilitado = 1
+	where i.factura_numero is null and c.habilitado = 1
 		and c.nuevo_tipo_cuenta <> 1)
 go
 
