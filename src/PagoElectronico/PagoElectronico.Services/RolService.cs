@@ -46,7 +46,12 @@ namespace PagoElectronico.Services
             return rol;
         }
 
-     
+        public int modificarRol(Rol rol)
+        {
+            RolRepository repo = new RolRepository();
+            return repo.modificarRol(rol);
+        }
 
+      
     }
 }

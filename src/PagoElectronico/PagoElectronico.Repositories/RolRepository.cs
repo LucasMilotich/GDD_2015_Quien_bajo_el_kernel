@@ -118,5 +118,30 @@ namespace PagoElectronico.Repositories
 
             return rol;
         }
+
+        public int modificarRol(Rol rol)
+        {
+            SqlCommand command = DBConnection.CreateStoredProcedure("borrar_funcionalidad_rol");
+            command.Parameters.AddWithValue("@idRol", rol.Id);
+            DBConnection.ExecuteNonQuery(command);
+
+            foreach (var item in rol.Funcionalidades)
+            {
+
+                command = DBConnection.CreateStoredProcedure("INSERT_ROL_FUNCIONALIDAD");
+                command.Parameters.AddWithValue("id_rol", rol.Id);
+                command.Parameters.AddWithValue("id_funcionalidad", item.Id);
+                DBConnection.ExecuteNonQuery(command);
+            }
+
+
+            SqlCommand command1 = DBConnection.CreateStoredProcedure("MODIFICAR_ROL");
+            command1.Parameters.AddWithValue("@idRol", rol.Id);
+            command1.Parameters.AddWithValue("@nombre", rol.Nombre);
+            command1.Parameters.AddWithValue("@activo", rol.Activo);
+
+            return DBConnection.ExecuteNonQuery(command1);
+        }
+
     }
 }

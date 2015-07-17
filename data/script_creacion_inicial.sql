@@ -737,12 +737,25 @@ GO
 INSERT INTO  [QUIEN_BAJO_EL_KERNEL].[ROL] (nombre,activo) values ('Administrador',1)
 GO
 
+
+
 INSERT INTO  [QUIEN_BAJO_EL_KERNEL].[ROL] (nombre,activo) values ('Cliente',1)
 GO
+
+INSERT INTO QUIEN_BAJO_EL_KERNEL.FUNCIONALIDAD_ROL (ID_ROL,id_funcionalidad) 
+VALUES (2,3),(2,4),(2,5),(2,6),(2,7),(2,8),(2,9)
+
+GO
+
+
+
 
 INSERT INTO  [QUIEN_BAJO_EL_KERNEL].[USUARIO_ROL] (id_rol,username) values (1,'admin')
 GO
 
+INSERT INTO QUIEN_BAJO_EL_KERNEL.FUNCIONALIDAD_ROL (ID_ROL,id_funcionalidad) 
+VALUES (1,1),(1,2),(1,3),(1,4),(1,5),(1,6),(1,7),(1,8),(1,9),(1,10)
+GO
 
 insert into QUIEN_BAJO_EL_KERNEL.TIPO_DOCUMENTO (codigo,descripcion)
 			 (select distinct cli_tipo_doc_cod,cli_tipo_doc_desc
@@ -1533,6 +1546,24 @@ VALUES
 ,@id_rol)
 END
 GO
+
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.MODIFICAR_ROL (@idRol numeric(10),@nombre varchar (255),@activo bit)
+AS
+begin
+update QUIEN_BAJO_EL_KERNEL.ROL set nombre = @nombre, activo = @activo 
+where id = @idRol
+
+END
+GO
+
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.borrar_funcionalidad_rol (@idRol numeric(10))
+AS
+begin
+delete from QUIEN_BAJO_EL_KERNEL.FUNCIONALIDAD_ROL where ID_rol = @idRol
+
+END
+GO
+
 ---------------		SP ConsultaSaldos	---------------
 
 CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.getUltimosCincoDepositosByCuenta(@cuenta varchar(255))
@@ -1930,6 +1961,24 @@ GO
 --- 1.-Clientes que alguna de sus cuentas fueron inhabilitadas por no pagar los costos de transacción ---
 
 
+	
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.ClientesCuentasInhabilitadas (@fechaDesde datetime, @fechaHasta datetime)
+AS
+BEGIN
+
+SELECT c.apellido as Apellido,c.nombre as Nombre,c.tipo_documento as 'Tipo documento',c.numero_documento As 'Numero documento'
+FROM QUIEN_BAJO_EL_KERNEL.CLIENTE c JOIN QUIEN_BAJO_EL_KERNEL.CUENTA cta ON 
+      c.tipo_documento = cta.cliente_tipo_doc 
+      and c.numero_documento = cta.cliente_numero_doc  
+      JOIN QUIEN_BAJO_EL_KERNEL.CUENTA_MODIFICACION ctamod ON
+      ctamod.cuenta = cta.numero
+WHERE
+	ctamod.habilitado = 0 
+	and  ctamod.fecha >=@fechaDesde 
+	and ctamod.fecha<=@fechaHasta
+	
+END
+GO
 
 --- 2.- Cliente con mayor cantidad de comisiones facturadas en todas sus cuentas --
 
@@ -1969,27 +2018,24 @@ GO
 --- 3.- Clientes con mayor cantidad de transacciones realizadas entre cuentas propias ---
 create view QUIEN_BAJO_EL_KERNEL.TransaccionesClientes as
 --modificacionDeCuenta
-select c3.tipo_documento,c3.numero_documento,c3.apellido,c3.nombre,c2.fecha, COUNT(numero) cantTransacciones from QUIEN_BAJO_EL_KERNEL.CUENTA c1
-inner join QUIEN_BAJO_EL_KERNEL.CUENTA_MODIFICACION c2 on c1.numero=c2.cuenta
-inner join QUIEN_BAJO_EL_KERNEL.CLIENTE c3 on c3.tipo_documento =c1.cliente_tipo_doc and c3.numero_documento=c1.cliente_numero_doc
-group by c3.tipo_documento,c3.numero_documento,c3.apellido,c3.nombre,c2.fecha
-
-UNION ALL
-
--- apertura cuentas
-select c3.tipo_documento,c3.numero_documento,c3.apellido,c3.nombre, c1.fecha_creacion,count (numero)as  cantTransacciones from QUIEN_BAJO_EL_KERNEL.CUENTA c1
-inner join QUIEN_BAJO_EL_KERNEL.CLIENTE c3 on c3.tipo_documento =c1.cliente_tipo_doc and c3.numero_documento=c1.cliente_numero_doc
-group by c3.tipo_documento,c3.numero_documento,c3.apellido,c3.nombre, c1.fecha_creacion
-
-UNION ALL
 
 -- transferencias entre cuentas propias
-select t4.tipo_documento, t4.numero_documento, t4.apellido, t4.nombre, t1.fecha, COUNT(*) as cantTransacciones from QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA t1
-inner join QUIEN_BAJO_EL_KERNEL.CUENTA t2 on t2.numero = t1.origen
-inner join QUIEN_BAJO_EL_KERNEL.CUENTA t3 on t3.numero = t1.destino
-inner join QUIEN_BAJO_EL_KERNEL.CLIENTE t4 on t3.cliente_tipo_doc =t4.tipo_documento and t3.cliente_numero_doc=t4.numero_documento
-where t3.cliente_tipo_doc = t2.cliente_tipo_doc and t3.cliente_numero_doc=t2.cliente_numero_doc
+select 
+t4.tipo_documento
+,t4.numero_documento
+,t4.apellido
+,t4.nombre
+,t1.fecha
+,COUNT(*) as cantTransacciones 
+from QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA t1 inner join QUIEN_BAJO_EL_KERNEL.CUENTA t2 on 
+	t2.numero = t1.origen inner join QUIEN_BAJO_EL_KERNEL.CUENTA t3 on 
+	t3.numero = t1.destino inner join QUIEN_BAJO_EL_KERNEL.CLIENTE t4 on 
+	t3.cliente_tipo_doc =t4.tipo_documento and t3.cliente_numero_doc=t4.numero_documento
+where 
+t3.cliente_tipo_doc = t2.cliente_tipo_doc 
+and t3.cliente_numero_doc=t2.cliente_numero_doc
 group by t4.tipo_documento, t4.numero_documento, t4.apellido, t4.nombre, t1.fecha
+
 GO
 
 CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.ClientesConMayorTransacciones (@fechaDesde date, @fechaHasta date)
@@ -2039,10 +2085,47 @@ order by cantMovimientos desc
 END
 GO
 
+
 --- 5.- Total facturado para los distintos tipos de cuentas ---
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.totalFacturadoPorTipo (@fechaDesde datetime, @fechaHasta datetime)
+AS
+BEGIN
 
+select  e.descripcion, sum(t.tot)
+from
+(select ac.cuenta as cuenta, sum (ac.importe) as Tot 
+from QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA_ACTIVACION_CUENTA ac join QUIEN_BAJO_EL_KERNEL.CUENTA c on
+	c.numero = ac.cuenta join QUIEN_BAJO_EL_KERNEL.FACTURA f on
+	f.numero = ac.factura_numero
+where   f.fecha >=@fechaDesde 
+	and f.fecha<=@fechaHasta
+group by ac.cuenta
 
+union all
 
+select mc.cuenta as cuenta, sum (mc.importe) as Tot
+from QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA_ACTIVACION_CUENTA mc join QUIEN_BAJO_EL_KERNEL.CUENTA c on
+	c.numero = mc.cuenta join QUIEN_BAJO_EL_KERNEL.FACTURA f on
+	f.numero = mc.factura_numero
+where   f.fecha >=@fechaDesde 
+	and f.fecha<=@fechaHasta	
+group by mc.cuenta
+
+union all
+
+select t.origen as cuenta, sum (tc.importe) as Tot
+from QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA_TRANSFERENCIAS tc join QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA t on 
+	tc.transferencia = t.codigo join QUIEN_BAJO_EL_KERNEL.FACTURA f on
+	f.numero = tc.factura_numero
+where   f.fecha >=@fechaDesde 
+	and f.fecha<=@fechaHasta
+group by t.origen)  t join QUIEN_BAJO_EL_KERNEL.cuenta cta ON
+	t.cuenta = cta.numero join  QUIEN_BAJO_EL_KERNEL.TIPO_CUENTA e on
+e.codigo = cta.tipo_cuenta
+group by e.descripcion
+
+END
+GO
 
 
 ------------------------------------------------------------------
