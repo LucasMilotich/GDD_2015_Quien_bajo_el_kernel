@@ -71,8 +71,6 @@ CREATE TABLE QUIEN_BAJO_EL_KERNEL.TIPO_ESTADO_CUENTA (
 GO
 
 
-
-
 CREATE TABLE QUIEN_BAJO_EL_KERNEL.TIPO_MONEDA (
 	codigo numeric(1) NOT NULL,
 	descripcion varchar(250) NULL
@@ -135,7 +133,8 @@ CREATE TABLE QUIEN_BAJO_EL_KERNEL.TARJETA (
 	codigo_seguridad varchar(3) NULL,
 	cod_emisor int NOT NULL,
 	cliente_tipo_doc numeric(18) NULL,
-	cliente_numero_doc numeric(10) NULL	
+	cliente_numero_doc numeric(10) NULL,
+	habilitado bit
 )
 GO
 
@@ -798,7 +797,7 @@ INSERT INTO QUIEN_BAJO_EL_KERNEL.EMISOR_TARJETA (emisor_descripcion)
 GO
 
 insert into QUIEN_BAJO_EL_KERNEL.TARJETA (tarjeta_numero, fecha_emision,fecha_vencimiento,
-					 codigo_seguridad, cod_emisor, cliente_tipo_doc,cliente_numero_doc)
+					 codigo_seguridad, cod_emisor, cliente_tipo_doc,cliente_numero_doc, habilitado)
 			  (select distinct tarjeta_numero,
 							   tarjeta_fecha_emision,
 							   tarjeta_fecha_vencimiento,
@@ -809,7 +808,8 @@ insert into QUIEN_BAJO_EL_KERNEL.TARJETA (tarjeta_numero, fecha_emision,fecha_ve
 								WHEN 'Visa' THEN 3
 							   END,
 							   Cli_Tipo_Doc_Cod,
-							   Cli_Nro_Doc
+							   Cli_Nro_Doc,
+							   1
 							   
 				from gd_esquema.Maestra
 			   where Tarjeta_Numero is not null)
@@ -1766,7 +1766,99 @@ AS
 BEGIN
 	select *
 	FROM QUIEN_BAJO_EL_KERNEL.TARJETA t
-	where t.cliente_numero_doc=@numeroDoc and t.cliente_tipo_doc=@tipoDoc
+	where t.habilitado=1 and t.cliente_numero_doc=@numeroDoc and t.cliente_tipo_doc=@tipoDoc
+END
+GO
+
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.Desasociar_Tarjeta (@tarjetaNumero varchar(16))
+AS
+BEGIN
+	UPDATE QUIEN_BAJO_EL_KERNEL.TARJETA
+	SET habilitado=1
+	where tarjeta_numero = @tarjetaNumero
+END
+GO
+
+
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.GetTarjetaByNumeroTarjeta (@tarjetaNumero varchar(16))
+AS
+BEGIN
+	select *
+	FROM QUIEN_BAJO_EL_KERNEL.TARJETA t
+	where tarjeta_numero = @tarjetaNumero
+END
+GO
+
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.GetTarjetaDesasociada (@tarjetaNumero varchar(16),@tipoDoc numeric(18), @nroDoc numeric(10))
+AS
+BEGIN
+	select *
+	FROM QUIEN_BAJO_EL_KERNEL.TARJETA t
+	where	tarjeta_numero = @tarjetaNumero and 
+			cliente_numero_doc = @nroDoc and 
+			cliente_tipo_doc = @tipoDoc and
+			habilitado=0
+END
+GO
+
+
+
+create PROCEDURE QUIEN_BAJO_EL_KERNEL.INSERT_TARJETA(@tarjetaNumero varchar(16),
+														 @fecha_emision datetime,
+														 @fecha_vencimiento datetime,
+														 @codigo_seguridad varchar(3),
+														 @cod_emisor int,
+														 @cliente_tipo_doc numeric(18),
+														 @cliente_numero_doc numeric(10))
+AS
+BEGIN
+insert into QUIEN_BAJO_EL_KERNEL.TARJETA
+(tarjeta_numero,
+fecha_emision, 
+fecha_vencimiento, 
+codigo_seguridad, 
+cod_emisor,
+cliente_tipo_doc,
+cliente_numero_doc,
+habilitado)
+values
+(@tarjetaNumero, 
+@fecha_emision, 
+@fecha_vencimiento, 
+@codigo_seguridad, 
+@cod_emisor,
+@cliente_tipo_doc ,
+@cliente_numero_doc,
+1)
+END
+GO
+
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.UPDATE_TARJETA	(@tarjetaNumero varchar(16),
+														 @fecha_emision datetime,
+														 @fecha_vencimiento datetime,
+														 @codigo_seguridad varchar(3),
+														 @cod_emisor int,
+														 @cliente_tipo_doc numeric(18),
+														 @cliente_numero_doc numeric(10))
+AS
+BEGIN
+UPDATE QUIEN_BAJO_EL_KERNEL.TARJETA
+SET   
+ fecha_emision = @fecha_emision,
+ fecha_vencimiento = @fecha_vencimiento, 
+ codigo_seguridad = @codigo_seguridad, 
+ cod_emisor = @cod_emisor,
+ habilitado=1
+ WHERE tarjeta_numero = @tarjetaNumero
+
+END
+GO
+
+------------------------------ Banco -----------------------------------
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.GetEmisoresTarjeta
+AS
+BEGIN
+	SELECT * FROM QUIEN_BAJO_EL_KERNEL.EMISOR_TARJETA
 END
 GO
 

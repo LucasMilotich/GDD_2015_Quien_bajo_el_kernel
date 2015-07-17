@@ -135,19 +135,19 @@ namespace PagoElectronico.Transferencias
             }
             if (cuentaSeleccionada.tipoCuenta==(int)TiposCuentaEnum.Gratis)
             {
-                return (importe * 0.1);        // 10% del importe
+                return (importe * Convert.ToDouble(ConfigurationManager.AppSettings["PorcentajeTipoGratis"]));
             }
             else if (cuentaSeleccionada.tipoCuenta == (int)TiposCuentaEnum.Bronce)
             {
-                return (importe * 0.08);        // 8% del importe
+                return (importe * Convert.ToDouble(ConfigurationManager.AppSettings["PorcentajeTipoBronce"]));   
             }
             else if (cuentaSeleccionada.tipoCuenta == (int)TiposCuentaEnum.Plata)
             {
-                return (importe * 0.05);        // 5% del importe
+                return (importe * Convert.ToDouble(ConfigurationManager.AppSettings["PorcentajeTipoPlata"]));        
             }
             else if (cuentaSeleccionada.tipoCuenta == (int)TiposCuentaEnum.Oro)
             {
-                return (importe * 0.02);        // 2% del importe
+                return (importe * Convert.ToDouble(ConfigurationManager.AppSettings["PorcentajeTipoOro"]));       
             }
             else
             {
