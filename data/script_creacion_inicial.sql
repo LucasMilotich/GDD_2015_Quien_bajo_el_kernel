@@ -892,7 +892,8 @@ CREATE PROCEDURE [QUIEN_BAJO_EL_KERNEL].[InsertaCuenta]
 @an_moneda_tipo			NUMERIC(1,0),
 @an_cuenta_tipo			NUMERIC(1,0),
 @an_cliente_doc			NUMERIC(10,0),
-@an_cliente_tipo_doc	NUMERIC(18,0)
+@an_cliente_tipo_doc	NUMERIC(18,0),
+@ad_fecha				DATETIME
 AS
 BEGIN
 DECLARE @an_num_cuenta	NUMERIC(18,0)
@@ -916,7 +917,7 @@ DECLARE @an_num_cuenta	NUMERIC(18,0)
 											 @an_cuenta_tipo, 
 											 @an_cliente_doc, 
 											 @an_cliente_tipo_doc,
-											 GETDATE(),
+											 @ad_fecha,
 											 0,--Saldo
 											 1)--Pendiente de activacion
 
@@ -935,16 +936,26 @@ CREATE PROCEDURE [QUIEN_BAJO_EL_KERNEL].[ModificaCuenta]
 @an_nro_cuenta	NUMERIC(18,0),
 @an_moneda_tipo NUMERIC(1,0),
 @an_cuenta_tipo	NUMERIC(1,0),
-@an_cod_pais	NUMERIC(18,0)
+@an_cod_pais	NUMERIC(18,0),
+@ad_fecha		DATETIME
 AS
 BEGIN
+DECLARE	@an_tipo_viejo NUMERIC(1,0)
 	SET NOCOUNT ON;
+	
+	SELECT @an_tipo_viejo = c.tipo_cuenta
+	  FROM QUIEN_BAJO_EL_KERNEL.CUENTA c
+	 WHERE numero = @an_nro_cuenta
 
     UPDATE QUIEN_BAJO_EL_KERNEL.CUENTA
        SET moneda_tipo = @an_moneda_tipo,
 		   tipo_cuenta = @an_cuenta_tipo,
 		   pais_codigo = @an_cod_pais
 	 WHERE numero = @an_nro_cuenta
+	 
+	IF @an_cuenta_tipo <> @an_tipo_viejo AND @an_cuenta_tipo <> 1
+		INSERT INTO QUIEN_BAJO_EL_KERNEL.CUENTA_MODIFICACION(cuenta, fecha, nuevo_tipo_cuenta)
+			VALUES (@an_nro_cuenta, @ad_fecha, @an_cuenta_tipo)
 	 
 END
 GO
@@ -1844,24 +1855,3 @@ VALUES (@codigo,@fecha, @importe, @cuenta, @monedaTipo,@tarjetaNum)
 END
 GO
 
-CREATE TRIGGER QUIEN_BAJO_EL_KERNEL.ModificacionCuenta
-ON QUIEN_BAJO_EL_KERNEL.CUENTA
-AFTER UPDATE
-AS
-	SET NOCOUNT ON
-	DECLARE
-		@nro_cuenta	NUMERIC(18,0),
-		@tipo_viejo	NUMERIC(1,0),
-		@tipo_nuevo	NUMERIC(1,0)
-IF UPDATE(tipo_cuenta)
-BEGIN
-	SELECT @tipo_nuevo = tipo_cuenta,
-		   @nro_cuenta = numero
-	  FROM inserted
-	
-	IF @tipo_nuevo <> 1
-		INSERT INTO QUIEN_BAJO_EL_KERNEL.CUENTA_MODIFICACION(cuenta, fecha,nuevo_tipo_cuenta)
-			 VALUES (@nro_cuenta, GETDATE(), @tipo_nuevo)	 
-	
-END
-GO

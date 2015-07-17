@@ -23,9 +23,11 @@ namespace PagoElectronico.ABM_Cuenta
         //Para probar hasta q este el login: 10002 and cliente_numero_doc=45622098
         Cliente cliente;
         long tipoDocCliente, nroDocCliente;
+        ConsultaCuenta formPadre;
 
-        public AltaCuenta(long nroCuenta)
+        public AltaCuenta(long nroCuenta, ConsultaCuenta form)
         {
+            formPadre = form;
             cuentaService = new CuentaService();
             paisService = new PaisService();
             tipoMonedaService = new TipoMonedaService();
@@ -76,6 +78,7 @@ namespace PagoElectronico.ABM_Cuenta
             int codPais = Convert.ToInt32(cmbPaises.SelectedValue.ToString());
             int tipoMoneda = Convert.ToInt32(cmbMonedas.SelectedValue.ToString());
             int tipoCuenta = Convert.ToInt32(cmbTiposCuenta.SelectedValue.ToString());
+            DateTime fecha = Session.fecha;
             
             if (Session.Usuario.SelectedRol.Id == (int)Entities.Enums.Roles.Admin)
             {
@@ -94,7 +97,7 @@ namespace PagoElectronico.ABM_Cuenta
 
                 try
                 {
-                    cuentaService.InsertaCuenta(codPais, tipoMoneda, tipoCuenta, tipoDocCliente, nroDocCliente);
+                    cuentaService.InsertaCuenta(codPais, tipoMoneda, tipoCuenta, tipoDocCliente, nroDocCliente, fecha);
                     MessageBox.Show("Cuenta creada exitosamente. Recuerde que la misma permanecerá pendiente de activación hasta que abone el costo de apertura", "Atencion", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 catch (OperationCanceledException ex)
@@ -111,9 +114,9 @@ namespace PagoElectronico.ABM_Cuenta
                 long numCuenta = Convert.ToInt64(txtCuenta.Text);
                 try
                 {
-                    cuentaService.ModificaCuenta(numCuenta, tipoMoneda, tipoCuenta, codPais);
+                    cuentaService.ModificaCuenta(numCuenta, tipoMoneda, tipoCuenta, codPais, fecha);
                     MessageBox.Show("Cuenta modificada exitosamente!", "Atencion", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    this.Hide();
+                    this.Close();
                 }
                 catch (OperationCanceledException ex)
                 {
@@ -125,6 +128,14 @@ namespace PagoElectronico.ABM_Cuenta
                 }
             }
 
+        }
+
+        private void AltaCuenta_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (formPadre != null)
+            {
+                formPadre.realizarBusqueda();
+            }
         }
 
     }

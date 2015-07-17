@@ -46,10 +46,10 @@ namespace PagoElectronico.Services
             return repository.GetMaxNroCuenta();
         }
 
-        public int InsertaCuenta(int codPais, int tipoMoneda, int tipoCuenta, long tipoDocCliente, long nroDocCliente)
+        public int InsertaCuenta(int codPais, int tipoMoneda, int tipoCuenta, long tipoDocCliente, long nroDocCliente, DateTime fecha)
         {
             CuentaRepository repository = new CuentaRepository();
-            return repository.InsertaCuenta(codPais, tipoMoneda, tipoCuenta, tipoDocCliente, nroDocCliente);
+            return repository.InsertaCuenta(codPais, tipoMoneda, tipoCuenta, tipoDocCliente, nroDocCliente, fecha);
 
         }
 
@@ -65,10 +65,10 @@ namespace PagoElectronico.Services
             return repository.GetCuentaByNumero(nroCuenta);
         }
 
-        public int ModificaCuenta(long numCuenta, int tipoMoneda, int tipoCuenta, int codPais)
+        public int ModificaCuenta(long numCuenta, int tipoMoneda, int tipoCuenta, int codPais, DateTime fecha)
         {
             CuentaRepository repository = new CuentaRepository();
-            return repository.ModificaCuenta(numCuenta, tipoMoneda, tipoCuenta, codPais);
+            return repository.ModificaCuenta(numCuenta, tipoMoneda, tipoCuenta, codPais, fecha);
         }
 
         public int CerrarCuenta(long numCuenta)
