@@ -106,6 +106,15 @@ namespace PagoElectronico.ABM_Cuenta
             {
                 var row = dgvCuentas.Rows[e.RowIndex];
                 var cell = row.Cells["Numero"];
+                int estadoCuenta = cuentaService.getEstado(Convert.ToInt64(cell.Value));
+
+                switch (estadoCuenta)
+                {
+                    case 1:
+                        MessageBox.Show("Desea cerrar la cuenta seleccionada? La misma no podrá volver a activarse.", "Atención!", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                    default:
+                        break;
+                }
                 var form = new AltaCuenta(Convert.ToInt64(cell.Value), this);
                 form.Show();
                 form.MdiParent = this.MdiParent;

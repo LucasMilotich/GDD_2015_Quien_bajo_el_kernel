@@ -916,7 +916,8 @@ DECLARE @an_num_cuenta	NUMERIC(18,0)
 											[cliente_tipo_doc],
 											[fecha_creacion],
 											[saldo],
-											[estado_codigo])
+											[estado_codigo],
+											[cantidad_suscripcion])
 									 VALUES (@an_num_cuenta,
 											 @an_cod_pais,
 											 @an_moneda_tipo, 
@@ -925,7 +926,8 @@ DECLARE @an_num_cuenta	NUMERIC(18,0)
 											 @an_cliente_tipo_doc,
 											 @ad_fecha,
 											 0,--Saldo
-											 1)--Pendiente de activacion
+											 1,--Pendiente de activacion
+											 0)
 
 END
 GO
@@ -946,13 +948,18 @@ AS
 BEGIN
 DECLARE	@an_tipo_viejo NUMERIC(1,0)
 	SET NOCOUNT ON;
+	
+	SELECT @an_tipo_viejo = tipo_cuenta
+	  FROM QUIEN_BAJO_EL_KERNEL.CUENTA
+	 WHERE numero = @an_nro_cuenta
 
     UPDATE QUIEN_BAJO_EL_KERNEL.CUENTA
-       SET tipo_cuenta = @an_cuenta_tipo
+       SET tipo_cuenta = @an_cuenta_tipo,
+		   cantidad_suscripcion = 1
 	 WHERE numero = @an_nro_cuenta
 	 
-	INSERT INTO QUIEN_BAJO_EL_KERNEL.CUENTA_MODIFICACION(cuenta, fecha, nuevo_tipo_cuenta)
-		VALUES (@an_nro_cuenta, @ad_fecha, @an_cuenta_tipo)
+	INSERT INTO QUIEN_BAJO_EL_KERNEL.CUENTA_MODIFICACION(cuenta, fecha, nuevo_tipo_cuenta, viejo_tipo_cuenta)
+		VALUES (@an_nro_cuenta, @ad_fecha, @an_cuenta_tipo, @an_tipo_viejo)
 	 
 END
 GO
