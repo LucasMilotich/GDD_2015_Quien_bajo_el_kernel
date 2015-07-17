@@ -127,7 +127,7 @@ CREATE TABLE QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA (
 GO
 
 CREATE TABLE QUIEN_BAJO_EL_KERNEL.TARJETA (
-	tarjeta_numero varchar(16) NOT NULL,
+	tarjeta_numero varchar(4) NOT NULL,
 	fecha_emision datetime NULL,
 	fecha_vencimiento datetime NULL,
 	codigo_seguridad varchar(3) NOT NULL,
@@ -145,7 +145,7 @@ CREATE TABLE QUIEN_BAJO_EL_KERNEL.DEPOSITO (
 	importe numeric(18,2) NULL,
 	cuenta_numero numeric(18) NULL,
 	moneda_tipo numeric(1) NULL,
-	tarjeta_numero varchar(16) NULL,
+	tarjeta_numero varchar(4) NULL,
 	codigo_seguridad varchar(3) NULL
 )
 GO
@@ -1125,6 +1125,15 @@ WHERE numero = @cuenta
 END
 GO
 
+
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.GetAllCuentas 
+AS
+BEGIN
+
+select * from QUIEN_BAJO_EL_KERNEL.CUENTA
+
+END
+GO
 ------------------------------- Clientes ----------------------------------
 
 CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.INSERT_CLIENTE 
