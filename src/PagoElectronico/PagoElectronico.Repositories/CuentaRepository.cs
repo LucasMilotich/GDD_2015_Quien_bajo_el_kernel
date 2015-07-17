@@ -139,7 +139,7 @@ namespace PagoElectronico.Repositories
             command.Parameters.AddWithValue("@an_doc", nroDoc);
             command.Parameters.AddWithValue("@an_tipo_doc", tipoDoc);
             return DBConnection.EjecutarStoredProcedureSelect(command);
-           
+
         }
 
         public Cuenta GetCuentaByNumero(long nroCuenta)
@@ -208,6 +208,35 @@ namespace PagoElectronico.Repositories
             }
 
             return resultado;
+        }
+
+        public void HabilitarCuentas(List<ItemFactura> itemsApertura)
+        {
+            foreach (var item in itemsApertura)
+            {
+                SqlCommand command = DBConnection.CreateStoredProcedure("HabilitarCuenta");
+                command.Parameters.AddWithValue("@cuenta", item.cuenta);
+                command.Parameters.AddWithValue("@suscripcion", item.suscripcion);
+
+                DBConnection.ExecuteNonQuery(command);
+                DBConnection.CloseCommand(command);
+            }
+        }
+
+        public void ActualizarCuentasModif(List<ItemFactura> itemsModificacion)
+        {
+            foreach (var item in itemsModificacion)
+            {
+                if (item.actualizarCuenta)
+                {
+                    SqlCommand command = DBConnection.CreateStoredProcedure("HabilitarCuenta");
+                    command.Parameters.AddWithValue("@cuenta", item.cuenta);
+                    command.Parameters.AddWithValue("@suscripcion", item.suscripcion);
+
+                    DBConnection.ExecuteNonQuery(command);
+                    DBConnection.CloseCommand(command);
+                }
+            }
         }
     }
 }

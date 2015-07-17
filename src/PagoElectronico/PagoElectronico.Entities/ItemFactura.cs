@@ -15,5 +15,6 @@ namespace PagoElectronico.Entities
         public long cuenta { get; set; }
         public int suscripcion { get; set; }
         public DateTime fecha { get; set; }
+        public bool actualizarCuenta { get; set; }
     }
 }

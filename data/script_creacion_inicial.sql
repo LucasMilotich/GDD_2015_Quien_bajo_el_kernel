@@ -1096,6 +1096,17 @@ VALUES
 END
 GO
 
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.HabilitarCuenta (@cuenta numeric(18),@suscripcion int)
+AS
+BEGIN
+
+UPDATE QUIEN_BAJO_EL_KERNEL.CUENTA 
+SET estado_codigo = 4, cantidad_suscripcion = @suscripcion
+WHERE numero = @cuenta
+
+END
+GO
+
 ------------------------------- Clientes ----------------------------------
 
 CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.INSERT_CLIENTE 
@@ -1545,6 +1556,7 @@ AS
 BEGIN
 insert into [QUIEN_BAJO_EL_KERNEL].TRANSFERENCIA (origen, destino,fecha ,importe, costo, moneda_tipo) values 
 (@origen, @destino, @fecha, @importe, @costo, @moneda_tipo)
+
 END
 GO
 
@@ -1552,7 +1564,7 @@ GO
 CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.GetTransferenciasSinFacturar (@tipoDoc numeric(18),@numeroDoc numeric (18))
 AS
 BEGIN
-	SELECT t.codigo as Codigo,t.origen as Cuenta ,tt.costo as Costo, 3 as TipoTransaccion, t.fecha as fecha
+	SELECT t.codigo as Codigo,t.origen as Cuenta ,t.costo as Costo, 3 as TipoTransaccion, t.fecha as fecha
 	FROM QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA t 
 	inner join QUIEN_BAJO_EL_KERNEL.CUENTA c on t.origen = c.numero
 	inner join QUIEN_BAJO_EL_KERNEL.CUENTA c2 on t.destino = c2.numero
@@ -1609,6 +1621,12 @@ BEGIN
 	begin
 		update QUIEN_BAJO_EL_KERNEL.CUENTA
 		set estado_codigo = 4
+		where numero = @cuenta
+	end
+	else
+	begin
+		update QUIEN_BAJO_EL_KERNEL.CUENTA
+		set estado_codigo = 3
 		where numero = @cuenta
 	end
 END

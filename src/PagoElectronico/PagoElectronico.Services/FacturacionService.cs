@@ -17,6 +17,7 @@ namespace PagoElectronico.Services
             long nroFactura;
             FacturacionRepository repo = new FacturacionRepository();
             TransaccionRepository repoTrans = new TransaccionRepository();
+            CuentaRepository repoCuenta = new CuentaRepository();
             using (var transaction = new TransactionScope())
             {
                 Factura factura = new Factura
@@ -38,11 +39,13 @@ namespace PagoElectronico.Services
                 if (itemsApertura.Any())
                 {
                     repo.AgregarItemsApertura(itemsApertura);
+                    repoCuenta.HabilitarCuentas(itemsApertura);
                 }
                 var itemsModificacion = itemsAFacturar.Where(i => (TiposTransaccionEnum)i.tipo == TiposTransaccionEnum.ModifCuenta).ToList();
                 if (itemsModificacion.Any())
                 {
                     repo.AgregarItemsModificacion(itemsModificacion);
+                    repoCuenta.ActualizarCuentasModif(itemsModificacion);
                 }
 
                 var cuentas = itemsAFacturar.Select(i => i.cuenta).Distinct().ToList();
