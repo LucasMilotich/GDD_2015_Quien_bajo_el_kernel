@@ -10,8 +10,6 @@ namespace PagoElectronico.Common
 {
     public class Utils
     {
-
-
         public static Cliente obtenerCliente(Usuario usuarioLogueado)
         {
             ClienteService clienteService = new ClienteService();
@@ -24,6 +22,5 @@ namespace PagoElectronico.Common
                 throw new Exception ("El usuario actual no posee algun cliente asociado");
             }
         }
-
     }
 }

@@ -11,6 +11,6 @@ namespace PagoElectronico.Entities
         public string descripcion { get; set; }
         public double importe { get; set; }
         public long facturaNumero { get; set; }
-        public long idTransaccion { get; set; }
+        public long cuenta { get; set; }
     }
 }

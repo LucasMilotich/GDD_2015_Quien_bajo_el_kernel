@@ -1421,7 +1421,7 @@ GO
 CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.GetAperturaCuentasSinFacturar (@tipoDoc numeric(18),@numeroDoc numeric (18))
 AS
 BEGIN
-	select numero as Cuenta,tt.costo as Costo , 1 as TipoTransaccion
+	select '' as Codigo, numero as Cuenta,tt.costo as Costo , 1 as TipoTransaccion
 	FROM QUIEN_BAJO_EL_KERNEL.CUENTA c
 	inner join QUIEN_BAJO_EL_KERNEL.TIPO_CUENTA tt on tt.codigo = c.tipo_cuenta
 	left join QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA_ACTIVACION_CUENTA i on c.numero = i.cuenta
@@ -1478,36 +1478,36 @@ CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.INSERT_CLIENTE
 AS 
 BEGIN
 
-insert into QUIEN_BAJO_EL_KERNEL.CLIENTE
-(tipo_documento
- ,numero_documento
- ,pais_codigo
- ,nombre
- ,apellido
- ,dom_calle
- ,dom_nro
- ,dom_piso
- ,dom_dpto
- ,fecha_nacimiento
- ,mail
- ,localidad
- ,username)
- VALUES
- (@tipoDocCod
- ,@dni
- ,@paisCod
- ,@apellido
- ,@nombre
- ,@dom_calle
- ,@dom_nro
- ,@dom_piso
- ,@dom_dpto
- ,@fechaNac
- ,@mail
- ,@localidad
- ,@username)
+	insert into QUIEN_BAJO_EL_KERNEL.CLIENTE
+	(tipo_documento
+	 ,numero_documento
+	 ,pais_codigo
+	 ,nombre
+	 ,apellido
+	 ,dom_calle
+	 ,dom_nro
+	 ,dom_piso
+	 ,dom_dpto
+	 ,fecha_nacimiento
+	 ,mail
+	 ,localidad
+	 ,username)
+	 VALUES
+	 (@tipoDocCod
+	 ,@dni
+	 ,@paisCod
+	 ,@apellido
+	 ,@nombre
+	 ,@dom_calle
+	 ,@dom_nro
+	 ,@dom_piso
+	 ,@dom_dpto
+	 ,@fechaNac
+	 ,@mail
+	 ,@localidad
+	 ,@username)
 
-select scope_identity()
+	select scope_identity()
 
 END
 GO

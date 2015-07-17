@@ -51,6 +51,7 @@
     <Compile Include="Cuenta.cs" />
     <Compile Include="CuentaModificacion.cs" />
     <Compile Include="Deposito.cs" />
+    <Compile Include="Enums\EnumHelper.cs" />
     <Compile Include="Enums\Roles.cs" />
     <Compile Include="Enums\EstadosCuenta.cs" />
     <Compile Include="Enums\TiposTransaccionEnum.cs" />

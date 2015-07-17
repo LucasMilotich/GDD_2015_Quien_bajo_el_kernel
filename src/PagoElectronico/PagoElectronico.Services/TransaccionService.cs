@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Transactions;
 using PagoElectronico.Repositories;
 using PagoElectronico.Entities;
+using System.Configuration;
 
 namespace PagoElectronico.Services
 {
@@ -26,6 +28,5 @@ namespace PagoElectronico.Services
             TransaccionRepository repo = new TransaccionRepository();
             return repo.getAperturaCuentasSinFacturar(tipoDoc, numeroDoc);
         }
-
     }
 }
