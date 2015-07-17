@@ -17,7 +17,9 @@ namespace PagoElectronico.Entities
 
         public int monedaTipo { get; set; }
 
-        public string tarjetaNumero  { get; set; }
+        public string tarjetaNumero { get; set; }
+
+        public string codigoSeguridad { get; set; }
 
     }
 }

@@ -101,6 +101,7 @@ namespace PagoElectronico.Depositos
                     deposito.cuentaNumero = Int64.Parse(comboCuentaOrigen.Text);
                     deposito.monedaTipo = ((TipoMoneda)comboTipoMoneda.SelectedItem).codigo;
                     deposito.tarjetaNumero = ((Tarjeta)comboTarjeta.SelectedItem).tarjetaNumero;
+                    deposito.codigoSeguridad = ((Tarjeta)comboTarjeta.SelectedItem).codigoSeguridad;
 
                     depositoService.Insert(deposito);
                     MessageBox.Show("Se ha realizado el deposito de saldo. ", "Deposito realizado satisfactoriamente", MessageBoxButtons.OK, MessageBoxIcon.Information);

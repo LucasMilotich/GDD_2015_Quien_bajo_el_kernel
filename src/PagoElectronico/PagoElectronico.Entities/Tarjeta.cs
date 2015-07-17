@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Security.Cryptography;
 
 namespace PagoElectronico.Entities
 {
@@ -21,6 +22,8 @@ namespace PagoElectronico.Entities
 
         public long nroDoc { get; set; }
 
+        public byte[] numeroHashed  { get; set; }
+       
         public Boolean habilitado { get; set; }
     }
 }

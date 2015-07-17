@@ -50,7 +50,7 @@ CREATE TABLE QUIEN_BAJO_EL_KERNEL.USUARIO (
 	username varchar(255) NOT NULL,
 	password varbinary(max) NULL,
 	pregunta_secreta varchar(255) NULL,
-	respuesta_secreta varchar(255) NULL,
+	respuesta_secreta varbinary(max) NULL,
 	activo bit NOT NULL default (1),
 	habilitado bit not null default (1)
 )
@@ -130,10 +130,11 @@ CREATE TABLE QUIEN_BAJO_EL_KERNEL.TARJETA (
 	tarjeta_numero varchar(16) NOT NULL,
 	fecha_emision datetime NULL,
 	fecha_vencimiento datetime NULL,
-	codigo_seguridad varchar(3) NULL,
+	codigo_seguridad varchar(3) NOT NULL,
 	cod_emisor int NOT NULL,
 	cliente_tipo_doc numeric(18) NULL,
 	cliente_numero_doc numeric(10) NULL,
+	numero_entero varbinary(max) NOT NULL,
 	habilitado bit
 )
 GO
@@ -144,7 +145,8 @@ CREATE TABLE QUIEN_BAJO_EL_KERNEL.DEPOSITO (
 	importe numeric(18,2) NULL,
 	cuenta_numero numeric(18) NULL,
 	moneda_tipo numeric(1) NULL,
-	tarjeta_numero varchar(16) NULL
+	tarjeta_numero varchar(16) NULL,
+	codigo_seguridad varchar(3) NULL
 )
 GO
 
@@ -320,8 +322,9 @@ ALTER TABLE QUIEN_BAJO_EL_KERNEL.TRANSFERENCIA ADD CONSTRAINT PK_TRANSFERENCIA
 GO
 
 ALTER TABLE QUIEN_BAJO_EL_KERNEL.TARJETA ADD CONSTRAINT PK_TARJETA
-	PRIMARY KEY CLUSTERED (tarjeta_numero)
+	PRIMARY KEY CLUSTERED (tarjeta_numero,codigo_seguridad)
 GO
+
 
 ALTER TABLE QUIEN_BAJO_EL_KERNEL.DEPOSITO ADD CONSTRAINT PK_DEPOSITO
 	PRIMARY KEY CLUSTERED (deposito_codigo)
@@ -433,7 +436,7 @@ ALTER TABLE QUIEN_BAJO_EL_KERNEL.DEPOSITO ADD CONSTRAINT FK_DEPOSITO_CUENTA
 GO
 
 ALTER TABLE QUIEN_BAJO_EL_KERNEL.DEPOSITO ADD CONSTRAINT FK_DEPOSITO_TARJETA
-	FOREIGN KEY (tarjeta_numero) REFERENCES QUIEN_BAJO_EL_KERNEL.TARJETA (tarjeta_numero)
+	FOREIGN KEY (tarjeta_numero,codigo_seguridad) REFERENCES QUIEN_BAJO_EL_KERNEL.TARJETA (tarjeta_numero, codigo_seguridad)
 GO
 
 ALTER TABLE QUIEN_BAJO_EL_KERNEL.DEPOSITO ADD CONSTRAINT FK_DEPOSITO_TIPO_MONEDA
@@ -810,8 +813,8 @@ INSERT INTO QUIEN_BAJO_EL_KERNEL.EMISOR_TARJETA (emisor_descripcion)
 GO
 
 insert into QUIEN_BAJO_EL_KERNEL.TARJETA (tarjeta_numero, fecha_emision,fecha_vencimiento,
-					 codigo_seguridad, cod_emisor, cliente_tipo_doc,cliente_numero_doc, habilitado)
-			  (select distinct tarjeta_numero,
+					 codigo_seguridad, cod_emisor, cliente_tipo_doc,cliente_numero_doc,numero_entero, habilitado)
+			  (select distinct SUBSTRING(tarjeta_numero, 13, 4),
 							   tarjeta_fecha_emision,
 							   tarjeta_fecha_vencimiento,
 							   tarjeta_codigo_seg,
@@ -822,15 +825,18 @@ insert into QUIEN_BAJO_EL_KERNEL.TARJETA (tarjeta_numero, fecha_emision,fecha_ve
 							   END,
 							   Cli_Tipo_Doc_Cod,
 							   Cli_Nro_Doc,
+							   HASHBYTES('SHA1', tarjeta_numero),
 							   1
 							   
 				from gd_esquema.Maestra
 			   where Tarjeta_Numero is not null)
 GO
 
-insert into QUIEN_BAJO_EL_KERNEL.DEPOSITO (deposito_codigo,fecha, importe, cuenta_numero, moneda_tipo,tarjeta_numero)
+
+
+insert into QUIEN_BAJO_EL_KERNEL.DEPOSITO (deposito_codigo,fecha, importe, cuenta_numero, moneda_tipo,tarjeta_numero,codigo_seguridad )
 				 (select deposito_codigo,deposito_fecha, deposito_importe,
-							  cuenta_numero, 1,tarjeta_numero
+							  cuenta_numero, 1,SUBSTRING(tarjeta_numero, 13, 4),Tarjeta_Codigo_Seg
 					  from gd_esquema.Maestra
 					  where deposito_codigo is not null)
 GO
@@ -1349,7 +1355,7 @@ CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.INSERT_USUARIO
 @username varchar(255)
 ,@password varbinary(max)
 ,@pregunta_secreta varchar(255)
-,@respuesta_secreta varchar(255)
+,@respuesta_secreta varbinary(max)
 ,@activo bit
 ,@habilitado bit 
 )
@@ -1374,24 +1380,12 @@ VALUES
 END
 GO
 
-CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.UPDATE_USUARIO 
-(
-@username varchar(255)
-,@password varbinary(max)
-,@pregunta_secreta varchar(255)
-,@respuesta_secreta varchar(255)
-,@activo bit
-,@habilitado bit 
-)
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.UPDATE_PASSWORD (@username varchar(255),@password varbinary(max) )
 AS 
 BEGIN
 
 UPDATE QUIEN_BAJO_EL_KERNEL.USUARIO
-SET password = @password,
-	pregunta_secreta = @pregunta_secreta,
-	respuesta_secreta = @respuesta_secreta,
-	activo = @activo,
-	habilitado = @habilitado
+SET password = @password
 WHERE username = @username
 
 END
@@ -1605,13 +1599,13 @@ GO
 ------------------------- Deposito ----------------------------
 CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.Insert_deposito	(@fecha datetime , @importe numeric(18,2),
 														 @cuenta_numero numeric(18,0), @moneda_tipo numeric(1,0),
-														 @tarjeta_numero varchar(16)	)	
+														 @tarjeta_numero varchar(16),@codigo_seguridad varchar(3)	)	
 AS 
 BEGIN
 
-insert into QUIEN_BAJO_EL_KERNEL.deposito (fecha,importe,cuenta_numero,moneda_tipo,tarjeta_numero)
+insert into QUIEN_BAJO_EL_KERNEL.deposito (fecha,importe,cuenta_numero,moneda_tipo,tarjeta_numero, codigo_seguridad)
 values
-(@fecha,@importe,@cuenta_numero, @moneda_tipo,@tarjeta_numero)
+(@fecha,@importe,@cuenta_numero, @moneda_tipo,@tarjeta_numero, @codigo_seguridad)
 END
 GO
 
@@ -1904,15 +1898,17 @@ codigo_seguridad,
 cod_emisor,
 cliente_tipo_doc,
 cliente_numero_doc,
+numero_entero,
 habilitado)
 values
-(@tarjetaNumero, 
+(SUBSTRING(@tarjetaNumero, 13, 4), 
 @fecha_emision, 
 @fecha_vencimiento, 
 @codigo_seguridad, 
 @cod_emisor,
 @cliente_tipo_doc ,
 @cliente_numero_doc,
+HASHBYTES('SHA1', @tarjetaNumero),
 1)
 END
 GO
@@ -1932,6 +1928,7 @@ SET
  fecha_vencimiento = @fecha_vencimiento, 
  codigo_seguridad = @codigo_seguridad, 
  cod_emisor = @cod_emisor,
+ numero_entero = HASHBYTES('SHA1', @tarjetaNumero),
  habilitado=1
  WHERE tarjeta_numero = @tarjetaNumero
 

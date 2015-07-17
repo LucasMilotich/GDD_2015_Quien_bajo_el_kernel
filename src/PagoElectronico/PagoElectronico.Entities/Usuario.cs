@@ -31,5 +31,13 @@ namespace PagoElectronico.Entities
                 return SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(this.Password));
             }            
         }
+
+        public byte[] HashedRespuestaSecreta
+        {
+            get
+            {
+                return SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(this.RespuestaSecreta));
+            }
+        }
     }
 }

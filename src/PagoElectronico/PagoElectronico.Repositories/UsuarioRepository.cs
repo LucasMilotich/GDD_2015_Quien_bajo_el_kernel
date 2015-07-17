@@ -28,7 +28,7 @@ namespace PagoElectronico.Repositories
             command.Parameters.AddWithValue("@username", entity.Username);
             command.Parameters.AddWithValue("@password", entity.HashedPassword);
             command.Parameters.AddWithValue("@pregunta_secreta", entity.PreguntaSecreta);
-            command.Parameters.AddWithValue("@respuesta_secreta", entity.RespuestaSecreta);
+            command.Parameters.AddWithValue("@respuesta_secreta", entity.HashedRespuestaSecreta);
             command.Parameters.AddWithValue("@activo", entity.Activo);
             command.Parameters.AddWithValue("@habilitado", entity.Habilitado);
 
@@ -36,16 +36,12 @@ namespace PagoElectronico.Repositories
            
         }
 
-        public override void Update(Usuario entity)
+        public void updatePassword(String username, byte[] hashedPassword)
         {
-            SqlCommand command = DBConnection.CreateStoredProcedure("UPDATE_USUARIO");
+            SqlCommand command = DBConnection.CreateStoredProcedure("UPDATE_PASSWORD");
 
-            command.Parameters.AddWithValue("@username", entity.Username);
-            command.Parameters.AddWithValue("@password", entity.HashedPassword);
-            command.Parameters.AddWithValue("@pregunta_secreta", entity.PreguntaSecreta);
-            command.Parameters.AddWithValue("@respuesta_secreta", entity.RespuestaSecreta);
-            command.Parameters.AddWithValue("@activo", entity.Activo);
-            command.Parameters.AddWithValue("@habilitado", entity.Habilitado);
+            command.Parameters.AddWithValue("@username", username);
+            command.Parameters.AddWithValue("@password", hashedPassword);
 
             DBConnection.ExecuteNonQuery(command);
         }
@@ -128,12 +124,18 @@ namespace PagoElectronico.Repositories
                 return false;
         }
 
-        public string getPasswordHashedByUsername(string username)
+        public byte[] getPasswordHashedByUsername(string username)
         {
             SqlCommand command = DBConnection.CreateStoredProcedure("getPasswordHashedByUsername");
             command.Parameters.AddWithValue("@username", username);
             DataRow dataRow = DBConnection.EjecutarStoredProcedureSelect(command).Rows[0];
-            return Convert.ToString(dataRow["password"].ToString());
+            byte[] passwordHashed = (byte[])dataRow["password"];
+            return passwordHashed;
+        }
+
+        public override void Update(Usuario entity)
+        {
+            throw new NotImplementedException();
         }
     }
 }
