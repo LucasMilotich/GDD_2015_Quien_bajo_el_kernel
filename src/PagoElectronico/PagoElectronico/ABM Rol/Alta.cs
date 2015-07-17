@@ -15,7 +15,7 @@ namespace PagoElectronico.ABM_Rol
     public partial class Alta : Form
     {
         public int id_rol;
-        Rol rol; 
+        Rol rol;
         public Alta(int id)
         {
             InitializeComponent();
@@ -42,32 +42,31 @@ namespace PagoElectronico.ABM_Rol
             {
                 this.rol.Nombre = this.txtNombre.Text;
                 this.rol.Activo = this.chkActivo.Checked;
-               this.rol.Funcionalidades = new List<Funcionalidad>();
+                this.rol.Funcionalidades = new List<Funcionalidad>();
                 foreach (var item in chkLFuncionalidades.CheckedItems)
                 {
 
-                   this.rol.Funcionalidades.Add((Funcionalidad)item);
+                    this.rol.Funcionalidades.Add((Funcionalidad)item);
                 }
-               if( rolServv.modificarRol(this.rol)>0 )
-                   MessageBox.Show("Se modifico correctamente", "OK");
-               else MessageBox.Show("NO se modifico correctamente", "ERROR");
+                if (rolServv.modificarRol(this.rol) > 0)
+                    MessageBox.Show("Se modifico correctamente", "OK");
+                else MessageBox.Show("NO se modifico correctamente", "ERROR");
             }
 
             else
             {
-               
+
                 Rol rol = new Rol();
                 rol.Nombre = txtNombre.Text;
                 rol.Activo = chkActivo.Checked;
                 rol.Funcionalidades = new List<Funcionalidad>();
                 foreach (var item in chkLFuncionalidades.CheckedItems)
                 {
-
                     rol.Funcionalidades.Add((Funcionalidad)item);
                 }
                 if (rolServv.crearRol(rol) != 0)
-                    MessageBox.Show("Se creeo correctamente", "OK");
-                else MessageBox.Show("NO se creeo correctamente", "ERROR");
+                    MessageBox.Show("Se creo correctamente", "OK");
+                else MessageBox.Show("NO se creo correctamente", "ERROR");
 
             }
 
