@@ -102,7 +102,7 @@ namespace PagoElectronico.ABM_Cuenta
 
         private void dgvCuentas_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex == 0)
+            if (e.ColumnIndex == 0)//Editar cuenta
             {
                 var row = dgvCuentas.Rows[e.RowIndex];
                 var cell = row.Cells["Numero"];
@@ -110,19 +110,21 @@ namespace PagoElectronico.ABM_Cuenta
                 form.Show();
                 form.MdiParent = this.MdiParent;
             }
-            else if (e.ColumnIndex == 1)
+            else if (e.ColumnIndex == 1)//Cerrar cuenta
             {
 
-                if (MessageBox.Show("Desea cerrar la cuenta seleccionada? La misma no podrá volver a activarse", "Atención!", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
+                if (MessageBox.Show("Desea cerrar la cuenta seleccionada? La misma no podrá volver a activarse.", "Atención!", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
                 {
                     var row = dgvCuentas.Rows[e.RowIndex];
                     var cell = row.Cells["Numero"];
+                    DateTime fecha = Session.Fecha;
+
                     try
                     {
-                        int resp = cuentaService.CerrarCuenta(Convert.ToInt64(cell.Value));
+                        int resp = cuentaService.CerrarCuenta(Convert.ToInt64(cell.Value), fecha);
                         if (resp == -1)
                         {
-                            MessageBox.Show("La cuenta no se podrá cerrar mientras haya transacciones pendientes de pago", "Atención!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                            MessageBox.Show("La cuenta no se podrá cerrar mientras haya transacciones pendientes de pago.", "Atención!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                         }
                         else
                         {

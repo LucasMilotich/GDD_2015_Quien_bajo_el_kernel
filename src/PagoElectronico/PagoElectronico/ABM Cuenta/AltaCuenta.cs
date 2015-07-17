@@ -40,7 +40,7 @@ namespace PagoElectronico.ABM_Cuenta
         private void AltaCuenta_Load(object sender, EventArgs e)
         {
             cargarCampos();
-
+           
             if (NroCuenta > 0)
             {
                 Cuenta cuenta = cuentaService.GetCuentaByNumero(NroCuenta);
@@ -48,7 +48,15 @@ namespace PagoElectronico.ABM_Cuenta
                 cmbTiposCuenta.SelectedValue = cuenta.tipoCuenta;
                 cmbMonedas.SelectedValue = cuenta.monedaTipo;
                 txtCuenta.Text = cuenta.numero.ToString();
+                cmbPaises.Enabled = false;
+                cmbMonedas.Enabled = false;
                 this.Text = "Edición de Cuenta";
+                int estadoCuenta = cuentaService.getEstado(NroCuenta);
+
+                if (estadoCuenta == 3)
+                {
+                    
+                }
             }
             else
             {
@@ -80,25 +88,37 @@ namespace PagoElectronico.ABM_Cuenta
             int tipoCuenta = Convert.ToInt32(cmbTiposCuenta.SelectedValue.ToString());
             DateTime fecha = Session.Fecha;
             
-            if (Session.Usuario.SelectedRol.Id == (int)Entities.Enums.Roles.Admin)
-            {
-                tipoDocCliente = ((Cliente)cmbClientes.SelectedItem).tipoDocumento;
-                nroDocCliente = ((Cliente)cmbClientes.SelectedItem).numeroDocumento;
-            }
-            else
-            {
-                cliente = clienteService.getClienteByUsername(usuario.Username);
-                tipoDocCliente = cliente.tipoDocumento;
-                nroDocCliente = cliente.numeroDocumento;
-            }
+            //if (Session.Usuario.SelectedRol.Id == (int)Entities.Enums.Roles.Admin)
+            //{
+            //    tipoDocCliente = ((Cliente)cmbClientes.SelectedItem).tipoDocumento;
+            //    nroDocCliente = ((Cliente)cmbClientes.SelectedItem).numeroDocumento;
+            //}
+            //else
+            //{
+            //    cliente = clienteService.getClienteByUsername(usuario.Username);
+            //    tipoDocCliente = cliente.tipoDocumento;
+            //    nroDocCliente = cliente.numeroDocumento;
+            //}
 
             if (txtCuenta.Text == "")
             {
+                if (Session.Usuario.SelectedRol.Id == (int)Entities.Enums.Roles.Admin)
+                {
+                    tipoDocCliente = ((Cliente)cmbClientes.SelectedItem).tipoDocumento;
+                    nroDocCliente = ((Cliente)cmbClientes.SelectedItem).numeroDocumento;
+                }
+                else
+                {
+                    cliente = clienteService.getClienteByUsername(usuario.Username);
+                    tipoDocCliente = cliente.tipoDocumento;
+                    nroDocCliente = cliente.numeroDocumento;
+                }
 
                 try
                 {
                     cuentaService.InsertaCuenta(codPais, tipoMoneda, tipoCuenta, tipoDocCliente, nroDocCliente, fecha);
                     MessageBox.Show("Cuenta creada exitosamente. Recuerde que la misma permanecerá pendiente de activación hasta que abone el costo de apertura", "Atencion", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    this.cargarCampos();
                 }
                 catch (OperationCanceledException ex)
                 {
@@ -114,7 +134,7 @@ namespace PagoElectronico.ABM_Cuenta
                 long numCuenta = Convert.ToInt64(txtCuenta.Text);
                 try
                 {
-                    cuentaService.ModificaCuenta(numCuenta, tipoMoneda, tipoCuenta, codPais, fecha);
+                    cuentaService.ModificaCuenta(numCuenta, tipoCuenta, fecha);
                     MessageBox.Show("Cuenta modificada exitosamente!", "Atencion", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     this.Close();
                 }
@@ -136,6 +156,11 @@ namespace PagoElectronico.ABM_Cuenta
             {
                 formPadre.realizarBusqueda();
             }
+        }
+
+        private void btnCerrar_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
 
     }

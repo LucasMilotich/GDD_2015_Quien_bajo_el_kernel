@@ -28,8 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.txtNroDoc = new System.Windows.Forms.TextBox();
             this.comboTipoDoc = new System.Windows.Forms.ComboBox();
@@ -40,12 +39,6 @@
             this.btnAgregarTodos = new System.Windows.Forms.Button();
             this.btnAgregar = new System.Windows.Forms.Button();
             this.grdItemsAPagar = new System.Windows.Forms.DataGridView();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewComboBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.grdTransacciones = new System.Windows.Forms.DataGridView();
             this.btnLimpiar = new System.Windows.Forms.Button();
             this.chkSeleccionarTodos = new System.Windows.Forms.CheckBox();
@@ -57,6 +50,13 @@
             this.Tipo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Costo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Suscripcion = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.Fecha = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Date = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.grdItemsAPagar)).BeginInit();
@@ -144,21 +144,21 @@
             // 
             // btnAgregarTodos
             // 
-            this.btnAgregarTodos.Location = new System.Drawing.Point(491, 114);
+            this.btnAgregarTodos.Location = new System.Drawing.Point(259, 185);
             this.btnAgregarTodos.Name = "btnAgregarTodos";
-            this.btnAgregarTodos.Size = new System.Drawing.Size(40, 39);
+            this.btnAgregarTodos.Size = new System.Drawing.Size(141, 28);
             this.btnAgregarTodos.TabIndex = 45;
-            this.btnAgregarTodos.Text = ">>";
+            this.btnAgregarTodos.Text = "Agregar Todos";
             this.btnAgregarTodos.UseVisualStyleBackColor = true;
             this.btnAgregarTodos.Click += new System.EventHandler(this.btnAgregarTodos_Click);
             // 
             // btnAgregar
             // 
-            this.btnAgregar.Location = new System.Drawing.Point(491, 69);
+            this.btnAgregar.Location = new System.Drawing.Point(78, 185);
             this.btnAgregar.Name = "btnAgregar";
-            this.btnAgregar.Size = new System.Drawing.Size(40, 39);
+            this.btnAgregar.Size = new System.Drawing.Size(135, 28);
             this.btnAgregar.TabIndex = 44;
-            this.btnAgregar.Text = ">";
+            this.btnAgregar.Text = "Agregar Seleccionados";
             this.btnAgregar.UseVisualStyleBackColor = true;
             this.btnAgregar.Click += new System.EventHandler(this.btnAgregar_Click);
             // 
@@ -171,66 +171,13 @@
             this.dataGridViewTextBoxColumn3,
             this.dataGridViewTextBoxColumn4,
             this.dataGridViewTextBoxColumn5,
-            this.dataGridViewComboBoxColumn1});
+            this.Date});
             this.grdItemsAPagar.Location = new System.Drawing.Point(9, 219);
             this.grdItemsAPagar.MultiSelect = false;
             this.grdItemsAPagar.Name = "grdItemsAPagar";
             this.grdItemsAPagar.ReadOnly = true;
-            this.grdItemsAPagar.Size = new System.Drawing.Size(476, 135);
+            this.grdItemsAPagar.Size = new System.Drawing.Size(518, 135);
             this.grdItemsAPagar.TabIndex = 43;
-            // 
-            // dataGridViewTextBoxColumn1
-            // 
-            this.dataGridViewTextBoxColumn1.DataPropertyName = "codigo";
-            this.dataGridViewTextBoxColumn1.HeaderText = "Codigo";
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            this.dataGridViewTextBoxColumn1.ReadOnly = true;
-            this.dataGridViewTextBoxColumn1.Visible = false;
-            // 
-            // dataGridViewTextBoxColumn2
-            // 
-            this.dataGridViewTextBoxColumn2.DataPropertyName = "tipo";
-            this.dataGridViewTextBoxColumn2.HeaderText = "Tipo";
-            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
-            this.dataGridViewTextBoxColumn2.ReadOnly = true;
-            this.dataGridViewTextBoxColumn2.Visible = false;
-            // 
-            // dataGridViewTextBoxColumn3
-            // 
-            this.dataGridViewTextBoxColumn3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dataGridViewTextBoxColumn3.DataPropertyName = "cuenta";
-            this.dataGridViewTextBoxColumn3.HeaderText = "Nro. Cuenta";
-            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
-            this.dataGridViewTextBoxColumn3.ReadOnly = true;
-            this.dataGridViewTextBoxColumn3.Width = 82;
-            // 
-            // dataGridViewTextBoxColumn4
-            // 
-            this.dataGridViewTextBoxColumn4.DataPropertyName = "TipoDescription";
-            this.dataGridViewTextBoxColumn4.HeaderText = "Tipo de Transacción";
-            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
-            this.dataGridViewTextBoxColumn4.ReadOnly = true;
-            this.dataGridViewTextBoxColumn4.Width = 130;
-            // 
-            // dataGridViewTextBoxColumn5
-            // 
-            this.dataGridViewTextBoxColumn5.DataPropertyName = "costo";
-            this.dataGridViewTextBoxColumn5.HeaderText = "Costo";
-            this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
-            this.dataGridViewTextBoxColumn5.ReadOnly = true;
-            this.dataGridViewTextBoxColumn5.Width = 50;
-            // 
-            // dataGridViewComboBoxColumn1
-            // 
-            this.dataGridViewComboBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.dataGridViewComboBoxColumn1.DataPropertyName = "suscripcion";
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.dataGridViewComboBoxColumn1.DefaultCellStyle = dataGridViewCellStyle3;
-            this.dataGridViewComboBoxColumn1.HeaderText = "Suscripción";
-            this.dataGridViewComboBoxColumn1.Name = "dataGridViewComboBoxColumn1";
-            this.dataGridViewComboBoxColumn1.ReadOnly = true;
-            this.dataGridViewComboBoxColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewComboBoxColumn1.Width = 87;
             // 
             // grdTransacciones
             // 
@@ -242,10 +189,11 @@
             this.NroCuenta,
             this.Tipo,
             this.Costo,
-            this.Suscripcion});
-            this.grdTransacciones.Location = new System.Drawing.Point(9, 69);
+            this.Suscripcion,
+            this.Fecha});
+            this.grdTransacciones.Location = new System.Drawing.Point(9, 44);
             this.grdTransacciones.Name = "grdTransacciones";
-            this.grdTransacciones.Size = new System.Drawing.Size(476, 135);
+            this.grdTransacciones.Size = new System.Drawing.Size(518, 135);
             this.grdTransacciones.TabIndex = 42;
             this.grdTransacciones.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.grdTransacciones_CellFormatting);
             // 
@@ -334,8 +282,8 @@
             // Suscripcion
             // 
             this.Suscripcion.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.Suscripcion.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.Suscripcion.DefaultCellStyle = dataGridViewCellStyle2;
             this.Suscripcion.HeaderText = "Suscripción";
             this.Suscripcion.Items.AddRange(new object[] {
             "1",
@@ -348,6 +296,60 @@
             this.Suscripcion.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.Suscripcion.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.Suscripcion.Width = 87;
+            // 
+            // Fecha
+            // 
+            this.Fecha.DataPropertyName = "fecha";
+            this.Fecha.HeaderText = "Fecha";
+            this.Fecha.Name = "Fecha";
+            this.Fecha.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.DataPropertyName = "codigo";
+            this.dataGridViewTextBoxColumn1.HeaderText = "Codigo";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.ReadOnly = true;
+            this.dataGridViewTextBoxColumn1.Visible = false;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.DataPropertyName = "tipo";
+            this.dataGridViewTextBoxColumn2.HeaderText = "Tipo";
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.ReadOnly = true;
+            this.dataGridViewTextBoxColumn2.Visible = false;
+            // 
+            // dataGridViewTextBoxColumn3
+            // 
+            this.dataGridViewTextBoxColumn3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dataGridViewTextBoxColumn3.DataPropertyName = "cuenta";
+            this.dataGridViewTextBoxColumn3.HeaderText = "Nro. Cuenta";
+            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.dataGridViewTextBoxColumn3.ReadOnly = true;
+            this.dataGridViewTextBoxColumn3.Width = 89;
+            // 
+            // dataGridViewTextBoxColumn4
+            // 
+            this.dataGridViewTextBoxColumn4.DataPropertyName = "TipoDescription";
+            this.dataGridViewTextBoxColumn4.HeaderText = "Tipo de Transacción";
+            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
+            this.dataGridViewTextBoxColumn4.ReadOnly = true;
+            this.dataGridViewTextBoxColumn4.Width = 130;
+            // 
+            // dataGridViewTextBoxColumn5
+            // 
+            this.dataGridViewTextBoxColumn5.DataPropertyName = "CostoTotal";
+            this.dataGridViewTextBoxColumn5.HeaderText = "Costo Total";
+            this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
+            this.dataGridViewTextBoxColumn5.ReadOnly = true;
+            // 
+            // Date
+            // 
+            this.Date.DataPropertyName = "fecha";
+            this.Date.HeaderText = "Fecha";
+            this.Date.Name = "Date";
+            this.Date.ReadOnly = true;
             // 
             // FacturacionForm
             // 
@@ -385,12 +387,6 @@
         private System.Windows.Forms.DataGridView grdItemsAPagar;
         private System.Windows.Forms.Button btnAgregar;
         private System.Windows.Forms.Button btnAgregarTodos;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewComboBoxColumn1;
         private System.Windows.Forms.DataGridViewCheckBoxColumn Seleccionar;
         private System.Windows.Forms.DataGridViewTextBoxColumn Codigo;
         private System.Windows.Forms.DataGridViewTextBoxColumn TipoTransaccion;
@@ -398,6 +394,13 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Tipo;
         private System.Windows.Forms.DataGridViewTextBoxColumn Costo;
         private System.Windows.Forms.DataGridViewComboBoxColumn Suscripcion;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Fecha;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Date;
 
     }
 }

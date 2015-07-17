@@ -13,6 +13,7 @@ namespace PagoElectronico.Entities
         public double costo { get; set; }
         public int tipo { get; set; }
         public int suscripcion { get; set; }
+        public DateTime fecha { get; set; }
         public string TipoDescription 
         {
             get 
@@ -29,6 +30,13 @@ namespace PagoElectronico.Entities
                 {
                     return EnumHelper.GetEnumDescription(TiposTransaccionEnum.ModifCuenta);
                 }
+            }
+        }
+        public double CostoTotal
+        {
+            get
+            {
+                return this.costo * this.suscripcion;
             }
         }
     }

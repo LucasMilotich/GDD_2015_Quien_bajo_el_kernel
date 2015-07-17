@@ -92,7 +92,8 @@ namespace PagoElectronico.Facturacion
                         tipo = Convert.ToInt32(row.Cells[2].Value),
                         cuenta = Convert.ToInt64(row.Cells[3].Value),
                         costo = Convert.ToDouble(row.Cells[5].Value),
-                        suscripcion = Convert.ToInt32(row.Cells[6].Value)
+                        suscripcion = Convert.ToInt32(row.Cells[6].Value),
+                        fecha = Convert.ToDateTime(row.Cells[7].Value)
                     };
 
                     if (transaccion.suscripcion == 0 && (TiposTransaccionEnum)transaccion.tipo != TiposTransaccionEnum.Transferencia)
@@ -113,12 +114,12 @@ namespace PagoElectronico.Facturacion
 
             grdTransacciones.DataSource = null;
             grdTransacciones.Rows.Clear();
-            grdTransacciones.DataSource = transaccionesSinFacturar.OrderBy(t => t.cuenta).ToList();
+            grdTransacciones.DataSource = transaccionesSinFacturar.OrderBy(t => t.fecha).ToList();
 
             grdItemsAPagar.AutoGenerateColumns = false;
             grdItemsAPagar.DataSource = null;
             grdItemsAPagar.Rows.Clear();
-            grdItemsAPagar.DataSource = transaccionesAFacturar.OrderBy(t => t.cuenta).ToList();
+            grdItemsAPagar.DataSource = transaccionesAFacturar.OrderBy(t => t.fecha).ToList();
         }
 
         private void btnFacturar_Click(object sender, EventArgs e)
@@ -130,12 +131,17 @@ namespace PagoElectronico.Facturacion
 		             IList<ItemFactura> items = transaccionesAFacturar.Select(t => new ItemFactura
                             {
                                 cuenta = t.cuenta,
+                                tipo = t.tipo,
                                 descripcion = t.TipoDescription,
                                 importe = t.costo,
-                                numeroItem = t.codigo
+                                numeroItem = t.codigo,
+                                suscripcion = t.suscripcion,
+                                fecha = t.fecha
                             }).ToList();
 
-                     this.facturacionService.Facturar(items, cliente);
+                     var numero = this.facturacionService.Facturar(items, cliente);
+                     Limpiar();
+                     MessageBox.Show("Se ha generado exitosamente la factura número: " + numero.ToString(), "Facturacion", MessageBoxButtons.OK, MessageBoxIcon.Information);
 	            }
             }
             catch 
@@ -145,6 +151,11 @@ namespace PagoElectronico.Facturacion
         }
 
         private void btnLimpiarLista_Click(object sender, EventArgs e)
+        {
+            Limpiar();
+        }
+
+        private void Limpiar()
         {
             grdTransacciones.DataSource = null;
             grdTransacciones.Rows.Clear();
@@ -167,15 +178,15 @@ namespace PagoElectronico.Facturacion
             {
                 if (tipo.ID == (long)TiposTransaccionEnum.AperturaCuenta)
                 {
-                    refreshGridFiltros(transaccionesSinFacturar.Where(t => (TiposTransaccionEnum)t.tipo == TiposTransaccionEnum.AperturaCuenta).OrderBy(t => t.cuenta).ToList());
+                    refreshGridFiltros(transaccionesSinFacturar.Where(t => (TiposTransaccionEnum)t.tipo == TiposTransaccionEnum.AperturaCuenta).OrderBy(t => t.fecha).ToList());
                 }
                 else if (tipo.ID == (long)TiposTransaccionEnum.ModifCuenta)
                 {
-                    refreshGridFiltros(transaccionesSinFacturar.Where(t => (TiposTransaccionEnum)t.tipo == TiposTransaccionEnum.ModifCuenta).OrderBy(t => t.cuenta).ToList());
+                    refreshGridFiltros(transaccionesSinFacturar.Where(t => (TiposTransaccionEnum)t.tipo == TiposTransaccionEnum.ModifCuenta).OrderBy(t => t.fecha).ToList());
                 }
                 else if (tipo.ID == (long)TiposTransaccionEnum.Transferencia)
                 {
-                    refreshGridFiltros(transaccionesSinFacturar.Where(t => (TiposTransaccionEnum)t.tipo == TiposTransaccionEnum.Transferencia).OrderBy(t => t.cuenta).ToList());
+                    refreshGridFiltros(transaccionesSinFacturar.Where(t => (TiposTransaccionEnum)t.tipo == TiposTransaccionEnum.Transferencia).OrderBy(t => t.fecha).ToList());
                 }
             }
         }
@@ -186,13 +197,13 @@ namespace PagoElectronico.Facturacion
             {
                 comboTipoTransaccion.Enabled = false;
                 comboTipoTransaccion.SelectedIndex = 0;
-                refreshGridFiltros(transaccionesSinFacturar.OrderBy(t => t.cuenta).ToList());
+                refreshGridFiltros(transaccionesSinFacturar.OrderBy(t => t.fecha).ToList());
             }
             else
             {
                 comboTipoTransaccion.Enabled = true;
                 comboTipoTransaccion.SelectedIndex = 0;
-                refreshGridFiltros(transaccionesSinFacturar.Where(t => (TiposTransaccionEnum)t.tipo == TiposTransaccionEnum.AperturaCuenta).OrderBy(t => t.cuenta).ToList());
+                refreshGridFiltros(transaccionesSinFacturar.Where(t => (TiposTransaccionEnum)t.tipo == TiposTransaccionEnum.AperturaCuenta).OrderBy(t => t.fecha).ToList());
             }
         }
 
@@ -213,7 +224,7 @@ namespace PagoElectronico.Facturacion
             transaccionesSinFacturar.AddRange(aperturaCuentasSinFacturar);
             transaccionesSinFacturar.AddRange(modifCuentasSinFacturar);
             transaccionesSinFacturar.AddRange(transferenciasSinFacturar);
-            return transaccionesSinFacturar.OrderBy(t => t.cuenta).ToList();
+            return transaccionesSinFacturar.OrderBy(t => t.fecha).ToList();
         }
 
         private void refreshGridFiltros(List<Transaccion> listSinFacturar)
