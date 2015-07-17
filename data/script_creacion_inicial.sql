@@ -19,7 +19,9 @@ CREATE TABLE QUIEN_BAJO_EL_KERNEL.CUENTA_MODIFICACION (
 	id_modificacion numeric(18) IDENTITY(1,1) NOT NULL,
 	cuenta numeric(18) NOT NULL,
 	fecha datetime NULL,
-	nuevo_tipo_cuenta	NUMERIC(1,0) NOT NULL
+	nuevo_tipo_cuenta	NUMERIC(1,0) NOT NULL,
+	viejo_tipo_cuenta numeric(1,0) NOT NULL,
+	habilitado bit NOT NULL default(1)
 )
 GO
 
@@ -478,7 +480,9 @@ GO
 ALTER TABLE QUIEN_BAJO_EL_KERNEL.CUENTA_MODIFICACION ADD CONSTRAINT FK_MODIF_TIPO_CUENTA
 	FOREIGN KEY (nuevo_tipo_cuenta) REFERENCES QUIEN_BAJO_EL_KERNEL.TIPO_ESTADO_CUENTA (codigo)
 GO
-
+ALTER TABLE QUIEN_BAJO_EL_KERNEL.CUENTA_MODIFICACION ADD CONSTRAINT FK_MODIF_TIPO_CUENTA
+	FOREIGN KEY (viejo_tipo_cuenta) REFERENCES QUIEN_BAJO_EL_KERNEL.TIPO_ESTADO_CUENTA (codigo)
+GO
 ALTER TABLE QUIEN_BAJO_EL_KERNEL.TARJETA ADD CONSTRAINT FK_CUENTA_TARJETA_CLIENTE
 	FOREIGN KEY (cliente_tipo_doc, cliente_numero_doc) REFERENCES QUIEN_BAJO_EL_KERNEL.CLIENTE (tipo_documento, numero_documento)
 GO
@@ -1639,6 +1643,8 @@ GO
 
 --- 1.-Clientes que alguna de sus cuentas fueron inhabilitadas por no pagar los costos de transacción ---
 
+
+
 --- 2.- Cliente con mayor cantidad de comisiones facturadas en todas sus cuentas --
 
 create view QUIEN_BAJO_EL_KERNEL.ComisionesFacturadas as
@@ -1663,12 +1669,12 @@ inner join QUIEN_BAJO_EL_KERNEL.CLIENTE cl on f.cliente_numero_doc=cl.numero_doc
 GO
 
 
-CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.ClientesComisionesFacturadas (@fechaDesde date, @fechaHasta date)
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.ClientesComisionesFacturadas (@fechaDesde datetime, @fechaHasta datetime)
 AS
 BEGIN
 select top 5 c.apellido, c.nombre,c.cliente_numero_doc, c.cliente_tipo_doc, COUNT(*) as CantidadComisiones
 from QUIEN_BAJO_EL_KERNEL.ComisionesFacturadas c
---where c.fecha >=@fechaDesde and c.fecha<=@fechaHasta
+where c.fecha >=@fechaDesde and c.fecha<=@fechaHasta
 group by c.cliente_numero_doc, c.cliente_tipo_doc,c.apellido, c.nombre
 order by CantidadComisiones desc
 END
