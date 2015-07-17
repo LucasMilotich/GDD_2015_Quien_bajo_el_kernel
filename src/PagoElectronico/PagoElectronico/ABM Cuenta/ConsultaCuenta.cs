@@ -108,7 +108,7 @@ namespace PagoElectronico.ABM_Cuenta
             {
                 var row = dgvCuentas.Rows[e.RowIndex];
                 var cell = row.Cells["Numero"];
-                int estadoCuenta = cuentaService.getEstado(Convert.ToInt64(cell.Value));
+                /*int estadoCuenta = cuentaService.getEstado(Convert.ToInt64(cell.Value));
 
                 switch (estadoCuenta)
                 {
@@ -125,7 +125,7 @@ namespace PagoElectronico.ABM_Cuenta
                         break;
                     default:
                         break;
-                }
+                }*/
                 var form = new AltaCuenta(Convert.ToInt64(cell.Value), this);
                 form.Show();
                 form.MdiParent = this.MdiParent;
