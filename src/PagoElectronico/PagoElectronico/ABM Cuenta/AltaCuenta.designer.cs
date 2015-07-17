@@ -39,6 +39,8 @@
             this.cmbMonedas = new System.Windows.Forms.ComboBox();
             this.lblCliente = new System.Windows.Forms.Label();
             this.cmbClientes = new System.Windows.Forms.ComboBox();
+            this.btnCerrar = new System.Windows.Forms.Button();
+            this.chkResuscribir = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // txtCuenta
@@ -61,7 +63,7 @@
             // lblPais
             // 
             this.lblPais.AutoSize = true;
-            this.lblPais.Location = new System.Drawing.Point(25, 71);
+            this.lblPais.Location = new System.Drawing.Point(25, 68);
             this.lblPais.Name = "lblPais";
             this.lblPais.Size = new System.Drawing.Size(27, 13);
             this.lblPais.TabIndex = 6;
@@ -70,7 +72,7 @@
             // lblMoneda
             // 
             this.lblMoneda.AutoSize = true;
-            this.lblMoneda.Location = new System.Drawing.Point(25, 113);
+            this.lblMoneda.Location = new System.Drawing.Point(25, 107);
             this.lblMoneda.Name = "lblMoneda";
             this.lblMoneda.Size = new System.Drawing.Size(46, 13);
             this.lblMoneda.TabIndex = 7;
@@ -79,7 +81,7 @@
             // lblTipoCuenta
             // 
             this.lblTipoCuenta.AutoSize = true;
-            this.lblTipoCuenta.Location = new System.Drawing.Point(25, 154);
+            this.lblTipoCuenta.Location = new System.Drawing.Point(25, 151);
             this.lblTipoCuenta.Name = "lblTipoCuenta";
             this.lblTipoCuenta.Size = new System.Drawing.Size(65, 13);
             this.lblTipoCuenta.TabIndex = 9;
@@ -87,7 +89,7 @@
             // 
             // btnGuardar
             // 
-            this.btnGuardar.Location = new System.Drawing.Point(156, 248);
+            this.btnGuardar.Location = new System.Drawing.Point(64, 248);
             this.btnGuardar.Name = "btnGuardar";
             this.btnGuardar.Size = new System.Drawing.Size(119, 33);
             this.btnGuardar.TabIndex = 10;
@@ -131,7 +133,7 @@
             // lblCliente
             // 
             this.lblCliente.AutoSize = true;
-            this.lblCliente.Location = new System.Drawing.Point(26, 191);
+            this.lblCliente.Location = new System.Drawing.Point(26, 190);
             this.lblCliente.Name = "lblCliente";
             this.lblCliente.Size = new System.Drawing.Size(39, 13);
             this.lblCliente.TabIndex = 16;
@@ -150,11 +152,35 @@
             this.cmbClientes.ValueMember = "numeroDocumento";
             this.cmbClientes.Visible = false;
             // 
+            // btnCerrar
+            // 
+            this.btnCerrar.Location = new System.Drawing.Point(228, 248);
+            this.btnCerrar.Name = "btnCerrar";
+            this.btnCerrar.Size = new System.Drawing.Size(119, 33);
+            this.btnCerrar.TabIndex = 18;
+            this.btnCerrar.Text = "Cerrar";
+            this.btnCerrar.UseVisualStyleBackColor = true;
+            this.btnCerrar.Click += new System.EventHandler(this.btnCerrar_Click);
+            // 
+            // chkResuscribir
+            // 
+            this.chkResuscribir.AutoSize = true;
+            this.chkResuscribir.Location = new System.Drawing.Point(248, 149);
+            this.chkResuscribir.Name = "chkResuscribir";
+            this.chkResuscribir.Size = new System.Drawing.Size(78, 17);
+            this.chkResuscribir.TabIndex = 19;
+            this.chkResuscribir.Text = "Resuscribir";
+            this.chkResuscribir.UseVisualStyleBackColor = true;
+            this.chkResuscribir.Visible = false;
+            this.chkResuscribir.CheckedChanged += new System.EventHandler(this.chkResuscribir_CheckedChanged);
+            // 
             // AltaCuenta
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(440, 310);
+            this.Controls.Add(this.chkResuscribir);
+            this.Controls.Add(this.btnCerrar);
             this.Controls.Add(this.cmbClientes);
             this.Controls.Add(this.lblCliente);
             this.Controls.Add(this.cmbMonedas);
@@ -188,5 +214,7 @@
         private System.Windows.Forms.ComboBox cmbMonedas;
         private System.Windows.Forms.Label lblCliente;
         private System.Windows.Forms.ComboBox cmbClientes;
+        private System.Windows.Forms.Button btnCerrar;
+        private System.Windows.Forms.CheckBox chkResuscribir;
     }
 }

@@ -38,7 +38,6 @@
             this.btnLimpiar = new System.Windows.Forms.Button();
             this.btnBuscar = new System.Windows.Forms.Button();
             this.dgvCuentas = new System.Windows.Forms.DataGridView();
-            this.cmbPaises = new System.Windows.Forms.ComboBox();
             this.edicion = new System.Windows.Forms.DataGridViewButtonColumn();
             this.cerrar = new System.Windows.Forms.DataGridViewButtonColumn();
             this.Numero = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -50,6 +49,7 @@
             this.tipoCuenta = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.saldo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.fechaCreacion = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cmbPaises = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCuentas)).BeginInit();
             this.SuspendLayout();
             // 
@@ -60,7 +60,7 @@
             this.cmbEstado.FormattingEnabled = true;
             this.cmbEstado.Location = new System.Drawing.Point(69, 79);
             this.cmbEstado.Name = "cmbEstado";
-            this.cmbEstado.Size = new System.Drawing.Size(132, 21);
+            this.cmbEstado.Size = new System.Drawing.Size(135, 21);
             this.cmbEstado.TabIndex = 1;
             this.cmbEstado.ValueMember = "codigo";
             // 
@@ -167,17 +167,6 @@
             this.dgvCuentas.TabIndex = 11;
             this.dgvCuentas.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCuentas_CellContentClick);
             // 
-            // cmbPaises
-            // 
-            this.cmbPaises.DisplayMember = "descripcionPais";
-            this.cmbPaises.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbPaises.FormattingEnabled = true;
-            this.cmbPaises.Location = new System.Drawing.Point(69, 37);
-            this.cmbPaises.Name = "cmbPaises";
-            this.cmbPaises.Size = new System.Drawing.Size(196, 21);
-            this.cmbPaises.TabIndex = 12;
-            this.cmbPaises.ValueMember = "codigoPais";
-            // 
             // edicion
             // 
             this.edicion.HeaderText = "Editar";
@@ -260,6 +249,17 @@
             this.fechaCreacion.HeaderText = "Fecha Creación";
             this.fechaCreacion.Name = "fechaCreacion";
             this.fechaCreacion.ReadOnly = true;
+            // 
+            // cmbPaises
+            // 
+            this.cmbPaises.DisplayMember = "descripcionPais";
+            this.cmbPaises.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbPaises.FormattingEnabled = true;
+            this.cmbPaises.Location = new System.Drawing.Point(69, 37);
+            this.cmbPaises.Name = "cmbPaises";
+            this.cmbPaises.Size = new System.Drawing.Size(196, 21);
+            this.cmbPaises.TabIndex = 12;
+            this.cmbPaises.ValueMember = "codigoPais";
             // 
             // ConsultaCuenta
             // 

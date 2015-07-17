@@ -20,6 +20,7 @@ namespace PagoElectronico.Depositos
         Usuario usuarioLogueado = Session.Usuario;
 
         CuentaService cuentaService = new CuentaService();
+        ClienteService clienteService = new ClienteService();
         TipoMonedaService tipoMonedaService = new TipoMonedaService();
         TarjetaService tarjetaService = new TarjetaService();
         DepositoService depositoService = new DepositoService();
@@ -42,7 +43,7 @@ namespace PagoElectronico.Depositos
         {
             try
             {
-                clienteLogueado = Utils.obtenerCliente(usuarioLogueado);
+                //clienteLogueado = Utils.obtenerCliente(usuarioLogueado);
                 dateTimePicker1.Value = FECHA_ACTUAL;
                 cargarComboCuentas();
                 cargarComboTipoMoneda();
@@ -64,6 +65,7 @@ namespace PagoElectronico.Depositos
         private void comboCuentaOrigen_SelectedIndexChanged(object sender, EventArgs e)
         {
             actualizarSaldoActual();
+            cargarComboTC();
         }
 
         private void btnLimpiar_Click(object sender, EventArgs e)
@@ -167,7 +169,16 @@ namespace PagoElectronico.Depositos
 
         private void cargarComboCuentas()
         {
-            listaCuentas = (List<Cuenta>)cuentaService.getByCliente(clienteLogueado.tipoDocumento, clienteLogueado.numeroDocumento);
+            if (Session.Usuario.SelectedRol.Id == (int)Entities.Enums.Roles.Admin)
+            {
+                listaCuentas = (List<Cuenta>)cuentaService.GetAll();
+            }
+            else
+            {
+                clienteLogueado = clienteService.getClienteByUsername(usuarioLogueado.Username);
+                listaCuentas = (List<Cuenta>)cuentaService.getByCliente(clienteLogueado.tipoDocumento, clienteLogueado.numeroDocumento);   
+            }
+
             if (listaCuentas.Count > 0)
             {
                 comboCuentaOrigen.DataSource = listaCuentas;
@@ -189,7 +200,11 @@ namespace PagoElectronico.Depositos
 
         private void cargarComboTC()
         {
-            listaTC = (List<Tarjeta>)tarjetaService.getAllByCliente(clienteLogueado.tipoDocumento, clienteLogueado.numeroDocumento);
+            long nroDocumento, tipoDocumento;
+            nroDocumento = ((Cuenta)comboCuentaOrigen.SelectedItem).nroDoc;
+            tipoDocumento = ((Cuenta)comboCuentaOrigen.SelectedItem).tipoDoc;
+            //listaTC = (List<Tarjeta>)tarjetaService.getAllByCliente(clienteLogueado.tipoDocumento, clienteLogueado.numeroDocumento);
+            listaTC = (List<Tarjeta>)tarjetaService.getAllByCliente(tipoDocumento, nroDocumento);
             comboTarjeta.DataSource = listaTC;
             comboTarjeta.SelectedIndex = 0;
         }

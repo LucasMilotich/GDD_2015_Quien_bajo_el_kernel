@@ -16,5 +16,35 @@ namespace PagoElectronico.Services
         }
 
 
+        public void desasociarTarjeta(long tarjetaNumero)
+        {
+            TarjetaRepository repo = new TarjetaRepository();
+            repo.desasociarTarjeta(tarjetaNumero); 
+        }
+
+        public void insertarTarjeta(Tarjeta tarjeta)
+        {
+            TarjetaRepository repo = new TarjetaRepository();
+            repo.Insert(tarjeta);
+        }
+
+
+        public void updateTarjeta(Tarjeta tarjeta)
+        {
+            TarjetaRepository repo = new TarjetaRepository();
+            repo.Update(tarjeta);
+        }
+
+        public bool NumeroTarjetaDisponible(String nroTarjeta)
+        {
+            TarjetaRepository repo = new TarjetaRepository();
+            return repo.NumeroTarjetaDisponible(nroTarjeta);
+        }
+
+        public bool NumeroTarjetaFueDesasociada(String nroTarjeta, long tipoDoc, long nroDoc)
+        {
+            TarjetaRepository repo = new TarjetaRepository();
+            return repo.NumeroTarjetaFueDesasociada(nroTarjeta, tipoDoc, nroDoc);
+        }
     }
 }

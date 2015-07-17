@@ -65,16 +65,29 @@ namespace PagoElectronico.Services
             return repository.GetCuentaByNumero(nroCuenta);
         }
 
-        public int ModificaCuenta(long numCuenta, int tipoMoneda, int tipoCuenta, int codPais, DateTime fecha)
+        public int ModificaCuenta(long numCuenta, int tipoCuenta, DateTime fecha)
         {
             CuentaRepository repository = new CuentaRepository();
-            return repository.ModificaCuenta(numCuenta, tipoMoneda, tipoCuenta, codPais, fecha);
+            return repository.ModificaCuenta(numCuenta, tipoCuenta, fecha);
         }
 
-        public int CerrarCuenta(long numCuenta)
+        public int CerrarCuenta(long numCuenta, DateTime fecha)
         {
             CuentaRepository repository = new CuentaRepository();
-            return repository.CerrarCuenta(numCuenta);
+            return repository.CerrarCuenta(numCuenta, fecha);
         }
+
+        public IEnumerable<Cuenta> GetAll()
+        {
+            CuentaRepository repository = new CuentaRepository();
+            return repository.GetAll();
+        }
+
+        public void inhabilitarCuenta(long cuenta, DateTime fecha)
+        {
+            CuentaRepository repository = new CuentaRepository();
+            repository.inhabilitarCuenta(cuenta, fecha);
+        }
+    
     }
 }

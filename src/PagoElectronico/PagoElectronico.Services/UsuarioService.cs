@@ -17,6 +17,12 @@ namespace PagoElectronico.Services
             return usrRep.Insert(usuario);
         }
 
+        public void update(Usuario usuario)
+        {
+            UsuarioRepository usrRep = new UsuarioRepository();
+            usrRep.Update(usuario);
+        }
+
         public int insertRolesUsuario(Usuario usuario)
         {
             UsuarioRepository usrRep = new UsuarioRepository();
@@ -27,6 +33,12 @@ namespace PagoElectronico.Services
         {
             UsuarioRepository usrRep = new UsuarioRepository();
             return usrRep.existeUsername(username);
+        }
+
+        public string getPasswordHashedByUsername(string username)
+        {
+            UsuarioRepository usrRep = new UsuarioRepository();
+            return usrRep.getPasswordHashedByUsername(username);
         }
 
     }

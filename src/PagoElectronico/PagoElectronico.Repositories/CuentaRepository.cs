@@ -14,7 +14,15 @@ namespace PagoElectronico.Repositories
 
         public override IEnumerable<Cuenta> GetAll()
         {
-            throw new NotImplementedException();
+            List<Cuenta> cuentas = new List<Cuenta>();
+
+            SqlCommand command = DBConnection.CreateStoredProcedure("GetAllCuentas");
+            DataRowCollection collection = DBConnection.EjecutarComandoSelect(command).Rows;
+            foreach (DataRow cuenta in collection)
+            {
+                cuentas.Add(CreateCuenta(cuenta));
+            }
+            return cuentas;
         }
 
         public override Cuenta Get(int id)
@@ -172,16 +180,14 @@ namespace PagoElectronico.Repositories
 
         }
 
-        public int ModificaCuenta(long numCuenta, int tipoMoneda, int tipoCuenta, int codPais, DateTime fecha)
+        public int ModificaCuenta(long numCuenta, int tipoCuenta, DateTime fecha)
         {
             int resultado;
             using (var transaction = new TransactionScope())
             {
                 SqlCommand command = DBConnection.CreateStoredProcedure("ModificaCuenta");
                 command.Parameters.AddWithValue("@an_nro_cuenta", numCuenta);
-                command.Parameters.AddWithValue("@an_moneda_tipo", tipoMoneda);
                 command.Parameters.AddWithValue("@an_cuenta_tipo", tipoCuenta);
-                command.Parameters.AddWithValue("@an_cod_pais", codPais);
                 command.Parameters.AddWithValue("@ad_fecha", fecha);
 
                 resultado = DBConnection.ExecuteNonQuery(command);
@@ -193,13 +199,14 @@ namespace PagoElectronico.Repositories
             return resultado;
         }
 
-        public int CerrarCuenta(long numCuenta)
+        public int CerrarCuenta(long numCuenta, DateTime fecha)
         {
             int resultado;
             using (var transaction = new TransactionScope())
             {
                 SqlCommand command = DBConnection.CreateStoredProcedure("CerrarCuenta");
                 command.Parameters.AddWithValue("@an_nro_cuenta", numCuenta);
+                command.Parameters.AddWithValue("@ad_fecha", fecha);
 
                 resultado = DBConnection.ExecuteNonQuery(command);
                 command.Dispose();
@@ -237,6 +244,14 @@ namespace PagoElectronico.Repositories
                     DBConnection.CloseCommand(command);
                 }
             }
+        }
+
+        public void inhabilitarCuenta(long cuenta, DateTime fecha)
+        {
+            SqlCommand command = DBConnection.CreateStoredProcedure("InhabilitarCuenta");
+            command.Parameters.AddWithValue("@cuenta", cuenta);
+            command.Parameters.AddWithValue("@fecha", fecha);
+            DBConnection.ExecuteNonQuery(command);
         }
     }
 }
