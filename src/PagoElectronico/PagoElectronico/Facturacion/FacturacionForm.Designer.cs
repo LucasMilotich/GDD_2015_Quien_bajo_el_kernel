@@ -39,10 +39,13 @@
             this.btnAgregarTodos = new System.Windows.Forms.Button();
             this.btnAgregar = new System.Windows.Forms.Button();
             this.grdItemsAPagar = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Date = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.grdTransacciones = new System.Windows.Forms.DataGridView();
-            this.btnLimpiar = new System.Windows.Forms.Button();
-            this.chkSeleccionarTodos = new System.Windows.Forms.CheckBox();
-            this.btnFacturar = new System.Windows.Forms.Button();
             this.Seleccionar = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.Codigo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TipoTransaccion = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -51,12 +54,10 @@
             this.Costo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Suscripcion = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.Fecha = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Date = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.btnLimpiar = new System.Windows.Forms.Button();
+            this.chkSeleccionarTodos = new System.Windows.Forms.CheckBox();
+            this.btnFacturar = new System.Windows.Forms.Button();
+            this.btnBuscar = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.grdItemsAPagar)).BeginInit();
@@ -65,6 +66,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnBuscar);
             this.groupBox1.Controls.Add(this.txtNroDoc);
             this.groupBox1.Controls.Add(this.comboTipoDoc);
             this.groupBox1.Controls.Add(this.lblDocumento);
@@ -179,6 +181,53 @@
             this.grdItemsAPagar.Size = new System.Drawing.Size(518, 135);
             this.grdItemsAPagar.TabIndex = 43;
             // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.DataPropertyName = "codigo";
+            this.dataGridViewTextBoxColumn1.HeaderText = "Codigo";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.ReadOnly = true;
+            this.dataGridViewTextBoxColumn1.Visible = false;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.DataPropertyName = "tipo";
+            this.dataGridViewTextBoxColumn2.HeaderText = "Tipo";
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.ReadOnly = true;
+            this.dataGridViewTextBoxColumn2.Visible = false;
+            // 
+            // dataGridViewTextBoxColumn3
+            // 
+            this.dataGridViewTextBoxColumn3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dataGridViewTextBoxColumn3.DataPropertyName = "cuenta";
+            this.dataGridViewTextBoxColumn3.HeaderText = "Nro. Cuenta";
+            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.dataGridViewTextBoxColumn3.ReadOnly = true;
+            this.dataGridViewTextBoxColumn3.Width = 82;
+            // 
+            // dataGridViewTextBoxColumn4
+            // 
+            this.dataGridViewTextBoxColumn4.DataPropertyName = "TipoDescription";
+            this.dataGridViewTextBoxColumn4.HeaderText = "Tipo de Transacción";
+            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
+            this.dataGridViewTextBoxColumn4.ReadOnly = true;
+            this.dataGridViewTextBoxColumn4.Width = 130;
+            // 
+            // dataGridViewTextBoxColumn5
+            // 
+            this.dataGridViewTextBoxColumn5.DataPropertyName = "CostoTotal";
+            this.dataGridViewTextBoxColumn5.HeaderText = "Costo Total";
+            this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
+            this.dataGridViewTextBoxColumn5.ReadOnly = true;
+            // 
+            // Date
+            // 
+            this.Date.DataPropertyName = "fecha";
+            this.Date.HeaderText = "Fecha";
+            this.Date.Name = "Date";
+            this.Date.ReadOnly = true;
+            // 
             // grdTransacciones
             // 
             this.grdTransacciones.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -196,39 +245,6 @@
             this.grdTransacciones.Size = new System.Drawing.Size(518, 135);
             this.grdTransacciones.TabIndex = 42;
             this.grdTransacciones.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.grdTransacciones_CellFormatting);
-            // 
-            // btnLimpiar
-            // 
-            this.btnLimpiar.Location = new System.Drawing.Point(9, 369);
-            this.btnLimpiar.Name = "btnLimpiar";
-            this.btnLimpiar.Size = new System.Drawing.Size(169, 43);
-            this.btnLimpiar.TabIndex = 41;
-            this.btnLimpiar.Text = "Limpiar y Actualizar";
-            this.btnLimpiar.UseVisualStyleBackColor = true;
-            this.btnLimpiar.Click += new System.EventHandler(this.btnLimpiarLista_Click);
-            // 
-            // chkSeleccionarTodos
-            // 
-            this.chkSeleccionarTodos.AutoSize = true;
-            this.chkSeleccionarTodos.Checked = true;
-            this.chkSeleccionarTodos.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkSeleccionarTodos.Location = new System.Drawing.Point(259, 21);
-            this.chkSeleccionarTodos.Name = "chkSeleccionarTodos";
-            this.chkSeleccionarTodos.Size = new System.Drawing.Size(141, 17);
-            this.chkSeleccionarTodos.TabIndex = 40;
-            this.chkSeleccionarTodos.Text = "Todas las transacciones";
-            this.chkSeleccionarTodos.UseVisualStyleBackColor = true;
-            this.chkSeleccionarTodos.CheckedChanged += new System.EventHandler(this.chkSeleccionarTodos_CheckedChanged);
-            // 
-            // btnFacturar
-            // 
-            this.btnFacturar.Location = new System.Drawing.Point(184, 369);
-            this.btnFacturar.Name = "btnFacturar";
-            this.btnFacturar.Size = new System.Drawing.Size(298, 43);
-            this.btnFacturar.TabIndex = 38;
-            this.btnFacturar.Text = "Facturar";
-            this.btnFacturar.UseVisualStyleBackColor = true;
-            this.btnFacturar.Click += new System.EventHandler(this.btnFacturar_Click);
             // 
             // Seleccionar
             // 
@@ -261,7 +277,7 @@
             this.NroCuenta.HeaderText = "Nro. Cuenta";
             this.NroCuenta.Name = "NroCuenta";
             this.NroCuenta.ReadOnly = true;
-            this.NroCuenta.Width = 89;
+            this.NroCuenta.Width = 82;
             // 
             // Tipo
             // 
@@ -304,52 +320,48 @@
             this.Fecha.Name = "Fecha";
             this.Fecha.ReadOnly = true;
             // 
-            // dataGridViewTextBoxColumn1
+            // btnLimpiar
             // 
-            this.dataGridViewTextBoxColumn1.DataPropertyName = "codigo";
-            this.dataGridViewTextBoxColumn1.HeaderText = "Codigo";
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            this.dataGridViewTextBoxColumn1.ReadOnly = true;
-            this.dataGridViewTextBoxColumn1.Visible = false;
+            this.btnLimpiar.Location = new System.Drawing.Point(9, 369);
+            this.btnLimpiar.Name = "btnLimpiar";
+            this.btnLimpiar.Size = new System.Drawing.Size(169, 43);
+            this.btnLimpiar.TabIndex = 41;
+            this.btnLimpiar.Text = "Limpiar y Actualizar";
+            this.btnLimpiar.UseVisualStyleBackColor = true;
+            this.btnLimpiar.Click += new System.EventHandler(this.btnLimpiarLista_Click);
             // 
-            // dataGridViewTextBoxColumn2
+            // chkSeleccionarTodos
             // 
-            this.dataGridViewTextBoxColumn2.DataPropertyName = "tipo";
-            this.dataGridViewTextBoxColumn2.HeaderText = "Tipo";
-            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
-            this.dataGridViewTextBoxColumn2.ReadOnly = true;
-            this.dataGridViewTextBoxColumn2.Visible = false;
+            this.chkSeleccionarTodos.AutoSize = true;
+            this.chkSeleccionarTodos.Checked = true;
+            this.chkSeleccionarTodos.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkSeleccionarTodos.Location = new System.Drawing.Point(259, 21);
+            this.chkSeleccionarTodos.Name = "chkSeleccionarTodos";
+            this.chkSeleccionarTodos.Size = new System.Drawing.Size(141, 17);
+            this.chkSeleccionarTodos.TabIndex = 40;
+            this.chkSeleccionarTodos.Text = "Todas las transacciones";
+            this.chkSeleccionarTodos.UseVisualStyleBackColor = true;
+            this.chkSeleccionarTodos.CheckedChanged += new System.EventHandler(this.chkSeleccionarTodos_CheckedChanged);
             // 
-            // dataGridViewTextBoxColumn3
+            // btnFacturar
             // 
-            this.dataGridViewTextBoxColumn3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dataGridViewTextBoxColumn3.DataPropertyName = "cuenta";
-            this.dataGridViewTextBoxColumn3.HeaderText = "Nro. Cuenta";
-            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
-            this.dataGridViewTextBoxColumn3.ReadOnly = true;
-            this.dataGridViewTextBoxColumn3.Width = 89;
+            this.btnFacturar.Location = new System.Drawing.Point(184, 369);
+            this.btnFacturar.Name = "btnFacturar";
+            this.btnFacturar.Size = new System.Drawing.Size(298, 43);
+            this.btnFacturar.TabIndex = 38;
+            this.btnFacturar.Text = "Facturar";
+            this.btnFacturar.UseVisualStyleBackColor = true;
+            this.btnFacturar.Click += new System.EventHandler(this.btnFacturar_Click);
             // 
-            // dataGridViewTextBoxColumn4
+            // btnBuscar
             // 
-            this.dataGridViewTextBoxColumn4.DataPropertyName = "TipoDescription";
-            this.dataGridViewTextBoxColumn4.HeaderText = "Tipo de Transacción";
-            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
-            this.dataGridViewTextBoxColumn4.ReadOnly = true;
-            this.dataGridViewTextBoxColumn4.Width = 130;
-            // 
-            // dataGridViewTextBoxColumn5
-            // 
-            this.dataGridViewTextBoxColumn5.DataPropertyName = "CostoTotal";
-            this.dataGridViewTextBoxColumn5.HeaderText = "Costo Total";
-            this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
-            this.dataGridViewTextBoxColumn5.ReadOnly = true;
-            // 
-            // Date
-            // 
-            this.Date.DataPropertyName = "fecha";
-            this.Date.HeaderText = "Fecha";
-            this.Date.Name = "Date";
-            this.Date.ReadOnly = true;
+            this.btnBuscar.Location = new System.Drawing.Point(312, 21);
+            this.btnBuscar.Name = "btnBuscar";
+            this.btnBuscar.Size = new System.Drawing.Size(98, 21);
+            this.btnBuscar.TabIndex = 42;
+            this.btnBuscar.Text = "Buscar";
+            this.btnBuscar.UseVisualStyleBackColor = true;
+            this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
             // 
             // FacturacionForm
             // 
@@ -401,6 +413,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
         private System.Windows.Forms.DataGridViewTextBoxColumn Date;
+        private System.Windows.Forms.Button btnBuscar;
 
     }
 }

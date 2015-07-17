@@ -15,6 +15,7 @@ using PagoElectronico.ABM_Cuenta;
 using PagoElectronico.Depositos;
 using PagoElectronico.Facturacion;
 using PagoElectronico.Login;
+using PagoElectronico.Entities.Enums;
 
 namespace PagoElectronico
 {
@@ -130,6 +131,45 @@ namespace PagoElectronico
         private void cambiarContraseñaToolStripMenuItem_Click(object sender, EventArgs e)
         {
             showForm(new CambiarPassword());
+        }
+
+        private void Home_Load(object sender, EventArgs e)
+        {
+            foreach (var func in Session.Usuario.SelectedRol.Funcionalidades)
+            {
+                switch ((FuncionalidadesEnum)func.Id)
+                {
+                    case FuncionalidadesEnum.ABM_CLIENTE:
+                        clientesToolStripMenuItem.Visible = true;
+                        break;
+                    case FuncionalidadesEnum.ABM_CUENTA:
+                        cuentasToolStripMenuItem.Visible = true;
+                        break;
+                    case FuncionalidadesEnum.ABM_ROL:
+                        rolesToolStripMenuItem.Visible = true;
+                        break;
+                    case FuncionalidadesEnum.ASOCIAR_DESASOCIAR_TC:
+                        break;
+                    case FuncionalidadesEnum.CONSULTA_SALDO:
+                        consultarSaldoDeCuentaToolStripMenuItem.Visible = true;
+                        break;
+                    case FuncionalidadesEnum.DEPOSITO:
+                        depositoToolStripMenuItem.Visible = true;
+                        break;
+                    case FuncionalidadesEnum.FACTURACION:
+                        facturarToolStripMenuItem.Visible = true;
+                        break;
+                    case FuncionalidadesEnum.LISTADO_ESTADISTICO:
+                        listadoEstadisticoToolStripMenuItem.Visible = true;
+                        break;
+                    case FuncionalidadesEnum.RETIRO:
+                        retiroToolStripMenuItem.Visible = true;
+                        break;
+                    case FuncionalidadesEnum.TRANSFERENCIA:
+                        transferenciasToolStripMenuItem.Visible = true;
+                        break;
+                }
+            }
         }
     }
 }

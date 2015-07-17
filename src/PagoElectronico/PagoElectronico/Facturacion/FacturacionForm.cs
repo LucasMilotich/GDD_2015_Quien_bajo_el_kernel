@@ -18,6 +18,7 @@ namespace PagoElectronico.Facturacion
         Cliente cliente;
         Usuario usuarioLogueado = Session.Usuario;
 
+        ClienteService clienteService = new ClienteService();
         TipoDocumentoService tipoDocumentoService = new TipoDocumentoService();
         TransaccionService transaccionService = new TransaccionService();
         FacturacionService facturacionService = new FacturacionService();
@@ -45,11 +46,21 @@ namespace PagoElectronico.Facturacion
         {
             try
             {
-                cliente = Utils.obtenerCliente(usuarioLogueado);
-                cargarComboTipoDoc();
-                cargarTiposTransaccion();
-                cargarTransacciones();
-                initializeDatagrid();
+                if (Session.Usuario.SelectedRol.Id == (int)Entities.Enums.Roles.Cliente)
+                {
+                    groupBox1.Visible = false;
+                    cliente = Utils.obtenerCliente(usuarioLogueado);
+                    cargarTiposTransaccion();
+                    cargarTransacciones();
+                    initializeDatagrid();
+                }
+                else
+                {
+                    cargarComboTipoDoc();
+                    cargarTiposTransaccion();
+                    grdTransacciones.AutoGenerateColumns = false;
+                    grdTransacciones.DataSource = new List<Transaccion>();
+                }
             }
             catch (Exception ex)
             {
@@ -62,12 +73,12 @@ namespace PagoElectronico.Facturacion
             var row = grdTransacciones.Rows[e.RowIndex];
             if (e.ColumnIndex == 6)
             {
-                if ((TiposTransaccionEnum)int.Parse(row.Cells[2].Value.ToString()) == TiposTransaccionEnum.Transferencia)
+                if (row.Cells[2].Value != null && (TiposTransaccionEnum)int.Parse(row.Cells[2].Value.ToString()) == TiposTransaccionEnum.Transferencia)
                 {
                     ((DataGridViewComboBoxCell)(row.Cells[6])).ReadOnly = true;
                     ((DataGridViewComboBoxCell)(row.Cells[6])).DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing;
                 }
-                if ((TiposTransaccionEnum)int.Parse(row.Cells[2].Value.ToString()) == TiposTransaccionEnum.ModifCuenta)
+                if (row.Cells[2].Value != null && (TiposTransaccionEnum)int.Parse(row.Cells[2].Value.ToString()) == TiposTransaccionEnum.ModifCuenta)
                 {
                     var idModif = Convert.ToInt64(row.Cells[1].Value);
                     var cuenta = Convert.ToInt64(row.Cells[3].Value);
@@ -229,6 +240,15 @@ namespace PagoElectronico.Facturacion
                 comboTipoTransaccion.Enabled = true;
                 comboTipoTransaccion.SelectedIndex = 0;
                 refreshGridFiltros(transaccionesSinFacturar.Where(t => (TiposTransaccionEnum)t.tipo == TiposTransaccionEnum.AperturaCuenta).OrderBy(t => t.fecha).ToList());
+            }
+        }
+
+        private void btnBuscar_Click(object sender, EventArgs e)
+        {
+            if (Validaciones.validarCampoVacio(txtNroDoc))
+            {
+                cliente = clienteService.getClienteByDNI(Convert.ToInt64(comboTipoDoc.SelectedValue), Convert.ToInt64(txtNroDoc.Text));
+                Limpiar();
             }
         }
 

@@ -52,6 +52,7 @@
     <Compile Include="CuentaModificacion.cs" />
     <Compile Include="Deposito.cs" />
     <Compile Include="EmisorTarjeta.cs" />
+    <Compile Include="Enums\FuncionalidadesEnum.cs" />
     <Compile Include="Enums\EnumHelper.cs" />
     <Compile Include="Enums\Roles.cs" />
     <Compile Include="Enums\EstadosCuenta.cs" />

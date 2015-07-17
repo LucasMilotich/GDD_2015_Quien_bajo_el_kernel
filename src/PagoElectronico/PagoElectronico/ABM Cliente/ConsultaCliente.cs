@@ -10,6 +10,7 @@ using PagoElectronico.Services;
 using PagoElectronico.Entities;
 using PagoElectronico.Common;
 using PagoElectronico.Tarjeta_de_Credito;
+using PagoElectronico.Entities.Enums;
 
 namespace PagoElectronico.ABM_Cliente
 {
@@ -111,18 +112,24 @@ namespace PagoElectronico.ABM_Cliente
             }
             else if (e.ColumnIndex == 2)
             {
-                
-                var row = dgvClientes.Rows[e.RowIndex];
-                var cellTipoDoc = row.Cells["tipoDocumento"];
-                var cellNroDoc = row.Cells["numeroDocumento"];
-                var formTarjetaCredito = new TarjetaCreditoForm(Convert.ToInt64(cellTipoDoc.Value), Convert.ToInt64(cellNroDoc.Value));
-                //Register the update event
-                formTarjetaCredito.updateEvent += new EventHandler(handleUpdateEvent);
-                //Register form closed event
-                formTarjetaCredito.FormClosed += new FormClosedEventHandler(form_FormClosed);
-                this.Visible = false;
-                formTarjetaCredito.Show();
-                formTarjetaCredito.MdiParent = this.MdiParent;                
+                if (Session.Usuario.SelectedRol.Funcionalidades.Any(f => (FuncionalidadesEnum)f.Id == FuncionalidadesEnum.ASOCIAR_DESASOCIAR_TC))
+                {
+                    var row = dgvClientes.Rows[e.RowIndex];
+                    var cellTipoDoc = row.Cells["tipoDocumento"];
+                    var cellNroDoc = row.Cells["numeroDocumento"];
+                    var formTarjetaCredito = new TarjetaCreditoForm(Convert.ToInt64(cellTipoDoc.Value), Convert.ToInt64(cellNroDoc.Value));
+                    //Register the update event
+                    formTarjetaCredito.updateEvent += new EventHandler(handleUpdateEvent);
+                    //Register form closed event
+                    formTarjetaCredito.FormClosed += new FormClosedEventHandler(form_FormClosed);
+                    this.Visible = false;
+                    formTarjetaCredito.Show();
+                    formTarjetaCredito.MdiParent = this.MdiParent;
+                }
+                else
+                {
+                    MessageBox.Show("No tiene permisos para asociar/desasociar tarjetas de crédito.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 
