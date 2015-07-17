@@ -5,6 +5,7 @@ using System.Text;
 using PagoElectronico.Entities;
 using PagoElectronico.Services;
 using System.Windows.Forms;
+using System.Security.Cryptography;
 
 namespace PagoElectronico.Common
 {
@@ -22,5 +23,10 @@ namespace PagoElectronico.Common
                 throw new Exception ("El usuario actual no posee algun cliente asociado");
             }
         }
+
+        public static byte[] getHashedPassword(String password)
+        {           
+                return SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(password));
+       }
     }
 }

@@ -1374,24 +1374,12 @@ VALUES
 END
 GO
 
-CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.UPDATE_USUARIO 
-(
-@username varchar(255)
-,@password varbinary(max)
-,@pregunta_secreta varchar(255)
-,@respuesta_secreta varchar(255)
-,@activo bit
-,@habilitado bit 
-)
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.UPDATE_USUARIO (@username varchar(255),@password varbinary(max) )
 AS 
 BEGIN
 
 UPDATE QUIEN_BAJO_EL_KERNEL.USUARIO
-SET password = @password,
-	pregunta_secreta = @pregunta_secreta,
-	respuesta_secreta = @respuesta_secreta,
-	activo = @activo,
-	habilitado = @habilitado
+SET password = @password
 WHERE username = @username
 
 END
