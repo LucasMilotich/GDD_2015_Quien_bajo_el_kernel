@@ -1637,7 +1637,7 @@ as
 	left join QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA_MODIFICACION_CUENTA i on c.id_modificacion = i.id_modificacion
 	inner join QUIEN_BAJO_EL_KERNEL.CUENTA c2 on c2.numero = c.cuenta
 	inner join QUIEN_BAJO_EL_KERNEL.TIPO_CUENTA tt on tt.codigo = c2.tipo_cuenta
-	where i.factura_numero is null
+	where i.factura_numero is null c.habilitado = 1
 		and c.nuevo_tipo_cuenta <> 1)
 go
 
