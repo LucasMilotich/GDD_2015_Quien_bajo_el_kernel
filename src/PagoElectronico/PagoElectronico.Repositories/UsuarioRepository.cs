@@ -28,7 +28,7 @@ namespace PagoElectronico.Repositories
             command.Parameters.AddWithValue("@username", entity.Username);
             command.Parameters.AddWithValue("@password", entity.HashedPassword);
             command.Parameters.AddWithValue("@pregunta_secreta", entity.PreguntaSecreta);
-            command.Parameters.AddWithValue("@respuesta_secreta", entity.RespuestaSecreta);
+            command.Parameters.AddWithValue("@respuesta_secreta", entity.HashedRespuestaSecreta);
             command.Parameters.AddWithValue("@activo", entity.Activo);
             command.Parameters.AddWithValue("@habilitado", entity.Habilitado);
 

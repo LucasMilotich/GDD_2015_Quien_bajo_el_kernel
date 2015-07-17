@@ -10,7 +10,7 @@ using PagoElectronico.Common;
 using PagoElectronico.Entities;
 using PagoElectronico.Services;
 using System.Security.Cryptography;
-using PagoElectronico.Common;
+
 
 namespace PagoElectronico.Login
 {

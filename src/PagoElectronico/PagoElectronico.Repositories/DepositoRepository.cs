@@ -20,6 +20,7 @@ namespace PagoElectronico.Repositories
             deposito.cuentaNumero = String.IsNullOrEmpty(reader[3].ToString()) ? 0 : Convert.ToInt64(reader[3]);
             deposito.monedaTipo = String.IsNullOrEmpty(reader[4].ToString()) ? 0 : Convert.ToInt32(reader[4]);
             deposito.tarjetaNumero = reader[5].ToString();
+            deposito.codigoSeguridad = reader[6].ToString();
 
             return deposito;
         }
@@ -61,6 +62,8 @@ namespace PagoElectronico.Repositories
             command.Parameters.AddWithValue("@cuenta_numero", entity.cuentaNumero);
             command.Parameters.AddWithValue("@moneda_tipo", entity.monedaTipo);
             command.Parameters.AddWithValue("@tarjeta_numero", entity.tarjetaNumero);
+            command.Parameters.AddWithValue("@codigo_seguridad", entity.codigoSeguridad);
+
 
             return DBConnection.ExecuteNonQuery(command);
         }

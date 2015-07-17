@@ -54,13 +54,16 @@
             this.txtPasswordNueva2.PasswordChar = '*';
             this.txtPasswordNueva2.Size = new System.Drawing.Size(147, 20);
             this.txtPasswordNueva2.TabIndex = 3;
+            this.txtPasswordNueva2.UseSystemPasswordChar = true;
             // 
             // txtPasswordActual
             // 
             this.txtPasswordActual.Location = new System.Drawing.Point(63, 51);
             this.txtPasswordActual.Name = "txtPasswordActual";
+            this.txtPasswordActual.PasswordChar = '*';
             this.txtPasswordActual.Size = new System.Drawing.Size(147, 20);
             this.txtPasswordActual.TabIndex = 1;
+            this.txtPasswordActual.UseSystemPasswordChar = true;
             // 
             // lblPwNuevaRepetir
             // 
@@ -84,8 +87,10 @@
             // 
             this.txtPasswordNueva1.Location = new System.Drawing.Point(63, 96);
             this.txtPasswordNueva1.Name = "txtPasswordNueva1";
+            this.txtPasswordNueva1.PasswordChar = '*';
             this.txtPasswordNueva1.Size = new System.Drawing.Size(147, 20);
             this.txtPasswordNueva1.TabIndex = 2;
+            this.txtPasswordNueva1.UseSystemPasswordChar = true;
             // 
             // lblPwNueva
             // 
