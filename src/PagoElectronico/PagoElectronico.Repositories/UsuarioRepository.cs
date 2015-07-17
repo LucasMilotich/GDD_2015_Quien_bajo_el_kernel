@@ -72,6 +72,7 @@ namespace PagoElectronico.Repositories
 
             command = DBConnection.CreateStoredProcedure("InsertUsuarioLog");
             command.Parameters.AddWithValue("@username", username);
+            command.Parameters.AddWithValue("@fecha", Session.Fecha);
             command.Parameters.AddWithValue("@login_correcto", loginSuccess);
             DBConnection.ExecuteNonQuery(command);
 

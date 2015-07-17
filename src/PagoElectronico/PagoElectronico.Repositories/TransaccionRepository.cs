@@ -38,6 +38,20 @@ namespace PagoElectronico.Repositories
             return getTransacciones(command);
         }
 
+        public int GetCountTransaccionesByCuenta(long cuenta)
+        {
+            SqlCommand command = DBConnection.CreateStoredProcedure("GetCountTransacciones");
+            command.Parameters.AddWithValue("@cuenta", cuenta);
+            return DBConnection.ExecuteScalar(command);
+        }
+
+        public void ValidarCantidadTransacciones(long cuenta)
+        {
+            SqlCommand command = DBConnection.CreateStoredProcedure("ValidarCantidadTransacciones");
+            command.Parameters.AddWithValue("@cuenta", cuenta);
+            DBConnection.ExecuteNonQuery(command);
+        }
+
         private IEnumerable<Transaccion> getTransacciones(SqlCommand command)
         {
             List<Transaccion> transacciones = new List<Transaccion>();
@@ -59,6 +73,7 @@ namespace PagoElectronico.Repositories
             entity.cuenta = Convert.ToInt64(transaccion["Cuenta"]);
             entity.costo = Convert.ToDouble(transaccion["Costo"]);
             entity.tipo = Convert.ToInt32(transaccion["TipoTransaccion"]);
+            entity.fecha = Convert.ToDateTime(transaccion["fecha"]);
             return entity;
         }
 

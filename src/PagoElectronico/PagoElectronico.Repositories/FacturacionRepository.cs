@@ -56,5 +56,53 @@ namespace PagoElectronico.Repositories
         {
             throw new NotImplementedException();
         }
+
+        public void AgregarItemsTransferencia(List<ItemFactura> itemsTransferencia)
+        {
+            foreach (var item in itemsTransferencia)
+            {
+                SqlCommand command = DBConnection.CreateStoredProcedure("AgregarItemsTransferencia");
+
+                command.Parameters.AddWithValue("@numero", item.numeroItem);
+                command.Parameters.AddWithValue("@factura_numero", item.facturaNumero);
+                command.Parameters.AddWithValue("@descripcion", item.descripcion);
+                command.Parameters.AddWithValue("@importe", item.importe);
+
+                DBConnection.ExecuteNonQuery(command);
+                DBConnection.CloseCommand(command);
+            }
+        }
+
+        public void AgregarItemsApertura(List<ItemFactura> itemsApertura)
+        {
+            foreach (var item in itemsApertura)
+            {
+                SqlCommand command = DBConnection.CreateStoredProcedure("AgregarItemsApertura");
+
+                command.Parameters.AddWithValue("@numero", item.numeroItem);
+                command.Parameters.AddWithValue("@factura_numero", item.facturaNumero);
+                command.Parameters.AddWithValue("@descripcion", item.descripcion);
+                command.Parameters.AddWithValue("@importe", item.importe);
+
+                DBConnection.ExecuteNonQuery(command);
+                DBConnection.CloseCommand(command);
+            }
+        }
+
+        public void AgregarItemsModificacion(List<ItemFactura> itemsModificacion)
+        {
+            foreach (var item in itemsModificacion)
+            {
+                SqlCommand command = DBConnection.CreateStoredProcedure("AgregarItemsModificacion");
+
+                command.Parameters.AddWithValue("@numero", item.numeroItem);
+                command.Parameters.AddWithValue("@factura_numero", item.facturaNumero);
+                command.Parameters.AddWithValue("@descripcion", item.descripcion);
+                command.Parameters.AddWithValue("@importe", item.importe);
+
+                DBConnection.ExecuteNonQuery(command);
+                DBConnection.CloseCommand(command);
+            }
+        }
     }
 }
