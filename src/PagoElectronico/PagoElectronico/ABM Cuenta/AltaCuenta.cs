@@ -78,7 +78,7 @@ namespace PagoElectronico.ABM_Cuenta
             int codPais = Convert.ToInt32(cmbPaises.SelectedValue.ToString());
             int tipoMoneda = Convert.ToInt32(cmbMonedas.SelectedValue.ToString());
             int tipoCuenta = Convert.ToInt32(cmbTiposCuenta.SelectedValue.ToString());
-            DateTime fecha = Session.fecha;
+            DateTime fecha = Session.Fecha;
             
             if (Session.Usuario.SelectedRol.Id == (int)Entities.Enums.Roles.Admin)
             {
