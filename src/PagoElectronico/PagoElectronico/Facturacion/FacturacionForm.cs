@@ -67,6 +67,18 @@ namespace PagoElectronico.Facturacion
                     ((DataGridViewComboBoxCell)(row.Cells[6])).ReadOnly = true;
                     ((DataGridViewComboBoxCell)(row.Cells[6])).DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing;
                 }
+                if ((TiposTransaccionEnum)int.Parse(row.Cells[2].Value.ToString()) == TiposTransaccionEnum.ModifCuenta)
+                {
+                    var idModif = Convert.ToInt64(row.Cells[1].Value);
+                    var cuenta = Convert.ToInt64(row.Cells[3].Value);
+                    var maxId = modifCuentasSinFacturar.Where(i => i.cuenta == cuenta).Max(i => i.codigo);
+                    if (idModif != maxId)
+                    {
+                        ((DataGridViewComboBoxCell)(row.Cells[6])).Value = ((DataGridViewComboBoxCell)(row.Cells[6])).Items[0];
+                        ((DataGridViewComboBoxCell)(row.Cells[6])).ReadOnly = true;
+                        ((DataGridViewComboBoxCell)(row.Cells[6])).DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing;
+                    }
+                }
             }
         }
 
@@ -127,27 +139,40 @@ namespace PagoElectronico.Facturacion
             try
             {
                 if (transaccionesAFacturar.Any())
-	            {
-		             IList<ItemFactura> items = transaccionesAFacturar.Select(t => new ItemFactura
-                            {
-                                cuenta = t.cuenta,
-                                tipo = t.tipo,
-                                descripcion = t.TipoDescription,
-                                importe = t.costo,
-                                numeroItem = t.codigo,
-                                suscripcion = t.suscripcion,
-                                fecha = t.fecha
-                            }).ToList();
+                {
+                    IList<ItemFactura> items = transaccionesAFacturar.Select(t => new ItemFactura
+                           {
+                               cuenta = t.cuenta,
+                               tipo = t.tipo,
+                               descripcion = t.TipoDescription,
+                               importe = t.costo,
+                               numeroItem = t.codigo,
+                               suscripcion = t.suscripcion,
+                               fecha = t.fecha,
+                               actualizarCuenta = ActualizarCuenta(t.cuenta, t.tipo, t.codigo)
+                           }).ToList();
 
-                     var numero = this.facturacionService.Facturar(items, cliente);
-                     Limpiar();
-                     MessageBox.Show("Se ha generado exitosamente la factura número: " + numero.ToString(), "Facturacion", MessageBoxButtons.OK, MessageBoxIcon.Information);
-	            }
+                    var numero = this.facturacionService.Facturar(items, cliente);
+                    Limpiar();
+                    MessageBox.Show("Se ha generado exitosamente la factura número: " + numero.ToString(), "Facturacion", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
-            catch 
+            catch
             {
                 MessageBox.Show("Ha ocurrido un error al generar la factura", "Error", MessageBoxButtons.OK, MessageBoxIcon.Hand);
             }
+        }
+
+        private bool ActualizarCuenta(long cuenta, int tipo, long codigo)
+        {
+            if ((TiposTransaccionEnum)tipo == TiposTransaccionEnum.ModifCuenta)
+            {
+                var list = new List<Transaccion>(transaccionesSinFacturar);
+                list.AddRange(transaccionesAFacturar);
+                var maxId = list.Where(i => i.cuenta == cuenta).Max(i => i.codigo);
+                return codigo == maxId;
+            }
+            return false;
         }
 
         private void btnLimpiarLista_Click(object sender, EventArgs e)

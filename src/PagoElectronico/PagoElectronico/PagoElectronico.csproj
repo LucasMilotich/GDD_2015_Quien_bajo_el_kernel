@@ -142,6 +142,12 @@
     <Compile Include="Listados\ListadoEstadistico.Designer.cs">
       <DependentUpon>ListadoEstadistico.cs</DependentUpon>
     </Compile>
+    <Compile Include="Login\CambiarPassword.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Login\CambiarPassword.Designer.cs">
+      <DependentUpon>CambiarPassword.cs</DependentUpon>
+    </Compile>
     <Compile Include="Login\Login.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -192,6 +198,9 @@
     <EmbeddedResource Include="Listados\ListadoEstadistico.resx">
       <DependentUpon>ListadoEstadistico.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Login\CambiarPassword.resx">
+      <DependentUpon>CambiarPassword.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Login\Login.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
@@ -205,6 +214,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Retiros\Retiro.resx">
       <DependentUpon>Retiro.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tarjeta de Credito\TarjetaCreditoForm.resx">
+      <DependentUpon>TarjetaCreditoForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Transferencias\TransferenciasCuentas.resx">
       <DependentUpon>TransferenciasCuentas.cs</DependentUpon>
@@ -229,6 +241,12 @@
     </Compile>
     <Compile Include="Retiros\Retiro.Designer.cs">
       <DependentUpon>Retiro.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tarjeta de Credito\TarjetaCreditoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tarjeta de Credito\TarjetaCreditoForm.Designer.cs">
+      <DependentUpon>TarjetaCreditoForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Transferencias\TransferenciasCuentas.cs">
       <SubType>Form</SubType>

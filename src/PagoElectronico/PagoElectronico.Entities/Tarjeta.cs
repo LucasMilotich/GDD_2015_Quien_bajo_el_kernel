@@ -20,5 +20,7 @@ namespace PagoElectronico.Entities
         public long tipoDoc { get; set; }
 
         public long nroDoc { get; set; }
+
+        public Boolean habilitado { get; set; }
     }
 }

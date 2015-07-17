@@ -36,7 +36,14 @@ namespace PagoElectronico.Entities
         {
             get
             {
-                return this.costo * this.suscripcion;
+                if ((TiposTransaccionEnum)this.tipo == TiposTransaccionEnum.Transferencia)
+                {
+                    return this.costo;
+                }
+                else 
+                {
+                    return this.costo * this.suscripcion;
+                }
             }
         }
     }

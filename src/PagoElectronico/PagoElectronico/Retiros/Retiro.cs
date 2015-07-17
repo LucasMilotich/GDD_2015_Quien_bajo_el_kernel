@@ -72,7 +72,7 @@ namespace PagoElectronico.Retiros
         {
             try
             {
-                clienteLogueado = Utils.obtenerCliente(usuarioLogueado);
+                //clienteLogueado = Utils.obtenerCliente(usuarioLogueado);
                 cargarComboCuentas();
                 cargarComboTipoDoc();
                 cargarComboTipoMoneda();
@@ -194,7 +194,17 @@ namespace PagoElectronico.Retiros
 
         private void cargarComboCuentas()
         {
-            listaCuentas = (List<Cuenta>)cuentaService.getByCliente(clienteLogueado.tipoDocumento, clienteLogueado.numeroDocumento);
+            if (Session.Usuario.SelectedRol.Id == (int)Entities.Enums.Roles.Admin)
+            {
+                listaCuentas = (List<Cuenta>)cuentaService.GetAll();
+            }
+            else
+            {
+                clienteLogueado = clienteService.getClienteByUsername(usuarioLogueado.Username);
+                listaCuentas = (List<Cuenta>)cuentaService.getByCliente(clienteLogueado.tipoDocumento, clienteLogueado.numeroDocumento);
+            }
+            
+            //listaCuentas = (List<Cuenta>)cuentaService.getByCliente(clienteLogueado.tipoDocumento, clienteLogueado.numeroDocumento);
             if (listaCuentas.Count > 0)
             {
                 comboCuentaOrigen.DataSource = listaCuentas;
@@ -251,7 +261,19 @@ namespace PagoElectronico.Retiros
 
         private void validarNumeroDocumento()
         {
-            Cliente cliente = clienteService.getClienteByUsername(usuarioLogueado.Username);
+            Cliente cliente = new Cliente();
+
+            if (Session.Usuario.SelectedRol.Id == (int)Entities.Enums.Roles.Admin)
+            {
+                long tipoDocCliente = ((Cuenta)comboCuentaOrigen.SelectedItem).tipoDoc;
+                long nroDocCliente = ((Cuenta)comboCuentaOrigen.SelectedItem).nroDoc;
+                cliente = clienteService.getClienteByDNI(tipoDocCliente, nroDocCliente);
+            }
+            else
+            {
+                cliente = clienteService.getClienteByUsername(usuarioLogueado.Username);
+            }
+            
             if (txtNroDoc.Text != cliente.numeroDocumento.ToString() | Convert.ToInt64(comboTipoDoc.SelectedValue) != cliente.tipoDocumento)
             {
                 throw new OperationCanceledException("El documento ingresado no coincide");

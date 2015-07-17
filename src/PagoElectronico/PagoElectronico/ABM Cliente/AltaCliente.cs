@@ -99,6 +99,10 @@ namespace PagoElectronico.ABM_Cliente
             }
         }
 
+        private void btnVolver_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
 
         #endregion
 
@@ -260,10 +264,6 @@ namespace PagoElectronico.ABM_Cliente
 
         #endregion
 
-        private void btnVolver_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
 
     }
 }

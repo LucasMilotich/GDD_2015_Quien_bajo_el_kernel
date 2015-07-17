@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using PagoElectronico.Services;
 using PagoElectronico.Entities;
 using PagoElectronico.Common;
+using PagoElectronico.Tarjeta_de_Credito;
 
 namespace PagoElectronico.ABM_Cliente
 {
@@ -110,21 +111,19 @@ namespace PagoElectronico.ABM_Cliente
             }
             else if (e.ColumnIndex == 2)
             {
-                /*
+                
                 var row = dgvClientes.Rows[e.RowIndex];
                 var cellTipoDoc = row.Cells["tipoDocumento"];
                 var cellNroDoc = row.Cells["numeroDocumento"];
-                var formAltaCliente = new AltaCliente(Convert.ToInt64(cellTipoDoc.Value), Convert.ToInt64(cellNroDoc.Value));
+                var formTarjetaCredito = new TarjetaCreditoForm(Convert.ToInt64(cellTipoDoc.Value), Convert.ToInt64(cellNroDoc.Value));
                 //Register the update event
-                formAltaCliente.updateEvent += new EventHandler(handleUpdateEvent);
+                formTarjetaCredito.updateEvent += new EventHandler(handleUpdateEvent);
                 //Register form closed event
-                formAltaCliente.FormClosed += new FormClosedEventHandler(form_FormClosed);
+                formTarjetaCredito.FormClosed += new FormClosedEventHandler(form_FormClosed);
                 this.Visible = false;
-                formAltaCliente.Show();
-                formAltaCliente.MdiParent = this.MdiParent;
-                 */
+                formTarjetaCredito.Show();
+                formTarjetaCredito.MdiParent = this.MdiParent;                
             }
-
         }
 
 

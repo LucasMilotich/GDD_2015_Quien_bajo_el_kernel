@@ -33,13 +33,21 @@ namespace PagoElectronico.Repositories
             command.Parameters.AddWithValue("@habilitado", entity.Habilitado);
 
             return DBConnection.ExecuteNonQuery(command);
-
            
         }
 
         public override void Update(Usuario entity)
         {
-            throw new NotImplementedException();
+            SqlCommand command = DBConnection.CreateStoredProcedure("UPDATE_USUARIO");
+
+            command.Parameters.AddWithValue("@username", entity.Username);
+            command.Parameters.AddWithValue("@password", entity.HashedPassword);
+            command.Parameters.AddWithValue("@pregunta_secreta", entity.PreguntaSecreta);
+            command.Parameters.AddWithValue("@respuesta_secreta", entity.RespuestaSecreta);
+            command.Parameters.AddWithValue("@activo", entity.Activo);
+            command.Parameters.AddWithValue("@habilitado", entity.Habilitado);
+
+            DBConnection.ExecuteNonQuery(command);
         }
 
         public override void Delete(Usuario entity)
@@ -118,6 +126,14 @@ namespace PagoElectronico.Repositories
                 return true;
             else
                 return false;
+        }
+
+        public string getPasswordHashedByUsername(string username)
+        {
+            SqlCommand command = DBConnection.CreateStoredProcedure("getPasswordHashedByUsername");
+            command.Parameters.AddWithValue("@username", username);
+            DataRow dataRow = DBConnection.EjecutarStoredProcedureSelect(command).Rows[0];
+            return Convert.ToString(dataRow["password"].ToString());
         }
     }
 }

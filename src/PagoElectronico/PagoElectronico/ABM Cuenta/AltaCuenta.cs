@@ -18,12 +18,14 @@ namespace PagoElectronico.ABM_Cuenta
         PaisService paisService { get; set; }
         TipoMonedaService tipoMonedaService { get; set; }
         ClienteService clienteService { get; set; }
+        TransaccionService transaccionService { get; set; }
         long NroCuenta { get; set; }
         Usuario usuario = Session.Usuario;
         //Para probar hasta q este el login: 10002 and cliente_numero_doc=45622098
         Cliente cliente;
         long tipoDocCliente, nroDocCliente;
         ConsultaCuenta formPadre;
+        DateTime Fecha = Session.Fecha;
 
         public AltaCuenta(long nroCuenta, ConsultaCuenta form)
         {
@@ -32,6 +34,7 @@ namespace PagoElectronico.ABM_Cuenta
             paisService = new PaisService();
             tipoMonedaService = new TipoMonedaService();
             clienteService = new ClienteService();
+            transaccionService = new TransaccionService();
             cliente = new Cliente();
             InitializeComponent();
             this.NroCuenta = nroCuenta;
@@ -40,7 +43,7 @@ namespace PagoElectronico.ABM_Cuenta
         private void AltaCuenta_Load(object sender, EventArgs e)
         {
             cargarCampos();
-
+           
             if (NroCuenta > 0)
             {
                 Cuenta cuenta = cuentaService.GetCuentaByNumero(NroCuenta);
@@ -48,7 +51,17 @@ namespace PagoElectronico.ABM_Cuenta
                 cmbTiposCuenta.SelectedValue = cuenta.tipoCuenta;
                 cmbMonedas.SelectedValue = cuenta.monedaTipo;
                 txtCuenta.Text = cuenta.numero.ToString();
+                cmbPaises.Enabled = false;
+                cmbMonedas.Enabled = false;
+                cmbTiposCuenta.Enabled = false;
                 this.Text = "Edición de Cuenta";
+                int estadoCuenta = cuentaService.getEstado(NroCuenta);
+
+                if (estadoCuenta == 3)
+                {
+                    btnGuardar.Enabled = false;
+                    chkResuscribir.Visible = true;
+                }
             }
             else
             {
@@ -78,27 +91,38 @@ namespace PagoElectronico.ABM_Cuenta
             int codPais = Convert.ToInt32(cmbPaises.SelectedValue.ToString());
             int tipoMoneda = Convert.ToInt32(cmbMonedas.SelectedValue.ToString());
             int tipoCuenta = Convert.ToInt32(cmbTiposCuenta.SelectedValue.ToString());
-            DateTime fecha = Session.Fecha;
             
-            if (Session.Usuario.SelectedRol.Id == (int)Entities.Enums.Roles.Admin)
-            {
-                tipoDocCliente = ((Cliente)cmbClientes.SelectedItem).tipoDocumento;
-                nroDocCliente = ((Cliente)cmbClientes.SelectedItem).numeroDocumento;
-            }
-            else
-            {
-                cliente = clienteService.getClienteByUsername(usuario.Username);
-                tipoDocCliente = cliente.tipoDocumento;
-                nroDocCliente = cliente.numeroDocumento;
-            }
+            //if (Session.Usuario.SelectedRol.Id == (int)Entities.Enums.Roles.Admin)
+            //{
+            //    tipoDocCliente = ((Cliente)cmbClientes.SelectedItem).tipoDocumento;
+            //    nroDocCliente = ((Cliente)cmbClientes.SelectedItem).numeroDocumento;
+            //}
+            //else
+            //{
+            //    cliente = clienteService.getClienteByUsername(usuario.Username);
+            //    tipoDocCliente = cliente.tipoDocumento;
+            //    nroDocCliente = cliente.numeroDocumento;
+            //}
 
             if (txtCuenta.Text == "")
             {
+                if (Session.Usuario.SelectedRol.Id == (int)Entities.Enums.Roles.Admin)
+                {
+                    tipoDocCliente = ((Cliente)cmbClientes.SelectedItem).tipoDocumento;
+                    nroDocCliente = ((Cliente)cmbClientes.SelectedItem).numeroDocumento;
+                }
+                else
+                {
+                    cliente = clienteService.getClienteByUsername(usuario.Username);
+                    tipoDocCliente = cliente.tipoDocumento;
+                    nroDocCliente = cliente.numeroDocumento;
+                }
 
                 try
                 {
-                    cuentaService.InsertaCuenta(codPais, tipoMoneda, tipoCuenta, tipoDocCliente, nroDocCliente, fecha);
+                    cuentaService.InsertaCuenta(codPais, tipoMoneda, tipoCuenta, tipoDocCliente, nroDocCliente, Fecha);
                     MessageBox.Show("Cuenta creada exitosamente. Recuerde que la misma permanecerá pendiente de activación hasta que abone el costo de apertura", "Atencion", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    this.cargarCampos();
                 }
                 catch (OperationCanceledException ex)
                 {
@@ -112,10 +136,12 @@ namespace PagoElectronico.ABM_Cuenta
             else
             {
                 long numCuenta = Convert.ToInt64(txtCuenta.Text);
+
                 try
                 {
-                    cuentaService.ModificaCuenta(numCuenta, tipoMoneda, tipoCuenta, codPais, fecha);
+                    cuentaService.ModificaCuenta(numCuenta, tipoCuenta, Fecha);
                     MessageBox.Show("Cuenta modificada exitosamente!", "Atencion", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    inhabilitarCuentaSiCorresponde();
                     this.Close();
                 }
                 catch (OperationCanceledException ex)
@@ -135,6 +161,36 @@ namespace PagoElectronico.ABM_Cuenta
             if (formPadre != null)
             {
                 formPadre.realizarBusqueda();
+            }
+        }
+
+        private void btnCerrar_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void chkResuscribir_CheckedChanged(object sender, EventArgs e)
+        {
+            int estadoCuenta = cuentaService.getEstado(NroCuenta);
+            if (cmbTiposCuenta.Enabled == false)
+            {
+                cmbTiposCuenta.Enabled = true;
+                btnGuardar.Enabled = true;
+            }
+            else
+            {
+                cmbTiposCuenta.Enabled = false;
+                btnGuardar.Enabled = false;
+            }
+        }
+
+        private void inhabilitarCuentaSiCorresponde()
+        {
+            long cuenta = NroCuenta;
+            if (transaccionService.GetCountTransaccionesByCuenta(cuenta) > 5)
+            {
+                cuentaService.inhabilitarCuenta(cuenta, Fecha);
+                MessageBox.Show("La cuenta fue inhabilitada por superar las 5 transacciones sin facturar", "Cuenta inhabilitada", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
