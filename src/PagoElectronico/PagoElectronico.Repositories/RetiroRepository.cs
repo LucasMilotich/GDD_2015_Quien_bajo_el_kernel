@@ -14,11 +14,11 @@ namespace PagoElectronico.Repositories
         private Retiro CreateRetiro(DataRow reader)
         {
             Retiro retiro = new Retiro();
-            retiro.codigo = String.IsNullOrEmpty(reader[0].ToString()) ? 0 : Convert.ToInt64(reader[0]);
-            retiro.fecha = Convert.ToDateTime(reader[1]);
-            retiro.importe = String.IsNullOrEmpty(reader[2].ToString()) ? 0 : Convert.ToInt64(reader[2]);
-            retiro.cuenta = String.IsNullOrEmpty(reader[3].ToString()) ? 0 : Convert.ToInt64(reader[3]);
-            retiro.codigoCheque = String.IsNullOrEmpty(reader[4].ToString()) ? 0 : Convert.ToInt64(reader[4]);
+            retiro.codigo = String.IsNullOrEmpty(reader["codigo"].ToString()) ? 0 : Convert.ToInt64(reader[0]);
+            retiro.fecha = Convert.ToDateTime(reader["fecha"]);
+            retiro.importe = String.IsNullOrEmpty(reader["importe"].ToString()) ? 0 : Convert.ToDouble(reader[2]);
+            retiro.cuenta = String.IsNullOrEmpty(reader["cuenta"].ToString()) ? 0 : Convert.ToInt64(reader[3]);
+            retiro.codigoCheque = String.IsNullOrEmpty(reader["cheque"].ToString()) ? 0 : Convert.ToInt64(reader[4]);
 
             return retiro;
         }

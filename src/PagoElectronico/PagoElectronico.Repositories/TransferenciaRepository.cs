@@ -47,10 +47,10 @@ namespace PagoElectronico.Repositories
             int resultado;
              using (var transaction = new TransactionScope())
             {
-
                 SqlCommand unCommand = DBConnection.CreateStoredProcedure("insertTransferencia");
                 unCommand.Parameters.AddWithValue("@origen",entity.origen);
                 unCommand.Parameters.AddWithValue("@destino",entity.destino);
+                unCommand.Parameters.AddWithValue("@fecha", entity.fecha);
                 unCommand.Parameters.AddWithValue("@importe",entity.importe);
                 unCommand.Parameters.AddWithValue("@costo",entity.costo);
                 unCommand.Parameters.AddWithValue("@moneda_tipo", entity.monedaTipo);

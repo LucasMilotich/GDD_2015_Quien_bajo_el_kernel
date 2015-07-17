@@ -14,14 +14,19 @@ namespace PagoElectronico.Services
         public int insert(Usuario usuario)
         {
             UsuarioRepository usrRep = new UsuarioRepository();
-          return  usrRep.Insert(usuario);
-
+            return usrRep.Insert(usuario);
         }
 
         public int insertRolesUsuario(Usuario usuario)
         {
             UsuarioRepository usrRep = new UsuarioRepository();
             return usrRep.InsertRolesUsuario(usuario);
+        }
+
+        public bool existeUsername(string username)
+        {
+            UsuarioRepository usrRep = new UsuarioRepository();
+            return usrRep.existeUsername(username);
         }
 
     }

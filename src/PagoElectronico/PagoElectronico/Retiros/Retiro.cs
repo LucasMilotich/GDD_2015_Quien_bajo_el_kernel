@@ -11,11 +11,16 @@ using PagoElectronico.Repositories;
 using PagoElectronico.Entities;
 using PagoElectronico.Services;
 using System.Data.SqlClient;
+using System.Configuration;
 
 namespace PagoElectronico.Retiros
 {
     public partial class Retiro : Form
     {
+
+        Cliente clienteLogueado;
+        Usuario usuarioLogueado = Session.Usuario;
+
         ClienteService clienteService = new ClienteService();
         CuentaService cuentaService = new CuentaService();
         TipoMonedaService tipoMonedaService = new TipoMonedaService();
@@ -23,21 +28,19 @@ namespace PagoElectronico.Retiros
         BancoService bancoService = new BancoService();
         ChequeService chequeService = new ChequeService();
         RetiroService retiroService = new RetiroService();
-        List<long> listaCuentas;
+        List<Cuenta> listaCuentas;
         List<TipoMoneda> listaTiposMoneda;
         List<TipoDocumento> listaTiposDocumentos;
         List<Banco> listaBancos;
 
-        Cliente clienteLogueado;
-        Usuario usuarioLogueado = Session.Usuario;
+        DateTime FECHA_ACTUAL = Convert.ToDateTime(ConfigurationManager.AppSettings["Fecha"]);
 
         // ver el caso de un admin q no tenga cuentas, explota
         // un admin puede hacer retiro o trans de cualquier cuenta ??
 
         public Retiro()
         {
-            InitializeComponent();
-   
+            InitializeComponent();   
         }
 
         #region Eventos
@@ -105,7 +108,7 @@ namespace PagoElectronico.Retiros
 
                     Cheque cheque = new Cheque();
                     cheque.numero = Int64.Parse(txtNroCheque.Text);
-                    cheque.fecha = DateTime.Now;
+                    cheque.fecha = FECHA_ACTUAL;
                     cheque.importe = Double.Parse(txtImporte.Text);
                     cheque.codigoBanco = ((Banco)comboBanco.SelectedItem).codigo;
                     cheque.monedaTipo = ((TipoMoneda)comboTipoMoneda.SelectedItem).codigo;
@@ -154,11 +157,11 @@ namespace PagoElectronico.Retiros
 
                 if (txtImporte.Text.Length == 0)
                 {
-                    ocultarComponentes();
+                    mostrarComponentes(false);
                 }
                 else
                 {
-                    mostrarComponentes();
+                    mostrarComponentes(true);
 
                     saldoActual = Convert.ToDouble(lblSaldoActual.Text);
                     importe = Convert.ToDouble(txtImporte.Text);
@@ -191,14 +194,14 @@ namespace PagoElectronico.Retiros
 
         private void cargarComboCuentas()
         {
-            listaCuentas = (List<long>)cuentaService.getByCliente(clienteLogueado.tipoDocumento, clienteLogueado.numeroDocumento);
+            listaCuentas = (List<Cuenta>)cuentaService.getByCliente(clienteLogueado.tipoDocumento, clienteLogueado.numeroDocumento);
             if (listaCuentas.Count > 0)
             {
                 comboCuentaOrigen.DataSource = listaCuentas;
             }
             else
             {
-                MessageBox.Show("No posees cuentas para realizar transferencias", "Atencion !", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw new Exception("No posees cuentas para realizar retiros");
 
             }
 
@@ -227,16 +230,10 @@ namespace PagoElectronico.Retiros
             comboBanco.SelectedIndex = 0;
         }
 
-        private void ocultarComponentes()
+        private void mostrarComponentes(Boolean validate)
         {
-            lblSaldoPosterior.Visible = false;
-            lblSaldoPosteriorRO.Visible = false;
-        }
-
-        private void mostrarComponentes()
-        {
-            lblSaldoPosterior.Visible = true;
-            lblSaldoPosteriorRO.Visible = true;
+            lblSaldoPosterior.Visible = validate;
+            lblSaldoPosteriorRO.Visible = validate;
         }
 
         #endregion

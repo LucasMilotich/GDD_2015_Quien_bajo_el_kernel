@@ -54,6 +54,7 @@
     <Compile Include="Enums\EnumHelper.cs" />
     <Compile Include="Enums\Roles.cs" />
     <Compile Include="Enums\EstadosCuenta.cs" />
+    <Compile Include="Enums\TiposCuentaEnum.cs" />
     <Compile Include="Enums\TiposTransaccionEnum.cs" />
     <Compile Include="Exceptions\FormException.cs" />
     <Compile Include="Factura.cs" />

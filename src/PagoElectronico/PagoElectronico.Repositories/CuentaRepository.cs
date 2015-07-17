@@ -58,16 +58,16 @@ namespace PagoElectronico.Repositories
 
         }
 
-        public IEnumerable<long> getByCliente(long tipoDocCliente, long nroDocCliente)
+        public IEnumerable<Cuenta> getByCliente(long tipoDocCliente, long nroDocCliente)
         {
-            List<long> cuentas = new List<long>();
+            List<Cuenta> cuentas = new List<Cuenta>();
 
             SqlCommand command = DBConnection.CreateCommand();
-            command.CommandText = "select numero from QUIEN_BAJO_EL_KERNEL.CUENTA where cliente_tipo_doc = " + tipoDocCliente + " and cliente_numero_doc= " + nroDocCliente + " ";
+            command.CommandText = "select * from QUIEN_BAJO_EL_KERNEL.CUENTA where cliente_tipo_doc = " + tipoDocCliente + " and cliente_numero_doc= " + nroDocCliente + " ";
             DataRowCollection collection = DBConnection.EjecutarComandoSelect(command).Rows;
             foreach (DataRow cuenta in collection)
             {
-                cuentas.Add(Convert.ToInt64(cuenta[0]));
+                cuentas.Add(CreateCuenta(cuenta));
             }
             return cuentas;
         }
@@ -128,13 +128,15 @@ namespace PagoElectronico.Repositories
             return DBConnection.ExecuteScalarLong(command);
         }
 
-        public DataTable GetCuentas(long? pais, int? tipoEstado, int? moneda, int? tipoCuenta)
+        public DataTable GetCuentas(long? pais, int? tipoEstado, int? moneda, int? tipoCuenta, long? nroDoc, long? tipoDoc)
         {
             SqlCommand command = DBConnection.CreateStoredProcedure("GetCuentas");
             command.Parameters.AddWithValue("@an_pais", pais);
             command.Parameters.AddWithValue("@an_estado", tipoEstado);
             command.Parameters.AddWithValue("@an_moneda", moneda);
             command.Parameters.AddWithValue("@an_tipo_cuenta", tipoCuenta);
+            command.Parameters.AddWithValue("@an_doc", nroDoc);
+            command.Parameters.AddWithValue("@an_tipo_doc", tipoDoc);
             return DBConnection.EjecutarStoredProcedureSelect(command);
            
         }
@@ -156,15 +158,16 @@ namespace PagoElectronico.Repositories
 
         private Cuenta CreateCuenta(DataRow row)
         {
-            Cuenta cuenta = new Cuenta();
-            cuenta.numero = Convert.ToInt64(row["numero"]);
-            cuenta.paisCodigo = Convert.ToInt64(row["pais_codigo"]);
-            cuenta.monedaTipo = Convert.ToInt32(row["moneda_tipo"]);
-            cuenta.tipoCuenta = string.IsNullOrEmpty(row["tipo_cuenta"].ToString()) ? 0 : Convert.ToInt32(row["tipo_cuenta"]);
-            cuenta.nroDoc = Convert.ToInt64(row["cliente_numero_doc"]);
-            cuenta.tipoDoc = Convert.ToInt64(row["cliente_tipo_doc"]);
+            Cuenta entity = new Cuenta();
+            entity.numero = Convert.ToInt64(row["numero"]);
+            entity.paisCodigo = Convert.ToInt64(row["pais_codigo"]);
+            entity.monedaTipo = Convert.ToInt32(row["moneda_tipo"]);
+            entity.tipoCuenta = string.IsNullOrEmpty(row["tipo_cuenta"].ToString()) ? 0 : Convert.ToInt32(row["tipo_cuenta"]);
+            entity.nroDoc = Convert.ToInt64(row["cliente_numero_doc"]);
+            entity.tipoDoc = Convert.ToInt64(row["cliente_tipo_doc"]);
+            entity.saldo = Convert.ToDouble(row["saldo"]);
 
-            return cuenta;
+            return entity;
 
         }
 

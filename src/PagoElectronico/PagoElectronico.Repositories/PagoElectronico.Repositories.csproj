@@ -53,6 +53,7 @@
     <Compile Include="ChequeRepository.cs" />
     <Compile Include="ClienteRepository.cs" />
     <Compile Include="FacturacionRepository.cs" />
+    <Compile Include="TarjetaRepository.cs" />
     <Compile Include="TipoEstadoCuentaRepository.cs" />
     <Compile Include="CuentaRepository.cs" />
     <Compile Include="DepositoRepository.cs" />

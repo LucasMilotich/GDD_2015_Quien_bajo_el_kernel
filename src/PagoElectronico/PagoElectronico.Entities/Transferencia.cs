@@ -21,7 +21,5 @@ namespace PagoElectronico.Entities
 
         public int monedaTipo { get; set; }
 
-        public long idTransaccion { get; set; }
-
     }
 }

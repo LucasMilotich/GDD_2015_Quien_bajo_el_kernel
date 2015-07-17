@@ -139,7 +139,6 @@
             // 
             this.comboTipoMoneda.Cursor = System.Windows.Forms.Cursors.Default;
             this.comboTipoMoneda.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboTipoMoneda.Enabled = false;
             this.comboTipoMoneda.FormattingEnabled = true;
             this.comboTipoMoneda.Location = new System.Drawing.Point(86, 106);
             this.comboTipoMoneda.Name = "comboTipoMoneda";
@@ -158,6 +157,7 @@
             // comboCuentaOrigen
             // 
             this.comboCuentaOrigen.Cursor = System.Windows.Forms.Cursors.Default;
+            this.comboCuentaOrigen.DisplayMember = "numero";
             this.comboCuentaOrigen.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboCuentaOrigen.FormattingEnabled = true;
             this.comboCuentaOrigen.Location = new System.Drawing.Point(87, 19);
@@ -242,6 +242,7 @@
             this.groupBoxTransferencia.ResumeLayout(false);
             this.groupBoxTransferencia.PerformLayout();
             this.ResumeLayout(false);
+
         }
 
         #endregion

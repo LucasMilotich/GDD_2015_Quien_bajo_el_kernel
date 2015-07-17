@@ -11,6 +11,8 @@ using System.Data.SqlClient;
 using PagoElectronico.Repositories;
 using PagoElectronico.Entities;
 using PagoElectronico.Services;
+using PagoElectronico.Entities.Enums;
+using System.Configuration;
 
 
 namespace PagoElectronico.Transferencias
@@ -22,13 +24,15 @@ namespace PagoElectronico.Transferencias
         ClienteService clienteService = new ClienteService();
         TipoMonedaService tipoMonedaService = new TipoMonedaService();
         List<TipoMoneda> listaTiposMoneda;
-        List<long> listaCuentas;
+        List<Cuenta> listaCuentas;
 
         Cliente clienteLogueado;
         Usuario usuarioLogueado = Session.Usuario;
 
         // ver el caso de un admin q no tenga cuentas, explota
         // un admin puede hacer retiro o trans de cualquier cuenta ??
+
+        DateTime FECHA_ACTUAL = Convert.ToDateTime(ConfigurationManager.AppSettings["Fecha"]);
 
         public TransferenciasCuentas()
         {
@@ -92,7 +96,7 @@ namespace PagoElectronico.Transferencias
                     double saldoActual = Convert.ToDouble(lblSaldoActual.Text.ToString());
                     double importe = Convert.ToDouble(txtImporte.Text.ToString());
                     double saldoPosterior = Convert.ToDouble(lblSaldoPosterior.Text.ToString());
-                    double costo = calcularCosto();
+                    double costo = calcularCosto(importe);
                     long origen = Convert.ToInt64(comboCuentaOrigen.Text);
                     long destino = Convert.ToInt64(txtCuentaDestino.Text);
 
@@ -102,9 +106,9 @@ namespace PagoElectronico.Transferencias
                     Transferencia transferencia = new Transferencia();
                     transferencia.origen = origen;
                     transferencia.destino = destino;
-                    transferencia.fecha = DateTime.Now;
+                    transferencia.fecha = FECHA_ACTUAL;
                     transferencia.importe = importe;
-                    transferencia.costo = calcularCosto();
+                    transferencia.costo = costo;
                     transferencia.monedaTipo = cuentaService.getMonedaTipo(origen);
 
                     transferenciaService.GuardarTransferencia(transferencia);
@@ -122,14 +126,33 @@ namespace PagoElectronico.Transferencias
             }
         }
 
-        private double calcularCosto()
+        private double calcularCosto(double importe)
         {
-            if (listaCuentas.Contains(Convert.ToInt64(txtCuentaDestino.Text.ToString())))
+            Cuenta cuentaSeleccionada = ((Cuenta)comboCuentaOrigen.SelectedItem);
+            if (listaCuentas.Any(x=> x.numero == Int64.Parse(txtCuentaDestino.Text)))
             {
-                return 0;
+                return 0;                       // Transferencias entre sus cuentas no tiene costo
             }
-            return 2;
-            //como calculo esto?????
+            if (cuentaSeleccionada.tipoCuenta==(int)TiposCuentaEnum.Gratis)
+            {
+                return (importe * 0.1);        // 10% del importe
+            }
+            else if (cuentaSeleccionada.tipoCuenta == (int)TiposCuentaEnum.Bronce)
+            {
+                return (importe * 0.08);        // 8% del importe
+            }
+            else if (cuentaSeleccionada.tipoCuenta == (int)TiposCuentaEnum.Plata)
+            {
+                return (importe * 0.05);        // 5% del importe
+            }
+            else if (cuentaSeleccionada.tipoCuenta == (int)TiposCuentaEnum.Oro)
+            {
+                return (importe * 0.02);        // 2% del importe
+            }
+            else
+            {
+                throw new Exception("El tipo de cuenta de la cuenta seleccionada no es correcto");
+            }
         }
 
         private void recalcularSaldoPosterior()
@@ -148,7 +171,7 @@ namespace PagoElectronico.Transferencias
 
                     saldoActual = Convert.ToDouble(lblSaldoActual.Text);
                     importe = Convert.ToDouble(txtImporte.Text);
-                    costo = calcularCosto();
+                    costo = calcularCosto(importe);
                     lblCosto.Text = costo.ToString();
 
                     if (String.Equals(comboCuentaOrigen.Text.ToString(), txtCuentaDestino.Text.ToString()))
@@ -157,12 +180,12 @@ namespace PagoElectronico.Transferencias
                     }
                     else
                     {
-                        saldoPosterior = saldoActual - importe - costo;
+                        saldoPosterior = saldoActual - importe;
                         lblSaldoPosterior.Text = saldoPosterior.ToString();
                     }
                 }
             }
-            catch (Exception) { }
+            catch (Exception) { ocultarComponentes(); }
         }
 
         private void actualizarSaldoActual()
@@ -172,15 +195,14 @@ namespace PagoElectronico.Transferencias
 
         private void cargarComboCuentas()
         {
-            listaCuentas = (List<long>)cuentaService.getByCliente(clienteLogueado.tipoDocumento, clienteLogueado.numeroDocumento);
+            listaCuentas = (List<Cuenta>)cuentaService.getByCliente(clienteLogueado.tipoDocumento, clienteLogueado.numeroDocumento);
             if (listaCuentas.Count > 0)
             {
                 comboCuentaOrigen.DataSource = listaCuentas;
             }
             else
             {
-                MessageBox.Show("No posees cuentas para realizar transferencias", "Atencion !", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                
+                MessageBox.Show("No posees cuentas para realizar transferencias", "Atencion !", MessageBoxButtons.OK, MessageBoxIcon.Error);                
             }
 
         }

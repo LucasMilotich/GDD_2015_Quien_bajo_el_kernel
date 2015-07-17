@@ -180,6 +180,7 @@
             this.Controls.Add(this.groupBoxListado);
             this.Name = "ConsultaSaldos";
             this.Text = "Consulta de saldos";
+            this.Load += new System.EventHandler(this.ConsultaSaldos_Load);
             this.groupBoxListado.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.DataGridViewListado)).EndInit();
             this.groupBoxConsulta.ResumeLayout(false);

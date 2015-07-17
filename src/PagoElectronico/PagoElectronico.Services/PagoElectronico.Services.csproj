@@ -50,6 +50,7 @@
     <Compile Include="ChequeService.cs" />
     <Compile Include="ClienteService.cs" />
     <Compile Include="FacturacionService.cs" />
+    <Compile Include="TarjetaService.cs" />
     <Compile Include="TipoEstadoCuentaService.cs" />
     <Compile Include="CuentaService.cs" />
     <Compile Include="DepositoService.cs" />
