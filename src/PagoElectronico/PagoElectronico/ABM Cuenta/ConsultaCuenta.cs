@@ -18,6 +18,7 @@ namespace PagoElectronico.ABM_Cuenta
         TipoMonedaService tipoMonedaService { get; set; }
         TipoEstadoCuentaService tipoEstadoService { get; set; }
         ClienteService clienteService { get; set; }
+        TransaccionService transaccionService { get; set; }
         Usuario usuario = Session.Usuario;
 
         public ConsultaCuenta()
@@ -27,6 +28,7 @@ namespace PagoElectronico.ABM_Cuenta
             tipoMonedaService = new TipoMonedaService();
             tipoEstadoService = new TipoEstadoCuentaService();
             clienteService = new ClienteService();
+            transaccionService = new TransaccionService();
             InitializeComponent();
         }
 
@@ -110,8 +112,17 @@ namespace PagoElectronico.ABM_Cuenta
 
                 switch (estadoCuenta)
                 {
-                    case 1:
-                        MessageBox.Show("Desea cerrar la cuenta seleccionada? La misma no podrá volver a activarse.", "Atención!", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                    case 1: /*Pendiente de activacion*/
+                        MessageBox.Show("La cuenta está pendiente de activación, no puede ser editada.", "Atención!", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                        return;
+                    case 3: /*Inhabilitada*/
+                        int cantTrans = transaccionService.GetCountTransaccionesByCuenta(Convert.ToInt64(cell.Value));
+                        if (cantTrans > 5)
+                        {
+                            MessageBox.Show("La cuenta fue inhabilitada por tener más de 5 transacciones sin facturar. La misma no podrá ser editada hasta que no se facturen las transacciones pendientes.", "Atención!", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                            return;
+                        }
+                        break;
                     default:
                         break;
                 }
@@ -121,7 +132,6 @@ namespace PagoElectronico.ABM_Cuenta
             }
             else if (e.ColumnIndex == 1)//Cerrar cuenta
             {
-
                 if (MessageBox.Show("Desea cerrar la cuenta seleccionada? La misma no podrá volver a activarse.", "Atención!", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
                 {
                     var row = dgvCuentas.Rows[e.RowIndex];

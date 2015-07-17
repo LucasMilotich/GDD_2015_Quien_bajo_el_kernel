@@ -172,6 +172,7 @@
             this.chkResuscribir.Text = "Resuscribir";
             this.chkResuscribir.UseVisualStyleBackColor = true;
             this.chkResuscribir.Visible = false;
+            this.chkResuscribir.CheckedChanged += new System.EventHandler(this.chkResuscribir_CheckedChanged);
             // 
             // AltaCuenta
             // 
