@@ -737,21 +737,25 @@ GO
 INSERT INTO  [QUIEN_BAJO_EL_KERNEL].[ROL] (nombre,activo) values ('Administrador',1)
 GO
 
-INSERT INTO QUIEN_BAJO_EL_KERNEL.FUNCIONALIDAD_ROL (ID_ROL,id_funcionalidad) 
-VALUES (2,3),(2,4),(2,5),(2,6),(2,7),(2,8),(2,9)
 
-GO
 
 INSERT INTO  [QUIEN_BAJO_EL_KERNEL].[ROL] (nombre,activo) values ('Cliente',1)
 GO
 
 INSERT INTO QUIEN_BAJO_EL_KERNEL.FUNCIONALIDAD_ROL (ID_ROL,id_funcionalidad) 
-VALUES (2,1),(2,2),(2,3),(2,4),(2,5),(2,6)
+VALUES (2,3),(2,4),(2,5),(2,6),(2,7),(2,8),(2,9)
+
 GO
+
+
+
 
 INSERT INTO  [QUIEN_BAJO_EL_KERNEL].[USUARIO_ROL] (id_rol,username) values (1,'admin')
 GO
 
+INSERT INTO QUIEN_BAJO_EL_KERNEL.FUNCIONALIDAD_ROL (ID_ROL,id_funcionalidad) 
+VALUES (1,1),(1,2),(1,3),(1,4),(1,5),(1,6),(1,7),(1,8),(1,9),(1,10)
+GO
 
 insert into QUIEN_BAJO_EL_KERNEL.TIPO_DOCUMENTO (codigo,descripcion)
 			 (select distinct cli_tipo_doc_cod,cli_tipo_doc_desc
@@ -2031,6 +2035,8 @@ where
 t3.cliente_tipo_doc = t2.cliente_tipo_doc 
 and t3.cliente_numero_doc=t2.cliente_numero_doc
 group by t4.tipo_documento, t4.numero_documento, t4.apellido, t4.nombre, t1.fecha
+
+GO
 
 CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.ClientesConMayorTransacciones (@fechaDesde date, @fechaHasta date)
 AS
