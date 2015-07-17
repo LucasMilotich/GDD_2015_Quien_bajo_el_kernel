@@ -16,8 +16,8 @@ namespace PagoElectronico.Repositories
         {
             List<Cuenta> cuentas = new List<Cuenta>();
 
-            SqlCommand command = DBConnection.CreateStoredProcedure("GetCuentas");
-            DataRowCollection collection = DBConnection.EjecutarComandoSelect(command).Rows;
+            SqlCommand command = DBConnection.CreateStoredProcedure("GetAllCuentas");
+            DataRowCollection collection = DBConnection.EjecutarStoredProcedureSelect(command).Rows;
             foreach (DataRow cuenta in collection)
             {
                 cuentas.Add(CreateCuenta(cuenta));
