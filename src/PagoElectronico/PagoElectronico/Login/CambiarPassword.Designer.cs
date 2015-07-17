@@ -53,23 +53,23 @@
             this.txtPasswordNueva2.Name = "txtPasswordNueva2";
             this.txtPasswordNueva2.PasswordChar = '*';
             this.txtPasswordNueva2.Size = new System.Drawing.Size(147, 20);
-            this.txtPasswordNueva2.TabIndex = 8;
+            this.txtPasswordNueva2.TabIndex = 3;
             // 
             // txtPasswordActual
             // 
             this.txtPasswordActual.Location = new System.Drawing.Point(63, 51);
             this.txtPasswordActual.Name = "txtPasswordActual";
             this.txtPasswordActual.Size = new System.Drawing.Size(147, 20);
-            this.txtPasswordActual.TabIndex = 7;
+            this.txtPasswordActual.TabIndex = 1;
             // 
             // lblPwNuevaRepetir
             // 
             this.lblPwNuevaRepetir.AutoSize = true;
             this.lblPwNuevaRepetir.Location = new System.Drawing.Point(60, 119);
             this.lblPwNuevaRepetir.Name = "lblPwNuevaRepetir";
-            this.lblPwNuevaRepetir.Size = new System.Drawing.Size(53, 13);
+            this.lblPwNuevaRepetir.Size = new System.Drawing.Size(97, 13);
             this.lblPwNuevaRepetir.TabIndex = 6;
-            this.lblPwNuevaRepetir.Text = "Password";
+            this.lblPwNuevaRepetir.Text = "Repetir contraseña";
             // 
             // lblPwVieja
             // 
@@ -85,7 +85,7 @@
             this.txtPasswordNueva1.Location = new System.Drawing.Point(63, 96);
             this.txtPasswordNueva1.Name = "txtPasswordNueva1";
             this.txtPasswordNueva1.Size = new System.Drawing.Size(147, 20);
-            this.txtPasswordNueva1.TabIndex = 11;
+            this.txtPasswordNueva1.TabIndex = 2;
             // 
             // lblPwNueva
             // 

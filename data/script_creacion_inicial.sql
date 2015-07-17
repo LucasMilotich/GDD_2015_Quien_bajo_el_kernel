@@ -1350,6 +1350,28 @@ VALUES
 END
 GO
 
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.UPDATE_USUARIO 
+(
+@username varchar(255)
+,@password varbinary(max)
+,@pregunta_secreta varchar(255)
+,@respuesta_secreta varchar(255)
+,@activo bit
+,@habilitado bit 
+)
+AS 
+BEGIN
+
+UPDATE QUIEN_BAJO_EL_KERNEL.USUARIO
+SET password = @password,
+	pregunta_secreta = @pregunta_secreta,
+	respuesta_secreta = @respuesta_secreta,
+	activo = @activo,
+	habilitado = @habilitado
+WHERE username = @username
+
+END
+GO
 
 
 
@@ -1394,6 +1416,19 @@ WHERE c.username=@username
 
 END
 GO
+
+CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.getPasswordHashedByUsername (@username varchar(255))
+AS 
+BEGIN
+
+SELECT password
+FROM QUIEN_BAJO_EL_KERNEL.USUARIO u
+WHERE u.username=@username
+
+END
+GO
+
+
 ---------------		SP Funcionalidad		---------------
 
 CREATE PROCEDURE [QUIEN_BAJO_EL_KERNEL].[GetFuncionalidadesByRol]

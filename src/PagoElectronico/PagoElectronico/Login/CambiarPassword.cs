@@ -7,11 +7,18 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using PagoElectronico.Common;
+using PagoElectronico.Entities;
+using PagoElectronico.Services;
+using System.Security.Cryptography;
 
 namespace PagoElectronico.Login
 {
     public partial class CambiarPassword : Form
     {
+        UsuarioService userService = new UsuarioService();
+
+        Usuario usuarioLogueado = Session.Usuario;
+        
         public CambiarPassword()
         {
             InitializeComponent();
@@ -21,8 +28,20 @@ namespace PagoElectronico.Login
         {
             if (Validaciones.validarCampoVacio(txtPasswordNueva1) & Validaciones.validarCampoVacio(txtPasswordNueva2) & Validaciones.validarCampoVacio(txtPasswordActual))
             {
-                validarPasswordVieja();
-                validarPasswordsNuevasIguales(); 
+                try
+                {
+                    validarPasswordVieja();
+                    validarPasswordsNuevasIguales();
+                    usuarioLogueado.Password = txtPasswordActual.Text;
+                    userService.update(usuarioLogueado);
+
+                    MessageBox.Show("La contraseña se ha cambiado correctamente", "Contraseña actualizada correctamente", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message.ToString(), "No se pudo cambiar la contraseña !", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+              
             }
         }
 
@@ -36,7 +55,11 @@ namespace PagoElectronico.Login
 
         private void validarPasswordVieja()
         {
-            
+            usuarioLogueado.Password = txtPasswordActual.Text;
+            if (usuarioLogueado.HashedPassword.ToString() != userService.getPasswordHashedByUsername(usuarioLogueado.Username))
+            {
+                throw new Exception("La contraseña actual no es correcta ");
+            }
         }
     }
 }
