@@ -10,6 +10,7 @@ using PagoElectronico.Common;
 using PagoElectronico.Repositories;
 using System.Data.SqlClient;
 using PagoElectronico.Services;
+using PagoElectronico.Entities;
 
 
 namespace PagoElectronico.Consulta_Saldos
@@ -20,6 +21,7 @@ namespace PagoElectronico.Consulta_Saldos
         TransferenciaService transferenciaService = new TransferenciaService();
         RetiroService retiroService = new RetiroService();
         DepositoService depositoService = new DepositoService();
+        ClienteService clienteService = new ClienteService();
 
         public ConsultaSaldos()
         {
@@ -79,14 +81,22 @@ namespace PagoElectronico.Consulta_Saldos
 
         private void obtenerSaldo()
         {
-            long cuenta = Convert.ToInt64(txtCuenta.Text.ToString());
-            lblSaldo.Text = cuentaService.getSaldo(cuenta).ToString();
-            if (String.Equals("0", lblSaldo.Text.ToString()))
+            var clienteLogueado = clienteService.getClienteByUsername(Session.Usuario.Username);
+            if (clienteLogueado != null)
             {
-                throw new Exception("No se encontro la cuenta buscada");
+                Session.Cliente = clienteLogueado;
+                long cuenta = Convert.ToInt64(txtCuenta.Text.ToString());
+                lblSaldo.Text = cuentaService.getSaldoByCliente(cuenta, Session.Cliente.numeroDocumento).ToString();
+                if (String.Equals("0", lblSaldo.Text.ToString()))
+                {
+                    throw new Exception("No se encontro la cuenta buscada");
+                }
+                mostrarComponentes();
             }
-            mostrarComponentes();
-
+            else
+            {
+                throw new Exception("Seleccione un cliente");
+            }
         }
 
         private void mostrarComponentes()

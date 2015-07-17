@@ -170,6 +170,16 @@ namespace PagoElectronico
                         break;
                 }
             }
+
+            if (Session.Usuario.SelectedRol.Id == (int)Entities.Enums.Roles.Admin)
+            {
+                selecciónClienteToolStripMenuItem.Visible = true;
+            }
+        }
+
+        private void selecciónClienteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            showForm(new SeleccionCliente());
         }
     }
 }

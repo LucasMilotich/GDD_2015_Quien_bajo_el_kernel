@@ -28,8 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.txtCuenta = new System.Windows.Forms.TextBox();
-            this.lblCuenta = new System.Windows.Forms.Label();
             this.lblPais = new System.Windows.Forms.Label();
             this.lblMoneda = new System.Windows.Forms.Label();
             this.lblTipoCuenta = new System.Windows.Forms.Label();
@@ -41,29 +39,14 @@
             this.cmbClientes = new System.Windows.Forms.ComboBox();
             this.btnCerrar = new System.Windows.Forms.Button();
             this.chkResuscribir = new System.Windows.Forms.CheckBox();
+            this.txtCuenta = new System.Windows.Forms.TextBox();
+            this.lblCuenta = new System.Windows.Forms.Label();
             this.SuspendLayout();
-            // 
-            // txtCuenta
-            // 
-            this.txtCuenta.Enabled = false;
-            this.txtCuenta.Location = new System.Drawing.Point(116, 26);
-            this.txtCuenta.Name = "txtCuenta";
-            this.txtCuenta.Size = new System.Drawing.Size(188, 20);
-            this.txtCuenta.TabIndex = 0;
-            // 
-            // lblCuenta
-            // 
-            this.lblCuenta.AutoSize = true;
-            this.lblCuenta.Location = new System.Drawing.Point(25, 30);
-            this.lblCuenta.Name = "lblCuenta";
-            this.lblCuenta.Size = new System.Drawing.Size(81, 13);
-            this.lblCuenta.TabIndex = 5;
-            this.lblCuenta.Text = "Número Cuenta";
             // 
             // lblPais
             // 
             this.lblPais.AutoSize = true;
-            this.lblPais.Location = new System.Drawing.Point(25, 68);
+            this.lblPais.Location = new System.Drawing.Point(61, 61);
             this.lblPais.Name = "lblPais";
             this.lblPais.Size = new System.Drawing.Size(27, 13);
             this.lblPais.TabIndex = 6;
@@ -72,7 +55,7 @@
             // lblMoneda
             // 
             this.lblMoneda.AutoSize = true;
-            this.lblMoneda.Location = new System.Drawing.Point(25, 107);
+            this.lblMoneda.Location = new System.Drawing.Point(61, 100);
             this.lblMoneda.Name = "lblMoneda";
             this.lblMoneda.Size = new System.Drawing.Size(46, 13);
             this.lblMoneda.TabIndex = 7;
@@ -81,7 +64,7 @@
             // lblTipoCuenta
             // 
             this.lblTipoCuenta.AutoSize = true;
-            this.lblTipoCuenta.Location = new System.Drawing.Point(25, 151);
+            this.lblTipoCuenta.Location = new System.Drawing.Point(61, 144);
             this.lblTipoCuenta.Name = "lblTipoCuenta";
             this.lblTipoCuenta.Size = new System.Drawing.Size(65, 13);
             this.lblTipoCuenta.TabIndex = 9;
@@ -102,7 +85,7 @@
             this.cmbPaises.DisplayMember = "descripcionPais";
             this.cmbPaises.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbPaises.FormattingEnabled = true;
-            this.cmbPaises.Location = new System.Drawing.Point(116, 64);
+            this.cmbPaises.Location = new System.Drawing.Point(152, 57);
             this.cmbPaises.Name = "cmbPaises";
             this.cmbPaises.Size = new System.Drawing.Size(188, 21);
             this.cmbPaises.TabIndex = 12;
@@ -113,7 +96,7 @@
             this.cmbTiposCuenta.DisplayMember = "descripcion";
             this.cmbTiposCuenta.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbTiposCuenta.FormattingEnabled = true;
-            this.cmbTiposCuenta.Location = new System.Drawing.Point(116, 147);
+            this.cmbTiposCuenta.Location = new System.Drawing.Point(152, 140);
             this.cmbTiposCuenta.Name = "cmbTiposCuenta";
             this.cmbTiposCuenta.Size = new System.Drawing.Size(121, 21);
             this.cmbTiposCuenta.TabIndex = 13;
@@ -124,7 +107,7 @@
             this.cmbMonedas.DisplayMember = "descripcion";
             this.cmbMonedas.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbMonedas.FormattingEnabled = true;
-            this.cmbMonedas.Location = new System.Drawing.Point(116, 103);
+            this.cmbMonedas.Location = new System.Drawing.Point(152, 96);
             this.cmbMonedas.Name = "cmbMonedas";
             this.cmbMonedas.Size = new System.Drawing.Size(121, 21);
             this.cmbMonedas.TabIndex = 14;
@@ -133,7 +116,7 @@
             // lblCliente
             // 
             this.lblCliente.AutoSize = true;
-            this.lblCliente.Location = new System.Drawing.Point(26, 190);
+            this.lblCliente.Location = new System.Drawing.Point(62, 183);
             this.lblCliente.Name = "lblCliente";
             this.lblCliente.Size = new System.Drawing.Size(39, 13);
             this.lblCliente.TabIndex = 16;
@@ -145,7 +128,7 @@
             this.cmbClientes.DisplayMember = "nombreCompleto";
             this.cmbClientes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbClientes.FormattingEnabled = true;
-            this.cmbClientes.Location = new System.Drawing.Point(116, 186);
+            this.cmbClientes.Location = new System.Drawing.Point(152, 179);
             this.cmbClientes.Name = "cmbClientes";
             this.cmbClientes.Size = new System.Drawing.Size(189, 21);
             this.cmbClientes.TabIndex = 17;
@@ -165,7 +148,7 @@
             // chkResuscribir
             // 
             this.chkResuscribir.AutoSize = true;
-            this.chkResuscribir.Location = new System.Drawing.Point(248, 149);
+            this.chkResuscribir.Location = new System.Drawing.Point(284, 142);
             this.chkResuscribir.Name = "chkResuscribir";
             this.chkResuscribir.Size = new System.Drawing.Size(78, 17);
             this.chkResuscribir.TabIndex = 19;
@@ -173,6 +156,23 @@
             this.chkResuscribir.UseVisualStyleBackColor = true;
             this.chkResuscribir.Visible = false;
             this.chkResuscribir.CheckedChanged += new System.EventHandler(this.chkResuscribir_CheckedChanged);
+            // 
+            // txtCuenta
+            // 
+            this.txtCuenta.Enabled = false;
+            this.txtCuenta.Location = new System.Drawing.Point(152, 19);
+            this.txtCuenta.Name = "txtCuenta";
+            this.txtCuenta.Size = new System.Drawing.Size(188, 20);
+            this.txtCuenta.TabIndex = 0;
+            // 
+            // lblCuenta
+            // 
+            this.lblCuenta.AutoSize = true;
+            this.lblCuenta.Location = new System.Drawing.Point(61, 23);
+            this.lblCuenta.Name = "lblCuenta";
+            this.lblCuenta.Size = new System.Drawing.Size(81, 13);
+            this.lblCuenta.TabIndex = 5;
+            this.lblCuenta.Text = "Número Cuenta";
             // 
             // AltaCuenta
             // 
@@ -203,8 +203,6 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox txtCuenta;
-        private System.Windows.Forms.Label lblCuenta;
         private System.Windows.Forms.Label lblPais;
         private System.Windows.Forms.Label lblMoneda;
         private System.Windows.Forms.Label lblTipoCuenta;
@@ -216,5 +214,7 @@
         private System.Windows.Forms.ComboBox cmbClientes;
         private System.Windows.Forms.Button btnCerrar;
         private System.Windows.Forms.CheckBox chkResuscribir;
+        private System.Windows.Forms.TextBox txtCuenta;
+        private System.Windows.Forms.Label lblCuenta;
     }
 }

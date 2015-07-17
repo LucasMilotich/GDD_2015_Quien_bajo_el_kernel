@@ -22,6 +22,12 @@ namespace PagoElectronico.Services
             return repository.getSaldo(numeroCuenta);
         }
 
+        public double getSaldoByCliente(long numeroCuenta, long cliente)
+        {
+            CuentaRepository repository = new CuentaRepository();
+            return repository.getSaldoByCliente(numeroCuenta, cliente);
+        }
+
         public int getEstado(long numeroCuenta)
         {
             CuentaRepository repository = new CuentaRepository();

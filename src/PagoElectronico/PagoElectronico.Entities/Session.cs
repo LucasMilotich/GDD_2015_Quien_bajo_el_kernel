@@ -10,6 +10,8 @@ namespace PagoElectronico.Entities
     {
         public static Usuario Usuario { get; set; }
 
+        public static Cliente Cliente { get; set; }
+
         public static DateTime Fecha { 
             get
             {

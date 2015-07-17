@@ -171,7 +171,14 @@ namespace PagoElectronico.Depositos
         {
             if (Session.Usuario.SelectedRol.Id == (int)Entities.Enums.Roles.Admin)
             {
-                listaCuentas = (List<Cuenta>)cuentaService.GetAll();
+                if (Session.Cliente != null)
+                {
+                    listaCuentas = (List<Cuenta>)cuentaService.getByCliente(Session.Cliente.tipoDocumento, Session.Cliente.numeroDocumento);
+                }
+                else
+                {
+                    MessageBox.Show("Selecciones un cliente de Archivo -> Seleccion Cliente", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
             else
             {
@@ -179,7 +186,7 @@ namespace PagoElectronico.Depositos
                 listaCuentas = (List<Cuenta>)cuentaService.getByCliente(clienteLogueado.tipoDocumento, clienteLogueado.numeroDocumento);   
             }
 
-            if (listaCuentas.Count > 0)
+            if (listaCuentas != null && listaCuentas.Count > 0)
             {
                 comboCuentaOrigen.DataSource = listaCuentas;
             }

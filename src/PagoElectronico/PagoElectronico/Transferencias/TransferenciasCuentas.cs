@@ -37,8 +37,8 @@ namespace PagoElectronico.Transferencias
 
         public TransferenciasCuentas()
         {
-            obtenerCliente();
             InitializeComponent();
+            obtenerCliente();
             cargarComboCuentas();
         }
 
@@ -80,14 +80,26 @@ namespace PagoElectronico.Transferencias
         {
             try
             {
-                clienteLogueado = clienteService.getClienteByUsername(usuarioLogueado.Username);
+                if (Session.Usuario.SelectedRol.Id == (int)Entities.Enums.Roles.Admin)
+                {
+                    clienteLogueado = Session.Cliente;
+                    if (clienteLogueado == null)
+                    {
+                        MessageBox.Show("Selecciones un cliente de Archivo -> Seleccion Cliente", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        //this.Close();
+                    }
+                }
+                else
+                {
+                    clienteLogueado = clienteService.getClienteByUsername(usuarioLogueado.Username);
+                }
             }
             catch (Exception)
             {
                 MessageBox.Show("El usuario actual no posee cuentas asociadas ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-                
+
         private void realizarTransferencia()
         {
             if (Validaciones.validarCampoVacio(txtImporte) & Validaciones.validarCampoVacio(txtCuentaDestino) & Validaciones.validarCampoNumericoDouble(txtImporte) & Validaciones.validarCampoNumericoDouble(txtCuentaDestino))
@@ -142,25 +154,25 @@ namespace PagoElectronico.Transferencias
         private double calcularCosto(double importe)
         {
             Cuenta cuentaSeleccionada = ((Cuenta)comboCuentaOrigen.SelectedItem);
-            if (listaCuentas.Any(x=> x.numero == Int64.Parse(txtCuentaDestino.Text)))
+            if (listaCuentas.Any(x => x.numero == Int64.Parse(txtCuentaDestino.Text)))
             {
                 return 0;                       // Transferencias entre sus cuentas no tiene costo
             }
-            if (cuentaSeleccionada.tipoCuenta==(int)TiposCuentaEnum.Gratis)
+            if (cuentaSeleccionada.tipoCuenta == (int)TiposCuentaEnum.Gratis)
             {
                 return (importe * Convert.ToDouble(ConfigurationManager.AppSettings["PorcentajeTipoGratis"]));
             }
             else if (cuentaSeleccionada.tipoCuenta == (int)TiposCuentaEnum.Bronce)
             {
-                return (importe * Convert.ToDouble(ConfigurationManager.AppSettings["PorcentajeTipoBronce"]));   
+                return (importe * Convert.ToDouble(ConfigurationManager.AppSettings["PorcentajeTipoBronce"]));
             }
             else if (cuentaSeleccionada.tipoCuenta == (int)TiposCuentaEnum.Plata)
             {
-                return (importe * Convert.ToDouble(ConfigurationManager.AppSettings["PorcentajeTipoPlata"]));        
+                return (importe * Convert.ToDouble(ConfigurationManager.AppSettings["PorcentajeTipoPlata"]));
             }
             else if (cuentaSeleccionada.tipoCuenta == (int)TiposCuentaEnum.Oro)
             {
-                return (importe * Convert.ToDouble(ConfigurationManager.AppSettings["PorcentajeTipoOro"]));       
+                return (importe * Convert.ToDouble(ConfigurationManager.AppSettings["PorcentajeTipoOro"]));
             }
             else
             {
@@ -208,16 +220,20 @@ namespace PagoElectronico.Transferencias
 
         private void cargarComboCuentas()
         {
-            listaCuentas = (List<Cuenta>)cuentaService.getByCliente(clienteLogueado.tipoDocumento, clienteLogueado.numeroDocumento);
-            if (listaCuentas.Count > 0)
+            if (clienteLogueado != null)
             {
-                comboCuentaOrigen.DataSource = listaCuentas;
-            }
-            else
-            {
-                MessageBox.Show("No posees cuentas para realizar transferencias", "Atencion !", MessageBoxButtons.OK, MessageBoxIcon.Error);                
-            }
 
+                listaCuentas = (List<Cuenta>)cuentaService.getByCliente(clienteLogueado.tipoDocumento, clienteLogueado.numeroDocumento);
+                if (listaCuentas.Count > 0)
+                {
+                    comboCuentaOrigen.DataSource = listaCuentas;
+                }
+                else
+                {
+                    MessageBox.Show("No posees cuentas para realizar transferencias", "Atencion !", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+            }
         }
 
         private void cargarComboTipoMoneda()

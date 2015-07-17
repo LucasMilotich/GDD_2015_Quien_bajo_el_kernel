@@ -49,6 +49,7 @@
             this.clientesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.altaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.listadoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.selecciónClienteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -72,6 +73,7 @@
             // 
             this.archivoToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.cambiarContraseñaToolStripMenuItem,
+            this.selecciónClienteToolStripMenuItem,
             this.cerrarSesiónToolStripMenuItem});
             this.archivoToolStripMenuItem.Name = "archivoToolStripMenuItem";
             this.archivoToolStripMenuItem.Size = new System.Drawing.Size(60, 20);
@@ -231,6 +233,14 @@
             this.listadoToolStripMenuItem.Text = "Listado";
             this.listadoToolStripMenuItem.Click += new System.EventHandler(this.listadoToolStripMenuItem_Click);
             // 
+            // selecciónClienteToolStripMenuItem
+            // 
+            this.selecciónClienteToolStripMenuItem.Name = "selecciónClienteToolStripMenuItem";
+            this.selecciónClienteToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.selecciónClienteToolStripMenuItem.Text = "Selección Cliente";
+            this.selecciónClienteToolStripMenuItem.Visible = false;
+            this.selecciónClienteToolStripMenuItem.Click += new System.EventHandler(this.selecciónClienteToolStripMenuItem_Click);
+            // 
             // Home
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -273,6 +283,7 @@
         private System.Windows.Forms.ToolStripMenuItem depositoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem facturarToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cambiarContraseñaToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem selecciónClienteToolStripMenuItem;
     }
 }
 

@@ -16,7 +16,7 @@ namespace PagoElectronico.Repositories
         {
             List<Cuenta> cuentas = new List<Cuenta>();
 
-            SqlCommand command = DBConnection.CreateStoredProcedure("GetAllCuentas");
+            SqlCommand command = DBConnection.CreateStoredProcedure("GetCuentas");
             DataRowCollection collection = DBConnection.EjecutarComandoSelect(command).Rows;
             foreach (DataRow cuenta in collection)
             {
@@ -85,6 +85,13 @@ namespace PagoElectronico.Repositories
         {
             SqlCommand command = DBConnection.CreateCommand();
             command.CommandText = "select saldo from [QUIEN_BAJO_EL_KERNEL].[CUENTA] where numero=" + numeroCuenta.ToString();
+            return DBConnection.ExecuteScalarDouble(command);
+        }
+
+        public double getSaldoByCliente(long numeroCuenta, long cliente)
+        {
+            SqlCommand command = DBConnection.CreateCommand();
+            command.CommandText = "select saldo from [QUIEN_BAJO_EL_KERNEL].[CUENTA] where numero=" + numeroCuenta.ToString() + " and cliente_numero_doc=" + cliente.ToString();
             return DBConnection.ExecuteScalarDouble(command);
         }
 
