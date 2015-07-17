@@ -66,7 +66,7 @@ namespace PagoElectronico.ABM_Cuenta
             this.realizarBusqueda();
         }
 
-        private void realizarBusqueda()
+        public void realizarBusqueda()
         {
             int? moneda = (int)cmbMoneda.SelectedValue <= 0 ? (int?)null : (int)cmbMoneda.SelectedValue;
             long? pais = (long)cmbPaises.SelectedValue <= 0 ? (long?)null : (long)cmbPaises.SelectedValue;
@@ -106,7 +106,7 @@ namespace PagoElectronico.ABM_Cuenta
             {
                 var row = dgvCuentas.Rows[e.RowIndex];
                 var cell = row.Cells["Numero"];
-                var form = new AltaCuenta(Convert.ToInt64(cell.Value));
+                var form = new AltaCuenta(Convert.ToInt64(cell.Value), this);
                 form.Show();
                 form.MdiParent = this.MdiParent;
             }
@@ -128,6 +128,8 @@ namespace PagoElectronico.ABM_Cuenta
                         {
                             MessageBox.Show("Cuenta cerrada!", "Atención!", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
+
+                        this.realizarBusqueda();
                     }
                     catch (OperationCanceledException ex)
                     {
@@ -138,10 +140,7 @@ namespace PagoElectronico.ABM_Cuenta
                         MessageBox.Show("Error al cerrar la cuenta.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 } 
-
             }
-
-            this.realizarBusqueda();
         }
     }
 }

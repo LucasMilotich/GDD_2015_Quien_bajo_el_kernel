@@ -37,7 +37,7 @@ namespace PagoElectronico.Repositories
             throw new NotImplementedException();
         }
 
-        public int InsertaCuenta(int codPais, int tipoMoneda, int tipoCuenta, long tipoDocCliente, long nroDocCliente)
+        public int InsertaCuenta(int codPais, int tipoMoneda, int tipoCuenta, long tipoDocCliente, long nroDocCliente, DateTime fecha)
         {
             int resultado;
             using (var transaction = new TransactionScope())
@@ -48,6 +48,7 @@ namespace PagoElectronico.Repositories
                 command.Parameters.AddWithValue("@an_cuenta_tipo", tipoCuenta);
                 command.Parameters.AddWithValue("@an_cliente_tipo_doc", tipoDocCliente);
                 command.Parameters.AddWithValue("@an_cliente_doc", nroDocCliente);
+                command.Parameters.AddWithValue("@ad_fecha", fecha);
 
                 resultado = DBConnection.ExecuteNonQuery(command);
                 command.Dispose();
@@ -171,7 +172,7 @@ namespace PagoElectronico.Repositories
 
         }
 
-        public int ModificaCuenta(long numCuenta, int tipoMoneda, int tipoCuenta, int codPais)
+        public int ModificaCuenta(long numCuenta, int tipoMoneda, int tipoCuenta, int codPais, DateTime fecha)
         {
             int resultado;
             using (var transaction = new TransactionScope())
@@ -181,6 +182,7 @@ namespace PagoElectronico.Repositories
                 command.Parameters.AddWithValue("@an_moneda_tipo", tipoMoneda);
                 command.Parameters.AddWithValue("@an_cuenta_tipo", tipoCuenta);
                 command.Parameters.AddWithValue("@an_cod_pais", codPais);
+                command.Parameters.AddWithValue("@ad_fecha", fecha);
 
                 resultado = DBConnection.ExecuteNonQuery(command);
                 command.Dispose();

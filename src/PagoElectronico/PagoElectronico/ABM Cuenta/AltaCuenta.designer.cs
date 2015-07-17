@@ -169,6 +169,7 @@
             this.Name = "AltaCuenta";
             this.Text = "Alta de Cuenta";
             this.Load += new System.EventHandler(this.AltaCuenta_Load);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AltaCuenta_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 
