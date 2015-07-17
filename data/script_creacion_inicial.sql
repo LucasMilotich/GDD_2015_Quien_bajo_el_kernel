@@ -1088,7 +1088,7 @@ UPDATE QUIEN_BAJO_EL_KERNEL.CUENTA
 SET estado_codigo = 3 
 WHERE numero = @CUENTA
 
-INSERT INTO QUIEN_BAJO_EL_KERNEL.CUENTA_MODIFICACION c
+INSERT INTO QUIEN_BAJO_EL_KERNEL.CUENTA_MODIFICACION 
 	(cuenta,fecha,nuevo_tipo_cuenta,viejo_tipo_cuenta,habilitado)
 VALUES 
 	(@cuenta, @fecha,4,4,0)
