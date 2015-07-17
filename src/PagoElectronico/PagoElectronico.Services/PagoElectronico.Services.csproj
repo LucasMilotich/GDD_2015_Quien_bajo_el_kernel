@@ -49,6 +49,7 @@
     <Compile Include="BancoService.cs" />
     <Compile Include="ChequeService.cs" />
     <Compile Include="ClienteService.cs" />
+    <Compile Include="EmisorTarjetaService.cs" />
     <Compile Include="FacturacionService.cs" />
     <Compile Include="TarjetaService.cs" />
     <Compile Include="TipoEstadoCuentaService.cs" />
