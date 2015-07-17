@@ -15,11 +15,12 @@ namespace PagoElectronico.Facturacion
 {
     public partial class FacturacionForm : Form
     {
-        Cliente clienteLogueado;
+        Cliente cliente;
         Usuario usuarioLogueado = Session.Usuario;
 
         TipoDocumentoService tipoDocumentoService = new TipoDocumentoService();
         TransaccionService transaccionService = new TransaccionService();
+        FacturacionService facturacionService = new FacturacionService();
         TipoTransaccionService tipoTransaccionService = new TipoTransaccionService();
 
         List<TipoDocumento> listaTiposDocumentos;
@@ -29,10 +30,8 @@ namespace PagoElectronico.Facturacion
         List<Transaccion> aperturaCuentasSinFacturar;
         List<Transaccion> modifCuentasSinFacturar;
 
-        List<Transaccion> elementosFiltrados;
-        List<Transaccion> elementosAfacturar;
-        BindingSource sourceDgridFiltro;
-        BindingSource sourceDgridFacturable;
+        List<Transaccion> transaccionesSinFacturar;
+        List<Transaccion> transaccionesAFacturar;
 
         public FacturacionForm()
         {
@@ -41,80 +40,144 @@ namespace PagoElectronico.Facturacion
 
         #region eventos
         /*************    Metodos de componentes       *************/
-        private void btnFacturar_Click(object sender, EventArgs e)
+
+        private void FacturacionForm_Load(object sender, EventArgs e)
         {
-            //Boolean validator;
-            //validator = Validaciones.validarCampoVacio(txtNombre) & Validaciones.validarCampoVacio(txtApellido) & Validaciones.validarCampoVacio(txtNroDoc);
-            //validator = validator & Validaciones.validarCampoString(txtApellido) & Validaciones.validarCampoString(txtNombre) & Validaciones.validarCampoNumericoEntero(txtNroDoc);
+            try
+            {
+                cliente = Utils.obtenerCliente(usuarioLogueado);
+                cargarComboTipoDoc();
+                cargarTiposTransaccion();
+                cargarTransacciones();
+                initializeDatagrid();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
-            //if (validator)
-            //{
-            //    realizarFacturacion();
-            //}
+        private void grdTransacciones_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            var row = grdTransacciones.Rows[e.RowIndex];
+            if (e.ColumnIndex == 6)
+            {
+                if ((TiposTransaccionEnum)int.Parse(row.Cells[2].Value.ToString()) == TiposTransaccionEnum.Transferencia)
+                {
+                    ((DataGridViewComboBoxCell)(row.Cells[6])).ReadOnly = true;
+                    ((DataGridViewComboBoxCell)(row.Cells[6])).DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing;
+                }
+            }
+        }
 
-            List<DataGridViewRow> rows_with_checked_column = new List<DataGridViewRow>();
+        private void btnAgregar_Click(object sender, EventArgs e)
+        {
+            AgregarItems(false);
+        }
+
+        private void btnAgregarTodos_Click(object sender, EventArgs e)
+        {
+            AgregarItems(true);
+        }
+
+        private void AgregarItems(bool todos)
+        {
             foreach (DataGridViewRow row in grdTransacciones.Rows)
             {
-                if (Convert.ToBoolean(row.Cells[0].Value) == true)
+                if (todos || (row.Cells[0] != null && Convert.ToBoolean(row.Cells[0].Value)))
                 {
-                    rows_with_checked_column.Add(row);
+                    var transaccion = new Transaccion
+                    {
+                        codigo = Convert.ToInt64(row.Cells[1].Value),
+                        tipo = Convert.ToInt32(row.Cells[2].Value),
+                        cuenta = Convert.ToInt64(row.Cells[3].Value),
+                        costo = Convert.ToDouble(row.Cells[5].Value),
+                        suscripcion = Convert.ToInt32(row.Cells[6].Value)
+                    };
+
+                    if (transaccion.suscripcion == 0 && (TiposTransaccionEnum)transaccion.tipo != TiposTransaccionEnum.Transferencia)
+                    {
+                        string mensaje = string.Format("Debe especificar la cantidad de suscripciones a pagar para agregar la {0} con Nro. de cuenta: {1}", transaccion.TipoDescription, transaccion.cuenta).ToString();
+                        MessageBox.Show(mensaje, "Validaciones", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                        continue;
+                    }
+
+                    transaccionesAFacturar.Add(transaccion);
+                    var item = transaccionesSinFacturar.FirstOrDefault(a => a.codigo == transaccion.codigo && a.tipo == transaccion.tipo);
+                    if (item != null)
+                    {
+                        transaccionesSinFacturar.Remove(item);
+                    }
                 }
             }
 
+            grdTransacciones.DataSource = null;
+            grdTransacciones.Rows.Clear();
+            grdTransacciones.DataSource = transaccionesSinFacturar.OrderBy(t => t.cuenta).ToList();
+
+            grdItemsAPagar.AutoGenerateColumns = false;
+            grdItemsAPagar.DataSource = null;
+            grdItemsAPagar.Rows.Clear();
+            grdItemsAPagar.DataSource = transaccionesAFacturar.OrderBy(t => t.cuenta).ToList();
+        }
+
+        private void btnFacturar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (transaccionesAFacturar.Any())
+	            {
+		             IList<ItemFactura> items = transaccionesAFacturar.Select(t => new ItemFactura
+                            {
+                                cuenta = t.cuenta,
+                                descripcion = t.TipoDescription,
+                                importe = t.costo,
+                                numeroItem = t.codigo
+                            }).ToList();
+
+                     this.facturacionService.Facturar(items, cliente);
+	            }
+            }
+            catch 
+            {
+                MessageBox.Show("Ha ocurrido un error al generar la factura", "Error", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+            }
         }
 
         private void btnLimpiarLista_Click(object sender, EventArgs e)
         {
-            limpiarGridFactur();
+            grdTransacciones.DataSource = null;
+            grdTransacciones.Rows.Clear();
+
+            grdItemsAPagar.DataSource = null;
+            grdItemsAPagar.Rows.Clear();
+
+            comboTipoTransaccion.SelectedIndex = 0;
+            comboTipoTransaccion.Enabled = false;
+            chkSeleccionarTodos.Checked = true;
+
+            cargarTransacciones();
+            initializeDatagrid();
         }
-
-
-        //private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
-        //{
-        //    if (e.RowIndex == -1)
-        //    {
-        //        return;
-        //    }
-
-        //    Transaccion obj = elementosFiltrados[e.RowIndex];
-        //    elementosAfacturar.Add(obj);
-        //    elementosFiltrados.Remove(obj);
-
-        //    sourceDgridFacturable.ResetBindings(false);
-        //    sourceDgridFiltro.ResetBindings(false);
-        //}
-
-        private void dgridFacurable_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex == -1)
-            {
-                return;
-            }
-            Transaccion obj = elementosAfacturar[e.RowIndex];
-            elementosFiltrados.Add(obj);
-            elementosAfacturar.Remove(obj);
-
-            sourceDgridFiltro.ResetBindings(false);
-            sourceDgridFacturable.ResetBindings(false);
-        }
-
 
         private void comboTipoTransaccion_SelectedIndexChanged(object sender, EventArgs e)
         {
             TipoTransaccion tipo = (TipoTransaccion)comboTipoTransaccion.SelectedValue;
-            if (tipo.ID == (long)TiposTransaccionEnum.AperturaCuenta)
+            if (transaccionesSinFacturar != null && transaccionesSinFacturar.Any())
             {
-                refreshGridFiltros(aperturaCuentasSinFacturar);
+                if (tipo.ID == (long)TiposTransaccionEnum.AperturaCuenta)
+                {
+                    refreshGridFiltros(transaccionesSinFacturar.Where(t => (TiposTransaccionEnum)t.tipo == TiposTransaccionEnum.AperturaCuenta).OrderBy(t => t.cuenta).ToList());
+                }
+                else if (tipo.ID == (long)TiposTransaccionEnum.ModifCuenta)
+                {
+                    refreshGridFiltros(transaccionesSinFacturar.Where(t => (TiposTransaccionEnum)t.tipo == TiposTransaccionEnum.ModifCuenta).OrderBy(t => t.cuenta).ToList());
+                }
+                else if (tipo.ID == (long)TiposTransaccionEnum.Transferencia)
+                {
+                    refreshGridFiltros(transaccionesSinFacturar.Where(t => (TiposTransaccionEnum)t.tipo == TiposTransaccionEnum.Transferencia).OrderBy(t => t.cuenta).ToList());
+                }
             }
-            else if (tipo.ID == (long)TiposTransaccionEnum.ModifCuenta)
-            {
-                refreshGridFiltros(modifCuentasSinFacturar);
-            }
-            else if (tipo.ID == (long)TiposTransaccionEnum.Transferencia)
-            {
-                refreshGridFiltros(transferenciasSinFacturar);
-            }
-
         }
 
         private void chkSeleccionarTodos_CheckedChanged(object sender, EventArgs e)
@@ -122,76 +185,46 @@ namespace PagoElectronico.Facturacion
             if (chkSeleccionarTodos.Checked)
             {
                 comboTipoTransaccion.Enabled = false;
-                refreshGridFiltros(getAllTransaccionesSinFacturar());
+                comboTipoTransaccion.SelectedIndex = 0;
+                refreshGridFiltros(transaccionesSinFacturar.OrderBy(t => t.cuenta).ToList());
             }
             else
             {
                 comboTipoTransaccion.Enabled = true;
                 comboTipoTransaccion.SelectedIndex = 0;
-                refreshGridFiltros(aperturaCuentasSinFacturar);
+                refreshGridFiltros(transaccionesSinFacturar.Where(t => (TiposTransaccionEnum)t.tipo == TiposTransaccionEnum.AperturaCuenta).OrderBy(t => t.cuenta).ToList());
             }
         }
-        
 
         #endregion
 
         #region metodosPrivados
         /*************    Metodos privados       *************/
-        private void initializeDatagrids()
+        private void initializeDatagrid()
         {
-            //sourceDgridFiltro = new BindingSource();
-            //sourceDgridFacturable = new BindingSource();
-            //elementosFiltrados = new List<Transaccion>();
-            //elementosAfacturar = new List<Transaccion>();
-
-            //sourceDgridFiltro.DataSource = elementosFiltrados;
-            //sourceDgridFacturable.DataSource = elementosAfacturar;
-
-            //grdTransacciones.DataSource = sourceDgridFiltro;
-            //dgridFacturable.DataSource = sourceDgridFacturable;
-
-            //grdTransacciones.ReadOnly = true;
-            //grdTransacciones.MultiSelect = false;
-            //dgridFacturable.ReadOnly = true;
-            //dgridFacturable.MultiSelect = false;
-
-            //refreshGridFiltros(getAllTransaccionesSinFacturar());
-
+            transaccionesAFacturar = new List<Transaccion>();
+            grdTransacciones.AutoGenerateColumns = false;
             grdTransacciones.DataSource = getAllTransaccionesSinFacturar();
-
         }
-
-        private void realizarFacturacion()
-        {
-            throw new NotImplementedException();
-        }
-
 
         private List<Transaccion> getAllTransaccionesSinFacturar()
         {
-            List<Transaccion> todosSinFacturar = new List<Transaccion>();
-
-            todosSinFacturar.AddRange(aperturaCuentasSinFacturar);
-            todosSinFacturar.AddRange(modifCuentasSinFacturar);
-            todosSinFacturar.AddRange(transferenciasSinFacturar);
-            return todosSinFacturar;
+            transaccionesSinFacturar = new List<Transaccion>();
+            transaccionesSinFacturar.AddRange(aperturaCuentasSinFacturar);
+            transaccionesSinFacturar.AddRange(modifCuentasSinFacturar);
+            transaccionesSinFacturar.AddRange(transferenciasSinFacturar);
+            return transaccionesSinFacturar.OrderBy(t => t.cuenta).ToList();
         }
 
         private void refreshGridFiltros(List<Transaccion> listSinFacturar)
         {
             if (listSinFacturar != null)
             {
-                elementosFiltrados = listSinFacturar;
-                sourceDgridFiltro.ResetBindings(false);
+                grdTransacciones.DataSource = null;
+                grdTransacciones.Rows.Clear();
+                grdTransacciones.DataSource = listSinFacturar;
             }
         }
-
-        private void limpiarGridFactur()
-        {
-            elementosAfacturar.Clear();
-            sourceDgridFacturable.ResetBindings(false);
-        }
-
 
         private void cargarComboTipoDoc()
         {
@@ -209,32 +242,11 @@ namespace PagoElectronico.Facturacion
 
         private void cargarTransacciones()
         {
-            aperturaCuentasSinFacturar = (List<Transaccion>)transaccionService.getAperturaCuentasSinFacturar(clienteLogueado.tipoDocumento, clienteLogueado.numeroDocumento);
-            modifCuentasSinFacturar = (List<Transaccion>)transaccionService.getModifCuentasSinFacturar(clienteLogueado.tipoDocumento, clienteLogueado.numeroDocumento);
-            transferenciasSinFacturar = (List<Transaccion>)transaccionService.getTransferenciasSinFacturar(clienteLogueado.tipoDocumento, clienteLogueado.numeroDocumento);
+            aperturaCuentasSinFacturar = (List<Transaccion>)transaccionService.getAperturaCuentasSinFacturar(cliente.tipoDocumento, cliente.numeroDocumento);
+            modifCuentasSinFacturar = (List<Transaccion>)transaccionService.getModifCuentasSinFacturar(cliente.tipoDocumento, cliente.numeroDocumento);
+            transferenciasSinFacturar = (List<Transaccion>)transaccionService.getTransferenciasSinFacturar(cliente.tipoDocumento, cliente.numeroDocumento);
         }
 
-   
         #endregion
-
-        private void FacturacionForm_Load(object sender, EventArgs e)
-        {
-            try
-            {
-                clienteLogueado = Utils.obtenerCliente(usuarioLogueado);
-                cargarComboTipoDoc();
-                cargarTiposTransaccion();
-                cargarTransacciones();
-                initializeDatagrids();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void btnAgregar_Click(object sender, EventArgs e)
-        {
-        }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using PagoElectronico.Entities.Enums;
 
 namespace PagoElectronico.Entities
 {
@@ -11,5 +12,24 @@ namespace PagoElectronico.Entities
         public long cuenta { get; set; }
         public double costo { get; set; }
         public int tipo { get; set; }
+        public int suscripcion { get; set; }
+        public string TipoDescription 
+        {
+            get 
+            {
+                if ((TiposTransaccionEnum)this.tipo == TiposTransaccionEnum.Transferencia)
+                {
+                    return EnumHelper.GetEnumDescription(TiposTransaccionEnum.Transferencia);
+                }
+                else if ((TiposTransaccionEnum)this.tipo == TiposTransaccionEnum.AperturaCuenta)
+                {
+                    return EnumHelper.GetEnumDescription(TiposTransaccionEnum.AperturaCuenta);
+                }
+                else
+                {
+                    return EnumHelper.GetEnumDescription(TiposTransaccionEnum.ModifCuenta);
+                }
+            }
+        }
     }
 }

@@ -55,7 +55,7 @@ namespace PagoElectronico.Repositories
         {
             Transaccion entity = new Transaccion();
             //entity.codigo = Convert.ToInt64(transaccion["Codigo"]);
-            entity.codigo = String.IsNullOrEmpty(transaccion["Codigo"].ToString()) ? 0 : Convert.ToInt64(transaccion["Codigo"]);
+            entity.codigo = String.IsNullOrEmpty(transaccion["Codigo"].ToString()) ? Convert.ToInt64(transaccion["Cuenta"]) : Convert.ToInt64(transaccion["Codigo"]);
             entity.cuenta = Convert.ToInt64(transaccion["Cuenta"]);
             entity.costo = Convert.ToDouble(transaccion["Costo"]);
             entity.tipo = Convert.ToInt32(transaccion["TipoTransaccion"]);

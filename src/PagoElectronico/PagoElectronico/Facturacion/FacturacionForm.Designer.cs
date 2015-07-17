@@ -28,67 +28,56 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.txtApellido = new System.Windows.Forms.TextBox();
-            this.lblApellido = new System.Windows.Forms.Label();
             this.txtNroDoc = new System.Windows.Forms.TextBox();
             this.comboTipoDoc = new System.Windows.Forms.ComboBox();
             this.lblDocumento = new System.Windows.Forms.Label();
-            this.lblNombre = new System.Windows.Forms.Label();
-            this.txtNombre = new System.Windows.Forms.TextBox();
             this.lblTransaccion = new System.Windows.Forms.Label();
             this.comboTipoTransaccion = new System.Windows.Forms.ComboBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btnAgregarTodos = new System.Windows.Forms.Button();
+            this.btnAgregar = new System.Windows.Forms.Button();
+            this.grdItemsAPagar = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewComboBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.grdTransacciones = new System.Windows.Forms.DataGridView();
-            this.btnLimpiarLista = new System.Windows.Forms.Button();
+            this.btnLimpiar = new System.Windows.Forms.Button();
             this.chkSeleccionarTodos = new System.Windows.Forms.CheckBox();
             this.btnFacturar = new System.Windows.Forms.Button();
-            this.btnAgregar = new System.Windows.Forms.Button();
             this.Seleccionar = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.Codigo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TipoTransaccion = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.NroCuenta = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Tipo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Costo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Suscripcion = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Suscripcion = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.grdItemsAPagar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grdTransacciones)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.txtApellido);
-            this.groupBox1.Controls.Add(this.lblApellido);
             this.groupBox1.Controls.Add(this.txtNroDoc);
             this.groupBox1.Controls.Add(this.comboTipoDoc);
             this.groupBox1.Controls.Add(this.lblDocumento);
-            this.groupBox1.Controls.Add(this.lblNombre);
-            this.groupBox1.Controls.Add(this.txtNombre);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(548, 142);
+            this.groupBox1.Size = new System.Drawing.Size(548, 59);
             this.groupBox1.TabIndex = 33;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Facturacion";
             // 
-            // txtApellido
-            // 
-            this.txtApellido.Location = new System.Drawing.Point(78, 28);
-            this.txtApellido.Name = "txtApellido";
-            this.txtApellido.Size = new System.Drawing.Size(100, 20);
-            this.txtApellido.TabIndex = 37;
-            // 
-            // lblApellido
-            // 
-            this.lblApellido.AutoSize = true;
-            this.lblApellido.Location = new System.Drawing.Point(6, 35);
-            this.lblApellido.Name = "lblApellido";
-            this.lblApellido.Size = new System.Drawing.Size(44, 13);
-            this.lblApellido.TabIndex = 36;
-            this.lblApellido.Text = "Apellido";
-            // 
             // txtNroDoc
             // 
-            this.txtNroDoc.Location = new System.Drawing.Point(184, 82);
+            this.txtNroDoc.Location = new System.Drawing.Point(184, 21);
             this.txtNroDoc.Name = "txtNroDoc";
             this.txtNroDoc.Size = new System.Drawing.Size(104, 20);
             this.txtNroDoc.TabIndex = 34;
@@ -99,7 +88,7 @@
             this.comboTipoDoc.DisplayMember = "descripcion";
             this.comboTipoDoc.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboTipoDoc.FormattingEnabled = true;
-            this.comboTipoDoc.Location = new System.Drawing.Point(78, 81);
+            this.comboTipoDoc.Location = new System.Drawing.Point(78, 20);
             this.comboTipoDoc.Name = "comboTipoDoc";
             this.comboTipoDoc.Size = new System.Drawing.Size(100, 21);
             this.comboTipoDoc.TabIndex = 33;
@@ -108,27 +97,11 @@
             // lblDocumento
             // 
             this.lblDocumento.AutoSize = true;
-            this.lblDocumento.Location = new System.Drawing.Point(6, 89);
+            this.lblDocumento.Location = new System.Drawing.Point(6, 28);
             this.lblDocumento.Name = "lblDocumento";
             this.lblDocumento.Size = new System.Drawing.Size(62, 13);
             this.lblDocumento.TabIndex = 35;
             this.lblDocumento.Text = "Documento";
-            // 
-            // lblNombre
-            // 
-            this.lblNombre.AutoSize = true;
-            this.lblNombre.Location = new System.Drawing.Point(6, 62);
-            this.lblNombre.Name = "lblNombre";
-            this.lblNombre.Size = new System.Drawing.Size(44, 13);
-            this.lblNombre.TabIndex = 32;
-            this.lblNombre.Text = "Nombre";
-            // 
-            // txtNombre
-            // 
-            this.txtNombre.Location = new System.Drawing.Point(78, 55);
-            this.txtNombre.Name = "txtNombre";
-            this.txtNombre.Size = new System.Drawing.Size(100, 20);
-            this.txtNombre.TabIndex = 31;
             // 
             // lblTransaccion
             // 
@@ -153,44 +126,138 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.btnAgregarTodos);
+            this.groupBox2.Controls.Add(this.btnAgregar);
+            this.groupBox2.Controls.Add(this.grdItemsAPagar);
             this.groupBox2.Controls.Add(this.grdTransacciones);
-            this.groupBox2.Controls.Add(this.btnLimpiarLista);
+            this.groupBox2.Controls.Add(this.btnLimpiar);
             this.groupBox2.Controls.Add(this.chkSeleccionarTodos);
             this.groupBox2.Controls.Add(this.lblTransaccion);
             this.groupBox2.Controls.Add(this.comboTipoTransaccion);
             this.groupBox2.Controls.Add(this.btnFacturar);
-            this.groupBox2.Controls.Add(this.btnAgregar);
-            this.groupBox2.Location = new System.Drawing.Point(12, 160);
+            this.groupBox2.Location = new System.Drawing.Point(12, 77);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(548, 335);
+            this.groupBox2.Size = new System.Drawing.Size(548, 418);
             this.groupBox2.TabIndex = 34;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Filtros";
+            // 
+            // btnAgregarTodos
+            // 
+            this.btnAgregarTodos.Location = new System.Drawing.Point(491, 114);
+            this.btnAgregarTodos.Name = "btnAgregarTodos";
+            this.btnAgregarTodos.Size = new System.Drawing.Size(40, 39);
+            this.btnAgregarTodos.TabIndex = 45;
+            this.btnAgregarTodos.Text = ">>";
+            this.btnAgregarTodos.UseVisualStyleBackColor = true;
+            this.btnAgregarTodos.Click += new System.EventHandler(this.btnAgregarTodos_Click);
+            // 
+            // btnAgregar
+            // 
+            this.btnAgregar.Location = new System.Drawing.Point(491, 69);
+            this.btnAgregar.Name = "btnAgregar";
+            this.btnAgregar.Size = new System.Drawing.Size(40, 39);
+            this.btnAgregar.TabIndex = 44;
+            this.btnAgregar.Text = ">";
+            this.btnAgregar.UseVisualStyleBackColor = true;
+            this.btnAgregar.Click += new System.EventHandler(this.btnAgregar_Click);
+            // 
+            // grdItemsAPagar
+            // 
+            this.grdItemsAPagar.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.grdItemsAPagar.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn1,
+            this.dataGridViewTextBoxColumn2,
+            this.dataGridViewTextBoxColumn3,
+            this.dataGridViewTextBoxColumn4,
+            this.dataGridViewTextBoxColumn5,
+            this.dataGridViewComboBoxColumn1});
+            this.grdItemsAPagar.Location = new System.Drawing.Point(9, 219);
+            this.grdItemsAPagar.MultiSelect = false;
+            this.grdItemsAPagar.Name = "grdItemsAPagar";
+            this.grdItemsAPagar.ReadOnly = true;
+            this.grdItemsAPagar.Size = new System.Drawing.Size(476, 135);
+            this.grdItemsAPagar.TabIndex = 43;
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.DataPropertyName = "codigo";
+            this.dataGridViewTextBoxColumn1.HeaderText = "Codigo";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.ReadOnly = true;
+            this.dataGridViewTextBoxColumn1.Visible = false;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.DataPropertyName = "tipo";
+            this.dataGridViewTextBoxColumn2.HeaderText = "Tipo";
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.ReadOnly = true;
+            this.dataGridViewTextBoxColumn2.Visible = false;
+            // 
+            // dataGridViewTextBoxColumn3
+            // 
+            this.dataGridViewTextBoxColumn3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dataGridViewTextBoxColumn3.DataPropertyName = "cuenta";
+            this.dataGridViewTextBoxColumn3.HeaderText = "Nro. Cuenta";
+            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.dataGridViewTextBoxColumn3.ReadOnly = true;
+            this.dataGridViewTextBoxColumn3.Width = 82;
+            // 
+            // dataGridViewTextBoxColumn4
+            // 
+            this.dataGridViewTextBoxColumn4.DataPropertyName = "TipoDescription";
+            this.dataGridViewTextBoxColumn4.HeaderText = "Tipo de Transacción";
+            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
+            this.dataGridViewTextBoxColumn4.ReadOnly = true;
+            this.dataGridViewTextBoxColumn4.Width = 130;
+            // 
+            // dataGridViewTextBoxColumn5
+            // 
+            this.dataGridViewTextBoxColumn5.DataPropertyName = "costo";
+            this.dataGridViewTextBoxColumn5.HeaderText = "Costo";
+            this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
+            this.dataGridViewTextBoxColumn5.ReadOnly = true;
+            this.dataGridViewTextBoxColumn5.Width = 50;
+            // 
+            // dataGridViewComboBoxColumn1
+            // 
+            this.dataGridViewComboBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.dataGridViewComboBoxColumn1.DataPropertyName = "suscripcion";
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.dataGridViewComboBoxColumn1.DefaultCellStyle = dataGridViewCellStyle3;
+            this.dataGridViewComboBoxColumn1.HeaderText = "Suscripción";
+            this.dataGridViewComboBoxColumn1.Name = "dataGridViewComboBoxColumn1";
+            this.dataGridViewComboBoxColumn1.ReadOnly = true;
+            this.dataGridViewComboBoxColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewComboBoxColumn1.Width = 87;
             // 
             // grdTransacciones
             // 
             this.grdTransacciones.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.grdTransacciones.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Seleccionar,
+            this.Codigo,
+            this.TipoTransaccion,
             this.NroCuenta,
             this.Tipo,
             this.Costo,
             this.Suscripcion});
             this.grdTransacciones.Location = new System.Drawing.Point(9, 69);
-            this.grdTransacciones.MultiSelect = false;
             this.grdTransacciones.Name = "grdTransacciones";
-            this.grdTransacciones.Size = new System.Drawing.Size(474, 135);
+            this.grdTransacciones.Size = new System.Drawing.Size(476, 135);
             this.grdTransacciones.TabIndex = 42;
+            this.grdTransacciones.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.grdTransacciones_CellFormatting);
             // 
-            // btnLimpiarLista
+            // btnLimpiar
             // 
-            this.btnLimpiarLista.Location = new System.Drawing.Point(427, 16);
-            this.btnLimpiarLista.Name = "btnLimpiarLista";
-            this.btnLimpiarLista.Size = new System.Drawing.Size(97, 21);
-            this.btnLimpiarLista.TabIndex = 41;
-            this.btnLimpiarLista.Text = "Limpiar lista";
-            this.btnLimpiarLista.UseVisualStyleBackColor = true;
-            this.btnLimpiarLista.Click += new System.EventHandler(this.btnLimpiarLista_Click);
+            this.btnLimpiar.Location = new System.Drawing.Point(9, 369);
+            this.btnLimpiar.Name = "btnLimpiar";
+            this.btnLimpiar.Size = new System.Drawing.Size(169, 43);
+            this.btnLimpiar.TabIndex = 41;
+            this.btnLimpiar.Text = "Limpiar y Actualizar";
+            this.btnLimpiar.UseVisualStyleBackColor = true;
+            this.btnLimpiar.Click += new System.EventHandler(this.btnLimpiarLista_Click);
             // 
             // chkSeleccionarTodos
             // 
@@ -207,7 +274,7 @@
             // 
             // btnFacturar
             // 
-            this.btnFacturar.Location = new System.Drawing.Point(55, 240);
+            this.btnFacturar.Location = new System.Drawing.Point(184, 369);
             this.btnFacturar.Name = "btnFacturar";
             this.btnFacturar.Size = new System.Drawing.Size(298, 43);
             this.btnFacturar.TabIndex = 38;
@@ -215,46 +282,72 @@
             this.btnFacturar.UseVisualStyleBackColor = true;
             this.btnFacturar.Click += new System.EventHandler(this.btnFacturar_Click);
             // 
-            // btnAgregar
-            // 
-            this.btnAgregar.Location = new System.Drawing.Point(400, 240);
-            this.btnAgregar.Name = "btnAgregar";
-            this.btnAgregar.Size = new System.Drawing.Size(105, 42);
-            this.btnAgregar.TabIndex = 37;
-            this.btnAgregar.Text = "Agregar item a la lista";
-            this.btnAgregar.UseVisualStyleBackColor = true;
-            this.btnAgregar.Click += new System.EventHandler(this.btnAgregar_Click);
-            // 
             // Seleccionar
             // 
-            this.Seleccionar.FalseValue = "0";
+            this.Seleccionar.FalseValue = "false";
             this.Seleccionar.HeaderText = "";
             this.Seleccionar.Name = "Seleccionar";
-            this.Seleccionar.TrueValue = "1";
+            this.Seleccionar.TrueValue = "true";
             this.Seleccionar.Width = 30;
+            // 
+            // Codigo
+            // 
+            this.Codigo.DataPropertyName = "codigo";
+            this.Codigo.HeaderText = "Codigo";
+            this.Codigo.Name = "Codigo";
+            this.Codigo.ReadOnly = true;
+            this.Codigo.Visible = false;
+            // 
+            // TipoTransaccion
+            // 
+            this.TipoTransaccion.DataPropertyName = "tipo";
+            this.TipoTransaccion.HeaderText = "Tipo";
+            this.TipoTransaccion.Name = "TipoTransaccion";
+            this.TipoTransaccion.ReadOnly = true;
+            this.TipoTransaccion.Visible = false;
             // 
             // NroCuenta
             // 
+            this.NroCuenta.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.NroCuenta.DataPropertyName = "cuenta";
             this.NroCuenta.HeaderText = "Nro. Cuenta";
             this.NroCuenta.Name = "NroCuenta";
             this.NroCuenta.ReadOnly = true;
+            this.NroCuenta.Width = 89;
             // 
             // Tipo
             // 
+            this.Tipo.DataPropertyName = "TipoDescription";
             this.Tipo.HeaderText = "Tipo de Transacción";
             this.Tipo.Name = "Tipo";
             this.Tipo.ReadOnly = true;
+            this.Tipo.Width = 130;
             // 
             // Costo
             // 
+            this.Costo.DataPropertyName = "costo";
             this.Costo.HeaderText = "Costo";
             this.Costo.Name = "Costo";
             this.Costo.ReadOnly = true;
+            this.Costo.Width = 50;
             // 
             // Suscripcion
             // 
+            this.Suscripcion.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.Suscripcion.DefaultCellStyle = dataGridViewCellStyle4;
             this.Suscripcion.HeaderText = "Suscripción";
+            this.Suscripcion.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"});
+            this.Suscripcion.MaxDropDownItems = 5;
             this.Suscripcion.Name = "Suscripcion";
+            this.Suscripcion.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Suscripcion.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.Suscripcion.Width = 87;
             // 
             // FacturacionForm
             // 
@@ -270,6 +363,7 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.grdItemsAPagar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.grdTransacciones)).EndInit();
             this.ResumeLayout(false);
 
@@ -278,26 +372,32 @@
         #endregion
 
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.TextBox txtApellido;
-        private System.Windows.Forms.Label lblApellido;
         private System.Windows.Forms.TextBox txtNroDoc;
         private System.Windows.Forms.ComboBox comboTipoDoc;
         private System.Windows.Forms.Label lblDocumento;
-        private System.Windows.Forms.Label lblNombre;
-        private System.Windows.Forms.TextBox txtNombre;
         private System.Windows.Forms.Label lblTransaccion;
         private System.Windows.Forms.ComboBox comboTipoTransaccion;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button btnFacturar;
-        private System.Windows.Forms.Button btnAgregar;
         private System.Windows.Forms.CheckBox chkSeleccionarTodos;
-        private System.Windows.Forms.Button btnLimpiarLista;
+        private System.Windows.Forms.Button btnLimpiar;
         private System.Windows.Forms.DataGridView grdTransacciones;
+        private System.Windows.Forms.DataGridView grdItemsAPagar;
+        private System.Windows.Forms.Button btnAgregar;
+        private System.Windows.Forms.Button btnAgregarTodos;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewComboBoxColumn1;
         private System.Windows.Forms.DataGridViewCheckBoxColumn Seleccionar;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Codigo;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TipoTransaccion;
         private System.Windows.Forms.DataGridViewTextBoxColumn NroCuenta;
         private System.Windows.Forms.DataGridViewTextBoxColumn Tipo;
         private System.Windows.Forms.DataGridViewTextBoxColumn Costo;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Suscripcion;
+        private System.Windows.Forms.DataGridViewComboBoxColumn Suscripcion;
 
     }
 }

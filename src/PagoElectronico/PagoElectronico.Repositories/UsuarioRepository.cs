@@ -118,7 +118,5 @@ namespace PagoElectronico.Repositories
             else
                 return false;
         }
-
-
     }
 }

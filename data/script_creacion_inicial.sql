@@ -1546,7 +1546,7 @@ GO
 CREATE PROCEDURE QUIEN_BAJO_EL_KERNEL.GetAperturaCuentasSinFacturar (@tipoDoc numeric(18),@numeroDoc numeric (18))
 AS
 BEGIN
-	select numero as Cuenta,tt.costo as Costo , 1 as TipoTransaccion
+	select '' as Codigo, numero as Cuenta,tt.costo as Costo , 1 as TipoTransaccion
 	FROM QUIEN_BAJO_EL_KERNEL.CUENTA c
 	inner join QUIEN_BAJO_EL_KERNEL.TIPO_CUENTA tt on tt.codigo = c.tipo_cuenta
 	left join QUIEN_BAJO_EL_KERNEL.ITEM_FACTURA_ACTIVACION_CUENTA i on c.numero = i.cuenta
@@ -1575,9 +1575,6 @@ BEGIN
 	FROM QUIEN_BAJO_EL_KERNEL.TIPO_TRANSACCION	
 END
 GO
-
-
-
 -------------------------------  Paises  ----------------------------------
 
 CREATE PROCEDURE [QUIEN_BAJO_EL_KERNEL].[GetPaises]
