@@ -28,5 +28,10 @@ namespace PagoElectronico.Services
             TransaccionRepository repo = new TransaccionRepository();
             return repo.getAperturaCuentasSinFacturar(tipoDoc, numeroDoc);
         }
+        public int GetCountTransaccionesByCuenta(long cuenta)
+        {
+            TransaccionRepository repo = new TransaccionRepository();
+            return repo.GetCountTransaccionesByCuenta(cuenta);
+        }
     }
 }

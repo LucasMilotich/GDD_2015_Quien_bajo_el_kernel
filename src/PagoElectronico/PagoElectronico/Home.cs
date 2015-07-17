@@ -14,6 +14,7 @@ using PagoElectronico.Entities;
 using PagoElectronico.ABM_Cuenta;
 using PagoElectronico.Depositos;
 using PagoElectronico.Facturacion;
+using PagoElectronico.Login;
 
 namespace PagoElectronico
 {
@@ -124,6 +125,11 @@ namespace PagoElectronico
         private void facturarToolStripMenuItem_Click(object sender, EventArgs e)
         {
             showForm(new FacturacionForm());
+        }
+
+        private void cambiarContraseñaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            showForm(new CambiarPassword());
         }
     }
 }

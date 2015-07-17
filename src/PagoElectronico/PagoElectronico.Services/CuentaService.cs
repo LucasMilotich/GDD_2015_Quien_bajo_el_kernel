@@ -82,5 +82,12 @@ namespace PagoElectronico.Services
             CuentaRepository repository = new CuentaRepository();
             return repository.GetAll();
         }
+
+        public void inhabilitarCuenta(long cuenta, DateTime fecha)
+        {
+            CuentaRepository repository = new CuentaRepository();
+            repository.inhabilitarCuenta(cuenta, fecha);
+        }
+    
     }
 }

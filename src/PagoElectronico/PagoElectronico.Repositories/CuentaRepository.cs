@@ -147,7 +147,7 @@ namespace PagoElectronico.Repositories
             command.Parameters.AddWithValue("@an_doc", nroDoc);
             command.Parameters.AddWithValue("@an_tipo_doc", tipoDoc);
             return DBConnection.EjecutarStoredProcedureSelect(command);
-           
+
         }
 
         public Cuenta GetCuentaByNumero(long nroCuenta)
@@ -215,6 +215,14 @@ namespace PagoElectronico.Repositories
             }
 
             return resultado;
+        }
+
+        public void inhabilitarCuenta(long cuenta, DateTime fecha)
+        {
+            SqlCommand command = DBConnection.CreateStoredProcedure("InhabilitarCuenta");
+            command.Parameters.AddWithValue("@cuenta", cuenta);
+            command.Parameters.AddWithValue("@fecha", fecha);
+            DBConnection.ExecuteNonQuery(command);
         }
     }
 }

@@ -23,6 +23,7 @@ namespace PagoElectronico.Transferencias
         CuentaService cuentaService = new CuentaService();
         ClienteService clienteService = new ClienteService();
         TipoMonedaService tipoMonedaService = new TipoMonedaService();
+        TransaccionService transaccionService = new TransaccionService();
         List<TipoMoneda> listaTiposMoneda;
         List<Cuenta> listaCuentas;
 
@@ -100,7 +101,8 @@ namespace PagoElectronico.Transferencias
                     long origen = Convert.ToInt64(comboCuentaOrigen.Text);
                     long destino = Convert.ToInt64(txtCuentaDestino.Text);
 
-                    validarEstadoCuenta(destino);
+                    validarEstadoCuentaOrigen(origen);
+                    validarEstadoCuentaDestino(destino);
                     validarSaldoDisponible(saldoPosterior);
 
                     Transferencia transferencia = new Transferencia();
@@ -113,16 +115,27 @@ namespace PagoElectronico.Transferencias
 
                     transferenciaService.GuardarTransferencia(transferencia);
                     MessageBox.Show("Transferencia realizada exitosamente. Saldo actual: " + lblSaldoPosterior.Text.ToString(), "Atencion !", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    inhabilitarCuentaSiCorresponde();
                     limpiarDatos();
                 }
                 catch (OperationCanceledException ex)
                 {
                     MessageBox.Show(ex.Message.ToString(), "No se pudo realizar la transferencia. !", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     MessageBox.Show("La cuenta destino no existe", "No se pudo realizar la transferencia. !", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
+            }
+        }
+
+        private void inhabilitarCuentaSiCorresponde()
+        {
+            long cuenta = Convert.ToInt64(comboCuentaOrigen.Text);
+            if (transaccionService.GetCountTransaccionesByCuenta(cuenta) > 5)
+            {
+                cuentaService.inhabilitarCuenta(cuenta, FECHA_ACTUAL);
+                MessageBox.Show("La cuenta fue inhabilitada por superar las 5 transacciones sin facturar", "Cuenta inhabilitada", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -249,12 +262,21 @@ namespace PagoElectronico.Transferencias
 
         #region validacionesPrivadas
         /*************    Validadores privados       *************/
-        private void validarEstadoCuenta(long cuentaDestino)
+        private void validarEstadoCuentaOrigen(long unaCuenta)
         {
-            int estadoDeCuenta = cuentaService.getEstado(cuentaDestino);
+            int estadoDeCuenta = cuentaService.getEstado(unaCuenta);
+            if (estadoDeCuenta == (Int32)Entities.Enums.EstadosCuenta.Cerrada || estadoDeCuenta == (Int32)Entities.Enums.EstadosCuenta.PendienteActivacion || estadoDeCuenta == (Int32)Entities.Enums.EstadosCuenta.Inhabilitada)
+            {
+                throw new OperationCanceledException("La cuenta origen se encuentra inhabilitada, cerrada o pendiente de activacion");
+            }
+        }
+
+        private void validarEstadoCuentaDestino(long unaCuenta)
+        {
+            int estadoDeCuenta = cuentaService.getEstado(unaCuenta);
             if (estadoDeCuenta == (Int32)Entities.Enums.EstadosCuenta.Cerrada || estadoDeCuenta == (Int32)Entities.Enums.EstadosCuenta.PendienteActivacion)
             {
-                throw new OperationCanceledException("La cuenta destino se encuentra en cerrada o pendiente de activacion");
+                throw new OperationCanceledException("La cuenta destino se encuentra cerrada o pendiente de activacion");
             }
         }
 
