@@ -934,28 +934,19 @@ GO
 
 CREATE PROCEDURE [QUIEN_BAJO_EL_KERNEL].[ModificaCuenta]
 @an_nro_cuenta	NUMERIC(18,0),
-@an_moneda_tipo NUMERIC(1,0),
 @an_cuenta_tipo	NUMERIC(1,0),
-@an_cod_pais	NUMERIC(18,0),
 @ad_fecha		DATETIME
 AS
 BEGIN
 DECLARE	@an_tipo_viejo NUMERIC(1,0)
 	SET NOCOUNT ON;
-	
-	SELECT @an_tipo_viejo = c.tipo_cuenta
-	  FROM QUIEN_BAJO_EL_KERNEL.CUENTA c
-	 WHERE numero = @an_nro_cuenta
 
     UPDATE QUIEN_BAJO_EL_KERNEL.CUENTA
-       SET moneda_tipo = @an_moneda_tipo,
-		   tipo_cuenta = @an_cuenta_tipo,
-		   pais_codigo = @an_cod_pais
+       SET tipo_cuenta = @an_cuenta_tipo
 	 WHERE numero = @an_nro_cuenta
 	 
-	IF @an_cuenta_tipo <> @an_tipo_viejo AND @an_cuenta_tipo <> 1
-		INSERT INTO QUIEN_BAJO_EL_KERNEL.CUENTA_MODIFICACION(cuenta, fecha, nuevo_tipo_cuenta)
-			VALUES (@an_nro_cuenta, @ad_fecha, @an_cuenta_tipo)
+	INSERT INTO QUIEN_BAJO_EL_KERNEL.CUENTA_MODIFICACION(cuenta, fecha, nuevo_tipo_cuenta)
+		VALUES (@an_nro_cuenta, @ad_fecha, @an_cuenta_tipo)
 	 
 END
 GO
@@ -1002,7 +993,8 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE PROCEDURE [QUIEN_BAJO_EL_KERNEL].[CerrarCuenta]
-@an_nro_cuenta	NUMERIC(18,0)
+@an_nro_cuenta	NUMERIC(18,0),
+@ad_fecha		DATETIME
 AS
 BEGIN
 DECLARE @items_a_facturar	NUMERIC(18,0),
@@ -1045,7 +1037,7 @@ DECLARE @items_a_facturar	NUMERIC(18,0),
 		BEGIN
 		--Ya pago todas las transacciones, se puede cerrar la cuenta
 		UPDATE QUIEN_BAJO_EL_KERNEL.CUENTA
-		   SET fecha_cierre = GETDATE(),
+		   SET fecha_cierre = @ad_fecha,
 			   estado_codigo = 2
 		 WHERE numero = @an_nro_cuenta
 		END
